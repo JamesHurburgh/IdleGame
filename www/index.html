@@ -28,8 +28,23 @@
     <div class="container">
         <div class="row" id="idle-game">
             <h1>Idle Game</h1>
-            <p>Do things. While you're idle!</p>
+            <p>Do things. While you're idle! <a href="#" @click="reset()">Reset the game</a></p>
             <div class="col-md-6">
+                <h2>Workers</h2>
+                <ul class="list-group">
+                    <li v-for="worker in workers" class="list-group-item">
+                        <strong>{{ worker.name }} (<span v-for="title in worker.titles" >{{title}}</span>)</strong>
+                        <span>{{worker.currentTask()}} </span>
+                        <h4>Skills</h4>
+                        <ul class="list-group">
+                            <li v-for="skill in worker.skills" class="list-group-item">
+                                {{skill.name}}: {{skill.level}} (x{{Math.floor(Math.sqrt(skill.level))/100 + 1}})
+                            </li>                            
+                        </ul>
+                    </li>
+                </ul>
+                </div>
+            <div class="col-md-3">
                 <h2>Resources</h2>
                 <ul class="list-group">
                     <li v-for="resource in resources" class="list-group-item">
@@ -39,16 +54,21 @@
                         </div> -->
                     </li>
                 </ul>
+                </div>
+            <div class="col-md-3">
                 <h2>Upgrade Menu</h2>
                 <ul class="list-group">
                     <li v-for="upgrade in upgrades" class="list-group-item">
                         {{ upgrade.name }} {{ upgrade.cost }}
                     </li>
                 </ul>
+                </div>
+            <div class="col-md-3">
                 <h2>Activities</h2>
                 <ul class="list-group">
-                    <li v-for="activity in activities" class="list-group-item" v-bind:class="['list-group-item', activity.active ? 'active' : '']">
+                    <li v-for="activity in activities" class="list-group-item">
                         {{ activity.name }} {{ activity.amountPerTick }}
+                        <a href="#" class="btn btn-default btn-xs pull-right" :data-task="activity.name" @click="assignWorkers">Assign All</a>
                     </li>
                 </ul>
             </div>
