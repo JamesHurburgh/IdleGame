@@ -167,6 +167,15 @@ requirejs(['jquery', 'vue', 'alertify', 'store', 'chance'],
                         }
                     },
                     {
+                        name: "water collecting",
+                        skills: ["collecting", "water"],
+                        difficulty: 600 * gameDifficulty,
+                        active: false,
+                        action: function(amount) {
+                            idleGameData.getResource("water").amount += amount;
+                        }
+                    },
+                    {
                         name: "recruiting",
                         skills: ["recruiting", "talking"],
                         difficulty: 2000 * gameDifficulty,
@@ -201,12 +210,13 @@ requirejs(['jquery', 'vue', 'alertify', 'store', 'chance'],
                     { name: "workers", amount: 1, img: "robe.png" },
                     { name: "rocks", amount: 0, img: "rock.png" },
                     { name: "sticks", amount: 0, img: "stick-splitting.png" },
-                    { name: "berries", amount: 0, img: "blackcurrant.png" },
+                    { name: "berries", amount: 30, img: "blackcurrant.png" },
                     { name: "leaves", amount: 0, img: "vine-leaf.png" },
                     { name: "dirt", amount: 0, img: "path-tile.png" },
                     { name: "vines", amount: 0, img: "curling-vines.png" },
                     { name: "tents", amount: 1, img: "camping-tent.png" },
                     { name: "houses", amount: 0, img: "house.png" },
+                    { name: "water", amount: 50, img: "water.png" },
                 ],
                 stats: [{
                     name: "crowding",
