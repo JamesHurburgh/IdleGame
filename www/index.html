@@ -35,7 +35,7 @@
                     <div class="panel-heading">
                         <img :src="'http://flathash.com/' + worker.name" width="48px">
                         <strong>{{ worker.name }} (<span v-for="title in worker.titles" >{{title}}</span>)</strong>
-                        <span class="badge pull-right">{{worker.currentTask}}</span>
+                        <span class="badge pull-right">{{worker.currentTask}} - {{(100 * (worker.progress - Math.floor(worker.progress))).toFixed(2)}}%</span>
                     </div>
                     <div class="panel-body">
                         <h4>Skills</h4>
@@ -52,8 +52,8 @@
                 <ul class="list-group">
                     <li v-for="resource in resources" class="list-group-item">
                         <img :src="'./img/icons/' + resource.img" width="24px" />
-                        <span class="badge">{{ Math.floor(resource.amount) }}</span>
-                        <span class="badge">{{(100 * (resource.amount - Math.floor(resource.amount))).toFixed(2)}}%</span> {{ resource.name }} {{ (resource.secondsPer||0).toFixed(1)}} seconds each
+                        <span class="badge">{{ Math.floor(resource.amount) }}</span>{{ resource.name }}
+                        <!--<span class="badge">{{(100 * (resource.amount - Math.floor(resource.amount))).toFixed(2)}}%</span>  {{ (resource.secondsPer||0).toFixed(1)}} seconds each-->
                         <!-- <div class="progress progress-striped active">
                             <div class="progress-bar" v-bind:style="{ width: 100 * (resource.amount - Math.floor(resource.amount)) + '%' }"></div>
                         </div> -->
