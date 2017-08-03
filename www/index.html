@@ -33,11 +33,30 @@
                 <h2>Workers</h2>
                 <div class="panel panel-default" v-for="worker in workers">
                     <div class="panel-heading">
-                        <img :src="'http://flathash.com/' + worker.name" width="48px">
-                        <strong>{{ worker.name }} (<span v-for="title in worker.titles" >{{title}}</span>)</strong>
-                        <span class="badge pull-right">{{worker.currentTask}} - {{(100 * (worker.progress - Math.floor(worker.progress))).toFixed(2)}}%</span>
+                        <img :src="'http://flathash.com/' + worker.name" width="48px" data-toggle="collapse" :data-target="'#'+ worker.id">
+                        <strong>{{ worker.name }} (<span v-for="title in worker.titles">{{title}}</span>) </strong>
+                        <strong></strong>
+
+                        <div class="btn-group pull-right" role="group" aria-label="...">
+                            <span class="btn btn-default btn-xs align-middle">{{(worker.secondsLeft||0).toFixed(2)}} seconds</span>
+                            <span class="btn btn-default btn-xs align-middle">{{worker.currentTask}}</span>
+                            <span class="btn btn-default btn-xs align-middle">{{(100 * ((worker.progress||0) - Math.floor((worker.progress||0)))).toFixed(2)}}%</span>
+
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Task<span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li v-for="activity in activities" class="list-group-item">
+                                        <a href="#" :data-task="activity.name" :data-worker="worker.name" @click="assignWorker">Assign to {{ activity.name }}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- <span class="label label-default pull-right">{{worker.currentTask}} - {{(100 * (worker.progress - Math.floor(worker.progress))).toFixed(2)}}%</span> -->
                     </div>
-                    <div class="panel-body">
+
+                    <div class="panel-body collapse" :id="worker.id">
                         <h4>Skills</h4>
                         <ul class="list-group">
                             <li v-for="skill in worker.skills" class="list-group-item">

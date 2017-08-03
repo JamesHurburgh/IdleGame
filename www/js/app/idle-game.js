@@ -16,6 +16,13 @@ requirejs.config({
 requirejs(['jquery', 'vue', 'alertify', 'store', 'chance'],
     function($, Vue, alertify, store, chance) {
 
+
+        function uuidv4() {
+            return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+                (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+            );
+        }
+
         var idleGameData; // = store.get("idleGameData");
 
         var gameDifficulty = 10; // 100 is normal
@@ -54,11 +61,13 @@ requirejs(['jquery', 'vue', 'alertify', 'store', 'chance'],
                                 worker.skills.push({ name: skill, level: 1 });
                             }
                         }, this);
-                        if(!taskAssignment.progress || taskAssignment.progress >= 1){
+                        if (!taskAssignment.progress || taskAssignment.progress >= 1) {
                             taskAssignment.progress = 0;
                         }
-                        taskAssignment.progress += ticks * effortModifier / task.difficulty;
-                        if(taskAssignment.progress > 1){
+
+                        taskAssignment.progress += ticks * effortModifier / task.difficulty();
+                        worker.secondsLeft = Math.max(0, (1 - taskAssignment.progress)) / ((effortModifier / task.difficulty()) * 1000);
+                        if (taskAssignment.progress > 1) {
                             task.action(Math.floor(taskAssignment.progress));
                         }
                         worker.progress = taskAssignment.progress;
@@ -115,16 +124,16 @@ requirejs(['jquery', 'vue', 'alertify', 'store', 'chance'],
                 activities: [{
                         name: "rock collecting",
                         skills: ["collecting", "rocks"],
-                        difficulty: 200 * gameDifficulty,
+                        difficulty: function() { return 200 * gameDifficulty; },
                         active: true,
                         action: function(amount) {
                             idleGameData.getResource("rocks").amount += amount;
-                        }
+                        },
                     },
                     {
                         name: "stick collecting",
                         skills: ["collecting", "sticks"],
-                        difficulty: 200 * gameDifficulty,
+                        difficulty: function() { return 200 * gameDifficulty; },
                         active: false,
                         action: function(amount) {
                             idleGameData.getResource("sticks").amount += amount;
@@ -133,7 +142,7 @@ requirejs(['jquery', 'vue', 'alertify', 'store', 'chance'],
                     {
                         name: "dirt collecting",
                         skills: ["collecting", "dirt"],
-                        difficulty: 200 * gameDifficulty,
+                        difficulty: function() { return 200 * gameDifficulty; },
                         active: false,
                         action: function(amount) {
                             idleGameData.getResource("dirt").amount += amount;
@@ -142,7 +151,7 @@ requirejs(['jquery', 'vue', 'alertify', 'store', 'chance'],
                     {
                         name: "berry collecting",
                         skills: ["collecting", "berries"],
-                        difficulty: 400 * gameDifficulty,
+                        difficulty: function() { return 400 * gameDifficulty; },
                         active: false,
                         action: function(amount) {
                             idleGameData.getResource("berries").amount += amount;
@@ -151,7 +160,7 @@ requirejs(['jquery', 'vue', 'alertify', 'store', 'chance'],
                     {
                         name: "vine collecting",
                         skills: ["collecting", "vines"],
-                        difficulty: 400 * gameDifficulty,
+                        difficulty: function() { return 400 * gameDifficulty; },
                         active: false,
                         action: function(amount) {
                             idleGameData.getResource("vines").amount += amount;
@@ -160,7 +169,7 @@ requirejs(['jquery', 'vue', 'alertify', 'store', 'chance'],
                     {
                         name: "leaf collecting",
                         skills: ["collecting", "leaves"],
-                        difficulty: 400 * gameDifficulty,
+                        difficulty: function() { return 400 * gameDifficulty; },
                         active: false,
                         action: function(amount) {
                             idleGameData.getResource("leaves").amount += amount;
@@ -169,7 +178,7 @@ requirejs(['jquery', 'vue', 'alertify', 'store', 'chance'],
                     {
                         name: "water collecting",
                         skills: ["collecting", "water"],
-                        difficulty: 600 * gameDifficulty,
+                        difficulty: function() { return 600 * gameDifficulty; },
                         active: false,
                         action: function(amount) {
                             idleGameData.getResource("water").amount += amount;
@@ -178,30 +187,15 @@ requirejs(['jquery', 'vue', 'alertify', 'store', 'chance'],
                     {
                         name: "recruiting",
                         skills: ["recruiting", "talking"],
-                        difficulty: 2000 * gameDifficulty,
+                        difficulty: function() { return 2000 * gameDifficulty * Math.pow(idleGameData.getStat("crowding").value(), 2); },
                         active: false,
                         action: function(amount) {
-                            for(var i = 0; i < amount; i++){
+                            for (var i = 0; i < amount; i++) {
                                 var newWorker = createNewWorker();
                                 idleGameData.workers.push(newWorker);
                                 alertify.success("New worker recruited: " + newWorker.name);
                             }
-                            return;                            
-                            // var workers = idleGameData.getResource("workers");
-                            // var startAmount = Math.floor(workers.amount);
-                            // var crowding = idleGameData.getStat("crowding").value();
-                            // var adjustment = (this.amountPerTick * ticks * modifier) / (crowding * crowding);
-
-                            // workers.secondsPer = ticks / (1000 * adjustment);
-                            // workers.amount += adjustment;
-                            // if (startAmount != Math.floor(workers.amount)) { // Then a new worker has been recruited
-                            //     var count = Math.floor(workers.amount) - startAmount;
-                            //     for(var i = 0; i < count; i++){
-                            //         var newWorker = createNewWorker();
-                            //         idleGameData.workers.push(newWorker);
-                            //         alertify.success("New worker recruited: " + newWorker.name);
-                            //     }
-                            // }
+                            return;
                         }
                     },
                 ],
@@ -216,7 +210,7 @@ requirejs(['jquery', 'vue', 'alertify', 'store', 'chance'],
                     { name: "vines", amount: 0, img: "curling-vines.png" },
                     { name: "tents", amount: 1, img: "camping-tent.png" },
                     { name: "houses", amount: 0, img: "house.png" },
-                    { name: "water", amount: 50, img: "water.png" },
+                    { name: "water", amount: 50, img: "water-drop.png" },
                 ],
                 stats: [{
                     name: "crowding",
@@ -235,16 +229,9 @@ requirejs(['jquery', 'vue', 'alertify', 'store', 'chance'],
                     cost: 0,
                 }],
                 workers: [{
+                    id: uuidv4(),
                     name: new Chance().first() + " " + new Chance().last(),
                     currentTask: "idling",
-                    // currentTask: function() {
-                    //     idleGameData.taskAssignments.forEach(function(taskAssignment) {
-                    //         if (taskAssignment.workerName == this.name) {
-                    //             return taskAssignment.taskName;
-                    //         }
-                    //     });
-                    //     return "idling";
-                    // },
                     skills: [
                         { name: "recruiting", level: 8000 + Math.floor(Math.random() * 4000) },
                         { name: "fighting", level: 8000 + Math.floor(Math.random() * 4000) },
@@ -259,6 +246,7 @@ requirejs(['jquery', 'vue', 'alertify', 'store', 'chance'],
         createNewWorker =
             function() {
                 return {
+                    id: uuidv4(),
                     name: new Chance().first() + " " + new Chance().last(),
                     age: Math.floor(Math.random(60)) + 18,
                     currentTask: "idling",
