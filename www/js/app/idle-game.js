@@ -13,9 +13,10 @@ requirejs.config({
 });
 
 // Start the main app logic.
-requirejs(['jquery', 'vue', 'alertify', 'store', 'chance'],
-    function($, Vue, alertify, store, chance) {
+requirejs(['jquery', 'vue', 'alertify', 'store', 'chance', 'app/facer'],
+    function($, Vue, alertify, store, chance, facer) {
 
+        console.log(facer.initialise());
 
         function uuidv4() {
             return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
