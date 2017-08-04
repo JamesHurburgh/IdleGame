@@ -1,59 +1,80 @@
-define([],
-    function facer() {
+define(['sha1.min'],
+    function facer(sha1) {
 
         return {
 
-            initialise : function(){
-                sha1 = function(inputString){
-                    // TODO implement
-                    return [0,1,2,3,4,5,6,7,0,1,2,3,4,5,6,7,0,1,2,3];
-                };
+            initialise: function(inputString) {
                 // TODO get input string from url
-                var inputString = "Bob";
 
-                var sha1 = sha1(inputString);
+                var hashedInput = sha1.array(inputString);
 
-                var testSet = {
-                    name : "test",
-                    resolvePartById : function(id, sha1){
-                        return this.parts[id].resolve(sha1);
+                var facer = {
+                    customSets: {},
+                    set: [],
+                    resolvePartById: function(id, sha1) {
+                        return this.set.parts[id].resolve(sha1);
                     },
-                    resolvePartByName : function(partName, sha1){
-                        this.parts.forEach(function(part) {
-                            if(part.name == partName){
+                    resolvePartByName: function(partName, sha1) {
+                        this.set.parts.forEach(function(part) {
+                            if (part.name == partName) {
                                 return part.resolve(sha1);
                             }
                         }, this);
                     },
-                    parts : [
-                        { id: 1, output: true, resolve: function (sha1){ return sha1[this.id]; } },
-                        { id: 2, output: true, resolve: function (sha1){ return sha1[this.id]; } },
-                        { id: 3, output: true, resolve: function (sha1){ return sha1[this.id]; } },
-                        { id: 4, output: true, resolve: function (sha1){ return sha1[this.id]; } },
-                        { id: 5, output: true, resolve: function (sha1){ return sha1[this.id]; } },
-                        { id: 6, output: true, resolve: function (sha1){ return sha1[this.id]; } },
-                        { id: 7, output: true, resolve: function (sha1){ return sha1[this.id]; } },
-                        { id: 8, output: true, resolve: function (sha1){ return sha1[this.id]; } },
-                        { id: 9, output: true, resolve: function (sha1){ return sha1[this.id]; } },
-                        { id: 10, output: true, resolve: function (sha1){ return sha1[this.id]; } },
-                        { id: 11, output: true, resolve: function (sha1){ return sha1[this.id]; } },
-                        { id: 12, output: true, resolve: function (sha1){ return sha1[this.id]; } },
-                        { id: 13, output: true, resolve: function (sha1){ return sha1[this.id]; } },
-                        { id: 14, output: true, resolve: function (sha1){ return sha1[this.id]; } },
-                        { id: 15, output: true, resolve: function (sha1){ return sha1[this.id]; } },
-                        { id: 16, output: true, resolve: function (sha1){ return sha1[this.id]; } },
-                        { id: 17, output: true, resolve: function (sha1){ return sha1[this.id]; } },
-                        { id: 18, output: true, resolve: function (sha1){ return sha1[this.id]; } },
-                        { id: 19, output: true, resolve: function (sha1){ return sha1[this.id]; } },
-                        { id: 20, output: true, resolve: function (sha1){ return sha1[this.id]; } },
-                    ]
+                    resolveHash: function(hash, seperator) {
+                        if (!seperator || seperator === undefined) {
+                            seperator = "";
+                        }
+                        var output = [];
+                        this.set.parts.forEach(function(part) {
+                            if (part.output) {
+                                output.push(part.resolve(hash));
+                            }
+                        });
+                        return output.join(seperator);
+                    },
+                    loadCustomSet: function(customSet) {
+                        customSets[customSet.name] = customSet;
+                    },
+                    useSet: function(setName) {
+                        switch (setName) {
+                            case "int":
+                                this.set = { name: "int", parts: [] };
+                                for (var i = 0; i < 20; i++) {
+                                    this.set.parts.push({ id: i, output: true, resolve: function(sha1) { return sha1[this.id]; } });
+                                }
+                                break;
+                            case "bin":
+                                this.set = { name: "bin", parts: [] };
+                                for (var b = 0; b < 20; b++) {
+                                    this.set.parts.push({
+                                        id: b,
+                                        output: true,
+                                        resolve: function(sha1) {
+                                            var value = sha1[this.id].toString(2);
+                                            return "00000000".substr(value.length) + value;
+                                        }
+                                    });
+                                }
+                                break;
+                            case "hex":
+                                this.set = { name: "hex", parts: [] };
+                                for (var h = 0; h < 20; h++) {
+                                    this.set.parts.push({ id: h, output: true, resolve: function(sha1) { return ("0" + (Number(sha1[this.id]).toString(16))).slice(-2).toUpperCase(); } });
+                                }
+                                break;
+                            default:
+                                if (!customSets[setName] || customSets[setName] === undefined) {
+                                    throw new Exception("Set '" + setName + "' not loaded.");
+                                }
+                                this.set = customSets[setName];
+                        }
+                    },
                 };
 
-                var output = "";
-                testSet.parts.forEach(function(part){
-                    output += part.resolve(sha1);
-                });
-                return "Sha1  : " + sha1 + "Output: " + output;
+                facer.useSet("bin");
+
+                return "Sha1  : " + sha1.array(inputString) + "\r\nOutput: " + facer.resolveHash(hashedInput);
             }
         };
     }

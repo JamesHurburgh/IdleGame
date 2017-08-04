@@ -1,5 +1,5 @@
 
-# SHA 1 produces 20 bytes
+# SHA 1 produces 20 bytes each bytes has 256 different values or 8 yes/no decision points
 
 Each byte represents a different part of an image, for example a dwarf might have:
 
