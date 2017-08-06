@@ -35,7 +35,8 @@
                     <div class="panel-heading">
                         <img :src="'http://flathash.com/' + worker.name" width="48px" data-toggle="collapse" :data-target="'#'+ worker.id">
                         <strong>{{ worker.name }} (<span v-for="title in worker.titles">{{title}}</span>) </strong>
-                        <strong></strong>
+                        <div style="position:relative" v-html="worker.faceSvg">
+                        </div>
 
                         <div class="btn-group pull-right" role="group" aria-label="...">
                             <span class="btn btn-default btn-xs align-middle">{{(worker.secondsLeft||0).toFixed(2)}} seconds</span>
