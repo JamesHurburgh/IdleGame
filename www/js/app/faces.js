@@ -109,8 +109,12 @@ define(['app/facer'],
                 output: true,
                 resolve: function(sha1) {
                     var skinColour = skinColourList[Math.floor(sha1[0] / 16)];
-                    var leftEar = '<ellipse transform="rotate(-10 150,310)" ry="41" rx="26" id="svg_2" cy="310" cx="150" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" stroke="#000000" fill="' + skinColour + '"/>';
-                    var rightEar = '<ellipse transform="rotate(10 490,310)" ry="41" rx="26" id="svg_2" cy="310" cx="490" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" stroke="#000000" fill="' + skinColour + '"/>';
+                    var temp1 = Math.floor(sha1[this.id] / 16);
+                    var temp2 = sha1[this.id] % 16;
+                    var earWidth = 20 + (10 * temp1 % 4);
+                    var earHeight = 25 + (10 * Math.floor(temp1 / 4));
+                    var leftEar = '<ellipse transform="rotate(-10 150,310)" ry="' + earHeight + '" rx="' + earWidth + '" id="svg_2" cy="310" cx="150" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" stroke="#000000" fill="' + skinColour + '"/>';
+                    var rightEar = '<ellipse transform="rotate(10 490,310)" ry="' + earHeight + '" rx="' + earWidth + '" id="svg_2" cy="310" cx="490" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" stroke="#000000" fill="' + skinColour + '"/>';
                     return leftEar + rightEar;
 
                 }
@@ -183,12 +187,17 @@ define(['app/facer'],
                     var eyeVar2 = Math.floor(sha1[this.id] / 16);
                     var spread = (temp1 % 4) * 10 + 40;
                     var height = (Math.floor(temp1 / 4) - 2) * 10;
-                    var leftEye = '<ellipse ry="14" rx="14" cy="' + (320 + height) + '" cx="' + (320 - spread) + '" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" stroke="#000000" fill="' + eyeColour + '"/>';
+
+                    var leftPupil = '';
+                    var leftIris = '<ellipse ry="14" rx="14" cy="' + (320 + height) + '" cx="' + (320 - spread) + '" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" stroke="#000000" fill="' + eyeColour + '"/>';
+                    var leftPupil = '';
+                    var leftEye = leftWhite + leftIris + leftPupil;
+
                     var rightEye = '<ellipse ry="14" rx="14" cy="' + (320 + height) + '" cx="' + (320 + spread) + '" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" stroke="#000000" fill="' + eyeColour + '"/>';
+
                     return leftEye + rightEye;
                 }
             }, ]
-
 
         };
         for (var i = 1; i < 20; i++) {
