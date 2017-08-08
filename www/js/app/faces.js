@@ -142,7 +142,7 @@ define(['app/facer'],
                 resolve: function(sha1) {
                     var mouthPathsList = ["m244,400c1,0 4,9 13,15c9,6 35,15 59,15c24,0 40,-6 48,-14c8,-8 10,-17 10,-17"];
                     var path = mouthPathsList[Math.floor(sha1[this.id] % mouthPathsList.length)];
-                    var mouth = '<path d="'+path+'" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" stroke="#000000" fill="none"/>';
+                    var mouth = '<path d="m244,400c1,0 4,9 13,15c9,6 35,15 59,15c24,0 40,-6 48,-14c8,-8 10,-17 10,-17" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" stroke="#000000" fill="none"/>';
                     return mouth;
 
                 }
@@ -189,6 +189,7 @@ define(['app/facer'],
                     var height = (Math.floor(temp1 / 4) - 2) * 10;
                     
                     var leftPupil = '';
+                    var leftEye = leftWhite + leftIris + leftPupil;
                     var leftIris = '<ellipse ry="14" rx="14" cy="'+(320+height)+'" cx="'+(320-spread)+'" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" stroke="#000000" fill="' + eyeColour + '"/>';
                     var leftPupil = '';
                     var leftEye = leftWhite + leftIris + leftPupil;
@@ -198,7 +199,7 @@ define(['app/facer'],
                     return leftEye + rightEye;
                 }
             }, ]
-ccc
+
 
         };
         for (var i = 1; i < 20; i++) {
