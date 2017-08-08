@@ -136,9 +136,9 @@ define(['app/facer'],
                 id: 8,
                 output: true,
                 resolve: function(sha1) {
-                    var mouthPathsList = ["m244,400c1,0 4,9 13,15c9,6 35,15 59,15c24,0 40,-6 48,-14c8,-8 10,-17 10,-17"];
+                    var mouthPathsList = ["m260,400c0,0 130,0 130,0c0,0 -10,15 -10,15c0,0 -30,20 -30,20c0,0 -30,5 -30,5c0,0 -30,-5 -30,-5c0,0 -30,-20 -30,-20c0,0 -10,-15 -10,-15z"];
                     var path = mouthPathsList[Math.floor(sha1[this.id] % mouthPathsList.length)];
-                    var mouth = '<path d="m244,400c1,0 4,9 13,15c9,6 35,15 59,15c24,0 40,-6 48,-14c8,-8 10,-17 10,-17" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" stroke="#000000" fill="none"/>';
+                    var mouth = '<path d="' + path + '" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" stroke="#000000" fill="#FFFFFF"/>';
                     return mouth;
 
                 }
@@ -151,12 +151,12 @@ define(['app/facer'],
                         'm310,340c0,0 0,30 0,30c0,0 20,0 20,0c0,0 0,-30 0,-30',
                         'm310,340c0,0 0,40 0,40c0,0 20,0 20,0c0,0 0,-40 0,-40',
                         'm310,340c0,0 0,50 0,50c0,0 20,0 20,0c0,0 0,-50 0,-50',
-                        
+
                         'm310,340c0,0 -10,20 -10,20c0,0 40,0 40,0c0,0 -10,-20 -10,-20',
                         'm310,340c0,0 -10,30 -10,30c0,0 40,0 40,0c0,0 -10,-30 -10,-30',
                         'm310,340c0,0 -10,40 -10,40c0,0 40,0 40,0c0,0 -10,-40 -10,-40',
                         'm310,340c0,0 -10,50 -10,50c0,0 40,0 40,0c0,0 -10,-50 -10,-50',
-                        
+
                         'm310,340c0,0 -10,20 -10,20c0,0 10,10 10,10c0,0 20,0 20,0c0,0 10,-10 10,-10c0,0 -10,-20 -10,-20',
                         'm310,340c0,0 -10,30 -10,30c0,0 10,10 10,10c0,0 20,0 20,0c0,0 10,-10 10,-10c0,0 -10,-30 -10,-30',
                         'm310,340c0,0 -10,40 -10,40c0,0 10,10 10,10c0,0 20,0 20,0c0,0 10,-10 10,-10c0,0 -10,-40 -10,-40',
@@ -166,11 +166,11 @@ define(['app/facer'],
                         'm310,340c0,0 0,10 0,10c0,0 -10,30 -10,30c0,0 10,10 10,10c0,0 20,0 20,0c0,0 10,-10 10,-10c0,0 -10,-30 -10,-30c0,0 0,-10 0,-10',
                         'm310,340c0,0 0,10 0,10c0,0 -10,40 -10,40c0,0 10,10 10,10c0,0 20,0 20,0c0,0 10,-10 10,-10c0,0 -10,-40 -10,-40c0,0 0,-10 0,-10',
                         'm310,340c0,0 0,10 0,10c0,0 -10,50 -10,50c0,0 10,10 10,10c0,0 20,0 20,0c0,0 10,-10 10,-10c0,0 -10,-50 -10,-50c0,0 0,-10 0,-10',
-                        
-                        ];
+
+                    ];
                     var path = nosePathsList[Math.floor(sha1[this.id] % nosePathsList.length)];
-                    
-                    var nose = '<path d="'+path+'" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" stroke="#000000" fill="none"/>';
+
+                    var nose = '<path d="' + path + '" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" stroke="#000000" fill="none"/>';
                     return nose;
 
                 }
@@ -183,8 +183,8 @@ define(['app/facer'],
                     var eyeVar2 = Math.floor(sha1[this.id] / 16);
                     var spread = (temp1 % 4) * 10 + 40;
                     var height = (Math.floor(temp1 / 4) - 2) * 10;
-                    var leftEye = '<ellipse ry="14" rx="14" cy="'+(320+height)+'" cx="'+(320-spread)+'" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" stroke="#000000" fill="' + eyeColour + '"/>';
-                    var rightEye = '<ellipse ry="14" rx="14" cy="'+(320+height)+'" cx="'+(320+spread)+'" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" stroke="#000000" fill="' + eyeColour + '"/>';
+                    var leftEye = '<ellipse ry="14" rx="14" cy="' + (320 + height) + '" cx="' + (320 - spread) + '" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" stroke="#000000" fill="' + eyeColour + '"/>';
+                    var rightEye = '<ellipse ry="14" rx="14" cy="' + (320 + height) + '" cx="' + (320 + spread) + '" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" stroke="#000000" fill="' + eyeColour + '"/>';
                     return leftEye + rightEye;
                 }
             }, ]
@@ -227,8 +227,8 @@ define(['app/facer'],
         facer.loadCustomSet(htmlImgSet);
         facer.useSet("htmlImgSet");
 
-        faceOf = function(input){
-            
+        faceOf = function(input) {
+
             facer.useSet("faceSet");
             return '<svg width="128" height="128" viewBox="0 0 640 640"  xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">' +
                 facer.resolveInput(input) +
