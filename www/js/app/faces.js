@@ -193,10 +193,9 @@ define(['app/facer'],
                     var spread = (temp1 % 4) * 10 + 40;
                     var height = (Math.floor(temp1 / 4) - 2) * 10;
 
-                    var leftWhite = '';
-                    var leftPupil = '';
-                    var leftIris = '<ellipse ry="14" rx="14" cy="' + (320 + height) + '" cx="' + (320 - spread) + '" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" stroke="#000000" fill="' + eyeColour + '"/>';
-                    var leftPupil = '';
+                    var leftWhite = '<ellipse ry="20" rx="20" cy="' + (320 + height) + '" cx="' + (320 - spread) + '" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" stroke="#000000" fill="#FFFFFF" />';
+                    var leftPupil = '<ellipse ry="7" rx="7" cy="' + (320 + height) + '" cx="' + (320 - spread) + '" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" stroke="none" fill="#000000" />';
+                    var leftIris = '<ellipse ry="14" rx="14" cy="' + (320 + height) + '" cx="' + (320 - spread) + '" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" stroke="none" fill="' + eyeColour + '"/>';
                     var leftEye = leftWhite + leftIris + leftPupil;
 
                     var rightEye = '<ellipse ry="14" rx="14" cy="' + (320 + height) + '" cx="' + (320 + spread) + '" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" stroke="#000000" fill="' + eyeColour + '"/>';
