@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Idle Game</title>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+
+    <script src="./js/lib/jquery.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="css/alertify.min.css" />
+    <!-- Alertify Bootstrap theme -->
+    <link rel="stylesheet" href="css/alertify.bootstrap.min.css" />
+
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/bootstrap.slate.min.css" />
+
+    <!--This sets the baseUrl to the "scripts" directory, and
+    loads a script that will have a module ID of 'main'-->
+    <script data-main="js/app/idle-game-2.js" src="js/require.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row" id="kretsilsGame">
+            <h1>Idle Game</h1>
+            <p>Do things. While you're idle! <a href="#" @click="reset()">Reset the game</a></p>
+            <div>Coins: {{coins}}</div>
+            <div>Kretsils: {{numberOfKretsils}}</div>
+            <button type="button" class="btn btn-default" @click="hire()">Hire a Kretsil (5 coins)</button></div>
+        </div>
+    </div>
+</body>
+
+</html>

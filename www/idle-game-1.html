@@ -21,7 +21,7 @@
 
     <!--This sets the baseUrl to the "scripts" directory, and
     loads a script that will have a module ID of 'main'-->
-    <script data-main="js/app/idle-game.js" src="js/require.js"></script>
+    <script data-main="js/app/idle-game-1.js" src="js/require.js"></script>
 </head>
 
 <body>
@@ -33,15 +33,13 @@
                 <h2>Workers</h2>
                 <div class="panel panel-default" v-for="worker in workers">
                     <div class="panel-heading">
-                        <img :src="'http://flathash.com/' + worker.name" width="48px" data-toggle="collapse" :data-target="'#'+ worker.id">
+                        <div style="position:relative" v-html="worker.faceSvg" data-toggle="collapse" :data-target="'#'+ worker.id"></div>
+                        <!--<img :src="'http://flathash.com/' + worker.name" width="48px">-->
                         <strong>{{ worker.name }} (<span v-for="title in worker.titles">{{title}}</span>) </strong>
-                        <div style="position:relative" v-html="worker.faceSvg">
-                        </div>
+                        
 
+                            <span class="label label-default">{{worker.taskStatus}} {{worker.currentTask}} - {{(worker.secondsLeft||0).toFixed(2)}} seconds ({{(100 * ((worker.progress||0) - Math.floor((worker.progress||0)))).toFixed(2)}}%)</span>
                         <div class="btn-group pull-right" role="group" aria-label="...">
-                            <span class="btn btn-default btn-xs align-middle">{{(worker.secondsLeft||0).toFixed(2)}} seconds</span>
-                            <span class="btn btn-default btn-xs align-middle">{{worker.currentTask}}</span>
-                            <span class="btn btn-default btn-xs align-middle">{{(100 * ((worker.progress||0) - Math.floor((worker.progress||0)))).toFixed(2)}}%</span>
 
                             <div class="btn-group" role="group">
                                 <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
