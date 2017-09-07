@@ -22,8 +22,10 @@ requirejs(['jquery', 'vue', 'alertify', 'store', 'chance', 'app/KretsilsGame'],
             );
         }
 
-        function save(){
-            store.set("KretsilsGame", controller._data);
+        function save() {
+            if (controller) {
+                store.set("KretsilsGame", controller._data);
+            }
         }
 
         var kretsilsGame = new KretsilsGame(store.get("KretsilsGame"), save);
@@ -35,23 +37,25 @@ requirejs(['jquery', 'vue', 'alertify', 'store', 'chance', 'app/KretsilsGame'],
             el: '#kretsilsGame',
             data: kretsilsGame,
             computed: {
-                canHire: function(){
+                canHire: function() {
                     return kretsilsGame.canHire();
+                },
+                canHireAdvanced: function() {
+                    return kretsilsGame.canHireAdvanced();
                 }
             },
             methods: {
-                reset: function(){
+                reset: function() {
                     kretsilsGame.reset();
                 },
-                hire: function(){
-                    kretsilsGame.hire();
+                hire: function(name) {
+                    kretsilsGame.hire(name);
                 }
             }
         });
 
         function tick() {
             kretsilsGame.tick();
-            //store.set("idleGameData", idleGameData);
             setTimeout(tick, 100);
         }
 

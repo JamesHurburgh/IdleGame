@@ -29,10 +29,15 @@
         <div class="row" id="kretsilsGame">
             <h1>Idle Game</h1>
             <p>Do things. While you're idle! <a href="#" @click="reset()">Reset the game</a></p>
-            <div>Coins: {{coins}}</div>
-            <div>Kretsils: {{numberOfKretsils}}</div>
-            <button type="button" class="btn btn-default" @click="hire()">Hire a Kretsil (5 coins)</button></div>
+            <div>Coins: {{coins}} ({{coinsPerTick}} cpt)</div>
+
+            <div v-for="hireable in hireables">
+                <div>{{hireable.plural}}: {{getHiredCount(hireable.name)}} ({{getCPT(hireable.name)}} cpt)</div>
+                <button type="button" class="btn btn-default" @click="hire(hireable.name)" :disabled="!canHire(hireable.name)">Hire a {{hireable.name}} ({{getCost(hireable.name)}} coins)</button>
+            </div>
+
         </div>
+    </div>
     </div>
 </body>
 
