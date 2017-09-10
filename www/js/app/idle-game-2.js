@@ -13,8 +13,8 @@ requirejs.config({
 });
 
 // Start the main app logic.
-requirejs(['jquery', 'vue', 'alertify', 'store', 'chance', 'app/KretsilsGame'],
-    function($, Vue, alertify, store, chance, KretsilsGame) {
+requirejs(['jquery', 'vue', 'alertify', 'store', 'chance', 'app/AdventurersGame'],
+    function($, Vue, alertify, store, chance, AdventurersGame) {
 
         function uuidv4() {
             return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
@@ -24,38 +24,38 @@ requirejs(['jquery', 'vue', 'alertify', 'store', 'chance', 'app/KretsilsGame'],
 
         function save() {
             if (controller) {
-                store.set("KretsilsGame", controller._data);
+                store.set("AdventurersGame", controller._data);
             }
         }
 
-        var kretsilsGame = new KretsilsGame(store.get("KretsilsGame"), save);
+        var AdventurersGame = new AdventurersGame(store.get("AdventurersGame"), save);
 
         var gameDifficulty = 3; // 100 is normal
 
         //var idleGame = new Vue({
         var controller = new Vue({
-            el: '#kretsilsGame',
-            data: kretsilsGame,
+            el: '#AdventurersGame',
+            data: AdventurersGame,
             computed: {
                 canHire: function() {
-                    return kretsilsGame.canHire();
+                    return AdventurersGame.canHire();
                 },
                 canHireAdvanced: function() {
-                    return kretsilsGame.canHireAdvanced();
+                    return AdventurersGame.canHireAdvanced();
                 }
             },
             methods: {
                 reset: function() {
-                    kretsilsGame.reset();
+                    AdventurersGame.reset();
                 },
                 hire: function(name) {
-                    kretsilsGame.hire(name);
+                    AdventurersGame.hire(name);
                 }
             }
         });
 
         function tick() {
-            kretsilsGame.tick();
+            AdventurersGame.tick();
             setTimeout(tick, 100);
         }
 

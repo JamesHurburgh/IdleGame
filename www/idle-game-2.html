@@ -26,16 +26,22 @@
 
 <body>
     <div class="container">
-        <div class="row" id="kretsilsGame">
+        <div class="row" id="AdventurersGame">
             <h1>Idle Game</h1>
             <p>Do things. While you're idle! <a href="#" @click="reset()">Reset the game</a></p>
+            <h2>Coins and stuff</h2>
             <div>Coins: {{coins}} ({{coinsPerTick}} cpt)</div>
 
+            <h2>Hired Adventurers</h2>
             <div v-for="hireable in hireables">
                 <div>{{hireable.plural}}: {{getHiredCount(hireable.name)}} ({{getCPT(hireable.name)}} cpt)</div>
                 <button type="button" class="btn btn-default" @click="hire(hireable.name)" :disabled="!canHire(hireable.name)">Hire a {{hireable.name}} ({{getCost(hireable.name)}} coins)</button>
             </div>
 
+            <h2>Expeditions</h2>
+            <button type="button" class="btn btn-default" @click="sendExpedition()" :disabled="!canSendExpedition()">Send Expedition (10 Adventurers)</button>
+            <div>Progress: {{expeditionProgress}}%</div>
+            
         </div>
     </div>
     </div>

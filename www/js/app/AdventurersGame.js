@@ -1,7 +1,7 @@
 /*jshint esversion: 6 */
 
 define(["jquery"],
-    function KretsilsGame(jquery) {
+    function AdventurersGame(jquery) {
 
         function uuidv4() {
             return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
@@ -10,31 +10,37 @@ define(["jquery"],
         }
 
         var hireables = [{
-            "name": "Kretsil",
-            "plural": "Kretsils",
+            "name": "Adventurer",
+            "plural": "Adventurers",
             "cpt": 1.1,
             "baseCost": 5,
-            "costMultiplier": 1.123,
-            "costExponent": 1.987
-        }, {
-            "name": "Advanced Kretsil",
-            "plural": "Advanced Kretsils",
-            "cpt": 10,
-            "baseCost": 1000,
-            "costMultiplier": 500,
+            "costMultiplier": 1.5,
             "costExponent": 1.123
         }, {
-            "name": "Elite Kretsil",
-            "plural": "Elite Kretsils",
+            "name": "Advanced Adventurer",
+            "plural": "Advanced Adventurers",
+            "cpt": 10,
+            "baseCost": 1000,
+            "costMultiplier": 512,
+            "costExponent": 1.223
+        }, {
+            "name": "Elite Adventurer",
+            "plural": "Elite Adventurers",
             "cpt": 100,
             "baseCost": 10000,
-            "costMultiplier": 2000,
-            "costExponent": 1.543
+            "costMultiplier": 2345,
+            "costExponent": 1.343
+        }, {
+            "name": "Adventurer War Lord",
+            "plural": "Adventurer War Lords",
+            "cpt": 1000,
+            "baseCost": 100000,
+            "costMultiplier": 10459,
+            "costExponent": 1.443
         }];
 
-        return function KretsilsGame(gameData, autoSaveFunction) {
+        return function AdventurersGame(gameData, autoSaveFunction) {
 
-            this.hireables = hireables;
             this.autoSave = autoSaveFunction;
 
             this.reset = function() {
@@ -44,11 +50,15 @@ define(["jquery"],
                 this.coins = 10;
                 this.coinsPerTick = 0;
 
-                this.hired = [];
+                this.hired = {};
                 this.actualCpts = [];
-                this.numberOfKretsils = 0;
-                this.numberOfAdvancedKretsils = 0;
-                this.coinsPerKretsil = 1;
+
+                this.expedition = false;
+                this.expeditionProgress = 0;
+
+                this.numberOfAdventurers = 0;
+                this.numberOfAdvancedAdventurers = 0;
+                this.coinsPerAdventurer = 1;
                 this.calculate();
             };
 
@@ -65,6 +75,12 @@ define(["jquery"],
                 for (var i = 0; i < hireables.length; i++) {
                     this.coinsPerTick += this.getCPT(hireables[i].name);
                 }
+
+                // Expedition Progress
+                this.expeditionProgressPerTick = 0;
+                if(this.expedition){
+                    this.expeditionProgressPerTick += 1;
+                }
             };
 
             this.updateGameData = function(gameData) {
@@ -73,12 +89,14 @@ define(["jquery"],
                 if (!this.coins) this.coins = 10;
                 if (!this.coinsPerTick) this.coinsPerTick = 0;
 
-                if (!this.hired) this.hired = [];
-                if (!this.actualCpts) this.actualCpts = [];
+                if (!this.hired) this.hired = {};
 
-                if (!this.numberOfKretsils) this.numberOfKretsils = 0;
-                if (!this.numberOfAdvancedKretsils) this.numberOfAdvancedKretsils = 0;
-                if (!this.coinsPerKretsil) this.coinsPerKretsil = 1;
+                if (!this.expedition) this.expedition = false;
+                if (!this.expeditionProgress) this.expeditionProgress = 0;
+
+                if (!this.numberOfAdventurers) this.numberOfAdventurers = 0;
+                if (!this.numberOfAdvancedAdventurers) this.numberOfAdvancedAdventurers = 0;
+                if (!this.coinsPerAdventurer) this.coinsPerAdventurer = 1;
             };
 
             this.spendCoins = function(coins) {
@@ -90,7 +108,7 @@ define(["jquery"],
             };
 
             this.canHireAdvanced = function() {
-                return this.coins > this.advancedKretsilCost;
+                return this.coins > this.advancedAdventurerCost;
             };
 
             this.getHireable = function(name) {
@@ -105,6 +123,28 @@ define(["jquery"],
 
             this.getTotalCPT = function() {
 
+            };
+
+            this.canSendExpedition = function(){
+                return !this.expedition && this.getHiredCount("Adventurer") >= 10;
+            };
+
+            this.spendHires = function(name, amount){
+                this.hired[name] = this.hired[name]-amount;
+                this.calculate();
+            };
+
+            this.sendExpedition = function(){
+                this.expedition = true;
+                this.expeditionProgress = 0;
+                this.spendHires("Adventurer", 10);
+            };
+
+            this.completeExpedition = function(){
+                this.expedition = false;
+                this.expeditionProgress = 0;
+                this.coins += 5000;
+                this.calculate();
             };
 
             this.getCPT = function(name) {
@@ -132,6 +172,10 @@ define(["jquery"],
                 // Do all task completion here
 
                 this.coins += this.coinsPerTick;
+                this.expeditionProgress += this.expeditionProgressPerTick;
+                if(this.expeditionProgress >= 100){
+                    this.completeExpedition();
+                }
 
                 this.calculateCounter++;
                 if (this.calculateCounter > 10) {
@@ -144,6 +188,10 @@ define(["jquery"],
             }
             this.updateGameData(gameData);
             $.extend(this, gameData);
+
+
+            this.hireables = hireables;
+
             this.calculate();
 
         };
