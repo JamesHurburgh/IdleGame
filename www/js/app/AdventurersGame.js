@@ -10,33 +10,49 @@ define(["jquery"],
         }
 
         var hireables = [{
+            "name": "Drunkard",
+            "plural": "Drunkards",
+            "cpt": 0.1,
+            "baseCost": 1,
+            "costMultiplier": 1.5,
+            "costExponent": 1.5
+        }, {
+            "name": "Street rat",
+            "plural": "Street rats",
+            "cpt": 0.2,
+            "baseCost": 2,
+            "costMultiplier": 5,
+            "costExponent": 1.5
+        }, {
+            "name": "Greenthumb",
+            "plural": "Greenthumbs",
+            "cpt": 0.5,
+            "baseCost": 10,
+            "costMultiplier": 5,
+            "costExponent": 1.5
+        }, {
             "name": "Adventurer",
             "plural": "Adventurers",
-            "cpt": 1.1,
-            "baseCost": 5,
-            "costMultiplier": 1.5,
-            "costExponent": 1.123
+            "cpt": 1,
+            "baseCost": 100,
+            "costMultiplier": 5,
+            "costExponent": 1.5
         }, {
-            "name": "Advanced Adventurer",
-            "plural": "Advanced Adventurers",
-            "cpt": 10,
+            "name": "Seasoned veteran",
+            "plural": "Seasoned veterans",
+            "cpt": 5,
             "baseCost": 1000,
-            "costMultiplier": 512,
-            "costExponent": 1.223
-        }, {
-            "name": "Elite Adventurer",
-            "plural": "Elite Adventurers",
-            "cpt": 100,
-            "baseCost": 10000,
-            "costMultiplier": 2345,
-            "costExponent": 1.343
-        }, {
-            "name": "Adventurer War Lord",
-            "plural": "Adventurer War Lords",
-            "cpt": 1000,
-            "baseCost": 100000,
-            "costMultiplier": 10459,
-            "costExponent": 1.443
+            "costMultiplier": 5,
+            "costExponent": 1.5
+        }];
+
+
+        var expeditionTypes = [{
+            "name": "Rob some graves",
+            "reward": "50",
+            "hireables": {
+                "Drunkard": "1"
+            }
         }];
 
         return function AdventurersGame(gameData, autoSaveFunction) {
@@ -78,7 +94,7 @@ define(["jquery"],
 
                 // Expedition Progress
                 this.expeditionProgressPerTick = 0;
-                if(this.expedition){
+                if (this.expedition) {
                     this.expeditionProgressPerTick += 1;
                 }
             };
@@ -125,22 +141,22 @@ define(["jquery"],
 
             };
 
-            this.canSendExpedition = function(){
+            this.canSendExpedition = function() {
                 return !this.expedition && this.getHiredCount("Adventurer") >= 10;
             };
 
-            this.spendHires = function(name, amount){
-                this.hired[name] = this.hired[name]-amount;
+            this.spendHires = function(name, amount) {
+                this.hired[name] = this.hired[name] - amount;
                 this.calculate();
             };
 
-            this.sendExpedition = function(){
+            this.sendExpedition = function() {
                 this.expedition = true;
                 this.expeditionProgress = 0;
                 this.spendHires("Adventurer", 10);
             };
 
-            this.completeExpedition = function(){
+            this.completeExpedition = function() {
                 this.expedition = false;
                 this.expeditionProgress = 0;
                 this.coins += 5000;
@@ -172,8 +188,9 @@ define(["jquery"],
                 // Do all task completion here
 
                 this.coins += this.coinsPerTick;
+
                 this.expeditionProgress += this.expeditionProgressPerTick;
-                if(this.expeditionProgress >= 100){
+                if (this.expeditionProgress >= 100) {
                     this.completeExpedition();
                 }
 
@@ -191,6 +208,7 @@ define(["jquery"],
 
 
             this.hireables = hireables;
+            this.expeditionTypes = expeditionTypes;
 
             this.calculate();
 
