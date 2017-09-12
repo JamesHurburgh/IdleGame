@@ -96,11 +96,11 @@ define(["jquery"],
             "name": "An honest days work",
             "risk": 0,
             "duration": 200,
-            "rewards": [{ "chance": 1, "reward": { "type": "coins", "amount": 5 } }],
+            "rewards": [{ "chance": 1, "reward": { "type": "coins", "amount": 15 } }],
             "requirements": {
                 "status": 0,
                 "hireables": [
-                    { "type": "Drunkard", "amount": 1 }
+                    { "type": "Peasent", "amount": 1 }
                 ]
             }
         }, {
