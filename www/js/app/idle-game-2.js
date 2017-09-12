@@ -42,6 +42,9 @@ requirejs(['jquery', 'vue', 'alertify', 'store', 'chance', 'app/AdventurersGame'
                 },
                 canHireAdvanced: function() {
                     return AdventurersGame.canHireAdvanced();
+                },
+                expeditionProgress: function(name) {
+                    return AdventurersGame.expeditionProgress(name);
                 }
             },
             methods: {
