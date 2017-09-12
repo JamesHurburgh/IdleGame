@@ -11,38 +11,52 @@ define(["jquery"],
 
         var contractLocations = [{
                 "name": "Dirty Alley",
-                "description": "The only thing here filtier than the alley ar the people that inhabit it.  Drunks, theives and those down on their luck can be found here as well as work for those who don't mind getting their hands... even dirtier.",
-                "statusRequired": 0
+                "description": "The only thing here filthier than the alley are the people that inhabit it.  Drunks, theives and those down on their luck can be found here as well as work for those who don't mind getting their hands... even dirtier.",
+                "statusRequired": 0,
+                "contracts": [],
+                "hireables": []
             },
             {
                 "name": "Street Corner",
                 "description": "",
-                "statusRequired": 10
+                "statusRequired": 10,
+                "contracts": [],
+                "hireables": []
             },
             {
                 "name": "Tavern",
                 "description": "",
-                "statusRequired": 100
+                "statusRequired": 100,
+                "contracts": [],
+                "hireables": []
             },
             {
                 "name": "Adventurer's Guild",
                 "description": "",
-                "statusRequired": 1000
+                "statusRequired": 1000,
+                "contracts": [],
+                "hireables": []
             },
             {
                 "name": "Mayor's Office",
                 "description": "",
-                "statusRequired": 10000
+                "statusRequired": 10000,
+                "contracts": [],
+                "hireables": []
             },
             {
                 "name": "Royal Antechamber",
                 "description": "",
-                "statusRequired": 100000
+                "statusRequired": 100000,
+                "contracts": [],
+                "hireables": []
             },
             {
                 "name": "Throne Room",
                 "description": "",
-                "statusRequired": 1000000
+                "statusRequired": 1000000,
+                "contracts": [],
+                "hireables": []
             }
         ];
 
