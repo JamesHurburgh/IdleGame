@@ -11,19 +11,38 @@ define(["jquery"],
 
         var contractLocations = [{
                 "name": "Dirty Alley",
+                "description": "The only thing here filtier than the alley ar the people that inhabit it.  Drunks, theives and those down on their luck can be found here as well as work for those who don't mind getting their hands... even dirtier.",
                 "statusRequired": 0
             },
             {
                 "name": "Street Corner",
+                "description": "",
                 "statusRequired": 10
             },
             {
                 "name": "Tavern",
+                "description": "",
                 "statusRequired": 100
             },
             {
                 "name": "Adventurer's Guild",
+                "description": "",
                 "statusRequired": 1000
+            },
+            {
+                "name": "Mayor's Office",
+                "description": "",
+                "statusRequired": 10000
+            },
+            {
+                "name": "Royal Antechamber",
+                "description": "",
+                "statusRequired": 100000
+            },
+            {
+                "name": "Throne Room",
+                "description": "",
+                "statusRequired": 1000000
             }
         ];
 
@@ -44,7 +63,7 @@ define(["jquery"],
         }, {
             "name": "Peasent",
             "plural": "Peasents",
-            "cpt": 0.5,
+            "cpt": 0.2,
             "baseCost": 10,
             "costMultiplier": 5,
             "costExponent": 1.5
@@ -78,14 +97,12 @@ define(["jquery"],
             "costExponent": 1.5
         }];
 
-        // Follow dubious treasure map (Low risk, low chance of big reward)
-        // Rob some graves (Medium risk, high chance of medium reward)
-        // Fight some bandits (High risk, high chance of big reward)
         var contracts = [{
             "name": "Follow a dubious treasure map",
             "risk": 1,
             "duration": 2000,
-            "rewards": [{ "chance": 0.05, "reward": { "type": "coins", "amount": 1000 } }],
+            "successChance": 0.05,
+            "rewards": [{ "chance": 1, "reward": { "type": "coins", "amount": 1000 } }],
             "requirements": {
                 "status": 0,
                 "hireables": [
@@ -96,6 +113,7 @@ define(["jquery"],
             "name": "An honest days work",
             "risk": 0,
             "duration": 200,
+            "successChance": 1,
             "rewards": [{ "chance": 1, "reward": { "type": "coins", "amount": 15 } }],
             "requirements": {
                 "status": 0,
@@ -107,7 +125,8 @@ define(["jquery"],
             "name": "Rob some graves",
             "risk": 5,
             "duration": 100,
-            "rewards": [{ "chance": 0.9, "reward": { "type": "coins", "amount": 5 } }],
+            "successChance": 0.9,
+            "rewards": [{ "chance": 1, "reward": { "type": "coins", "amount": 5 } }],
             "requirements": {
                 "status": 0,
                 "hireables": [
@@ -118,7 +137,8 @@ define(["jquery"],
             "name": "Mug a traveller",
             "risk": 5,
             "duration": 150,
-            "rewards": [{ "chance": 0.5, "reward": { "type": "coins", "amount": 20 } }],
+            "successChance": 0.5,
+            "rewards": [{ "chance": 1, "reward": { "type": "coins", "amount": 20 } }],
             "requirements": {
                 "status": 0,
                 "hireables": [
@@ -129,7 +149,8 @@ define(["jquery"],
             "name": "Fight some bandits",
             "risk": 15,
             "duration": 500,
-            "rewards": [{ "chance": 0.5, "reward": { "type": "coins", "amount": 1000 } }],
+            "successChance": 0.5,
+            "rewards": [{ "chance": 1, "reward": { "type": "coins", "amount": 1000 } }],
             "requirements": {
                 "status": 1,
                 "hireables": [
@@ -156,6 +177,8 @@ define(["jquery"],
                 this.runningExpeditions = [];
                 this.completedExpeditions = [];
 
+                this.availableContracts = [];
+
                 this.numberOfAdventurers = 0;
                 this.numberOfAdvancedAdventurers = 0;
                 this.coinsPerAdventurer = 1;
@@ -181,6 +204,13 @@ define(["jquery"],
                 if (this.expedition) {
                     this.expeditionProgressPerTick += 1;
                 }
+
+                // New contracts
+                var maxContracts = 5;
+                if (this.availableContracts.length < maxContracts && Math.random() > 0.9) {
+                    this.addContract();
+                }
+
             };
 
             this.updateGameData = function(gameData) {
@@ -195,6 +225,8 @@ define(["jquery"],
                 if (!this.runningExpeditions) this.runningExpeditions = [];
                 if (!this.completedExpeditions) this.completedExpeditions = [];
 
+                if (!this.availableContracts) this.availableContracts = [];
+
                 if (!this.numberOfAdventurers) this.numberOfAdventurers = 0;
                 if (!this.numberOfAdvancedAdventurers) this.numberOfAdvancedAdventurers = 0;
                 if (!this.coinsPerAdventurer) this.coinsPerAdventurer = 1;
@@ -205,7 +237,7 @@ define(["jquery"],
             };
 
             this.canHire = function(name) {
-                return this.coins > this.getCost(name);
+                return this.coins >= this.getCost(name);
             };
 
             this.getHireable = function(name) {
@@ -225,6 +257,11 @@ define(["jquery"],
             this.spendHires = function(name, amount) {
                 this.hired[name] = this.hired[name] - amount;
                 this.calculate();
+            };
+
+
+            this.addContract = function() {
+                this.availableContracts.push(this.contracts[Math.floor(this.contracts.length * Math.random())]);
             };
 
             this.getContract = function(name) {
@@ -253,6 +290,7 @@ define(["jquery"],
                     "contract": contract,
                     "progress": 0
                 });
+                this.availableContracts.splice(this.availableContracts.indexOf(contract), 1);
             };
 
             this.giveCoins = function(amount) {
@@ -271,18 +309,25 @@ define(["jquery"],
                 for (var i = 0; i < expedition.rewards.length; i++) {
                     this.giveReward(expedition.rewards[i].type, expedition.rewards[i].amount);
                 }
+                this.removeExpedition(expedition);
+            };
+
+            this.removeExpedition = function(expedition) {
                 this.completedExpeditions.splice(this.completedExpeditions.indexOf(expedition), 1);
             };
 
             this.completeExpedition = function(expedition) {
                 this.runningExpeditions.splice(this.runningExpeditions.indexOf(expedition), 1);
-                expedition.rewards = [];
-                for (var i = 0; i < expedition.contract.rewards.length; i++) {
-                    var chance = expedition.contract.rewards[i].chance;
-                    if (Math.random() < chance) {
-                        var reward = expedition.contract.rewards[i].reward;
-                        var variation = Math.random() + 0.5;
-                        expedition.rewards.push({ "type": reward.type, "amount": Math.floor(reward.amount * variation) });
+                expedition.success = Math.random() < expedition.contract.successChance;
+                if (expedition.success) {
+                    expedition.rewards = [];
+                    for (var i = 0; i < expedition.contract.rewards.length; i++) {
+                        var chance = expedition.contract.rewards[i].chance;
+                        if (Math.random() < chance) {
+                            var reward = expedition.contract.rewards[i].reward;
+                            var variation = Math.random() + 0.5;
+                            expedition.rewards.push({ "type": reward.type, "amount": Math.floor(reward.amount * variation) });
+                        }
                     }
                 }
                 this.completedExpeditions.push(expedition);
