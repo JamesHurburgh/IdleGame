@@ -16,7 +16,7 @@ define(["jquery"],
                 "freeCoinsDescription": "Scrounge in the dirt for a coin",
                 "freeCoins": 1,
                 "freeCoinsTimeout": 10,
-                "contracts": ["Rob some graves", "Mug a traveller", "Follow a dubious treasure map", "An honest days work"],
+                "contracts": ["Rob some graves", "Mug a traveller", "Follow a dubious treasure map", "An honest days work", "Tail a mark", "Start a brawl"],
                 "hireables": ["Drunkard", "Street rat", "Peasant"]
             },
             {
