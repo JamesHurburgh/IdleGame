@@ -13,7 +13,7 @@ define(["jquery"],
                 "name": "Dirty Alley",
                 "description": "The only thing here filthier than the alley are the people that inhabit it.  Drunks, theives and those down on their luck can be found here as well as work for those who don't mind getting their hands... even dirtier.",
                 "statusRequired": 0,
-                "contracts": ["Rob some graves", "Mug a traveller", "Follow a dubious treasure map"],
+                "contracts": ["Rob some graves", "Mug a traveller", "Follow a dubious treasure map", "An honest days work"],
                 "hireables": ["Drunkard", "Street rat", "Peasant"]
             },
             {
@@ -117,8 +117,9 @@ define(["jquery"],
             "duration": 2000,
             "successChance": 0.05,
             "rewards": [
-                    { "chance": 1, "reward": { "type": "coins", "amount": 1000 } },
-                    { "chance": 1, "reward": { "type": "status", "amount": 1 } }],
+                { "chance": 1, "reward": { "type": "coins", "amount": 1000 } },
+                { "chance": 1, "reward": { "type": "status", "amount": 1 } }
+            ],
             "requirements": {
                 "status": 0,
                 "hireables": [
@@ -131,7 +132,8 @@ define(["jquery"],
             "duration": 200,
             "successChance": 1,
             "rewards": [{ "chance": 1, "reward": { "type": "coins", "amount": 15 } },
-                    { "chance": 1, "reward": { "type": "status", "amount": 1 } }],
+                { "chance": 1, "reward": { "type": "status", "amount": 1 } }
+            ],
             "requirements": {
                 "status": 0,
                 "hireables": [
@@ -144,7 +146,8 @@ define(["jquery"],
             "duration": 100,
             "successChance": 0.9,
             "rewards": [{ "chance": 1, "reward": { "type": "coins", "amount": 5 } },
-                    { "chance": 1, "reward": { "type": "status", "amount": 1 } }],
+                { "chance": 1, "reward": { "type": "status", "amount": 1 } }
+            ],
             "requirements": {
                 "status": 0,
                 "hireables": [
@@ -157,7 +160,8 @@ define(["jquery"],
             "duration": 150,
             "successChance": 0.5,
             "rewards": [{ "chance": 1, "reward": { "type": "coins", "amount": 20 } },
-                    { "chance": 1, "reward": { "type": "status", "amount": 1 } }],
+                { "chance": 1, "reward": { "type": "status", "amount": 1 } }
+            ],
             "requirements": {
                 "status": 0,
                 "hireables": [
@@ -170,7 +174,8 @@ define(["jquery"],
             "duration": 500,
             "successChance": 0.5,
             "rewards": [{ "chance": 1, "reward": { "type": "coins", "amount": 1000 } },
-                    { "chance": 1, "reward": { "type": "status", "amount": 2 } }],
+                { "chance": 1, "reward": { "type": "status", "amount": 2 } }
+            ],
             "requirements": {
                 "status": 1,
                 "hireables": [
@@ -280,7 +285,7 @@ define(["jquery"],
 
             };
 
-            this.addAvailableHire = function(){
+            this.addAvailableHire = function() {
                 var locationHireables = this.hireables.filter(hireable => this.location.hireables.indexOf(hireable.name) >= 0);
                 var hireable = locationHireables[Math.floor(locationHireables.length * Math.random())];
                 hireable.timeLeft = Math.floor(60 * (Math.random() + 0.5));
@@ -293,7 +298,8 @@ define(["jquery"],
             };
 
             this.addContract = function() {
-                var contract = JSON.parse(JSON.stringify(this.contracts[Math.floor(this.contracts.length * Math.random())]));
+                var locationContracts = this.contracts.filter(contract => this.location.contracts.indexOf(contract.name) >= 0);
+                var contract = locationContracts[Math.floor(locationContracts.length * Math.random())];
                 contract.timeLeft = Math.floor(60 * (Math.random() + 0.5));
                 this.availableContracts.push(contract);
             };
@@ -336,7 +342,7 @@ define(["jquery"],
             };
 
             this.giveReward = function(type, amount) {
-                switch(type){
+                switch (type) {
                     case "coins":
                         this.giveCoins(amount);
                         break;
@@ -362,7 +368,7 @@ define(["jquery"],
             this.completeExpedition = function(expedition) {
                 this.runningExpeditions.splice(this.runningExpeditions.indexOf(expedition), 1);
 
-                var contract = expedition.contract;                
+                var contract = expedition.contract;
                 // Calculate success
                 expedition.success = Math.random() < contract.successChance;
                 if (expedition.success) {
@@ -424,17 +430,17 @@ define(["jquery"],
                     }
                 }
 
-                for (var j = 0; j < this.availableContracts.length; j++){
+                for (var j = 0; j < this.availableContracts.length; j++) {
                     this.availableContracts[j].timeLeft -= 0.1;
-                    if(this.availableContracts[j].timeLeft <= 0){
-                        this.availableContracts.splice(j,1);
+                    if (this.availableContracts[j].timeLeft <= 0) {
+                        this.availableContracts.splice(j, 1);
                     }
                 }
 
-                for (var k = 0; k < this.availableHires.length; k++){
+                for (var k = 0; k < this.availableHires.length; k++) {
                     this.availableHires[k].timeLeft -= 0.1;
-                    if(this.availableHires[k].timeLeft <= 0){
-                        this.availableHires.splice(k,1);
+                    if (this.availableHires[k].timeLeft <= 0) {
+                        this.availableHires.splice(k, 1);
                     }
                 }
 
