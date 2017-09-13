@@ -13,19 +13,19 @@ define(["jquery"],
                 "name": "Dirty Alley",
                 "description": "The only thing here filthier than the alley are the people that inhabit it.  Drunks, theives and those down on their luck can be found here as well as work for those who don't mind getting their hands... even dirtier.",
                 "statusRequired": 0,
-                "contracts": [],
+                "contracts": ["Rob some graves", "Mug a traveller", "Follow a dubious treasure map"],
                 "hireables": []
             },
             {
                 "name": "Street Corner",
-                "description": "",
+                "description": "Officially, conducting business on the street corner is illegal.  But if you grease the palms of a guard or two and don't cause trouble, you can hire the locals and passerbys looking for work.  The townsfolk may also come to you to get things done.  Most of it legitimate, some of it, not so much.",
                 "statusRequired": 10,
                 "contracts": [],
                 "hireables": []
             },
             {
                 "name": "Tavern",
-                "description": "",
+                "description": "You've reached the pinnacle of the underworld.  Sitting at a table in the local Tavern the oppressed and needy now know to come to you with their problems or 'business ventures'.",
                 "statusRequired": 100,
                 "contracts": [],
                 "hireables": []
@@ -63,49 +63,49 @@ define(["jquery"],
         var hireables = [{
             "name": "Drunkard",
             "plural": "Drunkards",
-            "cpt": 0.1,
+            "cpt": 0,
             "baseCost": 1,
             "costMultiplier": 1.5,
             "costExponent": 1.5
         }, {
             "name": "Street rat",
             "plural": "Street rats",
-            "cpt": 0.2,
+            "cpt": 0,
             "baseCost": 2,
             "costMultiplier": 5,
             "costExponent": 1.5
         }, {
             "name": "Peasent",
             "plural": "Peasents",
-            "cpt": 0.2,
+            "cpt": 0,
             "baseCost": 10,
             "costMultiplier": 5,
             "costExponent": 1.5
         }, {
             "name": "Adventurer",
             "plural": "Adventurers",
-            "cpt": 1,
+            "cpt": 0,
             "baseCost": 100,
             "costMultiplier": 5,
             "costExponent": 1.5
         }, {
             "name": "Barbarian",
             "plural": "Barbarians",
-            "cpt": 1,
+            "cpt": 0,
             "baseCost": 100,
             "costMultiplier": 5,
             "costExponent": 1.5
         }, {
             "name": "Archer",
             "plural": "Archers",
-            "cpt": 1,
+            "cpt": 0,
             "baseCost": 100,
             "costMultiplier": 5,
             "costExponent": 1.5
         }, {
             "name": "Seasoned veteran",
             "plural": "Seasoned veterans",
-            "cpt": 5,
+            "cpt": 0,
             "baseCost": 1000,
             "costMultiplier": 5,
             "costExponent": 1.5
@@ -116,7 +116,9 @@ define(["jquery"],
             "risk": 1,
             "duration": 2000,
             "successChance": 0.05,
-            "rewards": [{ "chance": 1, "reward": { "type": "coins", "amount": 1000 } }],
+            "rewards": [
+                    { "chance": 1, "reward": { "type": "coins", "amount": 1000 } },
+                    { "chance": 1, "reward": { "type": "status", "amount": 1 } }],
             "requirements": {
                 "status": 0,
                 "hireables": [
@@ -128,7 +130,8 @@ define(["jquery"],
             "risk": 0,
             "duration": 200,
             "successChance": 1,
-            "rewards": [{ "chance": 1, "reward": { "type": "coins", "amount": 15 } }],
+            "rewards": [{ "chance": 1, "reward": { "type": "coins", "amount": 15 } },
+                    { "chance": 1, "reward": { "type": "status", "amount": 1 } }],
             "requirements": {
                 "status": 0,
                 "hireables": [
@@ -140,7 +143,8 @@ define(["jquery"],
             "risk": 5,
             "duration": 100,
             "successChance": 0.9,
-            "rewards": [{ "chance": 1, "reward": { "type": "coins", "amount": 5 } }],
+            "rewards": [{ "chance": 1, "reward": { "type": "coins", "amount": 5 } },
+                    { "chance": 1, "reward": { "type": "status", "amount": 1 } }],
             "requirements": {
                 "status": 0,
                 "hireables": [
@@ -152,7 +156,8 @@ define(["jquery"],
             "risk": 5,
             "duration": 150,
             "successChance": 0.5,
-            "rewards": [{ "chance": 1, "reward": { "type": "coins", "amount": 20 } }],
+            "rewards": [{ "chance": 1, "reward": { "type": "coins", "amount": 20 } },
+                    { "chance": 1, "reward": { "type": "status", "amount": 1 } }],
             "requirements": {
                 "status": 0,
                 "hireables": [
@@ -164,11 +169,13 @@ define(["jquery"],
             "risk": 15,
             "duration": 500,
             "successChance": 0.5,
-            "rewards": [{ "chance": 1, "reward": { "type": "coins", "amount": 1000 } }],
+            "rewards": [{ "chance": 1, "reward": { "type": "coins", "amount": 1000 } },
+                    { "chance": 1, "reward": { "type": "status", "amount": 2 } }],
             "requirements": {
                 "status": 1,
                 "hireables": [
-                    { "type": "Drunkard", "amount": 2 }
+                    { "type": "Drunkard", "amount": 5 },
+                    { "type": "Street rat", "amount": 10 },
                 ]
             }
         }, ];
@@ -192,10 +199,8 @@ define(["jquery"],
                 this.completedExpeditions = [];
 
                 this.availableContracts = [];
+                this.availableHires = [];
 
-                this.numberOfAdventurers = 0;
-                this.numberOfAdvancedAdventurers = 0;
-                this.coinsPerAdventurer = 1;
                 this.calculate();
             };
 
@@ -221,8 +226,14 @@ define(["jquery"],
 
                 // New contracts
                 var maxContracts = 5;
-                if (this.availableContracts.length < maxContracts && Math.random() > 0.9) {
+                if (this.availableContracts.length < maxContracts && Math.random() > 0.85) {
                     this.addContract();
+                }
+
+                // New contracts
+                var maxAvailableHires = 5;
+                if (this.availableHires.length < maxAvailableHires && Math.random() > 0.85) {
+                    this.addAvailableHire();
                 }
 
             };
@@ -240,10 +251,7 @@ define(["jquery"],
                 if (!this.completedExpeditions) this.completedExpeditions = [];
 
                 if (!this.availableContracts) this.availableContracts = [];
-
-                if (!this.numberOfAdventurers) this.numberOfAdventurers = 0;
-                if (!this.numberOfAdvancedAdventurers) this.numberOfAdvancedAdventurers = 0;
-                if (!this.coinsPerAdventurer) this.coinsPerAdventurer = 1;
+                if (!this.availableHires) this.availableHires = [];
             };
 
             this.spendCoins = function(coins) {
@@ -268,11 +276,14 @@ define(["jquery"],
 
             };
 
+            this.addAvailableHire = function(){
+                this.availableHires.push(this.hireables[Math.floor(this.hireables.length * Math.random())]);
+            };
+
             this.spendHires = function(name, amount) {
                 this.hired[name] = this.hired[name] - amount;
                 this.calculate();
             };
-
 
             this.addContract = function() {
                 this.availableContracts.push(this.contracts[Math.floor(this.contracts.length * Math.random())]);
@@ -311,11 +322,20 @@ define(["jquery"],
                 this.coins += amount;
             };
 
+            this.giveStatus = function(amount) {
+                this.status += amount;
+            };
+
             this.giveReward = function(type, amount) {
-                if (type == "coins") {
-                    this.giveCoins(amount);
-                } else {
-                    this.hired[type] += amount;
+                switch(type){
+                    case "coins":
+                        this.giveCoins(amount);
+                        break;
+                    case "status":
+                        this.giveStatus(amount);
+                        break;
+                    default:
+                        this.hired[type] += amount;
                 }
             };
 
@@ -359,11 +379,13 @@ define(["jquery"],
                 return Math.floor(hireable.baseCost + hireable.costMultiplier * hiredCount + Math.pow(hireable.costExponent, hiredCount));
             };
 
-            this.hire = function(name) {
-                var hiredCount = this.getHiredCount(name);
+            this.hire = function(hireable) {
+                var hiredCount = this.getHiredCount(hireable.name);
 
-                this.spendCoins(this.getCost(name));
-                this.hired[name] = hiredCount + 1;
+                this.spendCoins(this.getCost(hireable.name));
+                this.hired[hireable.name] = hiredCount + 1;
+
+                this.availableHires.splice(this.availableHires.indexOf(hireable), 1);
 
                 this.calculate();
             };

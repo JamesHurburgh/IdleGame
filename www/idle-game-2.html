@@ -37,9 +37,18 @@
 
                 <h2>Hired Adventurers</h2>
                 <div v-for="hireable in hireables">
-                    <div>{{hireable.plural}}: {{getHiredCount(hireable.name)}} ({{getCPT(hireable.name)}} cpt)</div>
-                    <button type="button" class="btn btn-primary btn-xs" @click="hire(hireable.name)" :disabled="!canHire(hireable.name)">Hire a {{hireable.name}} ({{getCost(hireable.name)}} coins)</button>
+                    <div>{{hireable.plural}}: {{getHiredCount(hireable.name)}}</div>
+                    <!--<button type="button" class="btn btn-primary btn-xs" @click="hire(hireable.name)" :disabled="!canHire(hireable.name)">Hire a {{hireable.name}} ({{getCost(hireable.name)}} coins)</button>-->
                 </div>
+                <h3>Hires for hire</h3>
+                <transition-group name="custom-classes-transition" enter-active-class="animated bounceIn" leave-active-class="animated bounceOut">
+                    <div v-for="hireable in availableHires" key="hireable.name">
+                        <div class="well">
+                            {{hireable.name}}
+                            <button type="button" class="btn btn-primary btn-xs" @click="hire(hireable)" :disabled="!canHire(hireable.name)">Hire ({{getCost(hireable.name)}} coins)</button>
+                        </div>
+                    </div>
+                </transition-group>
             </div>
 
             <div class="col-md-4">
