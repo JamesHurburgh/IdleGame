@@ -9,7 +9,7 @@
     ],
     "requirements": {
         "status": 0,
-        "hireables": [
+        "adventurers": [
             { "type": "Drunkard", "amount": 2 }
         ]
     }
@@ -24,7 +24,7 @@
     ],
     "requirements": {
         "status": 0,
-        "hireables": [
+        "adventurers": [
             { "type": "Peasant", "amount": 1 }
         ]
     }
@@ -39,7 +39,7 @@
     ],
     "requirements": {
         "status": 0,
-        "hireables": [
+        "adventurers": [
             { "type": "Drunkard", "amount": 1 }
         ]
     }
@@ -54,7 +54,7 @@
     ],
     "requirements": {
         "status": 0,
-        "hireables": [
+        "adventurers": [
             { "type": "Street rat", "amount": 2 }
         ]
     }
@@ -69,7 +69,7 @@
     ],
     "requirements": {
         "status": 0,
-        "hireables": [
+        "adventurers": [
             { "type": "Street rat", "amount": 1 }
         ]
     }
@@ -84,7 +84,7 @@
     ],
     "requirements": {
         "status": 0,
-        "hireables": [
+        "adventurers": [
             { "type": "Drunkard", "amount": 10 }
         ]
     }
@@ -99,7 +99,7 @@
     ],
     "requirements": {
         "status": 1,
-        "hireables": [
+        "adventurers": [
             { "type": "Drunkard", "amount": 5 },
             { "type": "Street rat", "amount": 10 }
         ]

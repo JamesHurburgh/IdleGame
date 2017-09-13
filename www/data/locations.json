@@ -6,48 +6,48 @@
         "freeCoins": 1,
         "freeCoinsTimeout": 10,
         "contracts": ["Rob some graves", "Mug a traveller", "Follow a dubious treasure map", "An honest days work", "Tail a mark", "Start a brawl"],
-        "hireables": ["Drunkard", "Street rat", "Peasant"]
+        "adventurers": ["Drunkard", "Street rat", "Peasant"]
     },
     {
         "name": "Street Corner",
         "description": "Officially, conducting business on the street corner is illegal.  But if you grease the palms of a guard or two and don't cause trouble, you can hire the locals and passerbys looking for work.  The townsfolk may also come to you to get things done.  Most of it legitimate, some of it, not so much.",
         "statusRequired": 10,
         "contracts": [],
-        "hireables": []
+        "adventurers": []
     },
     {
         "name": "Tavern",
         "description": "You've reached the pinnacle of the underworld.  Sitting at a table in the local Tavern the oppressed and needy now know to come to you with their problems or 'business ventures'.",
         "statusRequired": 100,
         "contracts": [],
-        "hireables": []
+        "adventurers": []
     },
     {
         "name": "Adventurer's Guild",
         "description": "",
         "statusRequired": 1000,
         "contracts": [],
-        "hireables": []
+        "adventurers": []
     },
     {
         "name": "Mayor's Office",
         "description": "",
         "statusRequired": 10000,
         "contracts": [],
-        "hireables": []
+        "adventurers": []
     },
     {
         "name": "Royal Antechamber",
         "description": "",
         "statusRequired": 100000,
         "contracts": [],
-        "hireables": []
+        "adventurers": []
     },
     {
         "name": "Throne Room",
         "description": "",
         "statusRequired": 1000000,
         "contracts": [],
-        "hireables": []
+        "adventurers": []
     }
 ]

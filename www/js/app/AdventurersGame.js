@@ -1,120 +1,13 @@
 /*jshint esversion: 6 */
 
-define(["jquery", "json!data/contracts"],
-    function AdventurersGame(jquery, contracts) {
+define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!data/adventurers.json"],
+    function AdventurersGame(jquery, contracts, locations, adventurers) {
 
         function uuidv4() {
             return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
                 (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
             );
         }
-
-        var locations = [{
-                "name": "Dirty Alley",
-                "description": "The only thing here filthier than the alley are the people that inhabit it.  Drunks, theives and those down on their luck can be found here as well as work for those who don't mind getting their hands... even dirtier.",
-                "statusRequired": 0,
-                "freeCoinsDescription": "Scrounge in the dirt for a coin",
-                "freeCoins": 1,
-                "freeCoinsTimeout": 10,
-                "contracts": ["Rob some graves", "Mug a traveller", "Follow a dubious treasure map", "An honest days work", "Tail a mark", "Start a brawl"],
-                "hireables": ["Drunkard", "Street rat", "Peasant"]
-            },
-            {
-                "name": "Street Corner",
-                "description": "Officially, conducting business on the street corner is illegal.  But if you grease the palms of a guard or two and don't cause trouble, you can hire the locals and passerbys looking for work.  The townsfolk may also come to you to get things done.  Most of it legitimate, some of it, not so much.",
-                "statusRequired": 10,
-                "contracts": [],
-                "hireables": []
-            },
-            {
-                "name": "Tavern",
-                "description": "You've reached the pinnacle of the underworld.  Sitting at a table in the local Tavern the oppressed and needy now know to come to you with their problems or 'business ventures'.",
-                "statusRequired": 100,
-                "contracts": [],
-                "hireables": []
-            },
-            {
-                "name": "Adventurer's Guild",
-                "description": "",
-                "statusRequired": 1000,
-                "contracts": [],
-                "hireables": []
-            },
-            {
-                "name": "Mayor's Office",
-                "description": "",
-                "statusRequired": 10000,
-                "contracts": [],
-                "hireables": []
-            },
-            {
-                "name": "Royal Antechamber",
-                "description": "",
-                "statusRequired": 100000,
-                "contracts": [],
-                "hireables": []
-            },
-            {
-                "name": "Throne Room",
-                "description": "",
-                "statusRequired": 1000000,
-                "contracts": [],
-                "hireables": []
-            }
-        ];
-
-        var hireables = [{
-            "name": "Drunkard",
-            "plural": "Drunkards",
-            "cpt": 0,
-            "baseCost": 1,
-            "costMultiplier": 1.5,
-            "costExponent": 1.5
-        }, {
-            "name": "Street rat",
-            "plural": "Street rats",
-            "cpt": 0,
-            "baseCost": 2,
-            "costMultiplier": 5,
-            "costExponent": 1.5
-        }, {
-            "name": "Peasant",
-            "plural": "Peasants",
-            "cpt": 0,
-            "baseCost": 10,
-            "costMultiplier": 5,
-            "costExponent": 1.5
-        }, {
-            "name": "Adventurer",
-            "plural": "Adventurers",
-            "cpt": 0,
-            "baseCost": 100,
-            "costMultiplier": 5,
-            "costExponent": 1.5
-        }, {
-            "name": "Barbarian",
-            "plural": "Barbarians",
-            "cpt": 0,
-            "baseCost": 100,
-            "costMultiplier": 5,
-            "costExponent": 1.5
-        }, {
-            "name": "Archer",
-            "plural": "Archers",
-            "cpt": 0,
-            "baseCost": 100,
-            "costMultiplier": 5,
-            "costExponent": 1.5
-        }, {
-            "name": "Seasoned veteran",
-            "plural": "Seasoned veterans",
-            "cpt": 0,
-            "baseCost": 1000,
-            "costMultiplier": 5,
-            "costExponent": 1.5
-        }];
-
-
 
         return function AdventurersGame(gameData, autoSaveFunction) {
 
@@ -153,8 +46,8 @@ define(["jquery", "json!data/contracts"],
                 // Resource Gathering
                 this.coinsPerTick = 0;
 
-                for (var i = 0; i < hireables.length; i++) {
-                    this.coinsPerTick += this.getCPT(hireables[i].name);
+                for (var i = 0; i < adventurers.length; i++) {
+                    this.coinsPerTick += this.getCPT(adventurers[i].name);
                 }
 
                 // Expedition Progress
@@ -214,7 +107,7 @@ define(["jquery", "json!data/contracts"],
             };
 
             this.getHireable = function(name) {
-                return hireables.filter(hireable => hireable.name == name)[0];
+                return adventurers.filter(hireable => hireable.name == name)[0];
             };
 
             this.getHiredCount = function(name) {
@@ -224,7 +117,7 @@ define(["jquery", "json!data/contracts"],
             };
 
             this.addAvailableHire = function() {
-                var locationHireables = this.hireables.filter(hireable => this.location.hireables.indexOf(hireable.name) >= 0);
+                var locationHireables = this.adventurers.filter(hireable => this.location.adventurers.indexOf(hireable.name) >= 0);
                 var hireable = locationHireables[Math.floor(locationHireables.length * Math.random())];
                 hireable.timeLeft = Math.floor(60 * (Math.random() + 0.5));
                 this.availableHires.push(hireable);
@@ -247,9 +140,9 @@ define(["jquery", "json!data/contracts"],
             };
 
             this.canSendExpedition = function(contract) {
-                if (contract.requirements.hireables) {
-                    for (var i = 0; i < contract.requirements.hireables.length; i++) {
-                        if (contract.requirements.hireables[i].amount > this.getHiredCount(contract.requirements.hireables[i].type)) {
+                if (contract.requirements.adventurers) {
+                    for (var i = 0; i < contract.requirements.adventurers.length; i++) {
+                        if (contract.requirements.adventurers[i].amount > this.getHiredCount(contract.requirements.adventurers[i].type)) {
                             return false;
                         }
                     }
@@ -258,9 +151,9 @@ define(["jquery", "json!data/contracts"],
             };
 
             this.sendExpedition = function(contract) {
-                if (contract.requirements.hireables) {
-                    for (var i = 0; i < contract.requirements.hireables.length; i++) {
-                        this.spendHires(contract.requirements.hireables[i].type, contract.requirements.hireables[i].amount);
+                if (contract.requirements.adventurers) {
+                    for (var i = 0; i < contract.requirements.adventurers.length; i++) {
+                        this.spendHires(contract.requirements.adventurers[i].type, contract.requirements.adventurers[i].amount);
                     }
                 }
                 this.runningExpeditions.push({
@@ -323,9 +216,9 @@ define(["jquery", "json!data/contracts"],
 
                 // Return questers to sendable pool
                 // TODO assess risk and kill some questers
-                if (contract.requirements.hireables) {
-                    for (var i = 0; i < contract.requirements.hireables.length; i++) {
-                        this.hired[contract.requirements.hireables[i].type] += contract.requirements.hireables[i].amount;
+                if (contract.requirements.adventurers) {
+                    for (var i = 0; i < contract.requirements.adventurers.length; i++) {
+                        this.hired[contract.requirements.adventurers[i].type] += contract.requirements.adventurers[i].amount;
                     }
                 }
 
@@ -396,7 +289,7 @@ define(["jquery", "json!data/contracts"],
             $.extend(this, gameData);
 
 
-            this.hireables = hireables;
+            this.adventurers = adventurers;
             this.contracts = contracts;
             this.locations = locations;
 
