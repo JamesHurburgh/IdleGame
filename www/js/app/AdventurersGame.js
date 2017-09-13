@@ -9,6 +9,10 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
             );
         }
 
+        function clone(object){
+            return JSON.parse(JSON.stringify(object));
+        }
+
         return function AdventurersGame(gameData, autoSaveFunction) {
 
             this.autoSave = autoSaveFunction;
@@ -118,7 +122,7 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
 
             this.addAvailableHire = function() {
                 var locationHireables = this.adventurers.filter(hireable => this.location.adventurers.indexOf(hireable.name) >= 0);
-                var hireable = locationHireables[Math.floor(locationHireables.length * Math.random())];
+                var hireable = clone(locationHireables[Math.floor(locationHireables.length * Math.random())]);
                 hireable.timeLeft = Math.floor(60 * (Math.random() + 0.5));
                 this.availableHires.push(hireable);
             };
@@ -130,7 +134,7 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
 
             this.addContract = function() {
                 var locationContracts = this.contracts.filter(contract => this.location.contracts.indexOf(contract.name) >= 0);
-                var contract = locationContracts[Math.floor(locationContracts.length * Math.random())];
+                var contract = clone(locationContracts[Math.floor(locationContracts.length * Math.random())]);
                 contract.timeLeft = Math.floor(60 * (Math.random() + 0.5));
                 this.availableContracts.push(contract);
             };
