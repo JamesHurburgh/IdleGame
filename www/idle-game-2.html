@@ -45,6 +45,7 @@
                     <div v-for="hireable in availableHires" key="hireable.name">
                         <div class="well">
                             {{hireable.name}}
+                            Time left {{Math.floor(hireable.timeLeft)}} seconds
                             <button type="button" class="btn btn-primary btn-xs" @click="hire(hireable)" :disabled="!canHire(hireable.name)">Hire ({{getCost(hireable.name)}} coins)</button>
                         </div>
                     </div>
@@ -54,7 +55,8 @@
             <div class="col-md-4">
                 <h2>Contracts</h2>
 
-                <h3>A Dirty Alley</h3>
+                <h3>{{location.name}}</h3>
+                <span>{{location.description}}</span>
                 <div v-for="contract in availableContracts">
                     <div class="well">
                         <h4>{{contract.name}}</h4>
@@ -64,6 +66,7 @@
                                 {{hireableRequirement.amount}} {{hireableRequirement.type}}
                             </div>
                         </div>
+                        Time left {{Math.floor(contract.timeLeft)}} seconds
                         <button type="button" class="btn btn-primary btn-xs" @click="sendExpedition(contract)" :disabled="!canSendExpedition(contract)">Start</button>
                     </div>
                 </div>

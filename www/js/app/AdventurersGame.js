@@ -9,12 +9,12 @@ define(["jquery"],
             );
         }
 
-        var contractLocations = [{
+        var locations = [{
                 "name": "Dirty Alley",
                 "description": "The only thing here filthier than the alley are the people that inhabit it.  Drunks, theives and those down on their luck can be found here as well as work for those who don't mind getting their hands... even dirtier.",
                 "statusRequired": 0,
                 "contracts": ["Rob some graves", "Mug a traveller", "Follow a dubious treasure map"],
-                "hireables": []
+                "hireables": ["Drunkard", "Street rat", "Peasant"]
             },
             {
                 "name": "Street Corner",
@@ -201,6 +201,8 @@ define(["jquery"],
                 this.availableContracts = [];
                 this.availableHires = [];
 
+                this.location = locations[0];
+
                 this.calculate();
             };
 
@@ -230,9 +232,9 @@ define(["jquery"],
                     this.addContract();
                 }
 
-                // New contracts
+                // New hires
                 var maxAvailableHires = 5;
-                if (this.availableHires.length < maxAvailableHires && Math.random() > 0.85) {
+                if (this.availableHires.length < maxAvailableHires && Math.random() > 0.75) {
                     this.addAvailableHire();
                 }
 
@@ -252,6 +254,8 @@ define(["jquery"],
 
                 if (!this.availableContracts) this.availableContracts = [];
                 if (!this.availableHires) this.availableHires = [];
+
+                this.location = locations[0];
             };
 
             this.spendCoins = function(coins) {
@@ -277,7 +281,10 @@ define(["jquery"],
             };
 
             this.addAvailableHire = function(){
-                this.availableHires.push(this.hireables[Math.floor(this.hireables.length * Math.random())]);
+                var locationHireables = this.hireables.filter(hireable => this.location.hireables.indexOf(hireable.name) >= 0);
+                var hireable = locationHireables[Math.floor(locationHireables.length * Math.random())];
+                hireable.timeLeft = Math.floor(60 * (Math.random() + 0.5));
+                this.availableHires.push(hireable);
             };
 
             this.spendHires = function(name, amount) {
@@ -286,7 +293,9 @@ define(["jquery"],
             };
 
             this.addContract = function() {
-                this.availableContracts.push(this.contracts[Math.floor(this.contracts.length * Math.random())]);
+                var contract = JSON.parse(JSON.stringify(this.contracts[Math.floor(this.contracts.length * Math.random())]));
+                contract.timeLeft = Math.floor(60 * (Math.random() + 0.5));
+                this.availableContracts.push(contract);
             };
 
             this.getContract = function(name) {
@@ -352,18 +361,30 @@ define(["jquery"],
 
             this.completeExpedition = function(expedition) {
                 this.runningExpeditions.splice(this.runningExpeditions.indexOf(expedition), 1);
-                expedition.success = Math.random() < expedition.contract.successChance;
+
+                var contract = expedition.contract;                
+                // Calculate success
+                expedition.success = Math.random() < contract.successChance;
                 if (expedition.success) {
                     expedition.rewards = [];
-                    for (var i = 0; i < expedition.contract.rewards.length; i++) {
-                        var chance = expedition.contract.rewards[i].chance;
+                    for (var i = 0; i < contract.rewards.length; i++) {
+                        var chance = contract.rewards[i].chance;
                         if (Math.random() < chance) {
-                            var reward = expedition.contract.rewards[i].reward;
+                            var reward = contract.rewards[i].reward;
                             var variation = Math.random() + 0.5;
                             expedition.rewards.push({ "type": reward.type, "amount": Math.floor(reward.amount * variation) });
                         }
                     }
                 }
+
+                // Return questers to sendable pool
+                // TODO assess risk and kill some questers
+                if (contract.requirements.hireables) {
+                    for (var i = 0; i < contract.requirements.hireables.length; i++) {
+                        this.hired[contract.requirements.hireables[i].type] += contract.requirements.hireables[i].amount;
+                    }
+                }
+
                 this.completedExpeditions.push(expedition);
             };
 
@@ -403,6 +424,20 @@ define(["jquery"],
                     }
                 }
 
+                for (var j = 0; j < this.availableContracts.length; j++){
+                    this.availableContracts[j].timeLeft -= 0.1;
+                    if(this.availableContracts[j].timeLeft <= 0){
+                        this.availableContracts.splice(j,1);
+                    }
+                }
+
+                for (var k = 0; k < this.availableHires.length; k++){
+                    this.availableHires[k].timeLeft -= 0.1;
+                    if(this.availableHires[k].timeLeft <= 0){
+                        this.availableHires.splice(k,1);
+                    }
+                }
+
                 this.calculateCounter++;
                 if (this.calculateCounter > 10) {
                     this.calculate();
@@ -418,6 +453,7 @@ define(["jquery"],
 
             this.hireables = hireables;
             this.contracts = contracts;
+            this.locations = locations;
 
             this.calculate();
 
