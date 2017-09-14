@@ -144,7 +144,6 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                 this.availableContracts.sort(function(a, b){
                     return a.expires > b.expires;
                 });
-
             };
 
             this.getContract = function(name) {
@@ -171,7 +170,11 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                 this.runningExpeditions.push({
                     "id": uuidv4(),
                     "contract": contract,
-                    "progress": 0
+                    "expires": Date.now() + (contract.duration * 1000)
+                });
+                
+                this.runningExpeditions.sort(function(a, b){
+                    return a.expires > b.expires;
                 });
                 this.availableContracts.splice(this.availableContracts.indexOf(contract), 1);
             };
@@ -263,6 +266,27 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                 this.calculate();
             };
 
+            this.readableTime = function(milliseconds){
+
+                var totalSeconds = Math.floor(milliseconds / 1000);
+                var seconds = totalSeconds % 60;
+                var totalMinutes = (totalSeconds - seconds) / 60;
+                var minutes = totalMinutes % 60;
+                var hours = (totalSeconds - (seconds + minutes * 60)) % 60;
+
+                var timeString = "";
+                if(hours){
+                    timeString += hours + " hours ";
+                }
+                if(minutes){
+                    timeString += minutes + " minutes ";
+                }
+                if(seconds){
+                    timeString += seconds + " seconds";
+                }
+                return timeString;
+            };
+
             this.tick = function() {
                 // Do all task completion here
 
@@ -270,10 +294,8 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                 this.freeCoinsTimeout--;
 
                 for (var i = 0; i < this.runningExpeditions.length; i++) {
-                    if (this.runningExpeditions[i].progress >= this.runningExpeditions[i].contract.duration) {
+                    if (this.runningExpeditions[i].expires <= Date.now()) {
                         this.completeExpedition(this.runningExpeditions[i]);
-                    } else {
-                        this.runningExpeditions[i].progress++;
                     }
                 }
 
