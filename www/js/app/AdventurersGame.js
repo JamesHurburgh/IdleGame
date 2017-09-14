@@ -277,13 +277,13 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
 
                 var timeString = "";
                 if (hours) {
-                    timeString += hours + " hours ";
+                    timeString += hours + "hr ";
                 }
                 if (minutes) {
-                    timeString += minutes + " minutes ";
+                    timeString += minutes + "m ";
                 }
                 if (seconds) {
-                    timeString += seconds + " seconds";
+                    timeString += seconds + "s";
                 }
                 return timeString;
             };
