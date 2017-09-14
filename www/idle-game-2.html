@@ -45,7 +45,9 @@
                     <div v-for="adventurer in availableHires" key="adventurer.name">
                         <div class="well">
                             {{adventurer.name}} Time left {{Math.floor((adventurer.expires - Date.now())/1000)}} seconds
-                            <button type="button" class="btn btn-primary btn-xs" @click="hire(adventurer)" :disabled="!canHire(adventurer.name)">Hire ({{getCost(adventurer.name)}} coins)</button>
+                            <button type="button" class="btn btn-xs" 
+                            v-bind:class="{ 'btn-success': canHire(adventurer.name), 'btn-primary': !canHire(adventurer.name) }"
+                            @click="hire(adventurer)" :disabled="!canHire(adventurer.name)">Hire ({{getCost(adventurer.name)}} coins)</button>
                         </div>
                     </div>
                 </transition-group>
@@ -69,7 +71,9 @@
                             </div>
                         </div>
                         Time left {{Math.floor((contract.expires - Date.now())/1000)}} seconds
-                        <button type="button" class="btn btn-primary btn-xs" @click="sendExpedition(contract)" :disabled="!canSendExpedition(contract)">Start</button>
+                        <button type="button" class="btn btn-xs"
+                            v-bind:class="{ 'btn-success': canSendExpedition(contract), 'btn-primary': !canSendExpedition(contract) }"
+                             @click="sendExpedition(contract)" :disabled="!canSendExpedition(contract)">Start</button>
                     </div>
                 </div>
                 </transition-group>
