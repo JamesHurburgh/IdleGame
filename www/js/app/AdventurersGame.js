@@ -66,11 +66,12 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                     this.addContract();
                 }
 
-                // New hires
                 var maxAvailableHires = 5;
+                // New hires
                 if (this.availableHires.length < maxAvailableHires && Math.random() > 0.75) {
                     this.addAvailableHire();
                 }
+
 
             };
 
@@ -123,7 +124,7 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
             this.addAvailableHire = function() {
                 var locationHireables = this.adventurers.filter(hireable => this.location.adventurers.indexOf(hireable.name) >= 0);
                 var hireable = clone(locationHireables[Math.floor(locationHireables.length * Math.random())]);
-                hireable.timeLeft = Math.floor(60 * (Math.random() + 0.5));
+                hireable.expires = Date.now() + Math.floor(60000 * (Math.random() + 0.5));
                 this.availableHires.push(hireable);
             };
 
@@ -135,7 +136,7 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
             this.addContract = function() {
                 var locationContracts = this.contracts.filter(contract => this.location.contracts.indexOf(contract.name) >= 0);
                 var contract = clone(locationContracts[Math.floor(locationContracts.length * Math.random())]);
-                contract.timeLeft = Math.floor(60 * (Math.random() + 0.5));
+                contract.expires = Date.now() + Math.floor(60000 * (Math.random() + 0.5));
                 this.availableContracts.push(contract);
             };
 
@@ -267,18 +268,17 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                 }
 
                 for (var j = 0; j < this.availableContracts.length; j++) {
-                    this.availableContracts[j].timeLeft -= 0.1;
-                    if (this.availableContracts[j].timeLeft <= 0) {
+                    if (this.availableContracts[j].expires <= Date.now()) {
                         this.availableContracts.splice(j, 1);
                     }
                 }
-
+                // Remove expired hired
                 for (var k = 0; k < this.availableHires.length; k++) {
-                    this.availableHires[k].timeLeft -= 0.1;
-                    if (this.availableHires[k].timeLeft <= 0) {
+                    if (this.availableHires[k].expires <= Date.now()) {
                         this.availableHires.splice(k, 1);
                     }
                 }
+
 
                 this.calculateCounter++;
                 if (this.calculateCounter > 10) {
