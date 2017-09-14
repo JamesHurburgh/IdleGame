@@ -126,6 +126,9 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                 var hireable = clone(locationHireables[Math.floor(locationHireables.length * Math.random())]);
                 hireable.expires = Date.now() + Math.floor(60000 * (Math.random() + 0.5));
                 this.availableHires.push(hireable);
+                this.availableHires.sort(function(a, b){
+                    return a.expires > b.expires;
+                });
             };
 
             this.spendHires = function(name, amount) {
@@ -138,6 +141,10 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                 var contract = clone(locationContracts[Math.floor(locationContracts.length * Math.random())]);
                 contract.expires = Date.now() + Math.floor(60000 * (Math.random() + 0.5));
                 this.availableContracts.push(contract);
+                this.availableContracts.sort(function(a, b){
+                    return a.expires > b.expires;
+                });
+
             };
 
             this.getContract = function(name) {
@@ -243,6 +250,9 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
             };
 
             this.hire = function(hireable) {
+                if(!this.canHire(hireable.name)){
+                    return;
+                }
                 var hiredCount = this.getHiredCount(hireable.name);
 
                 this.spendCoins(this.getCost(hireable.name));
