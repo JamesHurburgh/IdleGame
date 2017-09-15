@@ -203,7 +203,7 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
 
                 this.runningExpeditions.push(expedition);
 
-                this.runningExpeditions = this.runningExpeditions.sort(function(a, b) {
+                this.runningExpeditions.sort(function(a, b) {
                     return a.expires > b.expires;
                 });
 
@@ -242,19 +242,33 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                 this.completedExpeditions.splice(this.completedExpeditions.indexOf(expedition), 1);
             };
 
+            this.getUpgrade = function(adventurerType) {
+                var becomesList = this.getHireable(adventurerType).becomes;
+                if (becomesList.length === 0) {
+                    return null;
+                }
+                return becomesList[Math.floor(Math.random() * becomesList.length)];
+            };
+
             this.completeExpedition = function(expedition) {
                 this.runningExpeditions.splice(this.runningExpeditions.indexOf(expedition), 1);
 
                 var contract = expedition.contract;
                 // Return questers to sendable pool
-                // TODO assess risk and kill some questers
                 var deathMessages = "";
+                expedition.upgradeMessages = "";
                 var survived = 0;
+
                 if (contract.requirements.adventurers) {
                     for (var i = 0; i < contract.requirements.adventurers.length; i++) {
                         for (var j = 0; j < contract.requirements.adventurers[i].amount; j++) {
+                            var upgrade = this.getUpgrade(contract.requirements.adventurers[i].type);
                             if (Math.random() < contract.risk) { // Then someone 'died'
                                 deathMessages += contract.requirements.adventurers[i].type + "-" + j + " didn't come back. ";
+                            } else if (upgrade && Math.random() < contract.upgradeChance) { // Then someone 'upgraded'
+                                expedition.upgradeMessages += contract.requirements.adventurers[i].type + "-" + j + " has become a " + upgrade + ". ";
+                                this.hired[upgrade]++;
+                                survived++;
                             } else {
                                 this.hired[contract.requirements.adventurers[i].type]++;
                                 survived++;
@@ -262,7 +276,6 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                         }
                     }
                 }
-
                 expedition.completionMessage = "";
 
                 // Calculate success
@@ -283,9 +296,9 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                     expedition.completionMessage = contract.failureMessage;
                 }
                 if (deathMessages.length > 0) {
-                    expedition.completionMessage += contract.deathMessage;
+                    expedition.deathMessage = contract.deathMessage;
                 }
-                expedition.completionMessage += deathMessages;
+                expedition.deathMessages = deathMessages;
 
                 this.completedExpeditions.push(expedition);
             };
@@ -398,6 +411,10 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
             this.updateGameData(gameData);
             $.extend(this, gameData);
 
+            // Data
+            this.adventurers = adventurers;
+            this.contracts = contracts;
+            this.locations = locations;
             this.calculate();
 
         };

@@ -74,7 +74,6 @@
                             <h4>{{contract.name}} <button type="button" class="btn btn-sm pull-right" v-bind:class="{ 'btn-success': canSendExpedition(contract), 'btn-primary': !canSendExpedition(contract) }" @click="sendExpedition(contract)" :disabled="!canSendExpedition(contract)">Start</button>
                             </h4>
                             <div v-if="contract.requirements != undefined">
-                                <h5>Requirements</h5>
                                 <div v-for="adventurerRequirement in contract.requirements.adventurers">
                                     {{adventurerRequirement.amount}} {{adventurerRequirement.type}} <span v-bind:class="{ 'text-danger': lessthan(getHiredCount(adventurerRequirement.type), adventurerRequirement.amount), 'text-success': !lessthan(getHiredCount(adventurerRequirement.type), adventurerRequirement.amount) }">({{getHiredCount(adventurerRequirement.type)}}/{{adventurerRequirement.amount}})</span>
                                 </div>
@@ -100,7 +99,12 @@
                                 </button>
                                 <button v-if="!expedition.success" type="button" class="btn btn-danger pull-right" @click="removeExpedition(expedition)">Darnation!</button>
                             </h4>
-                            <div>{{expedition.completionMessage}}</div>
+                            <div>
+                                <span>{{expedition.completionMessage}}</span>
+                                <span class="text-success">{{expedition.upgradeMessages}}</span>
+                                <span class="text-warning">{{expedition.deathMessage}}</span>
+                                <span class="text-danger">{{expedition.deathMessages}}</span>
+                            </div>
                         </div>
                     </div>
                 </transition-group>
