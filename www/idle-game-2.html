@@ -76,7 +76,7 @@
                             <div v-if="contract.requirements != undefined">
                                 <h5>Requirements</h5>
                                 <div v-for="adventurerRequirement in contract.requirements.adventurers">
-                                    {{adventurerRequirement.amount}} {{adventurerRequirement.type}}
+                                    {{adventurerRequirement.amount}} {{adventurerRequirement.type}} <span v-bind:class="{ 'text-danger': lessthan(getHiredCount(adventurerRequirement.type), adventurerRequirement.amount), 'text-success': !lessthan(getHiredCount(adventurerRequirement.type), adventurerRequirement.amount) }">({{getHiredCount(adventurerRequirement.type)}}/{{adventurerRequirement.amount}})</span>
                                 </div>
                             </div>
                             <div v-bind:class="{ 'text-danger': expiringDanger(contract.expires), 'text-warning': expiringWarning(contract.expires), 'text-success': expiringSuccess(contract.expires) }">{{readableTime(contract.expires - Date.now())}} remaining</div>
@@ -110,6 +110,9 @@
                     <div v-for="expedition in runningExpeditions" key="expedition.id">
                         <div class="well">
                             <h4>{{expedition.contract.name}}</h4>
+                            <div v-for="adventurerType in expedition.adventurers" key="adventurerType.type">
+                                {{adventurerType.amount}} {{adventurerType.type}}
+                            </div>
                             <div>{{readableTime(expedition.expires - Date.now())}} remaining</div>
                         </div>
                     </div>

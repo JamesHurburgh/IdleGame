@@ -172,16 +172,25 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
             };
 
             this.sendExpedition = function(contract) {
+                if (!this.canSendExpedition(contract)) {
+                    return;
+                }
+
+                var expedition = {
+                    id: uuidv4(),
+                    contract: contract,
+                    expires: Date.now() + (contract.duration * 1000),
+                    adventurers: []
+                };
+
                 if (contract.requirements.adventurers) {
                     for (var i = 0; i < contract.requirements.adventurers.length; i++) {
                         this.spendHires(contract.requirements.adventurers[i].type, contract.requirements.adventurers[i].amount);
+                        expedition.adventurers.push({ type: contract.requirements.adventurers[i].type, amount: contract.requirements.adventurers[i].amount });
                     }
                 }
-                this.runningExpeditions.push({
-                    "id": uuidv4(),
-                    "contract": contract,
-                    "expires": Date.now() + (contract.duration * 1000)
-                });
+
+                this.runningExpeditions.push(expedition);
 
                 this.runningExpeditions = this.runningExpeditions.sort(function(a, b) {
                     return a.expires > b.expires;
@@ -314,6 +323,10 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                 if (seconds) {
                     timeString += seconds + "s";
                 }
+
+                if (timeString.length === 0) {
+                    timeString = "0s";
+                }
                 return timeString;
             };
 
@@ -331,6 +344,10 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
 
             this.expiringSuccess = function(date) {
                 return !this.expiringDanger(date) && !this.expiringWarning(date);
+            };
+
+            this.lessthan = function(a, b) {
+                return a < b;
             };
 
             this.tick = function() {
