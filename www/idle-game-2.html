@@ -40,12 +40,12 @@
             <p>Adventurering is dangerous. Hire someone else to do it for you! <a href="#" @click="reset()">Reset the game</a></p>
             <div class="col-md-4">
                 <h2>Coins and stuff</h2>
-                <div>Coins: {{coins}} ({{coinsPerTick}} cpt)</div>
+                <div>Coins: {{coins}}</div>
                 <div>Status: {{status}}</div>
 
                 <h2>Hired Adventurers</h2>
                 <div v-for="adventurer in adventurers">
-                    <div>{{adventurer.plural}}: {{getHiredCount(adventurer.name)}}</div>
+                    <div>{{adventurer.plural}}: {{getHiredCount(adventurer.name)}}<span class="text-muted">+{{getAdventurersOnTheJob(adventurer.name)}}</span></div>
                     <!--<button type="button" class="btn btn-primary btn-xs" @click="hire(adventurer.name)" :disabled="!canHire(adventurer.name)">Hire a {{adventurer.name}} ({{getCost(adventurer.name)}} coins)</button>-->
                 </div>
                 <h3>Adventurers for hire</h3>

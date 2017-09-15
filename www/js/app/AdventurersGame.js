@@ -131,6 +131,17 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                 return hiredCount;
             };
 
+            this.getAdventurersOnTheJob = function(name) {
+                var count = 0;
+                for (var i = 0; i < this.runningExpeditions.length; i++) {
+                    var expeditionCount = this.runningExpeditions[i].adventurers.filter(adventurerCount => adventurerCount.type == name)[0];
+                    if (expeditionCount) {
+                        count += expeditionCount.amount;
+                    }
+                }
+                return count;
+            };
+
             this.addAvailableHire = function() {
                 var locationHireables = this.adventurers.filter(hireable => this.location.adventurers.indexOf(hireable.name) >= 0);
                 var hireable = clone(locationHireables[Math.floor(locationHireables.length * Math.random())]);
