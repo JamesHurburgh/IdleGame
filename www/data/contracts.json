@@ -9,10 +9,10 @@
     "successChance": 0.05,
     "rewards": [
         { "chance": 1, "reward": { "type": "coins", "amount": 500 } },
-        { "chance": 1, "reward": { "type": "status", "amount": 1 } }
+        { "chance": 1, "reward": { "type": "reknown", "amount": 1 } }
     ],
     "requirements": {
-        "status": 0,
+        "reknown": 0,
         "adventurers": [
             { "type": "Peasant", "amount": 1 },
             { "type": "Street rat", "amount": 1 },
@@ -30,10 +30,10 @@
     "successChance": 1,
     "rewards": [
         { "chance": 1, "reward": { "type": "coins", "amount": 15 } },
-        { "chance": 1, "reward": { "type": "status", "amount": 1 } }
+        { "chance": 1, "reward": { "type": "reknown", "amount": 1 } }
     ],
     "requirements": {
-        "status": 0,
+        "reknown": 0,
         "adventurers": [
             { "type": "Peasant", "amount": 1 }
         ]
@@ -49,10 +49,10 @@
     "successChance": 0.9,
     "rewards": [
         { "chance": 1, "reward": { "type": "coins", "amount": 5 } },
-        { "chance": 1, "reward": { "type": "status", "amount": 1 } }
+        { "chance": 1, "reward": { "type": "reknown", "amount": 1 } }
     ],
     "requirements": {
-        "status": 0,
+        "reknown": 0,
         "adventurers": [
             { "type": "Drunkard", "amount": 1 }
         ]
@@ -68,10 +68,10 @@
     "successChance": 0.5,
     "rewards": [
         { "chance": 1, "reward": { "type": "coins", "amount": 20 } },
-        { "chance": 1, "reward": { "type": "status", "amount": 1 } }
+        { "chance": 1, "reward": { "type": "reknown", "amount": 1 } }
     ],
     "requirements": {
-        "status": 0,
+        "reknown": 0,
         "adventurers": [
             { "type": "Street rat", "amount": 2 }
         ]
@@ -87,10 +87,10 @@
     "successChance": 0.9,
     "rewards": [
         { "chance": 1, "reward": { "type": "coins", "amount": 75 } },
-        { "chance": 1, "reward": { "type": "status", "amount": 1 } }
+        { "chance": 1, "reward": { "type": "reknown", "amount": 1 } }
     ],
     "requirements": {
-        "status": 0,
+        "reknown": 0,
         "adventurers": [
             { "type": "Street rat", "amount": 1 }
         ]
@@ -108,7 +108,7 @@
         { "chance": 1, "reward": { "type": "coins", "amount": 35 } }
     ],
     "requirements": {
-        "status": 0,
+        "reknown": 0,
         "adventurers": [
             { "type": "Street rat", "amount": 1 }
         ]
@@ -124,10 +124,10 @@
     "successChance": 0.8,
     "rewards": [
         { "chance": 1, "reward": { "type": "coins", "amount": 750 } },
-        { "chance": 1, "reward": { "type": "status", "amount": 1 } }
+        { "chance": 1, "reward": { "type": "reknown", "amount": 1 } }
     ],
     "requirements": {
-        "status": 0,
+        "reknown": 0,
         "adventurers": [
             { "type": "Drunkard", "amount": 10 }
         ]
@@ -143,10 +143,10 @@
     "successChance": 0.5,
     "rewards": [
         { "chance": 1, "reward": { "type": "coins", "amount": 1000 } },
-        { "chance": 1, "reward": { "type": "status", "amount": 2 } }
+        { "chance": 1, "reward": { "type": "reknown", "amount": 2 } }
     ],
     "requirements": {
-        "status": 1,
+        "reknown": 1,
         "adventurers": [
             { "type": "Drunkard", "amount": 5 },
             { "type": "Street rat", "amount": 10 }

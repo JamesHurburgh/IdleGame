@@ -1,0 +1,19 @@
+[
+    { "minimum": -10000, "name": "despised", "description": "How did you even get a negative status?  This shouldn't be possible." },
+    { "minimum": 0, "name": "unknown", "description": "No-one knows who you are.  Go do something interesting." },
+    { "minimum": 10, "name": "known", "description": "Well people have heard of you at least.  They're still not sure what to think of you." },
+    { "minimum": 100, "name": "well known", "description": "" },
+    { "minimum": 1000, "name": "respected", "description": "" },
+    { "minimum": 10000, "name": "", "description": "" },
+    { "minimum": 100000, "name": "", "description": "" },
+    { "minimum": 1000000, "name": "", "description": "" },
+    { "minimum": 10000000, "name": "", "description": "" },
+    { "minimum": 100000000, "name": "", "description": "" },
+    { "minimum": 1000000000, "name": "", "description": "" },
+    { "minimum": 10000000000, "name": "", "description": "" },
+    { "minimum": 100000000000, "name": "Epic", "description": "" },
+    { "minimum": 1000000000000, "name": "Legendary", "description": "" },
+    { "minimum": 10000000000000, "name": "Mythic", "description": "" },
+    { "minimum": 100000000000000, "name": "Revered", "description": "" },
+    { "minimum": 1000000000000000, "name": "Feared", "description": "" }
+]

@@ -23,7 +23,7 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
 
                 this.coins = 10;
                 this.coinsPerTick = 0;
-                this.status = 0;
+                this.reknown = 0;
                 this.freeCoinsTimeout = 0;
 
                 this.hired = {};
@@ -85,7 +85,7 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
 
                 if (!this.coins) this.coins = 10;
                 if (!this.coinsPerTick) this.coinsPerTick = 0;
-                if (!this.status) this.status = 0;
+                if (!this.reknown) this.reknown = 0;
                 if (!this.freeCoinsTimeout) this.freeCoinsTimeout = 0;
 
                 if (!this.hired) this.hired = {};
@@ -179,7 +179,7 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                         }
                     }
                 }
-                return this.status >= contract.requirements.status;
+                return this.reknown >= contract.requirements.reknown;
             };
 
             this.sendExpedition = function(contract) {
@@ -214,8 +214,8 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                 this.coins += amount;
             };
 
-            this.giveStatus = function(amount) {
-                this.status += amount;
+            this.giveReknown = function(amount) {
+                this.reknown += amount;
             };
 
             this.giveReward = function(type, amount) {
@@ -223,8 +223,8 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                     case "coins":
                         this.giveCoins(amount);
                         break;
-                    case "status":
-                        this.giveStatus(amount);
+                    case "reknown":
+                        this.giveReknown(amount);
                         break;
                     default:
                         this.hired[type] += amount;
