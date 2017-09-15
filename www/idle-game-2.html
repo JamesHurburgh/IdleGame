@@ -51,10 +51,10 @@
                 <h3>Adventurers for hire</h3>
                 <transition-group name="custom-classes-transition" enter-active-class="animated fadeIn" leave-active-class="noOutAnimation">
                     <div v-for="adventurer in availableHires" key="adventurer.name">
-                        <div class="well" v-bind:class="{ 'animated flash': expiringSoon(adventurer.expires) }">
+                        <div class="well">
                             <h4>{{adventurer.name}} <button type="button" class="btn btn-sm pull-right" v-bind:class="{ 'btn-success': canHire(adventurer.name), 'btn-primary': !canHire(adventurer.name) }" @click="hire(adventurer)" :disabled="!canHire(adventurer.name)">Hire ({{getCost(adventurer.name)}} coins)</button>
                             </h4>
-                            <div>{{readableTime(adventurer.expires - Date.now())}} remaining</div>
+                            <div v-bind:class="{ 'text-danger': expiringDanger(adventurer.expires), 'text-warning': expiringWarning(adventurer.expires), 'text-success': expiringSuccess(adventurer.expires) }">{{readableTime(adventurer.expires - Date.now())}} remaining</div>
                         </div>
                     </div>
                 </transition-group>
@@ -70,7 +70,7 @@
                 <h3>Contracts</h3>
                 <transition-group name="custom-classes-transition" enter-active-class="animated fadeIn" leave-active-class="noOutAnimation">
                     <div v-for="contract in availableContracts" key="contract.name">
-                        <div class="well" v-bind:class="{ 'animated flash': expiringSoon(contract.expires) }">
+                        <div class="well">
                             <h4>{{contract.name}} <button type="button" class="btn btn-sm pull-right" v-bind:class="{ 'btn-success': canSendExpedition(contract), 'btn-primary': !canSendExpedition(contract) }" @click="sendExpedition(contract)" :disabled="!canSendExpedition(contract)">Start</button>
                             </h4>
                             <div v-if="contract.requirements != undefined">
@@ -79,7 +79,7 @@
                                     {{adventurerRequirement.amount}} {{adventurerRequirement.type}}
                                 </div>
                             </div>
-                            <div>{{readableTime(contract.expires - Date.now())}} remaining</div>
+                            <div v-bind:class="{ 'text-danger': expiringDanger(contract.expires), 'text-warning': expiringWarning(contract.expires), 'text-success': expiringSuccess(contract.expires) }">{{readableTime(contract.expires - Date.now())}} remaining</div>
                         </div>
                     </div>
                 </transition-group>

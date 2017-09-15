@@ -232,19 +232,19 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                 var survived = 0;
                 if (contract.requirements.adventurers) {
                     for (var i = 0; i < contract.requirements.adventurers.length; i++) {
-                        for(var j = 0; j < contract.requirements.adventurers[i].amount; j++){
-                            if(Math.random() < contract.risk){ // Then someone 'died'
-                                deathMessages += contract.requirements.adventurers[i].type + "-"+ j + " didn't come back. ";
-                            }else{
-                                this.hired[contract.requirements.adventurers[i].type]++;        
+                        for (var j = 0; j < contract.requirements.adventurers[i].amount; j++) {
+                            if (Math.random() < contract.risk) { // Then someone 'died'
+                                deathMessages += contract.requirements.adventurers[i].type + "-" + j + " didn't come back. ";
+                            } else {
+                                this.hired[contract.requirements.adventurers[i].type]++;
                                 survived++;
                             }
                         }
                     }
                 }
-                
+
                 expedition.completionMessage = "";
-                
+
                 // Calculate success
                 expedition.success = survived > 0 && Math.random() < contract.successChance;
                 if (expedition.success) {
@@ -259,10 +259,10 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                             expedition.rewards.push({ "type": reward.type, "amount": Math.floor(reward.amount * variation) });
                         }
                     }
-                }else{
-                    expedition.completionMessage = contract.failureMessage;                    
+                } else {
+                    expedition.completionMessage = contract.failureMessage;
                 }
-                if(deathMessages.length > 0){
+                if (deathMessages.length > 0) {
                     expedition.completionMessage += contract.deathMessage;
                 }
                 expedition.completionMessage += deathMessages;
@@ -318,7 +318,19 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
             };
 
             this.expiringSoon = function(date) {
-                return date - Date.now() < 5000;
+                return date - Date.now() <= 5000;
+            };
+
+            this.expiringDanger = function(date) {
+                return date - Date.now() <= 5000;
+            };
+
+            this.expiringWarning = function(date) {
+                return !this.expiringDanger(date) && date - Date.now() <= 15000;
+            };
+
+            this.expiringSuccess = function(date) {
+                return !this.expiringDanger(date) && !this.expiringWarning(date);
             };
 
             this.tick = function() {
