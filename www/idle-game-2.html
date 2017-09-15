@@ -12,6 +12,14 @@
     <script src="./js/lib/jquery.js"></script>
     <script src="./js/bootstrap.min.js"></script>
 
+    <link href="https://fonts.googleapis.com/css?family=Alegreya+Sans+SC|Open+Sans:600" rel="stylesheet">
+    <style>
+        h2 {
+            font-family: 'Alegreya Sans SC', sans-serif;
+        }
+    </style>
+    <!-- font-family: 'Open Sans', sans-serif;
+     -->
     <link rel="stylesheet" href="css/alertify.min.css" />
     <!-- Alertify Bootstrap theme -->
     <link rel="stylesheet" href="css/alertify.bootstrap.min.css" />
@@ -53,12 +61,11 @@
             </div>
 
             <div class="col-md-4">
-
-                <h2>{{location.name}}</h2>
+                <h2>
+                    {{location.name}}
+                    <button type="button" class="btn btn-primary" v-bind:class="{ 'btn-success': canGetFreeCoins(), 'btn-primary': !canGetFreeCoins() }" @click="freeCoins(location)" :disabled="!canGetFreeCoins()">{{location.freeCoinsDescription}}</button>
+                </h2>
                 <span>{{location.description}}</span>
-                <button type="button" class="btn btn-primary" 
-                 v-bind:class="{ 'btn-success': canGetFreeCoins(), 'btn-primary': !canGetFreeCoins() }" 
-                 @click="freeCoins(location)" :disabled="!canGetFreeCoins()">{{location.freeCoinsDescription}}</button>
 
                 <h3>Contracts</h3>
                 <transition-group name="custom-classes-transition" enter-active-class="animated fadeIn" leave-active-class="noOutAnimation">
@@ -84,19 +91,16 @@
                 <transition-group name="custom-classes-transition" enter-active-class="animated fadeIn" leave-active-class="noOutAnimation">
                     <div v-for="expedition in completedExpeditions" key="expedition.id">
                         <div class="well">
-                            <h4>{{expedition.contract.name}}</h4>
-                            <div>{{expedition.completionMessage}}</div>
-                            <div v-if="expedition.success">
-                                <button type="button" class="btn btn-success" @click="claimReward(expedition)">
-                                    Claim Rewards!
+                            <h4>{{expedition.contract.name}}
+                                <button v-if="expedition.success" type="button" class="btn btn-success pull-right" @click="claimReward(expedition)">
+                                    Claim!
                                     <div v-for="reward in expedition.rewards">
                                         {{reward.amount}} {{reward.type}}
                                     </div>
                                 </button>
-                            </div>
-                            <div v-if="!expedition.success">
-                                <button type="button" class="btn btn-danger" @click="removeExpedition(expedition)">Darnation!</button>
-                            </div>
+                                <button v-if="!expedition.success" type="button" class="btn btn-danger pull-right" @click="removeExpedition(expedition)">Darnation!</button>
+                            </h4>
+                            <div>{{expedition.completionMessage}}</div>
                         </div>
                     </div>
                 </transition-group>
