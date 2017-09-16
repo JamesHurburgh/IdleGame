@@ -12,8 +12,11 @@
         "name": "Street Corner",
         "description": "Officially, conducting business on the street corner is illegal.  But if you grease the palms of a guard or two and don't cause trouble, you can hire the locals and passerbys looking for work.  The townsfolk may also come to you to get things done.  Most of it legitimate, some of it, not so much.",
         "reknownRequired": 10,
-        "contracts": [],
-        "adventurers": []
+        "freeCoinsDescription": "Beg for a hand out.",
+        "freeCoins": 5,
+        "freeCoinsTimeout": 10,
+        "contracts": ["Fight some goblins"],
+        "adventurers": ["Brawler", "Thief", "Citizen"]
     },
     {
         "name": "Tavern",
