@@ -44,7 +44,7 @@
                 </div>
                 <h2>Expeditions</h2>
 
-                <h3>Completed</h3>
+                <h3>Completed ({{completedExpeditions.length}})</h3>
                 <transition-group name="custom-classes-transition" enter-active-class="animated fadeIn" leave-active-class="noOutAnimation">
                     <div v-for="expedition in completedExpeditions" key="expedition.id">
                         <div class="well">
@@ -68,7 +68,7 @@
                     </div>
                 </transition-group>
 
-                <h3>Running</h3>
+                <h3>Running ({{runningExpeditions.length}})</h3>
                 <transition-group name="custom-classes-transition" enter-active-class="animated fadeIn" leave-active-class="noOutAnimation">
                     <div v-for="expedition in runningExpeditions" key="expedition.id">
                         <div class="well">
@@ -105,7 +105,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <h3>Contracts</h3>
+                    <h3>Contracts ({{location.availableContracts.length}}/5)</h3>
                     <transition-group name="custom-classes-transition" enter-active-class="animated fadeIn" leave-active-class="noOutAnimation">
                         <div v-for="contract in location.availableContracts" key="contract.name">
                             <div class="well">
@@ -124,7 +124,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <h3>Adventurers for hire</h3>
+                    <h3>Adventurers for hire ({{location.availableHires.length}}/5)</h3>
                     <transition-group name="custom-classes-transition" enter-active-class="animated fadeIn" leave-active-class="noOutAnimation">
                         <div v-for="adventurer in location.availableHires" key="adventurer.name">
                             <div class="well">
