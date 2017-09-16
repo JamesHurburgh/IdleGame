@@ -22,6 +22,7 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
             this.autoSave = autoSaveFunction;
 
             this.reset = function() {
+                console.log("reset");
                 // Then initialise new
                 this.calculateCounter = 0;
 
@@ -51,9 +52,9 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
             };
 
             this.calculate = function() {
+                console.log("calculate");
                 // Do all calculations here
                 this.calculateCounter = 0;
-                console.log("calculating");
                 // Autosave
                 this.autoSave();
 
@@ -82,10 +83,15 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                     this.addAvailableHire();
                 }
 
+                // Adding the sort here as well, because it doesn't seem to sort properly
+                // this.runningExpeditions.sort(function(a, b) {
+                //     return a.expires - b.expires;
+                // });
 
             };
 
             this.updateGameData = function(gameData) {
+                console.log("updateGameData");
                 if (!this.calculateCounter) this.calculateCounter = 0;
 
                 if (!this.coins) this.coins = 10;
@@ -111,6 +117,7 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
             };
 
             this.cheat = function() {
+                console.log("cheat");
                 this.giveCoins(100000000000);
                 this.giveReknown(100000000000);
 
@@ -139,6 +146,7 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                     if (!this.location.availableContracts) this.location.availableContracts = [];
                     if (!this.location.availableHires) this.location.availableHires = [];
                     this.expireAllExpired();
+                    this.calculate();
                 }
             };
 
@@ -156,6 +164,7 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                     if (!this.location.availableContracts) this.location.availableContracts = [];
                     if (!this.location.availableHires) this.location.availableHires = [];
                     this.expireAllExpired();
+                    this.calculate();
                 }
             };
 
@@ -204,7 +213,7 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                 hireable.expires = Date.now() + Math.floor(60000 * (Math.random() + 0.5));
                 this.location.availableHires.push(hireable);
                 this.location.availableHires.sort(function(a, b) {
-                    return a.expires > b.expires;
+                    return a.expires - b.expires;
                 });
             };
 
@@ -219,7 +228,7 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                 contract.expires = Date.now() + Math.floor(60000 * (Math.random() + 0.5));
                 this.location.availableContracts.push(contract);
                 this.location.availableContracts.sort(function(a, b) {
-                    return a.expires > b.expires;
+                    return a.expires - b.expires;
                 });
             };
 
@@ -227,6 +236,7 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                 return contracts.filter(contract => contract.name == name)[0];
             };
 
+            // Expediations
             this.canSendExpedition = function(contract) {
                 if (contract.requirements.adventurers) {
                     for (var i = 0; i < contract.requirements.adventurers.length; i++) {
@@ -260,10 +270,20 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                 this.runningExpeditions.push(expedition);
 
                 this.runningExpeditions.sort(function(a, b) {
-                    return a.expires > b.expires;
+                    return a.expires - b.expires;
                 });
 
                 this.location.availableContracts.splice(this.location.availableContracts.indexOf(contract), 1);
+            };
+
+            this.claimAllCompletedExpeditions = function() {
+                while (this.completedExpeditions.length > 0) {
+                    if (this.completedExpeditions[0].success) {
+                        this.claimReward(this.completedExpeditions[0]);
+                    } else {
+                        this.removeExpedition(this.completedExpeditions[0]);
+                    }
+                }
             };
 
             this.giveCoins = function(amount) {
@@ -499,6 +519,8 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                 }
             };
 
+
+            console.log("initialising");
             if (!gameData) {
                 this.reset();
             }
