@@ -130,12 +130,12 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
             };
 
             this.canRelocateDown = function() {
-                return this.allLocations.indexOf(this.allLocations.filter(location => location.name == this.location.name)[0]) > 0;
+                return this.currentLocationIndex() > 0;
             };
 
             this.relocateDown = function() {
                 if (this.canRelocateDown()) {
-                    this.location = this.allLocations[this.allLocations.indexOf(this.allLocations.filter(location => location.name == this.location.name)[0]) - 1];
+                    this.location = this.allLocations[this.currentLocationIndex() - 1];
                     if (!this.location.availableContracts) this.location.availableContracts = [];
                     if (!this.location.availableHires) this.location.availableHires = [];
                     this.expireAllExpired();
@@ -143,13 +143,16 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
             };
 
             this.canRelocateUp = function() {
-                var newLocation = this.allLocations[this.allLocations.indexOf(this.allLocations.filter(location => location.name == this.location.name)[0]) + 1];
+                if (this.currentLocationIndex() == this.allLocations.length - 1) {
+                    return false;
+                }
+                var newLocation = this.allLocations[this.currentLocationIndex() + 1];
                 return newLocation.reknownRequired <= this.reknown;
             };
 
             this.relocateUp = function() {
                 if (this.canRelocateUp()) {
-                    this.location = this.allLocations[this.allLocations.indexOf(this.allLocations.filter(location => location.name == this.location.name)[0]) + 1];
+                    this.location = this.allLocations[this.currentLocationIndex() + 1];
                     if (!this.location.availableContracts) this.location.availableContracts = [];
                     if (!this.location.availableHires) this.location.availableHires = [];
                     this.expireAllExpired();
