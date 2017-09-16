@@ -42,3 +42,12 @@ Each byte represents a different part of an image, for example a dwarf might hav
 1. Mythic
 1. Revered
 1. Feared
+
+## Contracts
+
+### Duration
+
+An hour is 50 seconds.
+A day is around 500 seconds.
+A week is 3500 seconds.
+A month is 15000 seconds.

@@ -110,6 +110,15 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                 this.locations = locations;
             };
 
+            this.cheat = function() {
+                this.giveCoins(100000000000);
+                this.giveReknown(100000000000);
+
+                for (var i = 0; i < adventurers.length; i++) {
+                    this.hired[adventurers[i].name] += 100000;
+                }
+            };
+
             // Locations
             this.currentLocationIndex = function() {
                 return this.allLocations.indexOf(this.allLocations.filter(location => location.name == this.location.name)[0]);
@@ -424,16 +433,25 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                     }
                 }
 
-                // Remove expired contracts
-                for (var j = 0; j < this.location.availableContracts.length; j++) {
-                    if (this.location.availableContracts[j].expires <= Date.now()) {
-                        this.location.availableContracts.splice(j, 1);
+                for (var locationIndex = 0; locationIndex < this.allLocations.length; locationIndex++) {
+                    var location = this.allLocations[locationIndex];
+
+                    // Remove expired contracts
+                    if (location.availableContracts) {
+                        for (var j = 0; j < location.availableContracts.length; j++) {
+                            if (location.availableContracts[j].expires <= Date.now()) {
+                                location.availableContracts.splice(j, 1);
+                            }
+                        }
                     }
-                }
-                // Remove expired hired
-                for (var k = 0; k < this.location.availableHires.length; k++) {
-                    if (this.location.availableHires[k].expires <= Date.now()) {
-                        this.location.availableHires.splice(k, 1);
+
+                    // Remove expired hired
+                    if (location.availableHires) {
+                        for (var k = 0; k < location.availableHires.length; k++) {
+                            if (location.availableHires[k].expires <= Date.now()) {
+                                location.availableHires.splice(k, 1);
+                            }
+                        }
                     }
                 }
             };
