@@ -124,6 +124,7 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                     this.location = this.allLocations[this.allLocations.indexOf(this.allLocations.filter(location => location.name == this.location.name)[0]) - 1];
                     if (!this.location.availableContracts) this.location.availableContracts = [];
                     if (!this.location.availableHires) this.location.availableHires = [];
+                    this.expireAllExpired();
                 }
             };
 
@@ -137,6 +138,7 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                     this.location = this.allLocations[this.allLocations.indexOf(this.allLocations.filter(location => location.name == this.location.name)[0]) + 1];
                     if (!this.location.availableContracts) this.location.availableContracts = [];
                     if (!this.location.availableHires) this.location.availableHires = [];
+                    this.expireAllExpired();
                 }
             };
 
@@ -413,15 +415,7 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                 return !this.expiringDanger(date) && !this.expiringWarning(date);
             };
 
-            this.lessthan = function(a, b) {
-                return a < b;
-            };
-
-            this.tick = function() {
-                // Do all task completion here
-
-                this.coins += this.coinsPerTick;
-                this.freeCoinsTimeout--;
+            this.expireAllExpired = function() {
 
                 // Check for completed expeditions
                 for (var i = 0; i < this.runningExpeditions.length; i++) {
@@ -442,7 +436,19 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                         this.location.availableHires.splice(k, 1);
                     }
                 }
+            };
 
+            this.lessthan = function(a, b) {
+                return a < b;
+            };
+
+            this.tick = function() {
+                // Do all task completion here
+
+                this.coins += this.coinsPerTick;
+                this.freeCoinsTimeout--;
+
+                this.expireAllExpired();
 
                 this.calculateCounter++;
                 if (this.calculateCounter > 10) {
