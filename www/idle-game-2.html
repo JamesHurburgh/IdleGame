@@ -73,6 +73,7 @@
                         <div class="well">
                             <h4>{{contract.name}} <button type="button" class="btn btn-sm pull-right" v-bind:class="{ 'btn-success': canSendExpedition(contract), 'btn-primary': !canSendExpedition(contract) }" @click="sendExpedition(contract)" :disabled="!canSendExpedition(contract)">Start</button>
                             </h4>
+                            <div v-if="contract.contractAmount != undefined">{{contract.contractAmount}} coins</div>
                             <div v-if="contract.requirements != undefined">
                                 <div v-for="adventurerRequirement in contract.requirements.adventurers">
                                     {{adventurerRequirement.amount}} {{adventurerRequirement.type}} <span v-bind:class="{ 'text-danger': lessthan(getHiredCount(adventurerRequirement.type), adventurerRequirement.amount), 'text-success': !lessthan(getHiredCount(adventurerRequirement.type), adventurerRequirement.amount) }">({{getHiredCount(adventurerRequirement.type)}}/{{adventurerRequirement.amount}})</span>
@@ -93,6 +94,7 @@
                             <h4>{{expedition.contract.name}}
                                 <button v-if="expedition.success" type="button" class="btn btn-success pull-right" @click="claimReward(expedition)">
                                     Claim!
+                                    <div v-if="expedition.contract.contractAmount != undefined">{{expedition.contract.contractAmount}} coins</div>
                                     <div v-for="reward in expedition.rewards">
                                         {{reward.amount}} {{reward.type}}
                                     </div>

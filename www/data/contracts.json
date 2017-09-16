@@ -28,8 +28,8 @@
     "upgradeChance": 0.01,
     "duration": 200,
     "successChance": 1,
+    "contractAmount": 15,
     "rewards": [
-        { "chance": 1, "reward": { "type": "coins", "amount": 15 } },
         { "chance": 1, "reward": { "type": "reknown", "amount": 1 } }
     ],
     "requirements": {
@@ -85,8 +85,8 @@
     "upgradeChance": 0.02,
     "duration": 550,
     "successChance": 0.9,
+    "contractAmount": 75,
     "rewards": [
-        { "chance": 1, "reward": { "type": "coins", "amount": 75 } },
         { "chance": 1, "reward": { "type": "reknown", "amount": 1 } }
     ],
     "requirements": {
@@ -122,8 +122,8 @@
     "upgradeChance": 0.02,
     "duration": 350,
     "successChance": 0.8,
+    "contractAmount": 750,
     "rewards": [
-        { "chance": 1, "reward": { "type": "coins", "amount": 750 } },
         { "chance": 1, "reward": { "type": "reknown", "amount": 1 } }
     ],
     "requirements": {

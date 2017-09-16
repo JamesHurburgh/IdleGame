@@ -232,6 +232,9 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
             };
 
             this.claimReward = function(expedition) {
+                if (expedition.contract.contractAmount) {
+                    this.giveCoins(expedition.contract.contractAmount);
+                }
                 for (var i = 0; i < expedition.rewards.length; i++) {
                     this.giveReward(expedition.rewards[i].type, expedition.rewards[i].amount);
                 }
@@ -287,9 +290,11 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                     for (var i = 0; i < contract.rewards.length; i++) {
                         var chance = contract.rewards[i].chance;
                         if (Math.random() < chance) {
-                            var reward = contract.rewards[i].reward;
                             var variation = Math.random() + 0.5;
-                            expedition.rewards.push({ "type": reward.type, "amount": Math.floor(reward.amount * variation) });
+                            var reward = Math.floor(contract.rewards[i].reward.amount * variation);
+                            if (reward > 0) {
+                                expedition.rewards.push({ "type": reward.type, "amount": reward });
+                            }
                         }
                     }
                 } else {
