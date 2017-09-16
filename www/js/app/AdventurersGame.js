@@ -291,9 +291,10 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                         var chance = contract.rewards[i].chance;
                         if (Math.random() < chance) {
                             var variation = Math.random() + 0.5;
-                            var reward = Math.floor(contract.rewards[i].reward.amount * variation);
-                            if (reward > 0) {
-                                expedition.rewards.push({ "type": reward.type, "amount": reward });
+                            var reward = contract.rewards[i].reward
+                            var rewardAmount = Math.floor(reward.amount * variation);
+                            if (rewardAmount > 0) {
+                                expedition.rewards.push({ "type": reward.type, "amount": rewardAmount });
                             }
                         }
                     }
