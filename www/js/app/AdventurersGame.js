@@ -20,6 +20,7 @@ define(["jquery", "json!data/game.json", "json!data/contracts.json", "json!data/
         return function AdventurersGame(saveData, autoSaveFunction) {
 
             this.autoSave = autoSaveFunction;
+            this.millisecondsPerSecond = 1000;
 
             this.reset = function() {
                 console.log("reset");
@@ -182,9 +183,9 @@ define(["jquery", "json!data/game.json", "json!data/contracts.json", "json!data/
             this.getAdventurersOnTheJob = function(name) {
                 var count = 0;
                 for (var i = 0; i < this.runningExpeditions.length; i++) {
-                    var expeditionCount = this.runningExpeditions[i].adventurers.filter(adventurerCount => adventurerCount.type == name)[0];
+                    var expeditionCount = this.runningExpeditions[i].adventurers.filter(adventurer => adventurer.type == name).length;
                     if (expeditionCount) {
-                        count += expeditionCount.amount;
+                        count += expeditionCount;
                     }
                 }
                 return count;
@@ -193,7 +194,7 @@ define(["jquery", "json!data/game.json", "json!data/contracts.json", "json!data/
             this.addAvailableHire = function() {
                 var locationHireables = this.adventurers.filter(hireable => this.location.adventurers.indexOf(hireable.name) >= 0);
                 var hireable = clone(locationHireables[Math.floor(locationHireables.length * Math.random())]);
-                hireable.expires = Date.now() + Math.floor(60000 * (Math.random() + 0.5));
+                hireable.expires = Date.now() + Math.floor(this.millisecondsPerSecond * 60 * (Math.random() + 0.5));
                 this.location.availableHires.push(hireable);
                 this.location.availableHires.sort(function(a, b) {
                     return a.expires - b.expires;
@@ -208,7 +209,7 @@ define(["jquery", "json!data/game.json", "json!data/contracts.json", "json!data/
             this.addContract = function() {
                 var locationContracts = contracts.filter(contract => this.location.contracts.indexOf(contract.name) >= 0);
                 var contract = clone(locationContracts[Math.floor(locationContracts.length * Math.random())]);
-                contract.expires = Date.now() + Math.floor(60000 * (Math.random() + 0.5));
+                contract.expires = Date.now() + Math.floor(this.millisecondsPerSecond * 60 * (Math.random() + 0.5));
                 this.location.availableContracts.push(contract);
                 this.location.availableContracts.sort(function(a, b) {
                     return a.expires - b.expires;
@@ -229,34 +230,6 @@ define(["jquery", "json!data/game.json", "json!data/contracts.json", "json!data/
                     }
                 }
                 return this.reknown >= contract.requirements.reknown;
-            };
-
-            this.sendExpedition = function(contract) {
-                if (!this.canSendExpedition(contract)) {
-                    return;
-                }
-
-                var expedition = {
-                    id: uuidv4(),
-                    contract: contract,
-                    expires: Date.now() + (contract.duration * 1000),
-                    adventurers: []
-                };
-
-                if (contract.requirements.adventurers) {
-                    for (var i = 0; i < contract.requirements.adventurers.length; i++) {
-                        this.spendHires(contract.requirements.adventurers[i].type, contract.requirements.adventurers[i].amount);
-                        expedition.adventurers.push({ type: contract.requirements.adventurers[i].type, amount: contract.requirements.adventurers[i].amount });
-                    }
-                }
-
-                this.runningExpeditions.push(expedition);
-
-                this.runningExpeditions.sort(function(a, b) {
-                    return a.expires - b.expires;
-                });
-
-                this.location.availableContracts.splice(this.location.availableContracts.indexOf(contract), 1);
             };
 
             this.claimAllCompletedExpeditions = function() {
@@ -312,29 +285,65 @@ define(["jquery", "json!data/game.json", "json!data/contracts.json", "json!data/
                 return becomesList[Math.floor(Math.random() * becomesList.length)];
             };
 
+            this.expeditionProgress = function(expedition) {
+                return 100 * ((Date.now() - expedition.start) / (expedition.expires - expedition.start));
+            };
+
+            this.sendExpedition = function(contract) {
+                if (!this.canSendExpedition(contract)) {
+                    return;
+                }
+
+                var expedition = {
+                    id: uuidv4(),
+                    contract: contract,
+                    start: Date.now(),
+                    expires: Date.now() + (contract.duration * this.millisecondsPerSecond),
+                    adventurers: []
+                };
+
+                if (contract.requirements.adventurers) {
+                    for (var i = 0; i < contract.requirements.adventurers.length; i++) {
+                        this.spendHires(contract.requirements.adventurers[i].type, contract.requirements.adventurers[i].amount);
+                        for (var j = 0; j < contract.requirements.adventurers[i].amount; j++) {
+                            expedition.adventurers.push({ "type": contract.requirements.adventurers[i].type });
+                        }
+                    }
+                }
+
+                this.runningExpeditions.push(expedition);
+
+                this.runningExpeditions.sort(function(a, b) {
+                    return a.expires - b.expires;
+                });
+
+                this.location.availableContracts.splice(this.location.availableContracts.indexOf(contract), 1);
+            };
+
             this.completeExpedition = function(expedition) {
                 this.runningExpeditions.splice(this.runningExpeditions.indexOf(expedition), 1);
 
                 var contract = expedition.contract;
                 // Return questers to sendable pool
-                var deathMessages = "";
                 expedition.upgradeMessages = "";
+                expedition.awol = false;
                 var survived = 0;
 
-                if (contract.requirements.adventurers) {
-                    for (var i = 0; i < contract.requirements.adventurers.length; i++) {
-                        for (var j = 0; j < contract.requirements.adventurers[i].amount; j++) {
-                            var upgrade = this.getUpgrade(contract.requirements.adventurers[i].type);
-                            if (Math.random() < contract.risk) { // Then someone 'died'
-                                deathMessages += contract.requirements.adventurers[i].type + "-" + j + " didn't come back. ";
-                            } else if (upgrade && Math.random() < contract.upgradeChance) { // Then someone 'upgraded'
-                                expedition.upgradeMessages += contract.requirements.adventurers[i].type + "-" + j + " has become a " + upgrade + ". ";
-                                this.hired[upgrade]++;
-                                survived++;
-                            } else {
-                                this.hired[contract.requirements.adventurers[i].type]++;
-                                survived++;
-                            }
+                if (expedition.adventurers) {
+                    for (var i = 0; i < expedition.adventurers.length; i++) {
+                        var adventurerType = expedition.adventurers[i].type;
+                        var upgrade = this.getUpgrade(adventurerType);
+
+                        if (Math.random() < contract.risk) { // Then someone 'died'
+                            expedition.adventurers[i].awol = true;
+                            expedition.awol = true;
+                        } else if (upgrade && Math.random() < contract.upgradeChance) { // Then someone 'upgraded'
+                            expedition.adventurers[i].upgradedTo = upgrade;
+                            this.hired[upgrade]++;
+                            survived++;
+                        } else {
+                            this.hired[adventurerType]++;
+                            survived++;
                         }
                     }
                 }
@@ -350,7 +359,7 @@ define(["jquery", "json!data/game.json", "json!data/contracts.json", "json!data/
                         var chance = contract.rewards[i].chance;
                         if (Math.random() < chance) {
                             var variation = Math.random() + 0.5;
-                            var reward = contract.rewards[i].reward
+                            var reward = contract.rewards[i].reward;
                             var rewardAmount = Math.floor(reward.amount * variation);
                             if (rewardAmount > 0) {
                                 expedition.rewards.push({ "type": reward.type, "amount": rewardAmount });
@@ -360,10 +369,6 @@ define(["jquery", "json!data/game.json", "json!data/contracts.json", "json!data/
                 } else {
                     expedition.completionMessage = contract.failureMessage;
                 }
-                if (deathMessages.length > 0) {
-                    expedition.deathMessage = contract.deathMessage;
-                }
-                expedition.deathMessages = deathMessages;
 
                 this.completedExpeditions.push(expedition);
             };
