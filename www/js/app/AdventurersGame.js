@@ -83,11 +83,6 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                     this.addAvailableHire();
                 }
 
-                // Adding the sort here as well, because it doesn't seem to sort properly
-                // this.runningExpeditions.sort(function(a, b) {
-                //     return a.expires - b.expires;
-                // });
-
             };
 
             this.updateGameData = function(gameData) {
