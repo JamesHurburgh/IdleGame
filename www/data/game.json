@@ -1,0 +1,12 @@
+{
+    "name": "Adventurers of Otium",
+    "description": "Adventurering is dangerous. Hire someone else to do it for you!",
+    "author": "James Hurburgh",
+    "author-uri": "",
+    "versions": [{
+        "number": "0.1",
+        "description": "Initial versioned release!  Versioning and save game loading improved.",
+        "features": ["Added release notes and versioning."],
+        "bugfixes": ["Rejigged saved game loading.  Should work better now."]
+    }]
+}

@@ -1,7 +1,7 @@
 /*jshint esversion: 6 */
 
-define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!data/adventurers.json", "json!data/reknown.json"],
-    function AdventurersGame(jquery, contracts, locations, adventurers, reknown) {
+define(["jquery", "json!data/game.json", "json!data/contracts.json", "json!data/locations.json", "json!data/adventurers.json", "json!data/reknown.json"],
+    function AdventurersGame(jquery, game, contracts, locations, adventurers, reknown) {
 
         function uuidv4() {
             return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
@@ -17,7 +17,7 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
             }
         }
 
-        return function AdventurersGame(gameData, autoSaveFunction) {
+        return function AdventurersGame(saveData, autoSaveFunction) {
 
             this.autoSave = autoSaveFunction;
 
@@ -27,16 +27,15 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                 this.calculateCounter = 0;
 
                 this.coins = 10;
-                this.coinsPerTick = 0;
                 this.reknown = 0;
                 this.freeCoinsTimeout = 0;
 
                 this.hired = {};
-                this.actualCpts = [];
 
                 this.runningExpeditions = [];
                 this.completedExpeditions = [];
 
+                // Take a local copy of the locations
                 this.allLocations = clone(locations);
                 this.location = this.allLocations[0];
 
@@ -47,6 +46,7 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                 this.adventurers = adventurers;
                 this.contracts = contracts;
                 this.locations = locations;
+                this.game = game;
 
                 this.calculate();
             };
@@ -57,19 +57,6 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                 this.calculateCounter = 0;
                 // Autosave
                 this.autoSave();
-
-                // Resource Gathering
-                this.coinsPerTick = 0;
-
-                for (var i = 0; i < adventurers.length; i++) {
-                    this.coinsPerTick += this.getCPT(adventurers[i].name);
-                }
-
-                // Expedition Progress
-                this.expeditionProgressPerTick = 0;
-                if (this.expedition) {
-                    this.expeditionProgressPerTick += 1;
-                }
 
                 // New contracts
                 var maxContracts = 5;
@@ -85,30 +72,31 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
 
             };
 
-            this.updateGameData = function(gameData) {
-                console.log("updateGameData");
-                if (!this.calculateCounter) this.calculateCounter = 0;
+            this.loadFromSavedData = function(savedData) {
+                console.log("loadFromSavedData");
 
-                if (!this.coins) this.coins = 10;
-                if (!this.coinsPerTick) this.coinsPerTick = 0;
-                if (!this.reknown) this.reknown = 0;
-                if (!this.freeCoinsTimeout) this.freeCoinsTimeout = 0;
+                this.coins = savedData.coins;
+                this.reknown = savedData.reknown;
+                this.freeCoinsTimeout = savedData.freeCoinsTimeout;
 
-                if (!this.hired) this.hired = {};
+                this.hired = savedData.hired;
 
-                if (!this.runningExpeditions) this.runningExpeditions = [];
-                if (!this.completedExpeditions) this.completedExpeditions = [];
+                this.runningExpeditions = savedData.runningExpeditions;
+                this.completedExpeditions = savedData.completedExpeditions;
 
-                if (!this.allLocations) this.allLocations = clone(locations);
-                if (!this.location) this.location = this.allLocations[0];
+                this.allLocations = savedData.allLocations;
+                this.location = savedData.location;
 
-                if (!this.location.availableContracts) this.location.availableContracts = [];
-                if (!this.location.availableHires) this.location.availableHires = [];
+                this.location.availableContracts = savedData.location.availableContracts;
+                this.location.availableHires = savedData.location.availableHires;
 
                 // Data
                 this.adventurers = adventurers;
                 this.contracts = contracts;
                 this.locations = locations;
+                this.game = game;
+
+                this.calculate();
             };
 
             this.cheat = function() {
@@ -380,12 +368,6 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
                 this.completedExpeditions.push(expedition);
             };
 
-            this.getCPT = function(name) {
-                var hireable = this.getHireable(name);
-                var hiredCount = this.getHiredCount(name);
-                return Math.floor(hiredCount * hireable.cpt);
-            };
-
             this.getCost = function(name) {
                 var hiredCount = this.getHiredCount(name);
                 var hireable = this.getHireable(name);
@@ -501,9 +483,6 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
             };
 
             this.tick = function() {
-                // Do all task completion here
-
-                this.coins += this.coinsPerTick;
                 this.freeCoinsTimeout--;
 
                 this.expireAllExpired();
@@ -516,17 +495,12 @@ define(["jquery", "json!data/contracts.json", "json!data/locations.json", "json!
 
 
             console.log("initialising");
-            if (!gameData) {
-                this.reset();
-            }
-            this.updateGameData(gameData);
-            $.extend(this, gameData);
 
-            // Data
-            this.adventurers = adventurers;
-            this.contracts = contracts;
-            this.locations = locations;
-            this.calculate();
+            if (!saveData) {
+                this.reset();
+            } else {
+                this.loadFromSavedData(saveData);
+            }
 
         };
     });
