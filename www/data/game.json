@@ -8,7 +8,9 @@
         "description": "",
         "features": [
             "UI updated with a proper nav bar and everything.",
-            "Hire all and start all contracts."
+            "Hire all and start all contracts.",
+            "Simple options dialog",
+            "Automation tools for testing"
         ],
         "bugfixes": []
     }, {

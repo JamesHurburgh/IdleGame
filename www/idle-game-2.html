@@ -50,19 +50,42 @@
                         <li><a href="#">Reknown: {{reknownText()}} <span class="text-muted">({{reknown}})</span></a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#" @click="reset()">Reset the game</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#options">Options</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">About<span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="#" data-toggle="modal" data-target="#releaseNotes">Release Notes</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li><a href="https://jameshurburgh.github.io/about.html">About the Author</a></li>
+                                <li><a href="https://www.patreon.com/bePatron?u=6205348" target="_blank" class="btn btn-success">Become a Patron!</a></li>
                             </ul>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
+
+        <!-- Modal Options Box -->
+        <div id="options" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4>Options</h4>
+                    </div>
+                    <div class="modal-body">
+                        <button @click="reset()" type="button" class="btn btn-default" data-dismiss="modal">Reset the Game</button>
+                        <button @click="toggleClaimAll()" type="button" class="btn btn-default" data-dismiss="modal">Toggle claim all buttons</button>
+                        <button @click="toggleAutomatic()" type="button" class="btn btn-default" data-dismiss="modal">Toggle automatic play</button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Modal About Box -->
         <div id="releaseNotes" class="modal fade" role="dialog">
@@ -90,10 +113,9 @@
                             </div>
                         </div>
                     </div>
-                    <!--<div class="modal-footer">
-                    <a href="https://www.patreon.com/bePatron?u=6205348" target="_blank" class="btn btn-success">Become a Patron!</a>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>-->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -112,7 +134,7 @@
                     </div>
                     <h2>Expeditions</h2>
 
-                    <h3>Completed ({{completedExpeditions.length}}) <button v-if="!lessthan(completedExpeditions.length, 1)" type="button" class="btn btn-success btn-xs pull-right" @click="claimAllCompletedExpeditions()">Claim All</button></h3>
+                    <h3>Completed ({{completedExpeditions.length}}) <button v-if="claimAllVisible()" type="button" class="btn btn-success btn-xs pull-right" @click="claimAllCompletedExpeditions()">Claim All</button></h3>
                     <transition-group name="custom-classes-transition" enter-active-class="animated fadeIn" leave-active-class="noOutAnimation">
                         <div v-for="expedition in completedExpeditions" key="expedition.id">
                             <div class="well well-sm">
@@ -183,7 +205,7 @@
                     </div>
 
                     <div class="col-md-6">
-                        <h3>Contracts ({{location.availableContracts.length}}/5) <button v-if="!lessthan(location.availableContracts.length, 1)" type="button" class="btn btn-success btn-xs pull-right" @click="startAllContracts()">Start All</button></h3>
+                        <h3>Contracts ({{location.availableContracts.length}}/5) <button v-if="startAllVisible()" type="button" class="btn btn-success btn-xs pull-right" @click="startAllContracts()">Start All</button></h3>
                         <transition-group name="custom-classes-transition" enter-active-class="animated fadeIn" leave-active-class="noOutAnimation">
                             <div v-for="contract in location.availableContracts" key="contract.name">
                                 <div class="well well-sm">
@@ -205,7 +227,7 @@
                     </div>
 
                     <div class="col-md-6">
-                        <h3>Adventurers ({{location.availableHires.length}}/5) <button v-if="!lessthan(location.availableHires.length, 1)" type="button" class="btn btn-success btn-xs pull-right" @click="hireAll()">Hire All</button></h3>
+                        <h3>Adventurers ({{location.availableHires.length}}/5) <button v-if="hireAllVisible()" type="button" class="btn btn-success btn-xs pull-right" @click="hireAll()">Hire All</button></h3>
                         <transition-group name="custom-classes-transition" enter-active-class="animated fadeIn" leave-active-class="noOutAnimation">
                             <div v-for="adventurer in location.availableHires" key="adventurer.name">
                                 <div class="well well-sm">

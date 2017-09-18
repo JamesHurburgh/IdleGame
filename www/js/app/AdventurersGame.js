@@ -43,6 +43,12 @@ define(["jquery", "json!data/game.json", "json!data/contracts.json", "json!data/
                 this.location.availableContracts = [];
                 this.location.availableHires = [];
 
+                // Initilise options
+                this.options = {
+                    "claimAllButtons" : false,
+                    "automatic":false
+                };
+
                 // Data
                 this.adventurers = adventurers;
                 this.contracts = contracts;
@@ -70,7 +76,6 @@ define(["jquery", "json!data/game.json", "json!data/contracts.json", "json!data/
                 if (this.location.availableHires.length < maxAvailableHires && Math.random() > 0.75) {
                     this.addAvailableHire();
                 }
-
             };
 
             this.loadFromSavedData = function(savedData) {
@@ -91,17 +96,32 @@ define(["jquery", "json!data/game.json", "json!data/contracts.json", "json!data/
                 this.location.availableContracts = savedData.location.availableContracts;
                 this.location.availableHires = savedData.location.availableHires;
 
-                if (!savedData.version) {
-                    if (!this.location.availableContracts) this.location.availableContracts = [];
-                    if (!this.location.availableHires) this.location.availableHires = [];
-                    if (!this.allLocations) this.allLocations = clone(locations);
-                    if (!this.reknown) this.reknown = 0;
-                    if (!this.coins) this.coins = 0;
-                }
-                if (savedData.version == "0.2") {
-                    this.allLocations = clone(locations);
+                switch(savedData.version){
+                    default:
+                        if (!this.location.availableContracts) this.location.availableContracts = [];
+                        if (!this.location.availableHires) this.location.availableHires = [];
+                        if (!this.allLocations) this.allLocations = clone(locations);
+                        if (!this.reknown) this.reknown = 0;
+                        if (!this.coins) this.coins = 0;
+                    case "0.2":
+                        // reset locations
+                        this.allLocations = clone(locations);
+                    case "0.3":
+                        this.options = {
+                            "claimAllButtons" : false,
+                            "automatic":false
+                        };
+                    case "0.4":
+                        this.options = savedData.options;
                 }
 
+                if(!this.options) {
+                    
+                        this.options = {
+                            "claimAllButtons" : false,
+                            "automatic":false
+                        };
+                }
                 // Data
                 this.adventurers = adventurers;
                 this.contracts = contracts;
@@ -112,6 +132,7 @@ define(["jquery", "json!data/game.json", "json!data/contracts.json", "json!data/
                 this.calculate();
             };
 
+            // Options
             this.cheat = function() {
                 console.log("cheat");
                 this.giveCoins(100000000000);
@@ -120,6 +141,26 @@ define(["jquery", "json!data/game.json", "json!data/contracts.json", "json!data/
                 for (var i = 0; i < adventurers.length; i++) {
                     this.hired[adventurers[i].name] += 100000;
                 }
+            };
+
+            this.toggleClaimAll = function(){
+                this.options.claimAllButtons = !this.options.claimAllButtons;
+            };
+
+            this.claimAllVisible = function(){
+                return this.options.claimAllButtons && this.completedExpeditions.length > 0;
+            };
+
+            this.startAllVisible = function(){
+                return this.options.claimAllButtons && this.location.availableContracts.length > 0;
+            };
+
+            this.hireAllVisible = function(){
+                return this.options.claimAllButtons && this.location.availableHires.length > 0;
+            };
+
+            this.toggleAutomatic = function(){
+                this.options.automatic = !this.options.automatic;
             };
 
             // Reknown
@@ -147,6 +188,10 @@ define(["jquery", "json!data/game.json", "json!data/contracts.json", "json!data/
             };
 
             this.canRelocateUp = function() {
+                // This is the hard limit for now.
+                if (this.currentLocationIndex() == 1) {
+                    return false;
+                }
                 if (this.currentLocationIndex() == this.allLocations.length - 1) {
                     return false;
                 }
@@ -528,6 +573,18 @@ define(["jquery", "json!data/game.json", "json!data/contracts.json", "json!data/
                 this.calculateCounter++;
                 if (this.calculateCounter > 10) {
                     this.calculate();
+                    
+                    if(this.options.automatic){
+                        if(this.canRelocateUp()){
+                            this.relocateUp();
+                        }
+                        if(this.canGetFreeCoins()){
+                            this.freeCoins(this.location);
+                        }
+                        this.claimAllCompletedExpeditions();
+                        this.hireAll();
+                        this.startAllContracts();
+                    }
                 }
             };
 
