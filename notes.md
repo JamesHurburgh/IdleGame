@@ -27,27 +27,21 @@ Each byte represents a different part of an image, for example a dwarf might hav
 1. Scars
 1. Features
 
-## Statuses
-
-1. Unknown
-1. Heard of
-1. Known
-1. Well known
-1. Respected
-
-...
-
-1. Epic
-1. Legendary
-1. Mythic
-1. Revered
-1. Feared
-
 ## Contracts
 
 ### Duration
 
 An hour is 50 seconds.
-A day is around 500 seconds.
-A week is 3500 seconds.
-A month is 15000 seconds.
+A work day is 500 seconds. 8m 20s
+A week is 3500 seconds. 58m 20s
+A month is 15,000 seconds. 4h 10m
+A year is 180,000 seconds. 50h
+
+To scale duration, take the square root of the seconds divide by 425.  THis gives a number between 0 and 1.
+50s = 0.01
+500s = 0.05
+1,500s = 0.09
+2,500s = 0.11
+3,500s = 0.13
+15,000s = 0.28
+180,000s = 0.99
