@@ -9,7 +9,8 @@
         "features": [
             "Added reward factors to contracts", 
             "Added some new contracts",
-            "Improved updating to new version"],
+            "Improved updating to new version",
+            "Contracts now show risk, reward and duration factors"],
         "bugfixes": []
     }, {
         "number": "0.2",
