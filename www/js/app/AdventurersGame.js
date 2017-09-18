@@ -91,14 +91,14 @@ define(["jquery", "json!data/game.json", "json!data/contracts.json", "json!data/
                 this.location.availableContracts = savedData.location.availableContracts;
                 this.location.availableHires = savedData.location.availableHires;
 
-                if(!savedData.version){
-                    if(!this.location.availableContracts) this.location.availableContracts = [];
-                    if(!this.location.availableHires) this.location.availableHires = [];
-                    if(!this.allLocations) this.allLocations = clone(locations);
-                    if(!this.reknown) this.reknown = 0;
-                    if(!this.coins) this.coins = 0;
+                if (!savedData.version) {
+                    if (!this.location.availableContracts) this.location.availableContracts = [];
+                    if (!this.location.availableHires) this.location.availableHires = [];
+                    if (!this.allLocations) this.allLocations = clone(locations);
+                    if (!this.reknown) this.reknown = 0;
+                    if (!this.coins) this.coins = 0;
                 }
-                if(savedData.version == "0.2"){
+                if (savedData.version == "0.2") {
                     this.allLocations = clone(locations);
                 }
 
@@ -182,8 +182,19 @@ define(["jquery", "json!data/game.json", "json!data/contracts.json", "json!data/
                 return this.coins >= this.getCost(name);
             };
 
+            // Adventurers
             this.getHireable = function(name) {
                 return adventurers.filter(hireable => hireable.name == name)[0];
+            };
+
+            this.getAllHireableAdventurers = function() {
+                return this.location.availableHires.filter(adventurer => this.canHire(adventurer.name));
+            };
+
+            this.hireAll = function() {
+                while (this.getAllHireableAdventurers().length > 0) {
+                    this.hire(this.getAllHireableAdventurers()[0]);
+                }
             };
 
             this.getHiredCount = function(name) {
@@ -299,6 +310,16 @@ define(["jquery", "json!data/game.json", "json!data/contracts.json", "json!data/
 
             this.expeditionProgress = function(expedition) {
                 return 100 * ((Date.now() - expedition.start) / (expedition.expires - expedition.start));
+            };
+
+            this.getStartableContracts = function() {
+                return this.location.availableContracts.filter(contract => this.canSendExpedition(contract));
+            };
+
+            this.startAllContracts = function() {
+                while (this.getStartableContracts().length > 0) {
+                    this.sendExpedition(this.getStartableContracts()[0]);
+                }
             };
 
             this.sendExpedition = function(contract) {

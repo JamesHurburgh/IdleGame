@@ -7,16 +7,19 @@
         "number": "0.4",
         "description": "",
         "features": [
-            "UI updated with a proper nav bar and everything."],
+            "UI updated with a proper nav bar and everything.",
+            "Hire all and start all contracts."
+        ],
         "bugfixes": []
-    },{
+    }, {
         "number": "0.3",
         "description": "",
         "features": [
-            "Added reward factors to contracts", 
+            "Added reward factors to contracts",
             "Added some new contracts",
             "Improved updating to new version",
-            "Contracts now show risk, reward and duration factors"],
+            "Contracts now show risk, reward and duration factors"
+        ],
         "bugfixes": []
     }, {
         "number": "0.2",
