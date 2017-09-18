@@ -98,6 +98,9 @@ define(["jquery", "json!data/game.json", "json!data/contracts.json", "json!data/
                     if(!this.reknown) this.reknown = 0;
                     if(!this.coins) this.coins = 0;
                 }
+                if(savedData.version == "0.2"){
+                    this.allLocations = clone(locations);
+                }
 
                 // Data
                 this.adventurers = adventurers;
