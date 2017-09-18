@@ -8,7 +8,8 @@
         "description": "",
         "features": [
             "Added reward factors to contracts", 
-            "Added some new contracts"],
+            "Added some new contracts",
+            "Improved updating to new version"],
         "bugfixes": []
     }, {
         "number": "0.2",
