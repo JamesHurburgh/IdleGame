@@ -4,6 +4,12 @@
     "author": "James Hurburgh",
     "author-uri": "",
     "versions": [{
+        "number": "0.4",
+        "description": "",
+        "features": [
+            "UI updated with a proper nav bar and everything."],
+        "bugfixes": []
+    },{
         "number": "0.3",
         "description": "",
         "features": [
