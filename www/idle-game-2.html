@@ -51,6 +51,7 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="#" data-toggle="modal" data-target="#stats">Statistics</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#achievements">Achievements</a></li>
                         <li><a href="#" data-toggle="modal" data-target="#options">Options</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">About<span class="caret"></span></a>
@@ -65,6 +66,32 @@
                 </div>
             </div>
         </nav>
+
+        <!-- Modal Achievements Box -->
+        <div id="achievements" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4>Achievements</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="panel panel-default" v-for="achievement in achievements">
+                            <div class="panel-heading">{{achievement.name}}</div>
+                            <div class="panel-body">
+                                {{achievement.description}}
+                                <img :src="'./img/' + achievement.icon" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Modal Stats Box -->
         <div id="stats" class="modal fade" role="dialog">

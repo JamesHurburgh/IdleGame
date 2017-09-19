@@ -4,6 +4,13 @@
     "author": "James Hurburgh",
     "author-uri": "",
     "versions": [{
+        "number": "0.6",
+        "description": "Achievements!",
+        "features": [
+            "Added achievement viewing."
+        ],
+        "bugfixes": []
+    }, {
         "number": "0.5",
         "description": "Statistics!",
         "features": [

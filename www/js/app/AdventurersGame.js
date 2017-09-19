@@ -1,7 +1,21 @@
 /*jshint esversion: 6 */
 
-define(["jquery", "json!data/game.json", "json!data/contracts.json", "json!data/locations.json", "json!data/adventurers.json", "json!data/reknown.json"],
-    function AdventurersGame(jquery, game, contracts, locations, adventurers, reknown) {
+define(["jquery",
+        "json!data/game.json",
+        "json!data/contracts.json",
+        "json!data/locations.json",
+        "json!data/adventurers.json",
+        "json!data/reknown.json",
+        "json!data/achievements.json"
+    ],
+    function AdventurersGame(
+        jquery,
+        game,
+        contracts,
+        locations,
+        adventurers,
+        reknown,
+        achievements) {
 
         function uuidv4() {
             return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
@@ -49,7 +63,7 @@ define(["jquery", "json!data/game.json", "json!data/contracts.json", "json!data/
                     "automatic": false
                 };
 
-                // Initilise stats
+                // Initialise stats
                 if (!this.stats) {
                     this.stats = [];
                 } else {
@@ -57,11 +71,13 @@ define(["jquery", "json!data/game.json", "json!data/contracts.json", "json!data/
                         this.stats[i].current = 0;
                     }
                 }
+                this.claimedAchievements = [];
 
                 // Data
                 this.adventurers = adventurers;
                 this.contracts = contracts;
                 this.locations = locations;
+                this.achievements = achievements;
                 this.game = game;
 
                 this.calculate();
@@ -108,6 +124,7 @@ define(["jquery", "json!data/game.json", "json!data/contracts.json", "json!data/
                 this.options = savedData.options;
 
                 this.stats = savedData.stats;
+                this.claimedAchievements = savedData.claimedAchievements;
 
                 switch (savedData.version) {
                     default: if (!this.location.availableContracts) this.location.availableContracts = [];
@@ -126,6 +143,8 @@ define(["jquery", "json!data/game.json", "json!data/contracts.json", "json!data/
                     case "0.4":
                             this.stats = [];
                     case "0.5":
+                            this.claimedAchievements = [];
+                    case "0.6":
                 }
 
                 if (!this.options) {
@@ -139,6 +158,7 @@ define(["jquery", "json!data/game.json", "json!data/contracts.json", "json!data/
                 this.adventurers = adventurers;
                 this.contracts = contracts;
                 this.locations = locations;
+                this.achievements = achievements;
                 this.game = game;
                 this.version = game.versions[0].number;
 
@@ -465,10 +485,15 @@ define(["jquery", "json!data/game.json", "json!data/contracts.json", "json!data/
                         if (Math.random() < contract.risk) { // Then someone 'died'
                             expedition.adventurers[i].awol = true;
                             expedition.awol = true;
+                            this.trackStat("death", "adventurer", 1);
+                            this.trackStat("death-adventurer", adventurerType, 1);
                         } else if (upgrade && Math.random() < contract.upgradeChance) { // Then someone 'upgraded'
                             expedition.adventurers[i].upgradedTo = upgrade;
                             this.hired[upgrade]++;
                             survived++;
+                            this.trackStat("upgrade", "adventurer", 1);
+                            this.trackStat("upgrade-adventurer", adventurerType, 1);
+                            this.trackStat("upgrade-adventurer-to", upgrade, 1);
                         } else {
                             this.hired[adventurerType]++;
                             survived++;
@@ -606,7 +631,7 @@ define(["jquery", "json!data/game.json", "json!data/contracts.json", "json!data/
                         for (var j = 0; j < location.availableContracts.length; j++) {
                             if (location.availableContracts[j].expires <= Date.now()) {
                                 this.trackStat("miss", "contract", 1);
-                                this.trackStat("miss-contract", this.location.availableContracts[j].name, 1);
+                                this.trackStat("miss-contract", location.availableContracts[j].name, 1);
                                 location.availableContracts.splice(j, 1);
 
                             }
@@ -618,7 +643,7 @@ define(["jquery", "json!data/game.json", "json!data/contracts.json", "json!data/
                         for (var k = 0; k < location.availableHires.length; k++) {
                             if (location.availableHires[k].expires <= Date.now()) {
                                 this.trackStat("miss", "adventurer", 1);
-                                this.trackStat("miss-adventurer", this.location.availableHires[k].name, 1);
+                                this.trackStat("miss-adventurer", location.availableHires[k].name, 1);
                                 location.availableHires.splice(k, 1);
                             }
                         }

@@ -1,0 +1,9 @@
+[{
+    "name": "Clink!",
+    "description": "Get 100 coins!",
+    "icon": "achievement.png",
+    "trigger": {
+        "statistic": "get-coins",
+        "amount": "100"
+    }
+}]
