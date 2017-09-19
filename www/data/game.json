@@ -7,7 +7,8 @@
         "number": "0.6",
         "description": "Achievements!",
         "features": [
-            "Added achievement viewing."
+            "Added achievement viewing.",
+            "Added footer and moved coins and reknown there."
         ],
         "bugfixes": []
     }, {
