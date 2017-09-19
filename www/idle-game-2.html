@@ -29,7 +29,7 @@
 
 <body>
     <div id="AdventurersGame">
-        <nav class="navbar navbar-default">
+        <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
@@ -132,7 +132,7 @@
                             {{location.name}}
                         </h2>
                     </div>
-                        
+
                     <div class="col-xs-12">
                         <div class="col-xs-12 col-sm-8">
                             <span>{{location.description}}</span>
@@ -144,9 +144,9 @@
                                     Relocate
                                 </button>
                             </div>
-                            
+
                             <div class="pull-right">
-                            <button type="button" class="btn btn-primary pull-right" v-bind:class="{ 'btn-success': canGetFreeCoins(), 'btn-primary': !canGetFreeCoins() }" @click="freeCoins(location)" :disabled="!canGetFreeCoins()">{{location.freeCoinsDescription}}</button>
+                                <button type="button" class="btn btn-primary pull-right" v-bind:class="{ 'btn-success': canGetFreeCoins(), 'btn-primary': !canGetFreeCoins() }" @click="freeCoins(location)" :disabled="!canGetFreeCoins()">{{location.freeCoinsDescription}}</button>
                             </div>
 
                             <div class="pull-right">
@@ -172,11 +172,17 @@
                                         </div>
                                     </div>
                                     <div>Duration: {{Math.ceil(Math.sqrt(contract.duration)/42)}}/10</div>
-                                    <div class="progress"><div class="progress-bar" v-bind:style="{ width: Math.ceil(Math.sqrt(contract.duration)/42)*10 + '%' }"></div></div>
+                                    <div class="progress">
+                                        <div class="progress-bar" v-bind:style="{ width: Math.ceil(Math.sqrt(contract.duration)/42)*10 + '%' }"></div>
+                                    </div>
                                     <div>Risk: {{Math.ceil(contract.risk * 10)}}/10</div>
-                                    <div class="progress"><div class="progress-bar" v-bind:style="{ width: Math.ceil(contract.risk * 10) * 10 + '%' }"></div></div>
+                                    <div class="progress">
+                                        <div class="progress-bar" v-bind:style="{ width: Math.ceil(contract.risk * 10) * 10 + '%' }"></div>
+                                    </div>
                                     <div>Reward: {{Math.ceil(contract.rewardFactor * 10)}}/10</div>
-                                    <div class="progress"><div class="progress-bar" v-bind:style="{ width: Math.ceil(contract.rewardFactor * 10) * 10 + '%' }"></div></div>
+                                    <div class="progress">
+                                        <div class="progress-bar" v-bind:style="{ width: Math.ceil(contract.rewardFactor * 10) * 10 + '%' }"></div>
+                                    </div>
                                     <div v-bind:class="{ 'text-danger': expiringDanger(contract.expires), 'text-warning': expiringWarning(contract.expires), 'text-success': expiringSuccess(contract.expires) }">{{readableTime(contract.expires - Date.now())}} remaining</div>
                                 </div>
                             </div>
