@@ -12,7 +12,8 @@
             "Simple options dialog",
             "Automation tools for testing",
             "Major layout adjustments to make the game more mobile friendly.",
-            "Added oversized quest stat indicators."
+            "Added oversized quest stat indicators.",
+            "Added coin counter just above adventurers for hire."
         ],
         "bugfixes": []
     }, {
