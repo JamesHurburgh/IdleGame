@@ -122,6 +122,7 @@
 
         <div class="container">
             <div class="row">
+
                 <div class="col-md-12">
                     <p>{{game.description}}</p>
                 </div>
@@ -171,17 +172,18 @@
                                             {{adventurerRequirement.amount}} {{adventurerRequirement.type}} <span v-bind:class="{ 'text-danger': lessthan(getHiredCount(adventurerRequirement.type), adventurerRequirement.amount), 'text-success': !lessthan(getHiredCount(adventurerRequirement.type), adventurerRequirement.amount) }">({{getHiredCount(adventurerRequirement.type)}}/{{adventurerRequirement.amount}})</span>
                                         </div>
                                     </div>
+
                                     <div>Duration: {{Math.ceil(Math.sqrt(contract.duration)/42)}}/10</div>
-                                    <div class="progress">
-                                        <div class="progress-bar" v-bind:style="{ width: Math.ceil(Math.sqrt(contract.duration)/42)*10 + '%' }"></div>
+                                    <div class="progress" style="height: 7px; margin-bottom: 0px;">
+                                        <div class="progress-bar progress-bar-info" v-bind:style="{ width: Math.ceil(Math.sqrt(contract.duration)/42)*10 + '%' }"></div>
                                     </div>
                                     <div>Risk: {{Math.ceil(contract.risk * 10)}}/10</div>
-                                    <div class="progress">
-                                        <div class="progress-bar" v-bind:style="{ width: Math.ceil(contract.risk * 10) * 10 + '%' }"></div>
+                                    <div class="progress" style="height: 7px; margin-bottom: 0px;">
+                                        <div class="progress-bar progress-bar-danger" v-bind:style="{ width: Math.ceil(contract.risk * 10) * 10 + '%' }"></div>
                                     </div>
                                     <div>Reward: {{Math.ceil(contract.rewardFactor * 10)}}/10</div>
-                                    <div class="progress">
-                                        <div class="progress-bar" v-bind:style="{ width: Math.ceil(contract.rewardFactor * 10) * 10 + '%' }"></div>
+                                    <div class="progress" style="height: 7px; margin-bottom: 0px;">
+                                        <div class="progress-bar progress-bar-success" v-bind:style="{ width: Math.ceil(contract.rewardFactor * 10) * 10 + '%' }"></div>
                                     </div>
                                     <div v-bind:class="{ 'text-danger': expiringDanger(contract.expires), 'text-warning': expiringWarning(contract.expires), 'text-success': expiringSuccess(contract.expires) }">{{readableTime(contract.expires - Date.now())}} remaining</div>
                                 </div>
