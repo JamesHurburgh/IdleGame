@@ -5,18 +5,19 @@
     "author-uri": "",
     "versions": [{
         "number": "0.4",
-        "description": "",
+        "description": "The UI update.  Put everything in places that hopefully make a little more sense.",
         "features": [
             "UI updated with a proper nav bar and everything.",
             "Hire all and start all contracts.",
             "Simple options dialog",
             "Automation tools for testing",
-            "Major layout adjustments to make the game more mobile friendly."
+            "Major layout adjustments to make the game more mobile friendly.",
+            "Added oversized quest stat indicators."
         ],
         "bugfixes": []
     }, {
         "number": "0.3",
-        "description": "",
+        "description": "Contract improvements",
         "features": [
             "Added reward factors to contracts",
             "Added some new contracts",
