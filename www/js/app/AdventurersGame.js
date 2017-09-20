@@ -156,6 +156,7 @@ define(["jquery",
                                 this.automaticFreeCoins = this.options.automatic;
                             }
                         }
+                        alertify.alert("New version!  Check the release notes.");
                     case "0.8":
                 }
 

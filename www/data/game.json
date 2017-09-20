@@ -7,7 +7,8 @@
         "number": "0.8",
         "description": "",
         "features": [
-            "Split up automation options and displayed better in dialog."
+            "Split up automation options and displayed better in dialog.",
+            "Added new version notification."
         ],
         "bugfixes": []
     }, {
