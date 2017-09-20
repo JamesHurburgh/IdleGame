@@ -121,7 +121,6 @@ define(["jquery",
 
                 this.allLocations = savedData.allLocations;
                 this.location = savedData.location;
-
                 this.location.availableContracts = savedData.location.availableContracts;
                 this.location.availableHires = savedData.location.availableHires;
 
@@ -165,6 +164,11 @@ define(["jquery",
                 this.achievements = achievements;
                 this.game = game;
                 this.version = game.versions[0].number;
+
+                for (var i = 0; i < this.allLocations.length; i++) {
+                    this.allLocations[i].contracts = this.locations[i].contracts;
+                    this.allLocations[i].adventurers = this.locations[i].adventurers;
+                }
 
                 this.calculate();
             };
@@ -297,7 +301,7 @@ define(["jquery",
 
             this.canRelocateUp = function() {
                 // This is the hard limit for now.
-                if (this.currentLocationIndex() == 1) {
+                if (this.location.disabled !== undefined && this.location.disabled) {
                     return false;
                 }
                 if (this.currentLocationIndex() == this.allLocations.length - 1) {

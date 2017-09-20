@@ -124,4 +124,31 @@
         "statistic": "hire-adventurer-citizen",
         "statisticamount": "100"
     }
+}, {
+    "name": "Small army",
+    "description": "Hire a lot of Fighters",
+    "icon": "achievement.png",
+    "trigger": {
+        "type": "statistic",
+        "statistic": "hire-adventurer-fighter",
+        "statisticamount": "100"
+    }
+}, {
+    "name": "Heal do",
+    "description": "Hire a lot of Clerics",
+    "icon": "achievement.png",
+    "trigger": {
+        "type": "statistic",
+        "statistic": "hire-adventurer-cleric",
+        "statisticamount": "100"
+    }
+}, {
+    "name": "Magic circle",
+    "description": "Hire a lot of Mages",
+    "icon": "achievement.png",
+    "trigger": {
+        "type": "statistic",
+        "statistic": "hire-adventurer-mage",
+        "statisticamount": "100"
+    }
 }]

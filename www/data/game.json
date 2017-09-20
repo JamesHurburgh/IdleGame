@@ -4,6 +4,15 @@
     "author": "James Hurburgh",
     "author-uri": "",
     "versions": [{
+        "number": "0.7",
+        "description": "The Tavern update",
+        "features": [
+            "Added more adventurers for the tavern.",
+            "Added more contracts for the tavern.",
+            "Updated."
+        ],
+        "bugfixes": []
+    }, {
         "number": "0.6",
         "description": "Achievements!",
         "features": [
