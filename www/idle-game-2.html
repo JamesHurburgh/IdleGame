@@ -30,7 +30,7 @@
 <body>
     <div id="AdventurersGame">
         <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container-fluid">
+            <div class="container">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -74,19 +74,29 @@
                         <h4>Achievements</h4>
                     </div>
                     <div class="modal-body">
-                        <div v-for="achievement in achievements">
-                            <div class="label"
-                            v-bind:class="{ 'label-default': !hasAchievement(achievement), 'label-info': hasAchievement(achievement) }"
-                            data-toggle="tooltip"
-                            :title="achievement.description">{{achievement.name}}
-
-                                    <!--<img :src="'./img/' + achievement.icon" />-->
-                            </div>
-                        </div>
+                        <table class="table table-striped table-hover ">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <!-- <th>Progress</th> -->
+                                </tr>
+                            </thead>
+                            <tr v-for="achievement in achievements" v-bind:class="{ 'default': !hasAchievement(achievement), 'success': hasAchievement(achievement) }">
+                                <td>{{achievement.name}}</td>
+                                <td>{{achievement.description}}</td>
+                                <td>
+                                    <!-- <div class="progress progress-striped">
+                                        <div class="progress-bar" v-bind:style="{ width: achievementProgress(achievement) + '%' }" v-bind:class="{ 'progress-bar-info': !hasAchievement(achievement), 'progress-bar-success': hasAchievement(achievement) }"></div>
+                                    </div> -->
+                                </td>
+                            </tr>
+                        </table>
+                        <!--<img :src="'./img/' + achievement.icon" />-->
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
