@@ -148,6 +148,7 @@ define(["jquery",
                     case "0.5":
                             this.claimedAchievements = [];
                     case "0.6":
+                            case "0.7":
                 }
 
                 if (!this.options) {
@@ -181,8 +182,7 @@ define(["jquery",
             this.claimAchievement = function(achievement) {
                 if (!this.hasAchievement(achievement.name)) {
                     this.claimedAchievements.push({ "name": achievement.name, "timeClaimed": Date.now() });
-                    // TODO add more interesting things here
-                    alertify.success(achievement.name);
+                    alertify.success("Got achievement:" + achievement.name + " (" + achievement.description + ")");
                 }
             };
 

@@ -9,7 +9,8 @@
         "features": [
             "Added more adventurers for the tavern.",
             "Added more contracts for the tavern.",
-            "Updated hired adventurers to a table for readability."
+            "Updated hired adventurers to a table for readability.",
+            "Achievement message is more interesting."
         ],
         "bugfixes": []
     }, {
