@@ -4,6 +4,13 @@
     "author": "James Hurburgh",
     "author-uri": "",
     "versions": [{
+        "number": "0.8",
+        "description": "",
+        "features": [
+            "Split up automation options and displayed better in dialog."
+        ],
+        "bugfixes": []
+    }, {
         "number": "0.7",
         "description": "The Tavern update",
         "features": [

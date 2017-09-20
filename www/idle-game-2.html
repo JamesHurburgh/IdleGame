@@ -146,8 +146,37 @@
                     </div>
                     <div class="modal-body">
                         <button @click="reset()" type="button" class="btn btn-default" data-dismiss="modal">Reset the Game</button>
-                        <button @click="toggleClaimAll()" type="button" class="btn btn-default" data-dismiss="modal">Toggle claim all buttons</button>
-                        <button @click="toggleAutomatic()" type="button" class="btn btn-default" data-dismiss="modal">Toggle automatic play</button>
+
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" v-model="options.claimAllButtons">Display "Claim All" Buttons</input>
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" v-model="options.automaticHire">Automatically hire available adventurers</input>
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" v-model="options.automaticClaim">Automatically claim completed expeditions</input>
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" v-model="options.automaticSend">Automatically send available contracts</input>
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" v-model="options.automaticRelocate">Automatically relocate to better locations</input>
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" v-model="options.automaticFreeCoins">Automatically claim free coins</input>
+                            </label>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

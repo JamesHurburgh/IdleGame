@@ -62,7 +62,11 @@ define(["jquery",
                 // Initilise options
                 this.options = {
                     "claimAllButtons": false,
-                    "automatic": false
+                    "automaticHire": false,
+                    "automaticClaim": false,
+                    "automaticSend": false,
+                    "automaticRelocate": false,
+                    "automaticFreeCoins": false
                 };
 
                 // Initialise stats
@@ -136,26 +140,33 @@ define(["jquery",
                     if (!this.reknown) this.reknown = 0;
                     if (!this.coins) this.coins = 0;
                     case "0.2":
-                        // reset locations
-                            this.allLocations = clone(locations);
                     case "0.3":
-                            this.options = {
-                            "claimAllButtons": false,
-                            "automatic": false
-                        };
                     case "0.4":
                             this.stats = [];
                     case "0.5":
                             this.claimedAchievements = [];
                     case "0.6":
-                            case "0.7":
+                    case "0.7":
+                        if(this.options !== undefined && this.options.automatic !== undefined){
+                            {
+                                this.automaticHire = this.options.automatic;
+                                this.automaticClaim = this.options.automatic;
+                                this.automaticSend = this.options.automatic;
+                                this.automaticRelocate = this.options.automatic;
+                                this.automaticFreeCoins = this.options.automatic;
+                            }
+                        }
+                    case "0.8":
                 }
 
                 if (!this.options) {
-
                     this.options = {
                         "claimAllButtons": false,
-                        "automatic": false
+                        "automaticHire": false,
+                        "automaticClaim": false,
+                        "automaticSend": false,
+                        "automaticRelocate": false,
+                        "automaticFreeCoins": false
                     };
                 }
                 // Data
@@ -726,15 +737,23 @@ define(["jquery",
                 if (this.calculateCounter > 10) {
                     this.calculate();
 
-                    if (this.options.automatic) {
+                    if (this.options.automaticRelocate) {
                         if (this.canRelocateUp()) {
                             this.relocateUp();
                         }
+                    }
+                    if (this.options.automaticFreeCoins) {
                         if (this.canGetFreeCoins()) {
                             this.freeCoins(this.location);
                         }
+                    }
+                    if (this.options.automaticClaim) {
                         this.claimAllCompletedExpeditions();
+                    }
+                    if (this.options.automaticHire) {
                         this.hireAll();
+                    }
+                    if (this.options.automaticSend) {
                         this.startAllContracts();
                     }
                 }
