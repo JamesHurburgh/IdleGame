@@ -74,11 +74,13 @@
                         <h4>Achievements</h4>
                     </div>
                     <div class="modal-body">
-                        <div class="panel panel-default" v-for="achievement in achievements">
-                            <div class="panel-heading">{{achievement.name}}</div>
-                            <div class="panel-body">
-                                {{achievement.description}}
-                                <img :src="'./img/' + achievement.icon" />
+                        <div v-for="achievement in achievements">
+                            <div class="label"
+                            v-bind:class="{ 'label-default': !hasAchievement(achievement), 'label-info': hasAchievement(achievement) }"
+                            data-toggle="tooltip"
+                            :title="achievement.description">{{achievement.name}}
+
+                                    <!--<img :src="'./img/' + achievement.icon" />-->
                             </div>
                         </div>
                     </div>

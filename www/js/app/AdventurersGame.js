@@ -1,6 +1,7 @@
 /*jshint esversion: 6 */
 
 define(["jquery",
+        "alertify",
         "json!data/game.json",
         "json!data/contracts.json",
         "json!data/locations.json",
@@ -10,6 +11,7 @@ define(["jquery",
     ],
     function AdventurersGame(
         jquery,
+        alertify,
         game,
         contracts,
         locations,
@@ -101,6 +103,8 @@ define(["jquery",
                 if (this.location.availableHires.length < maxAvailableHires && Math.random() > 0.75) {
                     this.addAvailableHire();
                 }
+
+                this.checkAndClaimAllAchievements();
             };
 
             this.loadFromSavedData = function(savedData) {
@@ -165,14 +169,54 @@ define(["jquery",
                 this.calculate();
             };
 
+            // Achievements
+            this.hasAchievement = function(achievement){
+                return this.claimedAchievements.filter(claimedAchievement => claimedAchievement.name == achievement.name).length > 0;
+            };
+
+            this.claimAchievement = function(achievement){
+                if(!this.hasAchievement(achievement.name)){
+                    this.claimedAchievements.push({"name" : achievement.name, "timeClaimed" : Date.now()});
+                    // TODO add more interesting things here
+                    alertify.success(achievement.name);
+                }
+            };
+
+            this.canClaimAchievement = function(achievement){
+                if(this.hasAchievement(achievement)){
+                    return false;
+                }
+                switch(achievement.trigger.type)
+                {
+                    case "statistic":
+                        return this.getStat(achievement.trigger.statistic).current > achievement.trigger.statisticamount;
+                }           
+            };
+
+            this.checkAndClaimAchievement = function(achievement){
+                if(this.canClaimAchievement(achievement)){
+                    this.claimAchievement(achievement);
+                }
+            };
+
+            this.checkAndClaimAllAchievements = function(){
+                for(var i = 0; i < achievements.length; i++){
+                    this.checkAndClaimAchievement(achievements[i]);
+                }
+            };
+
             // Stats
             this.getStatName = function(action, subject) {
                 return (action + "-" + subject).toLowerCase().replace(/ /g, "_");
             };
 
+            this.getStat = function(name){
+                return this.stats.filter(stat => stat.name == name)[0];
+            };
+
             this.trackStat = function(action, subject, amount) {
                 var name = this.getStatName(action, subject);
-                stat = this.stats.filter(stat => stat.name == name)[0];
+                stat = this.getStat(name);
                 if (!stat) {
                     this.stats.push({ name: name, current: amount, allTime: amount });
                 } else {
