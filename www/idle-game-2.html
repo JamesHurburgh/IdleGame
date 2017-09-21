@@ -225,7 +225,7 @@
                     <p>{{game.description}}</p>
                 </div>
 
-                <div class="col-md-8">
+                <div class="col-md-8 col-xs-12">
                     <div class="col-xs-12">
                         <h2>
                             {{location.name}}
@@ -238,26 +238,25 @@
                         </div>
                         <div class="col-xs-12 col-sm-4">
                             <div class="pull-right">
-                                <button type="button" class="btn btn-default" v-bind:class="{ 'btn-success': canRelocateDown(), 'btn-primary': !canRelocateDown() }" @click="relocateDown()" :disabled="!canRelocateDown()">
-                                    <span class="glyphicon glyphicon-chevron-left"></span>
-                                    Relocate
-                                </button>
-                            </div>
-
-                            <div class="pull-right">
-                                <button type="button" class="btn btn-primary pull-right" v-bind:class="{ 'btn-success': canGetFreeCoins(), 'btn-primary': !canGetFreeCoins() }" @click="freeCoins(location)" :disabled="!canGetFreeCoins()">{{location.freeCoinsDescription}}</button>
-                            </div>
-
-                            <div class="pull-right">
                                 <button type="button" class="btn btn-default" v-bind:class="{ 'btn-success': canRelocateUp(), 'btn-primary': !canRelocateUp() }" @click="relocateUp()" :disabled="!canRelocateUp()">
                                 Relocate
                                 <span class="glyphicon glyphicon-chevron-right"></span>
                             </button>
                             </div>
+
+                            <div class="pull-right">
+                                <button type="button" class="btn btn-primary pull-right" v-bind:class="{ 'btn-success': canGetFreeCoins(), 'btn-primary': !canGetFreeCoins() }" @click="freeCoins(location)" :disabled="!canGetFreeCoins()">{{location.freeCoinsDescription}}</button>
+                            </div>
+                            <div class="pull-right">
+                                <button type="button" class="btn btn-default" v-bind:class="{ 'btn-success': canRelocateDown(), 'btn-primary': !canRelocateDown() }" @click="relocateDown()" :disabled="!canRelocateDown()">
+                                    <span class="glyphicon glyphicon-chevron-left"></span>
+                                    Relocate
+                                </button>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-xs-12 col-md-6">
                         <h3>Contracts ({{location.availableContracts.length}}/5) <button v-if="startAllVisible()" type="button" class="btn btn-success btn-xs pull-right" @click="startAllContracts()">Start All</button></h3>
                         <transition-group name="custom-classes-transition" enter-active-class="animated fadeIn" leave-active-class="noOutAnimation">
                             <div v-for="contract in location.availableContracts" key="contract.name">
@@ -289,7 +288,7 @@
                         </transition-group>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-xs-12 col-md-6">
                         <h3>Adventurers ({{location.availableHires.length}}/5) <button v-if="hireAllVisible()" type="button" class="btn btn-success btn-xs pull-right" @click="hireAll()">Hire All</button></h3>
                         <transition-group name="custom-classes-transition" enter-active-class="animated fadeIn" leave-active-class="noOutAnimation">
                             <div v-for="adventurer in location.availableHires" key="adventurer.name">
@@ -302,7 +301,7 @@
                         </transition-group>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 col-xs-12">
 
                     <h2>Hired Adventurers</h2>
                     <table class="table table-striped table-hover ">
