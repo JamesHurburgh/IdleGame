@@ -96,19 +96,26 @@ define(["jquery",
                 // Autosave
                 this.autoSave();
 
+                this.addNewContracts();
+                this.addNewAdverturersForHire();
+
+                this.checkAndClaimAllAchievements();
+            };
+
+            this.addNewContracts = function(){
                 // New contracts
                 var maxContracts = 5;
                 if (this.location.availableContracts.length < maxContracts && Math.random() > 0.85) {
                     this.addContract();
                 }
+            };
 
-                var maxAvailableHires = 5;
+            this.addNewAdverturersForHire = function(){
                 // New hires
+                var maxAvailableHires = 5;
                 if (this.location.availableHires.length < maxAvailableHires && Math.random() > 0.75) {
                     this.addAvailableHire();
                 }
-
-                this.checkAndClaimAllAchievements();
             };
 
             this.loadFromSavedData = function(savedData) {
@@ -307,7 +314,6 @@ define(["jquery",
                     if (!this.location.availableHires) this.location.availableHires = [];
                     this.expireAllExpired();
                     this.trackStat("relocate-to", this.location.name, 1);
-                    this.calculate();
                 }
             };
 
@@ -330,7 +336,6 @@ define(["jquery",
                     if (!this.location.availableHires) this.location.availableHires = [];
                     this.expireAllExpired();
                     this.trackStat("relocate-to", this.location.name, 1);
-                    this.calculate();
                 }
             };
 
@@ -403,7 +408,6 @@ define(["jquery",
                 this.hired[name] = this.hired[name] - amount;
                 this.trackStat("send-adventurer", name, amount);
                 this.trackStat("send", "adventurers", amount);
-                this.calculate();
             };
 
             this.addContract = function() {
@@ -623,7 +627,6 @@ define(["jquery",
 
                 this.trackStat("hire", "adventurer", 1);
                 this.trackStat("hire-adventurer", hireable.name, 1);
-                this.calculate();
             };
 
             this.readableTime = function(milliseconds) {

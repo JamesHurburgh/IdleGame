@@ -9,7 +9,8 @@
         "features": [
             "Split up automation options and displayed better in dialog.",
             "Added new version notification.",
-            "Reworked achievements and added some."
+            "Reworked achievements and added some.",
+            "Removed recalculating stuff all the time."
         ],
         "bugfixes": [
             "Fixed layout bug to stopped relocate buttons from being accessible."
