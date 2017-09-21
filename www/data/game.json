@@ -16,7 +16,8 @@
             "Adventurer totals shown"
         ],
         "bugfixes": [
-            "Fixed layout bug to stopped relocate buttons from being accessible."
+            "Fixed layout bug to stopped relocate buttons from being accessible.",
+            "Fixed top and bottom of content being cut off"
         ]
     }, {
         "number": "0.7",
