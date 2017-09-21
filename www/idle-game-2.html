@@ -318,7 +318,7 @@
                                 <th>Out</th>
                             </tr>
                         </thead>
-                        <tr v-for="adventurer in adventurers">
+                        <tr v-for="adventurer in hiredAdventurers()">
                             <td>{{adventurer.plural}}</td>
                             <td>{{getHiredCount(adventurer.name)}}</td>
                             <td>{{getAdventurersOnTheJob(adventurer.name)}}</td>

@@ -363,11 +363,20 @@ define(["jquery",
                 this.trackStat("spend", "coins", coins);
             };
 
+            // Adventurers
+
+            this.hiredAdventurers = function(){
+                return adventurers.filter(hireable => this.totalAdventurers(hireable) > 0);
+            };
+
+            this.totalAdventurers = function(adventurer){
+                return this.getHiredCount(adventurer.name) + this.getAdventurersOnTheJob(adventurer.name);
+            };
+
             this.canHire = function(name) {
                 return this.coins >= this.getCost(name);
             };
 
-            // Adventurers
             this.getHireable = function(name) {
                 return adventurers.filter(hireable => hireable.name == name)[0];
             };
@@ -417,6 +426,7 @@ define(["jquery",
                 this.trackStat("send", "adventurers", amount);
             };
 
+            // Contracts
             this.addContract = function() {
                 var locationContracts = contracts.filter(contract => this.location.contracts.indexOf(contract.name) >= 0);
                 var contract = clone(locationContracts[Math.floor(locationContracts.length * Math.random())]);
