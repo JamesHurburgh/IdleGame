@@ -12,7 +12,8 @@
             "Reworked achievements and added some.",
             "Removed recalculating stuff all the time.",
             "Statistic table can now be filtered in modal view.",
-            "Only show hired adventurers."
+            "Only show hired adventurers.",
+            "Adventurer totals shown"
         ],
         "bugfixes": [
             "Fixed layout bug to stopped relocate buttons from being accessible."

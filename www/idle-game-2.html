@@ -316,12 +316,14 @@
                                 <th>Name</th>
                                 <th>Idle</th>
                                 <th>Out</th>
+                                <th>Total</th>
                             </tr>
                         </thead>
                         <tr v-for="adventurer in hiredAdventurers()">
                             <td>{{adventurer.plural}}</td>
                             <td>{{getHiredCount(adventurer.name)}}</td>
                             <td>{{getAdventurersOnTheJob(adventurer.name)}}</td>
+                            <td>{{totalAdventurers(adventurer)}}</td>
                         </tr>
                     </table>
 
