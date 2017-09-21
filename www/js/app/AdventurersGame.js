@@ -262,6 +262,13 @@ define(["jquery",
                 }
             };
 
+            this.filteredStats = function(filter){
+                if(!filter){
+                    return this.stats;
+                }
+                return this.stats.filter(stat => stat.name.indexOf(filter) !== -1);
+            }; 
+
             // Options
             this.cheat = function() {
                 console.log("cheat");

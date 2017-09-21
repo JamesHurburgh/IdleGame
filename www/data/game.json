@@ -10,7 +10,8 @@
             "Split up automation options and displayed better in dialog.",
             "Added new version notification.",
             "Reworked achievements and added some.",
-            "Removed recalculating stuff all the time."
+            "Removed recalculating stuff all the time.",
+            "Statistic table can now be filtered in modal view."
         ],
         "bugfixes": [
             "Fixed layout bug to stopped relocate buttons from being accessible."
