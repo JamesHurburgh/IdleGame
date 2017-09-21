@@ -19,6 +19,9 @@ define(["jquery",
         reknown,
         achievements) {
 
+        // alertify.parent(document.getElementById("container"));
+        alertify.logPosition("top left");
+
         function uuidv4() {
             return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
                 (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
@@ -102,7 +105,7 @@ define(["jquery",
                 this.checkAndClaimAllAchievements();
             };
 
-            this.addNewContracts = function(){
+            this.addNewContracts = function() {
                 // New contracts
                 var maxContracts = 5;
                 if (this.location.availableContracts.length < maxContracts && Math.random() > 0.85) {
@@ -110,7 +113,7 @@ define(["jquery",
                 }
             };
 
-            this.addNewAdverturersForHire = function(){
+            this.addNewAdverturersForHire = function() {
                 // New hires
                 var maxAvailableHires = 5;
                 if (this.location.availableHires.length < maxAvailableHires && Math.random() > 0.75) {
@@ -147,22 +150,22 @@ define(["jquery",
                     if (!this.reknown) this.reknown = 0;
                     if (!this.coins) this.coins = 0;
                     case "0.2":
-                    case "0.3":
-                    case "0.4":
+                            case "0.3":
+                            case "0.4":
                             this.stats = [];
                     case "0.5":
                             this.claimedAchievements = [];
                     case "0.6":
-                    case "0.7":
-                        if(this.options !== undefined && this.options.automatic !== undefined){
-                            {
-                                this.automaticHire = this.options.automatic;
-                                this.automaticClaim = this.options.automatic;
-                                this.automaticSend = this.options.automatic;
-                                this.automaticRelocate = this.options.automatic;
-                                this.automaticFreeCoins = this.options.automatic;
+                            case "0.7":
+                            if (this.options !== undefined && this.options.automatic !== undefined) {
+                                {
+                                    this.automaticHire = this.options.automatic;
+                                    this.automaticClaim = this.options.automatic;
+                                    this.automaticSend = this.options.automatic;
+                                    this.automaticRelocate = this.options.automatic;
+                                    this.automaticFreeCoins = this.options.automatic;
+                                }
                             }
-                        }
                         alertify.alert("New version!  Check the release notes.");
                     case "0.8":
                 }
@@ -201,7 +204,9 @@ define(["jquery",
             this.claimAchievement = function(achievement) {
                 if (!this.hasAchievement(achievement.name)) {
                     this.claimedAchievements.push({ "name": achievement.name, "timeClaimed": Date.now() });
-                    alertify.success("Got achievement:" + achievement.name + " (" + achievement.description + ")");
+                    alertify
+                        .closeLogOnClick(true)
+                        .success("Got achievement:" + achievement.name + " (" + achievement.description + ")");
                 }
             };
 
@@ -262,12 +267,12 @@ define(["jquery",
                 }
             };
 
-            this.filteredStats = function(filter){
-                if(!filter){
+            this.filteredStats = function(filter) {
+                if (!filter) {
                     return this.stats;
                 }
                 return this.stats.filter(stat => stat.name.indexOf(filter) !== -1);
-            }; 
+            };
 
             // Options
             this.cheat = function() {
@@ -365,11 +370,11 @@ define(["jquery",
 
             // Adventurers
 
-            this.hiredAdventurers = function(){
+            this.hiredAdventurers = function() {
                 return adventurers.filter(hireable => this.totalAdventurers(hireable) > 0);
             };
 
-            this.totalAdventurers = function(adventurer){
+            this.totalAdventurers = function(adventurer) {
                 return this.getHiredCount(adventurer.name) + this.getAdventurersOnTheJob(adventurer.name);
             };
 

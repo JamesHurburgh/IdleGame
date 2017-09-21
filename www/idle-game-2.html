@@ -29,7 +29,7 @@
 
 <body>
     <div id="AdventurersGame">
-        <nav class="navbar navbar-default navbar-static-top">
+        <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
@@ -224,7 +224,7 @@
             </div>
         </div>
 
-        <div class="container" style="padding-bottom: 65px;">
+        <div id="container" class="container" style="padding-bottom: 65px; padding-top: 65px;">
             <div class="row">
 
                 <div class="col-md-12">
@@ -381,8 +381,7 @@
         <nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
             <div class="container">
                 <ul class="nav navbar-nav">
-                    <li><a href="#">Coins: {{coins}}</a></li>
-                    <li><a href="#">Reknown: {{reknownText()}} <span class="text-muted">({{reknown}})</span></a></li>
+                    <li><a href="#">Coins: {{coins}} Renown: {{reknownText()}} <span class="text-muted">({{reknown}})</span></a></li>
                 </ul>
             </div>
         </nav>

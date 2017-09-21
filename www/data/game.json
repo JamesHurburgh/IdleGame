@@ -5,7 +5,7 @@
     "author-uri": "",
     "versions": [{
         "number": "0.8",
-        "description": "",
+        "description": "Clean up update",
         "features": [
             "Split up automation options and displayed better in dialog.",
             "Added new version notification.",
@@ -13,7 +13,8 @@
             "Removed recalculating stuff all the time.",
             "Statistic table can now be filtered in modal view.",
             "Only show hired adventurers.",
-            "Adventurer totals shown"
+            "Adventurer totals shown",
+            "Merged coins and renown in bottom bar so preserve space"
         ],
         "bugfixes": [
             "Fixed layout bug to stopped relocate buttons from being accessible.",
