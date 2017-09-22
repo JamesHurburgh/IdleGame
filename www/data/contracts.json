@@ -10,7 +10,8 @@
     "rewardFactor": 0.2,
     "rewards": [
         { "chance": 1, "reward": { "type": "coins", "amount": 500 } },
-        { "chance": 1, "reward": { "type": "reknown", "amount": 2 } }
+        { "chance": 1, "reward": { "type": "reknown", "amount": 2 } },
+        { "chance": 0.1, "reward": { "type": "item", "value": 1500, "itemType": "jewels" } }
     ],
     "requirements": {
         "reknown": 0,
@@ -32,7 +33,8 @@
     "rewardFactor": 0.2,
     "rewards": [
         { "chance": 1, "reward": { "type": "coins", "amount": 500 } },
-        { "chance": 1, "reward": { "type": "reknown", "amount": 2 } }
+        { "chance": 1, "reward": { "type": "reknown", "amount": 2 } },
+        { "chance": 0.1, "reward": { "type": "item", "value": 1500, "itemType": "jewels" } }
     ],
     "requirements": {
         "reknown": 0,
@@ -57,7 +59,8 @@
     "rewardFactor": 0.2,
     "rewards": [
         { "chance": 1, "reward": { "type": "coins", "amount": 500 } },
-        { "chance": 1, "reward": { "type": "reknown", "amount": 2 } }
+        { "chance": 1, "reward": { "type": "reknown", "amount": 2 } },
+        { "chance": 0.1, "reward": { "type": "item", "value": 1500, "itemType": "jewels" } }
     ],
     "requirements": {
         "reknown": 0,
@@ -105,7 +108,7 @@
     "rewardFactor": 0.1,
     "rewards": [
         { "chance": 1, "reward": { "type": "coins", "amount": 10 } },
-        { "chance": 0.1, "reward": { "type": "item", "value": 15, "itemType" : "jewellery" } }
+        { "chance": 0.1, "reward": { "type": "item", "value": 15, "itemType": "jewellery" } }
     ],
     "requirements": {
         "reknown": 0,
@@ -124,7 +127,8 @@
     "successChance": 0.9,
     "rewardFactor": 0.1,
     "rewards": [
-        { "chance": 1, "reward": { "type": "coins", "amount": 5 } }
+        { "chance": 1, "reward": { "type": "coins", "amount": 5 } },
+        { "chance": 0.1, "reward": { "type": "item", "value": 5, "itemType": "ring" } }
     ],
     "requirements": {
         "reknown": 0,
@@ -144,7 +148,7 @@
     "rewardFactor": 0.1,
     "rewards": [
         { "chance": 1, "reward": { "type": "coins", "amount": 20 } },
-        { "chance": 1, "reward": { "type": "item", "value": 15, "itemType" : "jewellery" } }
+        { "chance": 0.1, "reward": { "type": "item", "value": 15, "itemType": "ring" } }
     ],
     "requirements": {
         "reknown": 0,
@@ -184,7 +188,7 @@
     "rewardFactor": 0.2,
     "rewards": [
         { "chance": 1, "reward": { "type": "coins", "amount": 35 } },
-        { "chance": 0.1, "reward": { "type": "item", "value": 15, "itemType" : "jewellery" } }
+        { "chance": 0.1, "reward": { "type": "item", "value": 15, "itemType": "jewellery" } }
     ],
     "requirements": {
         "reknown": 0,
@@ -224,7 +228,8 @@
     "rewardFactor": 0.3,
     "rewards": [
         { "chance": 1, "reward": { "type": "coins", "amount": 1000 } },
-        { "chance": 1, "reward": { "type": "reknown", "amount": 2 } }
+        { "chance": 1, "reward": { "type": "reknown", "amount": 2 } },
+        { "chance": 0.1, "reward": { "type": "item", "value": 150, "itemType": "weapons" } }
     ],
     "requirements": {
         "reknown": 1,
@@ -246,7 +251,8 @@
     "rewardFactor": 0.3,
     "contractAmount": 750,
     "rewards": [
-        { "chance": 1, "reward": { "type": "reknown", "amount": 2 } }
+        { "chance": 1, "reward": { "type": "reknown", "amount": 2 } },
+        { "chance": 0.5, "reward": { "type": "item", "value": 50, "itemType": "hides" } }
     ],
     "requirements": {
         "reknown": 1,
@@ -266,7 +272,8 @@
     "rewardFactor": 0.4,
     "rewards": [
         { "chance": 1, "reward": { "type": "coins", "amount": 2000 } },
-        { "chance": 1, "reward": { "type": "reknown", "amount": 3 } }
+        { "chance": 1, "reward": { "type": "reknown", "amount": 3 } },
+        { "chance": 0.1, "reward": { "type": "item", "value": 550, "itemType": "weapons" } }
     ],
     "requirements": {
         "reknown": 1,
@@ -330,7 +337,8 @@
     "rewardFactor": 0.2,
     "rewards": [
         { "chance": 1, "reward": { "type": "coins", "amount": 600 } },
-        { "chance": 0.1, "reward": { "type": "item", "value": 15, "itemType" : "jewellery" } }
+        { "chance": 0.1, "reward": { "type": "item", "value": 100, "itemType": "artwork" } },
+        { "chance": 0.01, "reward": { "type": "item", "value": 250, "itemType": "weapons" } }
     ],
     "requirements": {
         "reknown": 1,
@@ -430,7 +438,9 @@
     "rewardFactor": 0.3,
     "rewards": [
         { "chance": 1, "reward": { "type": "coins", "amount": 1000 } },
-        { "chance": 1, "reward": { "type": "reknown", "amount": 1 } }
+        { "chance": 1, "reward": { "type": "reknown", "amount": 1 } },
+        { "chance": 0.1, "reward": { "type": "item", "value": 100, "itemType": "artwork" } },
+        { "chance": 0.1, "reward": { "type": "item", "itemType": "a mysterious scroll" } }
     ],
     "requirements": {
         "reknown": 0,
@@ -451,7 +461,8 @@
     "contractAmount": 1000,
     "rewardFactor": 0.3,
     "rewards": [
-        { "chance": 1, "reward": { "type": "reknown", "amount": 3 } }
+        { "chance": 1, "reward": { "type": "reknown", "amount": 3 } },
+        { "chance": 0.1, "reward": { "type": "item", "value": 150, "itemType": "weapons" } }
     ],
     "requirements": {
         "reknown": 0,

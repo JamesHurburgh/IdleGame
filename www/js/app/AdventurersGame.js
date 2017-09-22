@@ -81,7 +81,7 @@ define(["jquery",
                     }
                 }
                 this.claimedAchievements = [];
-                
+
                 this.items = [];
 
                 // Data
@@ -145,7 +145,7 @@ define(["jquery",
                 this.stats = savedData.stats;
                 this.claimedAchievements = savedData.claimedAchievements;
 
-                
+
                 this.items = savedData.items;
 
                 switch (savedData.version) {
@@ -155,24 +155,24 @@ define(["jquery",
                     if (!this.reknown) this.reknown = 0;
                     if (!this.coins) this.coins = 0;
                     case "0.2":
-                    case "0.3":
-                    case "0.4":
-                        this.stats = [];
+                            case "0.3":
+                            case "0.4":
+                            this.stats = [];
                     case "0.5":
-                        this.claimedAchievements = [];
+                            this.claimedAchievements = [];
                     case "0.6":
-                    case "0.7":
-                        if (this.options !== undefined && this.options.automatic !== undefined) {
-                            {
-                                this.automaticHire = this.options.automatic;
-                                this.automaticClaim = this.options.automatic;
-                                this.automaticSend = this.options.automatic;
-                                this.automaticRelocate = this.options.automatic;
-                                this.automaticFreeCoins = this.options.automatic;
+                            case "0.7":
+                            if (this.options !== undefined && this.options.automatic !== undefined) {
+                                {
+                                    this.automaticHire = this.options.automatic;
+                                    this.automaticClaim = this.options.automatic;
+                                    this.automaticSend = this.options.automatic;
+                                    this.automaticRelocate = this.options.automatic;
+                                    this.automaticFreeCoins = this.options.automatic;
+                                }
                             }
-                        }
                     case "0.8":
-                    this.items = [];
+                            this.items = [];
                         alertify.alert("New version!  Check the release notes.");
                     case "0.9":
                 }
@@ -318,6 +318,34 @@ define(["jquery",
             };
 
             // Items
+            this.canSell = function(item) {
+                return item.value !== undefined && item.value > 0;
+            };
+
+            this.sellItem = function(item) {
+                if (!this.canSell(item)) {
+                    return;
+                }
+                this.giveCoins(item.value);
+                this.items.splice(this.items.indexOf(item), 1);
+
+            };
+
+            this.canUse = function(item) {
+                return false;
+            };
+
+            this.generateRewardItem = function(reward) {
+                return this.generateItem(reward.itemType, reward.value);
+            };
+
+            this.generateItem = function(itemType, value) {
+                return { "name": itemType, "value": this.varyAmount(value) };
+            };
+
+            this.giveItem = function(item) {
+                this.items.push(item);
+            };
 
             // Locations
             this.currentLocationIndex = function() {
@@ -497,24 +525,12 @@ define(["jquery",
                     case "reknown":
                         this.giveReknown(reward.amount);
                         break;
-                        case "item":
+                    case "item":
                         this.giveItem(reward.item);
                         break;
                     default:
                         this.hired[type] += amount;
                 }
-            };
-
-            this.generateRewardItem = function(reward){
-                return this.generateItem(reward.itemType, reward.value);
-            }
-
-            this.generateItem = function(itemType, value){
-                return {"name" : "ring", "value" : value };
-            };
-
-            this.giveItem = function(item){
-                this.items.push(item);
             };
 
             this.claimReward = function(expedition) {
@@ -635,12 +651,11 @@ define(["jquery",
                     for (var i = 0; i < contract.rewards.length; i++) {
                         var chance = contract.rewards[i].chance;
                         if (Math.random() < chance) {
-                            var variation = Math.random() + 0.5;
                             var reward = contract.rewards[i].reward;
-                            if(reward.type == "item"){
+                            if (reward.type == "item") {
                                 expedition.rewards.push({ "type": reward.type, "item": this.generateRewardItem(reward) });
-                            }else{
-                                var rewardAmount = Math.floor(reward.amount * variation);
+                            } else {
+                                var rewardAmount = this.varyAmount(reward.amount);
                                 if (rewardAmount > 0) {
                                     expedition.rewards.push({ "type": reward.type, "amount": rewardAmount });
                                 }
@@ -656,6 +671,10 @@ define(["jquery",
                 }
 
                 this.completedExpeditions.push(expedition);
+            };
+
+            this.varyAmount = function(amount) {
+                return Math.floor(amount * (Math.random() + 0.5));
             };
 
             this.getCost = function(name) {
