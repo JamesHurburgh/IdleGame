@@ -5,9 +5,9 @@
     "author-uri": "",
     "versions": [{
         "number": "0.9",
-        "description": "",
+        "description": "The Loot update!",
         "features": [
-            ""
+            "Items are now obtainable through missions"
         ],
         "bugfixes": [
             "Statistic filter is now case insensitive"

@@ -489,17 +489,32 @@ define(["jquery",
                 this.reknown += amount;
             };
 
-            this.giveReward = function(type, amount) {
-                switch (type) {
+            this.giveReward = function(reward) {
+                switch (reward.type) {
                     case "coins":
-                        this.giveCoins(amount);
+                        this.giveCoins(reward.amount);
                         break;
                     case "reknown":
-                        this.giveReknown(amount);
+                        this.giveReknown(reward.amount);
+                        break;
+                        case "item":
+                        this.giveItem(reward.item);
                         break;
                     default:
                         this.hired[type] += amount;
                 }
+            };
+
+            this.generateRewardItem = function(reward){
+                return this.generateItem(reward.itemType, reward.value);
+            }
+
+            this.generateItem = function(itemType, value){
+                return {"name" : "ring", "value" : value };
+            };
+
+            this.giveItem = function(item){
+                this.items.push(item);
             };
 
             this.claimReward = function(expedition) {
@@ -508,7 +523,7 @@ define(["jquery",
                     this.giveCoins(expedition.contract.contractAmount);
                 }
                 for (var i = 0; i < expedition.rewards.length; i++) {
-                    this.giveReward(expedition.rewards[i].type, expedition.rewards[i].amount);
+                    this.giveReward(expedition.rewards[i]);
                 }
                 this.removeExpedition(expedition);
             };
@@ -622,9 +637,13 @@ define(["jquery",
                         if (Math.random() < chance) {
                             var variation = Math.random() + 0.5;
                             var reward = contract.rewards[i].reward;
-                            var rewardAmount = Math.floor(reward.amount * variation);
-                            if (rewardAmount > 0) {
-                                expedition.rewards.push({ "type": reward.type, "amount": rewardAmount });
+                            if(reward.type == "item"){
+                                expedition.rewards.push({ "type": reward.type, "item": this.generateRewardItem(reward) });
+                            }else{
+                                var rewardAmount = Math.floor(reward.amount * variation);
+                                if (rewardAmount > 0) {
+                                    expedition.rewards.push({ "type": reward.type, "amount": rewardAmount });
+                                }
                             }
                         }
                     }

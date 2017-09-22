@@ -327,6 +327,7 @@
                         </tr>
                     </table>
 
+                    <div v-if="!lessthan(items.length, 1)">
                     <h2>Items</h2>
                     <table class="table table-striped table-hover ">
                         <thead>
@@ -336,12 +337,13 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tr v-for="adventurer in items">
+                        <tr v-for="item in items">
                             <td>{{item.name}}</td>
                             <td>{{item.value}}</td>
                             <td><button class="btn btn-xs">Sell</button></td>
                         </tr>
                     </table>
+                    </div>
 
                     <h2>Expeditions</h2>
 
@@ -354,7 +356,8 @@
                                     Claim!
                                     <div v-if="expedition.contract.contractAmount != undefined">{{expedition.contract.contractAmount}} coins</div>
                                     <div v-for="reward in expedition.rewards">
-                                        {{reward.amount}} {{reward.type}}
+                                        <div v-if="reward.amount">{{reward.amount}} {{reward.type}}</div>
+                                        <div v-if="reward.type == 'item'">{{reward.item.name}}</div>
                                     </div>
                                 </button>
                                     <button v-if="!expedition.success" type="button" class="btn btn-danger pull-right" @click="removeExpedition(expedition)">Darnation!</button>
