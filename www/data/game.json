@@ -4,6 +4,15 @@
     "author": "James Hurburgh",
     "author-uri": "",
     "versions": [{
+        "number": "0.9",
+        "description": "",
+        "features": [
+            ""
+        ],
+        "bugfixes": [
+            "Statistic filter is now case insensitive"
+        ]
+    }, {
         "number": "0.8",
         "description": "Clean up update",
         "features": [

@@ -327,6 +327,22 @@
                         </tr>
                     </table>
 
+                    <h2>Items</h2>
+                    <table class="table table-striped table-hover ">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Value</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tr v-for="adventurer in items">
+                            <td>{{item.name}}</td>
+                            <td>{{item.value}}</td>
+                            <td><button class="btn btn-xs">Sell</button></td>
+                        </tr>
+                    </table>
+
                     <h2>Expeditions</h2>
 
                     <h3>Completed ({{completedExpeditions.length}}) <button v-if="claimAllVisible()" type="button" class="btn btn-success btn-xs pull-right" @click="claimAllCompletedExpeditions()">Claim All</button></h3>

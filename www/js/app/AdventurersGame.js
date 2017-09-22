@@ -81,6 +81,8 @@ define(["jquery",
                     }
                 }
                 this.claimedAchievements = [];
+                
+                this.items = [];
 
                 // Data
                 this.adventurers = adventurers;
@@ -143,6 +145,9 @@ define(["jquery",
                 this.stats = savedData.stats;
                 this.claimedAchievements = savedData.claimedAchievements;
 
+                
+                this.items = savedData.items;
+
                 switch (savedData.version) {
                     default: if (!this.location.availableContracts) this.location.availableContracts = [];
                     if (!this.location.availableHires) this.location.availableHires = [];
@@ -150,24 +155,26 @@ define(["jquery",
                     if (!this.reknown) this.reknown = 0;
                     if (!this.coins) this.coins = 0;
                     case "0.2":
-                            case "0.3":
-                            case "0.4":
-                            this.stats = [];
+                    case "0.3":
+                    case "0.4":
+                        this.stats = [];
                     case "0.5":
-                            this.claimedAchievements = [];
+                        this.claimedAchievements = [];
                     case "0.6":
-                            case "0.7":
-                            if (this.options !== undefined && this.options.automatic !== undefined) {
-                                {
-                                    this.automaticHire = this.options.automatic;
-                                    this.automaticClaim = this.options.automatic;
-                                    this.automaticSend = this.options.automatic;
-                                    this.automaticRelocate = this.options.automatic;
-                                    this.automaticFreeCoins = this.options.automatic;
-                                }
+                    case "0.7":
+                        if (this.options !== undefined && this.options.automatic !== undefined) {
+                            {
+                                this.automaticHire = this.options.automatic;
+                                this.automaticClaim = this.options.automatic;
+                                this.automaticSend = this.options.automatic;
+                                this.automaticRelocate = this.options.automatic;
+                                this.automaticFreeCoins = this.options.automatic;
                             }
-                        alertify.alert("New version!  Check the release notes.");
+                        }
                     case "0.8":
+                    this.items = [];
+                        alertify.alert("New version!  Check the release notes.");
+                    case "0.9":
                 }
 
                 if (!this.options) {
@@ -271,7 +278,7 @@ define(["jquery",
                 if (!filter) {
                     return this.stats;
                 }
-                return this.stats.filter(stat => stat.name.indexOf(filter) !== -1);
+                return this.stats.filter(stat => stat.name.indexOf(filter.toLowerCase()) !== -1);
             };
 
             // Options
@@ -309,6 +316,8 @@ define(["jquery",
             this.reknownText = function() {
                 return reknown.filter(r => r.minimum <= this.reknown && r.maximum > this.reknown)[0].name;
             };
+
+            // Items
 
             // Locations
             this.currentLocationIndex = function() {
