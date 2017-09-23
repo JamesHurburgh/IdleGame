@@ -10,7 +10,8 @@
             "Items are now obtainable through missions",
             "Items can be sold for their value",
             "Some items can be used",
-            "Added messages interface"
+            "Added messages interface",
+            "Tabs!  Everything is in tabs now."
         ],
         "bugfixes": [
             "Statistic filter is now case insensitive",
