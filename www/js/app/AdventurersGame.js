@@ -82,6 +82,7 @@ define(["jquery",
                 this.claimedAchievements = [];
 
                 this.ownedItems = [];
+                this.messages = [];
 
                 this.version = game.versions[0].number;
 
@@ -149,6 +150,7 @@ define(["jquery",
 
 
                 this.ownedItems = savedData.ownedItems;
+                this.messages = savedData.messages;
 
                 switch (savedData.version) {
                     default: if (!this.location.availableContracts) this.location.availableContracts = [];
@@ -175,6 +177,7 @@ define(["jquery",
                             }
                     case "0.8":
                             this.ownedItems = [];
+                        this.messages = [];
                     case "0.9":
                 }
 
@@ -221,9 +224,7 @@ define(["jquery",
             this.claimAchievement = function(achievement) {
                 if (!this.hasAchievement(achievement.name)) {
                     this.claimedAchievements.push({ "name": achievement.name, "timeClaimed": Date.now() });
-                    alertify
-                        .closeLogOnClick(true)
-                        .success("Got achievement:" + achievement.name + " (" + achievement.description + ")");
+                    this.message("Got achievement:" + achievement.name + " (" + achievement.description + ")");
                 }
             };
 
@@ -346,8 +347,8 @@ define(["jquery",
             this.itemFunctions["use-mysterious-scroll"] = function(game) {
                 switch (Math.floor(Math.random() * 1)) {
                     case 0:
-                        alertify.alert("You read a mysterious scroll.  It doesn't make sense to you.");
-                        //game.message("You read a mysterious scroll.  It doesn't make sense to you.");
+                        //alertify.alert("You read a mysterious scroll.  It doesn't make sense to you.");
+                        game.message("You read a mysterious scroll.  It doesn't make sense to you.");
                         break;
                     case 1:
                         game.message("You read a mysterious scroll.  Suddenly it seems as if everyone nearby has a job for you to do.");
