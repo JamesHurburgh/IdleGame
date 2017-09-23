@@ -8,7 +8,8 @@
         "description": "The Loot update!",
         "features": [
             "Items are now obtainable through missions",
-            "Items can be sold for their value"
+            "Items can be sold for their value",
+            "Some items can be used"
         ],
         "bugfixes": [
             "Statistic filter is now case insensitive",
