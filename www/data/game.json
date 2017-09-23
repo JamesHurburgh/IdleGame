@@ -11,7 +11,8 @@
             "Items can be sold for their value"
         ],
         "bugfixes": [
-            "Statistic filter is now case insensitive"
+            "Statistic filter is now case insensitive",
+            "Initial load now sets game version"
         ]
     }, {
         "number": "0.8",

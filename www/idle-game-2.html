@@ -39,9 +39,9 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">
+                    <span class="navbar-brand" href="#">
                         {{game.name}} <span class="text-muted">v{{version}}</span>
-                    </a>
+                    </span>
                 </div>
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -224,8 +224,8 @@
             </div>
         </div>
 
-        <div id="container" class="container" style="padding-bottom: 65px; padding-top: 65px;">
-            <div class="row">
+        <div class="container" style="padding-bottom: 65px; padding-top: 65px;">
+            <div id="container" class="row">
 
                 <div class="col-md-12">
                     <p>{{game.description}}</p>
@@ -337,12 +337,12 @@
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tr v-for="item in items">
+                            <tr v-for="item in ownedItems">
                                 <td>{{item.name}}</td>
                                 <td><span v-if="item.value !== undefined">{{item.value}}</span></td>
                                 <td>
                                     <button v-if="canSell(item)" @click="sellItem(item)" class="btn btn-xs btn-success pull-right">Sell</button>
-                                    <button v-if="canUse(item)" class="btn btn-xs btn-info pull-right">Use</button>
+                                    <button v-if="canUse(item)" @click="useItem(item)" class="btn btn-xs btn-info pull-right">Use</button>
                                 </td>
                             </tr>
                         </table>
