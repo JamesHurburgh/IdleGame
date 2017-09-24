@@ -334,7 +334,12 @@ define(["jquery",
             };
 
             this.message = function(message) {
-                this.messages.push({ "id": uuidv4, "message": message, "time": Date.now() });
+                alertify.alert(message);
+                this.messages.unshift({ "id": uuidv4, "message": message, "time": Date.now() });
+            };
+
+            this.dismissMessage = function(message) {
+                this.messages.splice(this.messages.indexOf(message), 1);
             };
 
             // Effect
@@ -345,15 +350,18 @@ define(["jquery",
             // Items
             this.itemFunctions = [];
             this.itemFunctions["use-mysterious-scroll"] = function(game) {
-                switch (Math.floor(Math.random() * 1)) {
+                switch (Math.floor(Math.random() * 2)) {
                     case 0:
                         //alertify.alert("You read a mysterious scroll.  It doesn't make sense to you.");
                         game.message("You read a mysterious scroll.  It doesn't make sense to you.");
                         break;
                     case 1:
-                        game.message("You read a mysterious scroll.  Suddenly it seems as if everyone nearby has a job for you to do.");
-                        //this.currentEffects
+                        game.message("You read a mysterious scroll.  Suddenly your purse seems heavier.");
+                        game.giveCoins(1000);
                         break;
+                    case 2:
+                        game.message("You read a mysterious scroll.  Suddenly every seems to have a job for you.");
+                        //this.currentEffects.push({"name": "Contract chance", "variable" : "contractChance", 1, "expires": Date.now() + 60000});
                 }
             };
 
@@ -368,7 +376,7 @@ define(["jquery",
                 this.trackStat("sell", "item", 1);
                 this.trackStat("sell-item", item.name, 1);
                 this.giveCoins(item.value);
-                this.ownedItems.splice(this.ownedItems.indexOf(item), 1);
+                this.removeItem(item);
 
             };
 
@@ -376,6 +384,10 @@ define(["jquery",
                 if (item.usage !== undefined) {
                     return true;
                 }
+            };
+
+            this.removeItem = function(item) {
+                this.ownedItems.splice(this.ownedItems.indexOf(item), 1);
             };
 
             this.useItem = function(item) {
@@ -389,6 +401,7 @@ define(["jquery",
                 }
 
                 usageFunction(this._data);
+                this.removeItem(item);
             };
 
             this.generateRewardItem = function(reward) {
