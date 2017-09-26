@@ -3,7 +3,7 @@
 define(["jquery",
         "alertify",
         "json!data/game.json",
-        "json!data/items.json",
+        "app/ItemManager",
         "json!data/contracts.json",
         "json!data/locations.json",
         "json!data/adventurers.json",
@@ -14,7 +14,7 @@ define(["jquery",
         jquery,
         alertify,
         game,
-        items,
+        ItemManager,
         contracts,
         locations,
         adventurers,
@@ -39,6 +39,8 @@ define(["jquery",
 
             this.autoSave = autoSaveFunction;
             this.millisecondsPerSecond = 1000;
+
+            ItemManager = new ItemManager(this);
 
             this.reset = function() {
                 console.log("reset");
@@ -347,70 +349,70 @@ define(["jquery",
             };
 
             // Globals
-            this.getGlobalValue = function(name){
+            this.getGlobalValue = function(name) {
                 var global = this.game.globals.filter(global => global.name == name)[0];
-                if(global === undefined){return null;}
+                if (global === undefined) { return null; }
                 var effects = this.currentEffects.filter(effect => effect.affects === name);
                 var value = global.baseValue;
-                for(var i = 0; i < effects.length; i++){
+                for (var i = 0; i < effects.length; i++) {
                     value *= effects[i].valueModifier;
                 }
                 return value;
             };
 
             // Effect
-            this.addEffect = function(name, valueModifier, expires){
-                this.currentEffects.push({"name": name, "valueModifier": valueModifier, "expires": expires});
+            this.addEffect = function(name, valueModifier, expires) {
+                this.currentEffects.push({ "name": name, "valueModifier": valueModifier, "expires": expires });
             };
 
             // Items
             this.itemFunctions = [];
             this.itemFunctions["use-minor-mysterious-scroll"] = function(game) {
-                var effects = [
-                    {   
-                        "description":"Suddenly your purse seems heavier.",
-                        "effect" : function(game) {
+                var effects = [{
+                        "description": "Suddenly your purse seems heavier.",
+                        "effect": function(game) {
                             game.giveCoins(1000);
                         }
                     },
                     {
-                        "description":"Suddenly every seems to have a job for you.",
-                        "effect" : function(game) {
-                            game.addEffect("chanceOfNewContract", 2, Date.now() + 60000);           
+                        "description": "Suddenly every seems to have a job for you.",
+                        "effect": function(game) {
+                            game.addEffect("chanceOfNewContract", 2, Date.now() + 60000);
                         }
                     },
                     {
-                        "description":"Suddenly every seems to want to work for you.",
-                        "effect" : function(game) { 
+                        "description": "Suddenly every seems to want to work for you.",
+                        "effect": function(game) {
                             game.addEffect("chanceOfNewHire", 2, Date.now() + 60000);
                         }
                     },
                     {
-                        "description":"Suddenly every seems to be willing to work for much less.",
-                        "effect" : function(game) { 
+                        "description": "Suddenly every seems to be willing to work for much less.",
+                        "effect": function(game) {
                             game.addEffect("hireCostModifier", 2, Date.now() + 60000);
                         }
                     },
                     {
-                        "description":"Suddenly it seems like there are lots more coins around for the taking.",
-                        "effect" : function(game) { 
+                        "description": "Suddenly it seems like there are lots more coins around for the taking.",
+                        "effect": function(game) {
                             game.addEffect("freeCoinsModifier", 10, Date.now() + 60000);
                         }
                     },
                     {
-                        "description":"Suddenly it seems like everyone on quests are a lot safer.",
-                        "effect" : function(game) { 
+                        "description": "Suddenly it seems like everyone on quests are a lot safer.",
+                        "effect": function(game) {
                             game.addEffect("questRisk", 0.1, Date.now() + 60000);
                         }
                     },
                     {
-                        "description":"Suddenly it seems like everyone on quests are learning new things.",
-                        "effect" : function(game) { 
+                        "description": "Suddenly it seems like everyone on quests are learning new things.",
+                        "effect": function(game) {
                             game.addEffect("upgradeChance", 5, Date.now() + 60000);
                         }
-                    }];
+                    }
+                ];
 
-                var effect = effects[Math.floor(Math.random()*effects.length)];
+                var effect = effects[Math.floor(Math.random() * effects.length)];
                 game.message("You read a mysterious scroll. " + effect.description);
                 effect.effect(game);
             };
@@ -452,41 +454,6 @@ define(["jquery",
 
                 usageFunction(this._data);
                 this.removeItem(item);
-            };
-
-            this.generateRewardItem = function(reward) {
-                return this.generateItem(reward.itemType, reward.value);
-            };
-
-            this.getItemDefinition = function(itemType) {
-                return this.items.filter(item => item.type == itemType)[0];
-            };
-
-            this.generateItem = function(itemType, value) {
-                var itemDefinition = this.getItemDefinition(itemType);
-                if (itemDefinition === undefined) {
-                    return { "name": itemType, "value": this.varyAmount(value) };
-                }
-                // Check for subsets first
-                if (itemDefinition.subsets !== undefined) {
-                    var subset = itemDefinition.subsets[Math.floor(Math.random() * itemDefinition.subsets.length)];
-                    return this.generateItem(subset, value);
-                }
-
-                var item = { "name": itemDefinition.displayName, "usage": itemDefinition.usage, "value": itemDefinition.baseValue };
-
-                if (itemDefinition.prefixesList !== undefined) {
-                    for (var i = 0; i < itemDefinition.prefixesList.length; i++) {
-                        var prefix = itemDefinition.prefixesList[i][Math.floor(Math.random() * itemDefinition.prefixesList[i].length + 1)];
-                        if (prefix !== undefined) {
-                            item.name = prefix.prefix + " " + item.name;
-                            item.value *= prefix.valueModifier;
-                        }
-                    }
-                }
-                item.value = Math.floor(item.value);
-
-                return item;
             };
 
             this.giveItem = function(item) {
@@ -802,7 +769,7 @@ define(["jquery",
                         if (Math.random() < chance) {
                             var reward = contract.rewards[j].reward;
                             if (reward.type == "item") {
-                                expedition.rewards.push({ "type": reward.type, "item": this.generateRewardItem(reward) });
+                                expedition.rewards.push({ "type": reward.type, "item": ItemManager.generateRewardItem(reward) });
                             } else {
                                 var rewardAmount = this.varyAmount(reward.amount);
                                 if (rewardAmount > 0) {
@@ -895,7 +862,7 @@ define(["jquery",
                 for (var h = 0; h < this.currentEffects.length; h++) {
                     var effect = this.currentEffects[h];
                     if (this.currentEffects[h].expires === undefined || this.currentEffects[h].expires <= Date.now()) {
-                            this.currentEffects.splice(h, 1);
+                        this.currentEffects.splice(h, 1);
                     }
                 }
                 // Check for completed expeditions
