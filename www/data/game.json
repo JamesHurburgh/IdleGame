@@ -17,7 +17,8 @@
         "features": [
             "Improved mysterious scroll effects",
             "Added global effects",
-            "Updated some items and contracts"
+            "Updated some items and contracts",
+            "Adventurers now have a chance of showing up in other locations"
         ],
         "bugfixes": []
     }, {
