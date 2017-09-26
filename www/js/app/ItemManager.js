@@ -18,6 +18,10 @@ define(["json!data/items.json"],
             }
         }
 
+        function varyAmount(amount) {
+            return Math.floor(amount * (Math.random() + 0.5));
+        };
+
         return function ItemManager(gameState) {
 
             this.gameState = gameState;
@@ -27,13 +31,13 @@ define(["json!data/items.json"],
             };
 
             this.getItemDefinition = function(itemType) {
-                return this.items.filter(item => item.type == itemType)[0];
+                return items.filter(item => item.type == itemType)[0];
             };
 
             this.generateItem = function(itemType, value) {
                 var itemDefinition = this.getItemDefinition(itemType);
                 if (itemDefinition === undefined) {
-                    return { "name": itemType, "value": this.varyAmount(value) };
+                    return { "name": itemType, "value": varyAmount(value) };
                 }
                 // Check for subsets first
                 if (itemDefinition.subsets !== undefined) {
