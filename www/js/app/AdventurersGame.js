@@ -84,6 +84,8 @@ define(["jquery",
                 this.ownedItems = [];
                 this.messages = [];
 
+                this.currentEffects = [];
+
                 this.version = game.versions[0].number;
 
                 // Data
@@ -113,7 +115,7 @@ define(["jquery",
             this.addNewContracts = function() {
                 // New contracts
                 var maxContracts = 5;
-                if (this.location.availableContracts.length < maxContracts && Math.random() > 0.85) {
+                if (this.location.availableContracts.length < maxContracts && Math.random() < this.getGlobalValue("chanceOfNewContract")) {
                     this.addContract();
                 }
             };
@@ -121,7 +123,7 @@ define(["jquery",
             this.addNewAdverturersForHire = function() {
                 // New hires
                 var maxAvailableHires = 5;
-                if (this.location.availableHires.length < maxAvailableHires && Math.random() > 0.75) {
+                if (this.location.availableHires.length < maxAvailableHires && Math.random() < this.getGlobalValue("chanceOfNewHire")) {
                     this.addAvailableHire();
                 }
             };
@@ -151,6 +153,7 @@ define(["jquery",
                         this.automaticSend = this.options.automatic;
                         this.automaticRelocate = this.options.automatic;
                         this.automaticFreeCoins = this.options.automatic;
+                        this.options.automatic = undefined;
                     }
                 }
                 if (this.options === undefined) {
@@ -179,6 +182,10 @@ define(["jquery",
                 this.messages = savedData.messages;
                 if (this.messages === undefined) {
                     this.messages = [];
+                }
+                this.currentEffects = savedData.currentEffects;
+                if (this.currentEffects === undefined) {
+                    this.currentEffects = [];
                 }
 
                 if (savedData.version === undefined) {
@@ -339,27 +346,73 @@ define(["jquery",
                 this.messages.splice(this.messages.indexOf(message), 1);
             };
 
-            // Effect
-            this.getCurrentEffect = function() {
+            // Globals
+            this.getGlobalValue = function(name){
+                var global = this.game.globals.filter(global => global.name == name)[0];
+                if(global === undefined){return null;}
+                var effects = this.currentEffects.filter(effect => effect.affects === name);
+                var value = global.baseValue;
+                for(var i = 0; i < effects.length; i++){
+                    value *= effects[i].valueModifier;
+                }
+                return value;
+            };
 
+            // Effect
+            this.addEffect = function(name, valueModifier, expires){
+                this.currentEffects.push({"name": name, "valueModifier": valueModifier, "expires": expires});
             };
 
             // Items
             this.itemFunctions = [];
-            this.itemFunctions["use-mysterious-scroll"] = function(game) {
-                switch (Math.floor(Math.random() * 2)) {
-                    case 0:
-                        //alertify.alert("You read a mysterious scroll.  It doesn't make sense to you.");
-                        game.message("You read a mysterious scroll.  It doesn't make sense to you.");
-                        break;
-                    case 1:
-                        game.message("You read a mysterious scroll.  Suddenly your purse seems heavier.");
-                        game.giveCoins(1000);
-                        break;
-                    case 2:
-                        game.message("You read a mysterious scroll.  Suddenly every seems to have a job for you.");
-                        //this.currentEffects.push({"name": "Contract chance", "variable" : "contractChance", 1, "expires": Date.now() + 60000});
-                }
+            this.itemFunctions["use-minor-mysterious-scroll"] = function(game) {
+                var effects = [
+                    {   
+                        "description":"Suddenly your purse seems heavier.",
+                        "effect" : function(game) {
+                            game.giveCoins(1000);
+                        }
+                    },
+                    {
+                        "description":"Suddenly every seems to have a job for you.",
+                        "effect" : function(game) {
+                            game.addEffect("chanceOfNewContract", 2, Date.now() + 60000);           
+                        }
+                    },
+                    {
+                        "description":"Suddenly every seems to want to work for you.",
+                        "effect" : function(game) { 
+                            game.addEffect("chanceOfNewHire", 2, Date.now() + 60000);
+                        }
+                    },
+                    {
+                        "description":"Suddenly every seems to be willing to work for much less.",
+                        "effect" : function(game) { 
+                            game.addEffect("hireCostModifier", 2, Date.now() + 60000);
+                        }
+                    },
+                    {
+                        "description":"Suddenly it seems like there are lots more coins around for the taking.",
+                        "effect" : function(game) { 
+                            game.addEffect("freeCoinsModifier", 10, Date.now() + 60000);
+                        }
+                    },
+                    {
+                        "description":"Suddenly it seems like everyone on quests are a lot safer.",
+                        "effect" : function(game) { 
+                            game.addEffect("questRisk", 0.1, Date.now() + 60000);
+                        }
+                    },
+                    {
+                        "description":"Suddenly it seems like everyone on quests are learning new things.",
+                        "effect" : function(game) { 
+                            game.addEffect("upgradeChance", 5, Date.now() + 60000);
+                        }
+                    }];
+
+                var effect = effects[Math.floor(Math.random()*effects.length)];
+                game.message("You read a mysterious scroll. " + effect.description);
+                effect.effect(game);
             };
 
             this.canSell = function(item) {
@@ -489,9 +542,10 @@ define(["jquery",
             };
 
             this.freeCoins = function(location) {
-                this.giveCoins(location.freeCoins);
+                var amount = location.freeCoins * this.getGlobalValue("freeCoinsModifier");
+                this.giveCoins(amount);
                 this.trackStat("click", "free-coins", 1);
-                this.trackStat("collect", "free-coins", location.freeCoins);
+                this.trackStat("collect", "free-coins", amount);
                 this.freeCoinsTimeout = location.freeCoinsTimeout;
             };
 
@@ -717,12 +771,12 @@ define(["jquery",
                         var adventurerType = expedition.adventurers[i].type;
                         var upgrade = this.getUpgrade(adventurerType);
 
-                        if (Math.random() < contract.risk) { // Then someone 'died'
+                        if (Math.random() * this.getGlobalValue("questRisk") < contract.risk) { // Then someone 'died'
                             expedition.adventurers[i].awol = true;
                             expedition.awol = true;
                             this.trackStat("death", "adventurer", 1);
                             this.trackStat("death-adventurer", adventurerType, 1);
-                        } else if (upgrade && Math.random() < contract.upgradeChance) { // Then someone 'upgraded'
+                        } else if (upgrade && Math.random() * this.getGlobalValue("upgradeChance") < contract.upgradeChance) { // Then someone 'upgraded'
                             expedition.adventurers[i].upgradedTo = upgrade;
                             this.hired[upgrade]++;
                             survived++;
@@ -775,7 +829,7 @@ define(["jquery",
             this.getCost = function(name) {
                 var hiredCount = this.getHiredCount(name);
                 var hireable = this.getHireable(name);
-                return Math.floor(hireable.baseCost + hireable.costMultiplier * hiredCount + Math.pow(hireable.costExponent, hiredCount));
+                return this.getGlobalValue("hireCostModifier") * Math.floor(hireable.baseCost + hireable.costMultiplier * hiredCount + Math.pow(hireable.costExponent, hiredCount));
             };
 
             this.hire = function(hireable) {
@@ -837,6 +891,13 @@ define(["jquery",
 
             this.expireAllExpired = function() {
 
+                // Remove completed effects
+                for (var h = 0; h < this.currentEffects.length; h++) {
+                    var effect = this.currentEffects[h];
+                    if (this.currentEffects[h].expires === undefined || this.currentEffects[h].expires <= Date.now()) {
+                            this.currentEffects.splice(h, 1);
+                    }
+                }
                 // Check for completed expeditions
                 for (var i = 0; i < this.runningExpeditions.length; i++) {
                     if (this.runningExpeditions[i].expires <= Date.now()) {
