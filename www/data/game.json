@@ -3,13 +3,13 @@
     "description": "Adventurering is dangerous. Hire someone else to do it for you!",
     "author": "James Hurburgh",
     "author-uri": "",
-    "globals":[
-        {"name":"chanceOfNewContract","baseValue":0.3},
-        {"name":"chanceOfNewHire","baseValue":0.2},
-        {"name":"hireCostModifier","baseValue":1},
-        {"name":"freeCoinsModifier","baseValue":1},
-        {"name":"questRisk","baseValue":1},
-        {"name":"upgradeChance","baseValue":1}
+    "globals": [
+        { "name": "chanceOfNewContract", "baseValue": 0.5 },
+        { "name": "chanceOfNewHire", "baseValue": 0.2 },
+        { "name": "hireCostModifier", "baseValue": 1 },
+        { "name": "freeCoinsModifier", "baseValue": 1 },
+        { "name": "questRisk", "baseValue": 1 },
+        { "name": "upgradeChance", "baseValue": 1 }
     ],
     "versions": [{
         "number": "0.9.4",
@@ -18,7 +18,7 @@
             "Improved mysterious scroll effects",
             "Added global effects",
             "Updated some items and contracts"
-            ],
+        ],
         "bugfixes": []
     }, {
         "number": "0.9.3",

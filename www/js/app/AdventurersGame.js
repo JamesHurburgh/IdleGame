@@ -566,9 +566,34 @@ define(["jquery",
                 return count;
             };
 
+            this.getLocation = function(name) {
+                return this.locations.filter(location => location.name == name)[0];
+            };
+
             this.addAvailableHire = function() {
-                var locationHireables = this.adventurers.filter(hireable => this.location.adventurers.indexOf(hireable.name) >= 0);
-                var hireable = clone(locationHireables[Math.floor(locationHireables.length * Math.random())]);
+                // Choose type from location list first, then look it up.
+                var location = this.getLocation(this.location.name);
+                var locationHireableTypes = location.adventurers;
+
+                // Start function
+                var weightedList = [];
+                var min = 0;
+                var max = 0;
+                for (var i = 0; i < locationHireableTypes.length; i++) {
+                    max += locationHireableTypes[i].chance;
+                    weightedList.push({ item: locationHireableTypes[i], min: min, max: max });
+                    min += locationHireableTypes[i].chance;
+                }
+                var chance = max * Math.random();
+                var selection = weightedList.filter(item => item.min <= chance && item.max >= chance)[0].item;
+                // End function
+
+                var adventurerType = selection.type;
+
+                // var adventurerType = locationHireableTypes[Math.floor(locationHireableTypes.length * Math.random())].type; // TODO take chance into account
+
+
+                var hireable = clone(this.adventurers.filter(hireable => hireable.name == adventurerType)[0]);
                 hireable.expires = Date.now() + Math.floor(this.millisecondsPerSecond * 60 * (Math.random() + 0.5));
                 this.location.availableHires.push(hireable);
                 this.location.availableHires.sort(function(a, b) {
