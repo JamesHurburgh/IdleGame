@@ -45,3 +45,15 @@ To scale duration, take the square root of the seconds divide by 425.  THis give
 3,500s = 0.13
 15,000s = 0.28
 180,000s = 0.99
+
+## Quests
+* Slay a white/red/green/black/blue/yellow dragon
+* Defeat an evil wizard
+* Defend peasants from zombies
+* Close a portal to Heck
+* Retreive a valueable artifact
+* Investigate a string of local murders
+* Clear rats out of the tavern basement
+* Guard duty
+* Collect ingredients for a rare potion
+* Defeat a local liche
