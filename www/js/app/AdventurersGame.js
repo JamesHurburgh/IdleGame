@@ -4,6 +4,7 @@ define(["jquery",
         "alertify",
         "json!data/game.json",
         "app/ItemManager",
+        "app/LocationManager",
         "json!data/contracts.json",
         "json!data/locations.json",
         "json!data/adventurers.json",
@@ -15,6 +16,7 @@ define(["jquery",
         alertify,
         game,
         ItemManager,
+        LocationManager,
         contracts,
         locations,
         adventurers,
@@ -44,6 +46,10 @@ define(["jquery",
             _itemManager = new ItemManager(this);
             this.ItemManager = function(){
                 return _itemManager;
+            };
+            _locationManager = new LocationManager(this);
+            this.LocationManager = function(){
+                return _locationManager;
             };
 
             this.reset = function() {
@@ -116,22 +122,6 @@ define(["jquery",
                 this.addNewAdverturersForHire();
 
                 this.checkAndClaimAllAchievements();
-            };
-
-            this.addNewContracts = function() {
-                // New contracts
-                var maxContracts = 5;
-                if (this.location.availableContracts.length < maxContracts && Math.random() < this.getGlobalValue("chanceOfNewContract")) {
-                    this.addContract();
-                }
-            };
-
-            this.addNewAdverturersForHire = function() {
-                // New hires
-                var maxAvailableHires = 5;
-                if (this.location.availableHires.length < maxAvailableHires && Math.random() < this.getGlobalValue("chanceOfNewHire")) {
-                    this.addAvailableHire();
-                }
             };
 
             this.loadFromSavedData = function(savedData) {
@@ -372,49 +362,6 @@ define(["jquery",
                 this.currentEffects.push({ "name": name, "valueModifier": valueModifier, "expires": expires });
             };
 
-
-
-            // Locations
-            this.currentLocationIndex = function() {
-                return this.allLocations.indexOf(this.allLocations.filter(location => location.name == this.location.name)[0]);
-            };
-
-            this.canRelocateDown = function() {
-                return this.currentLocationIndex() > 0;
-            };
-
-            this.relocateDown = function() {
-                if (this.canRelocateDown()) {
-                    this.location = this.allLocations[this.currentLocationIndex() - 1];
-                    if (!this.location.availableContracts) this.location.availableContracts = [];
-                    if (!this.location.availableHires) this.location.availableHires = [];
-                    this.expireAllExpired();
-                    this.trackStat("relocate-to", this.location.name, 1);
-                }
-            };
-
-            this.canRelocateUp = function() {
-                // This is the hard limit for now.
-                if (this.location.disabled !== undefined && this.location.disabled) {
-                    return false;
-                }
-                if (this.currentLocationIndex() == this.allLocations.length - 1) {
-                    return false;
-                }
-                var newLocation = this.allLocations[this.currentLocationIndex() + 1];
-                return newLocation.renownRequired <= this.renown;
-            };
-
-            this.relocateUp = function() {
-                if (this.canRelocateUp()) {
-                    this.location = this.allLocations[this.currentLocationIndex() + 1];
-                    if (!this.location.availableContracts) this.location.availableContracts = [];
-                    if (!this.location.availableHires) this.location.availableHires = [];
-                    this.expireAllExpired();
-                    this.trackStat("relocate-to", this.location.name, 1);
-                }
-            };
-
             // Coins
             this.canGetFreeCoins = function() {
                 return this.freeCoinsTimeout <= 0;
@@ -435,6 +382,15 @@ define(["jquery",
 
             // Adventurers
 
+
+
+            this.addNewAdverturersForHire = function() {
+                // New hires
+                var maxAvailableHires = 5;
+                if (this.location.availableHires.length < maxAvailableHires && Math.random() < this.getGlobalValue("chanceOfNewHire")) {
+                    this.addAvailableHire();
+                }
+            };
             this.hiredAdventurers = function() {
                 return adventurers.filter(hireable => this.totalAdventurers(hireable) > 0);
             };
@@ -478,13 +434,9 @@ define(["jquery",
                 return count;
             };
 
-            this.getLocation = function(name) {
-                return this.locations.filter(location => location.name == name)[0];
-            };
-
             this.addAvailableHire = function() {
                 // Choose type from location list first, then look it up.
-                var location = this.getLocation(this.location.name);
+                var location = this.LocationManager().getLocation(this.location.name);
                 var locationHireableTypes = location.adventurers;
 
                 if(locationHireableTypes === undefined || locationHireableTypes.length === 0){return;}
@@ -524,9 +476,18 @@ define(["jquery",
             };
 
             // Contracts
+
+            this.addNewContracts = function() {
+                // New contracts
+                var maxContracts = 5;
+                if (this.location.availableContracts.length < maxContracts && Math.random() < this.getGlobalValue("chanceOfNewContract")) {
+                    this.addContract();
+                }
+            };
+
             this.addContract = function() {
 
-                var location = this.getLocation(this.location.name);
+                var location = this.LocationManager().getLocation(this.location.name);
                 var locationContractsTypes = location.contracts;
 
                 if(locationContractsTypes === undefined || locationContractsTypes.length === 0){return;}
@@ -882,8 +843,8 @@ define(["jquery",
                     this.calculate();
 
                     if (this.options.automaticRelocate) {
-                        if (this.canRelocateUp()) {
-                            this.relocateUp();
+                        if (this.LocationManager().canRelocateUp()) {
+                            this.LocationManager().relocateUp();
                         }
                     }
                     if (this.options.automaticFreeCoins) {

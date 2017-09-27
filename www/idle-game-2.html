@@ -293,7 +293,7 @@
                             </div>
                             <div class="col-xs-12 col-sm-4">
                                 <div class="pull-right">
-                                    <button type="button" class="btn btn-default" v-bind:class="{ 'btn-success': canRelocateUp(), 'btn-primary': !canRelocateUp() }" @click="relocateUp()" :disabled="!canRelocateUp()">
+                                    <button type="button" class="btn btn-default" v-bind:class="{ 'btn-success': LocationManager().canRelocateUp(), 'btn-primary': !LocationManager().canRelocateUp() }" @click="LocationManager().relocateUp()" :disabled="!LocationManager().canRelocateUp()">
                                             Relocate
                                             <span class="glyphicon glyphicon-chevron-right"></span>
                                         </button>
@@ -303,7 +303,7 @@
                                     <button type="button" class="btn btn-primary pull-right" v-bind:class="{ 'btn-success': canGetFreeCoins(), 'btn-primary': !canGetFreeCoins() }" @click="freeCoins(location)" :disabled="!canGetFreeCoins()">{{location.freeCoinsDescription}}</button>
                                 </div>
                                 <div class="pull-right">
-                                    <button type="button" class="btn btn-default" v-bind:class="{ 'btn-success': canRelocateDown(), 'btn-primary': !canRelocateDown() }" @click="relocateDown()" :disabled="!canRelocateDown()">
+                                    <button type="button" class="btn btn-default" v-bind:class="{ 'btn-success': LocationManager().canRelocateDown(), 'btn-primary': !LocationManager().canRelocateDown() }" @click="LocationManager().relocateDown()" :disabled="!LocationManager().canRelocateDown()">
                                                 <span class="glyphicon glyphicon-chevron-left"></span>
                                                 Relocate
                                             </button>
