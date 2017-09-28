@@ -3,6 +3,7 @@
 define(["jquery",
         "alertify",
         "json!data/game.json",
+        "json!data/settings.json",
         "app/ItemManager",
         "app/LocationManager",
         "json!data/contracts.json",
@@ -15,6 +16,7 @@ define(["jquery",
         jquery,
         alertify,
         game,
+        settings,
         ItemManager,
         LocationManager,
         contracts,
@@ -37,6 +39,19 @@ define(["jquery",
             }
         }
 
+        function nth(d) {
+            if (d > 3 && d < 21) return 'th'; // thanks kennebec
+            switch (d % 10) {
+                case 1:
+                    return "st";
+                case 2:
+                    return "nd";
+                case 3:
+                    return "rd";
+                default:
+                    return "th";
+            }
+        }
 
         return function AdventurersGame(saveData, autoSaveFunction) {
 
@@ -50,6 +65,35 @@ define(["jquery",
             _locationManager = new LocationManager(this);
             this.LocationManager = function() {
                 return _locationManager;
+            };
+
+            this.gameTime = function(dateInMilliSeconds) {
+
+                if (dateInMilliSeconds === undefined || dateInMilliSeconds === null) {
+                    dateInMilliSeconds = Date.now();
+                }
+
+                var gameMinutes = dateInMilliSeconds / 1000;
+                var gameMinutesPart = Math.floor(gameMinutes % 60);
+
+                var gameHours = Math.floor(gameMinutes / 60);
+                var gameHoursPart = (gameHours % 24) + 1;
+                var amPm = "am";
+                if (gameHoursPart > 12) amPm = "pm";
+                gameHoursPart = (gameHours % 12) + 1;
+
+                var gameDate = Math.floor(gameHours / 24);
+                var gameDatePart = (gameDate % 30) + 1;
+                var gameDateOrdinalIndicator = nth(gameDatePart);
+
+                var gameMonth = Math.floor(gameDate / 30);
+                var gameMonthPart = (gameMonth % 12) + 1;
+                var gameMonthDescription = settings.monthNames[gameMonthPart - 1];
+
+                var gameYear = Math.floor(gameMonth / 12);
+
+                return gameHoursPart + ":" + gameMinutesPart.toString().padStart(2, "0") + amPm + " " + gameDatePart + gameDateOrdinalIndicator + " of " + gameMonthDescription + " " + gameYear;
+
             };
 
             this.reset = function() {
@@ -122,6 +166,8 @@ define(["jquery",
                 this.addNewAdverturersForHire();
 
                 this.checkAndClaimAllAchievements();
+
+                this.gameTime();
             };
 
             this.loadFromSavedData = function(savedData) {
@@ -338,7 +384,7 @@ define(["jquery",
 
             this.message = function(message) {
                 alertify.alert(message);
-                this.messages.unshift({ "id": uuidv4, "message": message, "time": Date.now() });
+                this.messages.unshift({ "id": uuidv4, "message": message, "time": this.gameTime() });
             };
 
             this.dismissMessage = function(message) {
