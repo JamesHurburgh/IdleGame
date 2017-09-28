@@ -44,11 +44,11 @@ define(["jquery",
             this.millisecondsPerSecond = 1000;
 
             _itemManager = new ItemManager(this);
-            this.ItemManager = function(){
+            this.ItemManager = function() {
                 return _itemManager;
             };
             _locationManager = new LocationManager(this);
-            this.LocationManager = function(){
+            this.LocationManager = function() {
                 return _locationManager;
             };
 
@@ -68,10 +68,10 @@ define(["jquery",
 
                 // Take a local copy of the locations
                 this.allLocations = clone(locations);
-                this.location = this.allLocations[0];
+                this.LocationManager().setCurrentLocation(this.allLocations[0].name);
 
-                this.location.availableContracts = [];
-                this.location.availableHires = [];
+                this.LocationManager().getCurrentLocation().availableContracts = [];
+                this.LocationManager().getCurrentLocation().availableHires = [];
 
                 // Initilise options
                 this.options = {
@@ -129,7 +129,7 @@ define(["jquery",
 
                 this.coins = savedData.coins;
                 this.renown = savedData.renown;
-                if(savedData.reknown !== undefined){
+                if (savedData.reknown !== undefined) {
                     this.renown = savedData.reknown;
                 }
                 this.freeCoinsTimeout = savedData.freeCoinsTimeout;
@@ -141,8 +141,8 @@ define(["jquery",
 
                 this.allLocations = savedData.allLocations;
                 this.location = savedData.location;
-                this.location.availableContracts = savedData.location.availableContracts;
-                this.location.availableHires = savedData.location.availableHires;
+                this.LocationManager().getCurrentLocation().availableContracts = savedData.location.availableContracts;
+                this.LocationManager().getCurrentLocation().availableHires = savedData.location.availableHires;
 
                 this.options = savedData.options;
                 if (this.options !== undefined && this.options.automatic !== undefined) {
@@ -188,8 +188,8 @@ define(["jquery",
                 }
 
                 if (savedData.version === undefined) {
-                    if (!this.location.availableContracts) this.location.availableContracts = [];
-                    if (!this.location.availableHires) this.location.availableHires = [];
+                    if (!this.LocationManager().getCurrentLocation().availableContracts) this.LocationManager().getCurrentLocation().availableContracts = [];
+                    if (!this.LocationManager().getCurrentLocation().availableHires) this.LocationManager().getCurrentLocation().availableHires = [];
                     if (!this.allLocations) this.allLocations = clone(locations);
                     if (!this.renown) this.renown = 0;
                     if (!this.coins) this.coins = 0;
@@ -315,11 +315,11 @@ define(["jquery",
             };
 
             this.startAllVisible = function() {
-                return this.options.claimAllButtons && this.location.availableContracts.length > 0;
+                return this.options.claimAllButtons && this.LocationManager().getCurrentLocation().availableContracts.length > 0;
             };
 
             this.hireAllVisible = function() {
-                return this.options.claimAllButtons && this.location.availableHires.length > 0;
+                return this.options.claimAllButtons && this.LocationManager().getCurrentLocation().availableHires.length > 0;
             };
 
             this.toggleAutomatic = function() {
@@ -387,7 +387,7 @@ define(["jquery",
             this.addNewAdverturersForHire = function() {
                 // New hires
                 var maxAvailableHires = 5;
-                if (this.location.availableHires.length < maxAvailableHires && Math.random() < this.getGlobalValue("chanceOfNewHire")) {
+                if (this.LocationManager().getCurrentLocation().availableHires.length < maxAvailableHires && Math.random() < this.getGlobalValue("chanceOfNewHire")) {
                     this.addAvailableHire();
                 }
             };
@@ -408,7 +408,7 @@ define(["jquery",
             };
 
             this.getAllHireableAdventurers = function() {
-                return this.location.availableHires.filter(adventurer => this.canHire(adventurer.name));
+                return this.LocationManager().getCurrentLocation().availableHires.filter(adventurer => this.canHire(adventurer.name));
             };
 
             this.hireAll = function() {
@@ -436,10 +436,10 @@ define(["jquery",
 
             this.addAvailableHire = function() {
                 // Choose type from location list first, then look it up.
-                var location = this.LocationManager().getLocation(this.location.name);
+                var location = this.LocationManager().getCurrentLocation();
                 var locationHireableTypes = location.adventurers;
 
-                if(locationHireableTypes === undefined || locationHireableTypes.length === 0){return;}
+                if (locationHireableTypes === undefined || locationHireableTypes.length === 0) { return; }
 
                 // Start function
                 var weightedList = [];
@@ -461,8 +461,8 @@ define(["jquery",
 
                 var hireable = clone(this.adventurers.filter(hireable => hireable.name == adventurerType)[0]);
                 hireable.expires = Date.now() + Math.floor(this.millisecondsPerSecond * 60 * (Math.random() + 0.5));
-                this.location.availableHires.push(hireable);
-                this.location.availableHires.sort(function(a, b) {
+                this.LocationManager().getCurrentLocation().availableHires.push(hireable);
+                this.LocationManager().getCurrentLocation().availableHires.sort(function(a, b) {
                     return a.expires - b.expires;
                 });
                 this.trackStat("available-adventurer", hireable.name, 1);
@@ -480,25 +480,31 @@ define(["jquery",
             this.addNewContracts = function() {
                 // New contracts
                 var maxContracts = 5;
-                if (this.location.availableContracts.length < maxContracts && Math.random() < this.getGlobalValue("chanceOfNewContract")) {
+                if (this.LocationManager().getCurrentLocation().availableContracts.length < maxContracts && Math.random() < this.getGlobalValue("chanceOfNewContract")) {
                     this.addContract();
                 }
             };
 
             this.addContract = function() {
 
-                var location = this.LocationManager().getLocation(this.location.name);
+                var location = this.LocationManager().getCurrentLocation();
                 var locationContractsTypes = location.contracts;
 
-                if(locationContractsTypes === undefined || locationContractsTypes.length === 0){return;}
+                if (locationContractsTypes === undefined || locationContractsTypes.length === 0) { return; }
 
                 var contractName = locationContractsTypes[Math.floor(locationContractsTypes.length * Math.random())];
 
                 var contract = clone(this.getContract(contractName));
+                if (contract === undefined) {
+                    console.log("Contract '" + contractName + "' is listed for location '" + location.name + "' but has no definition.");
+                    return;
+                }
 
                 contract.expires = Date.now() + Math.floor(this.millisecondsPerSecond * 60 * (Math.random() + 0.5));
-                this.location.availableContracts.push(contract);
-                this.location.availableContracts.sort(function(a, b) {
+
+                this.LocationManager().getCurrentLocation().availableContracts.push(contract);
+
+                this.LocationManager().getCurrentLocation().availableContracts.sort(function(a, b) {
                     return a.expires - b.expires;
                 });
                 this.trackStat("available-contract", contract.name, 1);
@@ -546,6 +552,7 @@ define(["jquery",
                     case "coins":
                         this.giveCoins(reward.amount);
                         break;
+                    case "reknown":
                     case "renown":
                         this.giveRenown(reward.amount);
                         break;
@@ -585,7 +592,7 @@ define(["jquery",
             };
 
             this.getStartableContracts = function() {
-                return this.location.availableContracts.filter(contract => this.canSendExpedition(contract));
+                return this.LocationManager().getCurrentLocation().availableContracts.filter(contract => this.canSendExpedition(contract));
             };
 
             this.startAllContracts = function() {
@@ -625,7 +632,8 @@ define(["jquery",
                     return a.expires - b.expires;
                 });
 
-                this.location.availableContracts.splice(this.location.availableContracts.indexOf(contract), 1);
+                var availableContracts = this.LocationManager().getCurrentLocation().availableContracts;
+                availableContracts.splice(availableContracts.indexOf(contract), 1);
             };
 
             this.completeExpedition = function(expedition) {
@@ -717,7 +725,7 @@ define(["jquery",
                 this.trackStat("spend-coins-on", hireable.name, cost);
                 this.hired[hireable.name] = hiredCount + 1;
 
-                this.location.availableHires.splice(this.location.availableHires.indexOf(hireable), 1);
+                this.LocationManager().getCurrentLocation().availableHires.splice(this.LocationManager().getCurrentLocation().availableHires.indexOf(hireable), 1);
 
                 this.trackStat("hire", "adventurer", 1);
                 this.trackStat("hire-adventurer", hireable.name, 1);
@@ -780,23 +788,25 @@ define(["jquery",
                     }
                 }
                 // Remove expired contracts
-                if (this.location.availableContracts) {
-                    for (var j = 0; j < this.location.availableContracts.length; j++) {
-                        if (this.location.availableContracts[j].expires <= Date.now()) {
+                var avialableContracts = this.LocationManager().getCurrentLocation().avialableContracts;
+                if (avialableContracts) {
+                    for (var j = 0; j < avialableContracts.length; j++) {
+                        if (avialableContracts[j].expires <= Date.now()) {
                             this.trackStat("miss", "contract", 1);
-                            this.trackStat("miss-contract", this.location.availableContracts[j].name, 1);
-                            this.location.availableContracts.splice(j, 1);
+                            this.trackStat("miss-contract", avialableContracts[j].name, 1);
+                            avialableContracts.splice(j, 1);
                         }
                     }
                 }
 
                 // Remove expired hired
-                if (this.location.availableHires) {
-                    for (var k = 0; k < this.location.availableHires.length; k++) {
-                        if (this.location.availableHires[k].expires <= Date.now()) {
+                var availableHires = this.LocationManager().getCurrentLocation().availableHires;
+                if (availableHires) {
+                    for (var k = 0; k < availableHires.length; k++) {
+                        if (availableHires[k].expires <= Date.now()) {
                             this.trackStat("miss", "adventurer", 1);
-                            this.trackStat("miss-adventurer", this.location.availableHires[k].name, 1);
-                            this.location.availableHires.splice(k, 1);
+                            this.trackStat("miss-adventurer", availableHires[k].name, 1);
+                            availableHires.splice(k, 1);
                         }
                     }
                 }
@@ -849,7 +859,7 @@ define(["jquery",
                     }
                     if (this.options.automaticFreeCoins) {
                         if (this.canGetFreeCoins()) {
-                            this.freeCoins(this.location);
+                            this.freeCoins(this.LocationManager().getCurrentLocation());
                         }
                     }
                     if (this.options.automaticClaim) {

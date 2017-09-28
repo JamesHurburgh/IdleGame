@@ -24,12 +24,20 @@ define(["json!data/locations.json"],
         return function LocationManager(gameState) {
 
             this.gameState = gameState;
-            
+
             this.getLocation = function(name) {
-                return gameState.locations.filter(location => location.name == name)[0];
+                return locations.filter(location => location.name == name)[0];
             };
 
-                    // Locations
+            this.getCurrentLocation = function() {
+                return this.getLocation(gameState.location.name);
+            };
+
+            this.setCurrentLocation = function(name) {
+                gameState.location = this.getLocation(name);
+            };
+
+            // Locations
             this.currentLocationIndex = function() {
                 return locations.indexOf(locations.filter(location => location.name == gameState.location.name)[0]);
             };
