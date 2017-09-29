@@ -16,7 +16,7 @@ define(["jquery",
     ],
     function AdventurersGame(
         jquery,
-        common,
+        CommonFunctions,
         alertify,
         game,
         settings,
@@ -28,6 +28,8 @@ define(["jquery",
         adventurers,
         renown,
         achievements) {
+
+        commonFunctions = new CommonFunctions();
 
         return function AdventurersGame(saveData, autoSaveFunction) {
 
@@ -42,7 +44,7 @@ define(["jquery",
             this.LocationManager = function() {
                 return _locationManager;
             };
-            
+
             _AdventurerManager = new AdventurerManager(this);
             this.AdventurerManager = function() {
                 return _AdventurerManager;
@@ -65,7 +67,7 @@ define(["jquery",
 
                 var gameDate = Math.floor(gameHours / 24);
                 var gameDatePart = (gameDate % 30) + 1;
-                var gameDateOrdinalIndicator = nth(gameDatePart);
+                var gameDateOrdinalIndicator = commonFunctions.nth(gameDatePart);
 
                 var gameMonth = Math.floor(gameDate / 30);
                 var gameMonthPart = (gameMonth % 12) + 1;
@@ -92,7 +94,7 @@ define(["jquery",
                 this.completedExpeditions = [];
 
                 // Take a local copy of the locations
-                this.allLocations = clone(locations);
+                this.allLocations = commonFunctions.clone(locations);
                 this.LocationManager().setCurrentLocation(this.allLocations[0].name);
 
                 this.LocationManager().getCurrentLocation().availableContracts = [];
@@ -365,7 +367,7 @@ define(["jquery",
 
             this.message = function(message) {
                 alertify.alert(message);
-                this.messages.unshift({ "id": uuidv4, "message": message, "time": this.gameTime() });
+                this.messages.unshift({ "id": commonFunctions.uuidv4, "message": message, "time": this.gameTime() });
             };
 
             this.dismissMessage = function(message) {
@@ -410,7 +412,7 @@ define(["jquery",
             // Adventurers
 
 
-            
+
             this.hiredAdventurers = function() {
                 return adventurers.filter(hireable => this.totalAdventurers(hireable) > 0);
             };
@@ -479,7 +481,7 @@ define(["jquery",
 
                 var contractName = locationContractsTypes[Math.floor(locationContractsTypes.length * Math.random())];
 
-                var contract = clone(this.getContract(contractName));
+                var contract = commonFunctions.clone(this.getContract(contractName));
                 if (contract === undefined) {
                     console.log("Contract '" + contractName + "' is listed for location '" + location.name + "' but has no definition.");
                     return;
@@ -595,7 +597,7 @@ define(["jquery",
                 this.trackStat("send-expedition", contract.name, 1);
 
                 var expedition = {
-                    id: uuidv4(),
+                    id: commonFunctions.uuidv4(),
                     contract: contract,
                     start: Date.now(),
                     expires: Date.now() + (contract.duration * this.millisecondsPerSecond),

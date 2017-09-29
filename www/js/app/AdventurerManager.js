@@ -1,8 +1,9 @@
 /*jshint esversion: 6 */
 
-define(["app/CommonFunctions","json!data/adventurers.json"],
+define(["app/CommonFunctions", "json!data/adventurers.json"],
     function AdventurerManager(CommonFunctions, adventurers) {
 
+        commonFunctions = new CommonFunctions();
         return function AdventurerManager(gameState) {
 
             this.gameState = gameState;
@@ -40,7 +41,7 @@ define(["app/CommonFunctions","json!data/adventurers.json"],
                 // var adventurerType = locationHireableTypes[Math.floor(locationHireableTypes.length * Math.random())].type; // TODO take chance into account
 
 
-                var hireable = clone(gameState.adventurers.filter(hireable => hireable.name == adventurerType)[0]);
+                var hireable = commonFunctions.clone(gameState.adventurers.filter(hireable => hireable.name == adventurerType)[0]);
                 hireable.expires = Date.now() + Math.floor(gameState.millisecondsPerSecond * 60 * (Math.random() + 0.5));
                 gameState.LocationManager().getCurrentLocation().availableHires.push(hireable);
                 gameState.LocationManager().getCurrentLocation().availableHires.sort(function(a, b) {
