@@ -1,11 +1,13 @@
 /*jshint esversion: 6 */
 
 define(["jquery",
+        "app/CommonFunctions",
         "alertify",
         "json!data/game.json",
         "json!data/settings.json",
         "app/ItemManager",
         "app/LocationManager",
+        "app/AdventurerManager",
         "json!data/contracts.json",
         "json!data/locations.json",
         "json!data/adventurers.json",
@@ -14,44 +16,18 @@ define(["jquery",
     ],
     function AdventurersGame(
         jquery,
+        common,
         alertify,
         game,
         settings,
         ItemManager,
         LocationManager,
+        AdventurerManager,
         contracts,
         locations,
         adventurers,
         renown,
         achievements) {
-
-        function uuidv4() {
-            return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-                (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-            );
-        }
-
-        function clone(object) {
-            try {
-                return JSON.parse(JSON.stringify(object));
-            } catch (exception) {
-                console.log("Unable to parse object: " + JSON.stringify(object));
-            }
-        }
-
-        function nth(d) {
-            if (d > 3 && d < 21) return 'th'; // thanks kennebec
-            switch (d % 10) {
-                case 1:
-                    return "st";
-                case 2:
-                    return "nd";
-                case 3:
-                    return "rd";
-                default:
-                    return "th";
-            }
-        }
 
         return function AdventurersGame(saveData, autoSaveFunction) {
 
@@ -65,6 +41,11 @@ define(["jquery",
             _locationManager = new LocationManager(this);
             this.LocationManager = function() {
                 return _locationManager;
+            };
+            
+            _AdventurerManager = new AdventurerManager(this);
+            this.AdventurerManager = function() {
+                return _AdventurerManager;
             };
 
             this.gameTime = function(dateInMilliSeconds) {
@@ -163,7 +144,7 @@ define(["jquery",
                 this.autoSave();
 
                 this.addNewContracts();
-                this.addNewAdverturersForHire();
+                this.AdventurerManager().addNewAdverturersForHire();
 
                 this.checkAndClaimAllAchievements();
 
@@ -429,14 +410,7 @@ define(["jquery",
             // Adventurers
 
 
-
-            this.addNewAdverturersForHire = function() {
-                // New hires
-                var maxAvailableHires = 5;
-                if (this.LocationManager().getCurrentLocation().availableHires.length < maxAvailableHires && Math.random() < this.getGlobalValue("chanceOfNewHire")) {
-                    this.addAvailableHire();
-                }
-            };
+            
             this.hiredAdventurers = function() {
                 return adventurers.filter(hireable => this.totalAdventurers(hireable) > 0);
             };
@@ -478,41 +452,6 @@ define(["jquery",
                     }
                 }
                 return count;
-            };
-
-            this.addAvailableHire = function() {
-                // Choose type from location list first, then look it up.
-                var location = this.LocationManager().getCurrentLocation();
-                var locationHireableTypes = location.adventurers;
-
-                if (locationHireableTypes === undefined || locationHireableTypes.length === 0) { return; }
-
-                // Start function
-                var weightedList = [];
-                var min = 0;
-                var max = 0;
-                for (var i = 0; i < locationHireableTypes.length; i++) {
-                    max += locationHireableTypes[i].chance;
-                    weightedList.push({ item: locationHireableTypes[i], min: min, max: max });
-                    min += locationHireableTypes[i].chance;
-                }
-                var chance = max * Math.random();
-                var selection = weightedList.filter(item => item.min <= chance && item.max >= chance)[0].item;
-                // End function
-
-                var adventurerType = selection.type;
-
-                // var adventurerType = locationHireableTypes[Math.floor(locationHireableTypes.length * Math.random())].type; // TODO take chance into account
-
-
-                var hireable = clone(this.adventurers.filter(hireable => hireable.name == adventurerType)[0]);
-                hireable.expires = Date.now() + Math.floor(this.millisecondsPerSecond * 60 * (Math.random() + 0.5));
-                this.LocationManager().getCurrentLocation().availableHires.push(hireable);
-                this.LocationManager().getCurrentLocation().availableHires.sort(function(a, b) {
-                    return a.expires - b.expires;
-                });
-                this.trackStat("available-adventurer", hireable.name, 1);
-                this.trackStat("available", "adventurers", 1);
             };
 
             this.spendHires = function(name, amount) {
