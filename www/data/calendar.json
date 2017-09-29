@@ -1,0 +1,16 @@
+{
+    "months": [
+        { "name": "Flinto", "season": "Summer", "averageTemperature": 23 },
+        { "name": "Rebotco", "season": "Summer", "averageTemperature": 25 },
+        { "name": "Venson", "season": "Summer", "averageTemperature": 23 },
+        { "name": "Geldor", "season": "Fall", "averageTemperature": 22 },
+        { "name": "Yam", "season": "Fall", "averageTemperature": 20 },
+        { "name": "Lirpa", "season": "Fall", "averageTemperature": 22 },
+        { "name": "Kilpoi", "season": "Winter", "averageTemperature": 17 },
+        { "name": "Ponner", "season": "Winter", "averageTemperature": 15 },
+        { "name": "Glinto", "season": "Winter", "averageTemperature": 17 },
+        { "name": "Mauito", "season": "Spring", "averageTemperature": 22 },
+        { "name": "Chram", "season": "Spring", "averageTemperature": 20 },
+        { "name": "Stuga", "season": "Spring", "averageTemperature": 22 }
+    ]
+}
