@@ -411,10 +411,12 @@ define(["jquery",
                 this.trackStat("spend", "coins", coins);
             };
 
+            this.giveCoins = function(amount) {
+                this.trackStat("get", "coins", amount);
+                this.coins += amount;
+            };
+
             // Adventurers
-
-
-
             this.hiredAdventurers = function() {
                 return adventurers.filter(hireable => this.totalAdventurers(hireable) > 0);
             };
@@ -464,8 +466,36 @@ define(["jquery",
                 this.trackStat("send", "adventurers", amount);
             };
 
-            // Contracts
+            this.getUpgrade = function(adventurerType) {
+                var becomesList = this.getHireable(adventurerType).becomes;
+                if (becomesList.length === 0) {
+                    return null;
+                }
+                return becomesList[Math.floor(Math.random() * becomesList.length)];
+            };
+            this.getCost = function(name) {
+                var hiredCount = this.getHiredCount(name);
+                var hireable = this.getHireable(name);
+                return this.getGlobalValue("hireCostModifier") * Math.floor(hireable.baseCost + hireable.costMultiplier * hiredCount + Math.pow(hireable.costExponent, hiredCount));
+            };
 
+            this.hire = function(hireable) {
+                if (!this.canHire(hireable.name)) {
+                    return;
+                }
+                var hiredCount = this.getHiredCount(hireable.name);
+                var cost = this.getCost(hireable.name);
+                this.spendCoins(cost);
+                this.trackStat("spend-coins-on", hireable.name, cost);
+                this.hired[hireable.name] = hiredCount + 1;
+
+                this.LocationManager().getCurrentLocation().availableHires.splice(this.LocationManager().getCurrentLocation().availableHires.indexOf(hireable), 1);
+
+                this.trackStat("hire", "adventurer", 1);
+                this.trackStat("hire-adventurer", hireable.name, 1);
+            };
+
+            // Contracts
             this.addNewContracts = function() {
                 // New contracts
                 var maxContracts = 5;
@@ -526,54 +556,8 @@ define(["jquery",
                 }
             };
 
-            this.giveCoins = function(amount) {
-                this.trackStat("get", "coins", amount);
-                this.coins += amount;
-            };
-
-            this.giveRenown = function(amount) {
-                this.trackStat("get", "renown", amount);
-                this.renown += amount;
-            };
-
-            this.giveReward = function(reward) {
-                switch (reward.type) {
-                    case "coins":
-                        this.giveCoins(reward.amount);
-                        break;
-                    case "reknown":
-                    case "renown":
-                        this.giveRenown(reward.amount);
-                        break;
-                    case "item":
-                        this.ItemManager().giveItem(reward.item);
-                        break;
-                    default:
-                        this.hired[type] += amount;
-                }
-            };
-
-            this.claimReward = function(expedition) {
-                this.trackStat("claim", "reward", 1);
-                if (expedition.contract.contractAmount) {
-                    this.giveCoins(expedition.contract.contractAmount);
-                }
-                for (var i = 0; i < expedition.rewards.length; i++) {
-                    this.giveReward(expedition.rewards[i]);
-                }
-                this.removeExpedition(expedition);
-            };
-
             this.removeExpedition = function(expedition) {
                 this.completedExpeditions.splice(this.completedExpeditions.indexOf(expedition), 1);
-            };
-
-            this.getUpgrade = function(adventurerType) {
-                var becomesList = this.getHireable(adventurerType).becomes;
-                if (becomesList.length === 0) {
-                    return null;
-                }
-                return becomesList[Math.floor(Math.random() * becomesList.length)];
             };
 
             this.expeditionProgress = function(expedition) {
@@ -694,31 +678,46 @@ define(["jquery",
                 this.completedExpeditions.push(expedition);
             };
 
+            // Rewards
+            this.giveRenown = function(amount) {
+                this.trackStat("get", "renown", amount);
+                this.renown += amount;
+            };
+
+            this.giveReward = function(reward) {
+                switch (reward.type) {
+                    case "coins":
+                        this.giveCoins(reward.amount);
+                        break;
+                    case "reknown":
+                    case "renown":
+                        this.giveRenown(reward.amount);
+                        break;
+                    case "item":
+                        this.ItemManager().giveItem(reward.item);
+                        break;
+                    default:
+                        this.hired[type] += amount;
+                }
+            };
+
+            this.claimReward = function(expedition) {
+                this.trackStat("claim", "reward", 1);
+                if (expedition.contract.contractAmount) {
+                    this.giveCoins(expedition.contract.contractAmount);
+                }
+                for (var i = 0; i < expedition.rewards.length; i++) {
+                    this.giveReward(expedition.rewards[i]);
+                }
+                this.removeExpedition(expedition);
+            };
+
+            // Other
             this.varyAmount = function(amount) {
                 return Math.floor(amount * (Math.random() + 0.5));
             };
 
-            this.getCost = function(name) {
-                var hiredCount = this.getHiredCount(name);
-                var hireable = this.getHireable(name);
-                return this.getGlobalValue("hireCostModifier") * Math.floor(hireable.baseCost + hireable.costMultiplier * hiredCount + Math.pow(hireable.costExponent, hiredCount));
-            };
 
-            this.hire = function(hireable) {
-                if (!this.canHire(hireable.name)) {
-                    return;
-                }
-                var hiredCount = this.getHiredCount(hireable.name);
-                var cost = this.getCost(hireable.name);
-                this.spendCoins(cost);
-                this.trackStat("spend-coins-on", hireable.name, cost);
-                this.hired[hireable.name] = hiredCount + 1;
-
-                this.LocationManager().getCurrentLocation().availableHires.splice(this.LocationManager().getCurrentLocation().availableHires.indexOf(hireable), 1);
-
-                this.trackStat("hire", "adventurer", 1);
-                this.trackStat("hire-adventurer", hireable.name, 1);
-            };
 
             this.readableTime = function(milliseconds) {
 
