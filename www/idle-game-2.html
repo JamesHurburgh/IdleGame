@@ -153,11 +153,7 @@
                     <div class="modal-body">
                         <button @click="reset()" type="button" class="btn btn-default" data-dismiss="modal">Reset the Game</button>
 
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" v-model="options.claimAllButtons">Display "Claim All" Buttons</input>
-                            </label>
-                        </div>
+                        <h3>Autoplay</h3>
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox" v-model="options.automaticHire">Automatically hire available adventurers</input>
@@ -181,6 +177,17 @@
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox" v-model="options.automaticFreeCoins">Automatically claim free coins</input>
+                            </label>
+                        </div>
+                        <h3>Display</h3>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" v-model="options.showMessageTimeAsRealTime">Show message time as real time</input>
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" v-model="options.claimAllButtons">Display "Claim All" Buttons</input>
                             </label>
                         </div>
                     </div>
@@ -456,7 +463,7 @@
                         <table class="table table-striped table-hover ">
                             <tr v-for="message in messages">
                                 <td>{{message.message}}</td>
-                                <td>{{message.time}}</td>
+                                <td><span v-if="!options.showMessageTimeAsRealTime">{{gameTime(message.time)}}</span><span v-if="options.showMessageTimeAsRealTime">{{new Date(message.time).toLocaleString()}}</span></td>
                                 <td>
                                     <button type="button" class="btn btn-danger btn-xs pull-right" @click="dismissMessage(message)">X
                                 </td>

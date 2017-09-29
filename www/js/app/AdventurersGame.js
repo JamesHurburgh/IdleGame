@@ -107,7 +107,8 @@ define(["jquery",
                     "automaticClaim": false,
                     "automaticSend": false,
                     "automaticRelocate": false,
-                    "automaticFreeCoins": false
+                    "automaticFreeCoins": false,
+                    "showMessageTimeAsRealTime": false
                 };
 
                 // Initialise stats
@@ -191,7 +192,8 @@ define(["jquery",
                         "automaticClaim": false,
                         "automaticSend": false,
                         "automaticRelocate": false,
-                        "automaticFreeCoins": false
+                        "automaticFreeCoins": false,
+                        "showMessageTimeAsRealTime": false
                     };
                 }
 
@@ -367,7 +369,7 @@ define(["jquery",
 
             this.message = function(message) {
                 alertify.alert(message);
-                this.messages.unshift({ "id": commonFunctions.uuidv4, "message": message, "time": this.gameTime() });
+                this.messages.unshift({ "id": commonFunctions.uuidv4, "message": message, "time": Date.now() });
             };
 
             this.dismissMessage = function(message) {
