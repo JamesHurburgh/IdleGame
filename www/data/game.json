@@ -17,7 +17,9 @@
         "features": [
             "Option: Show achievement time as real time or game time."
         ],
-        "bugfixes": []
+        "bugfixes": [
+            "Statistics filter is not trim sensitive"
+        ]
     }, {
         "number": "0.9.7",
         "description": "It's about time.",

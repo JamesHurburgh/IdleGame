@@ -323,7 +323,7 @@ define(["jquery",
                 if (!filter) {
                     return this.stats;
                 }
-                return this.stats.filter(stat => stat.name.indexOf(filter.toLowerCase()) !== -1);
+                return this.stats.filter(stat => stat.name.indexOf(filter.toLowerCase().trim()) !== -1);
             };
 
             // Options
