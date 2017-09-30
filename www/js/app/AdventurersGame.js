@@ -8,6 +8,7 @@ define(["jquery",
         "app/ItemManager",
         "app/LocationManager",
         "app/AdventurerManager",
+        "json!data/calendar.json",
         "json!data/contracts.json",
         "json!data/locations.json",
         "json!data/adventurers.json",
@@ -23,6 +24,7 @@ define(["jquery",
         ItemManager,
         LocationManager,
         AdventurerManager,
+        calendar,
         contracts,
         locations,
         adventurers,
@@ -50,32 +52,58 @@ define(["jquery",
                 return _AdventurerManager;
             };
 
-            this.gameTime = function(dateInMilliSeconds) {
+            this.getGameTime = function(dateInMilliSeconds) {
 
                 if (dateInMilliSeconds === undefined || dateInMilliSeconds === null) {
                     dateInMilliSeconds = Date.now();
                 }
 
+                var gameDateTime = {};
+                gameDateTime.realDateTime = dateInMilliSeconds;
+
                 var gameMinutes = dateInMilliSeconds / 1000;
-                var gameMinutesPart = Math.floor(gameMinutes % 60);
+                gameDateTime.minutes = Math.floor(gameMinutes % 60);
 
                 var gameHours = Math.floor(gameMinutes / 60);
-                var gameHoursPart = (gameHours % 24) + 1;
-                var amPm = "am";
-                if (gameHoursPart > 12) amPm = "pm";
-                gameHoursPart = (gameHours % 12) + 1;
+                gameDateTime.hours = (gameHours % 24);
+
+                gameDateTime.timeOfDay = calendar.timeOfDay[gameDateTime.hours];
+
+                gameDateTime.amPm = "am";
+                if (gameDateTime.hours >= 12) gameDateTime.amPm = "pm";
+                gameDateTime.hours = (gameHours % 12);
+                if (gameDateTime.hours === 0) gameDateTime.hours = 12;
+
 
                 var gameDate = Math.floor(gameHours / 24);
-                var gameDatePart = (gameDate % 30) + 1;
-                var gameDateOrdinalIndicator = commonFunctions.nth(gameDatePart);
+                gameDateTime.date = (gameDate % 30) + 1;
+                gameDateTime.gameDateOrdinalIndicator = commonFunctions.nth(gameDateTime.date);
 
                 var gameMonth = Math.floor(gameDate / 30);
-                var gameMonthPart = (gameMonth % 12) + 1;
-                var gameMonthDescription = settings.monthNames[gameMonthPart - 1];
+                gameDateTime.month = calendar.months[(gameMonth % 12)];
+                gameDateTime.monthName = gameDateTime.month.name;
 
-                var gameYear = Math.floor(gameMonth / 12);
+                gameDateTime.season = gameDateTime.month.season;
 
-                return gameHoursPart + ":" + gameMinutesPart.toString().padStart(2, "0") + amPm + " " + gameDatePart + gameDateOrdinalIndicator + " of " + gameMonthDescription + " " + gameYear;
+                gameDateTime.year = Math.floor(gameMonth / 12);
+
+                gameDateTime.toDateString = function() {
+                    return this.date + this.gameDateOrdinalIndicator + " of " + this.monthName + " " + this.year;
+                };
+
+                gameDateTime.toTimeString = function() {
+                    return this.hours + ":" + this.minutes.toString().padStart(2, "0") + this.amPm;
+                };
+
+                gameDateTime.toString = function() {
+                    return this.toTimeString() + " " + this.toDateString();
+                };
+
+                gameDateTime.toFullString = function() {
+                    return this.timeOfDay.description + " - " + this.toTimeString() + " " + this.toDateString() + " - " + this.season;
+                };
+
+                return gameDateTime;
 
             };
 
@@ -151,7 +179,7 @@ define(["jquery",
 
                 this.checkAndClaimAllAchievements();
 
-                this.gameTime();
+                this.gameDateTime = this.getGameTime();
             };
 
             this.loadFromSavedData = function(savedData) {
@@ -450,14 +478,12 @@ define(["jquery",
             };
 
             this.getAdventurersOnTheJob = function(name) {
-                var count = 0;
-                for (var i = 0; i < this.runningExpeditions.length; i++) {
-                    var expeditionCount = this.runningExpeditions[i].adventurers.filter(adventurer => adventurer.type == name).length;
-                    if (expeditionCount) {
-                        count += expeditionCount;
-                    }
-                }
-                return count;
+                var total = this.runningExpeditions.map(function(expedition) {
+                    return expedition.adventurers.filter(adventurer => adventurer.type == name).length;
+                }).reduce(function(accumulator, currentValue) {
+                    return accumulator + currentValue;
+                });
+                return total;
             };
 
             this.spendHires = function(name, amount) {
