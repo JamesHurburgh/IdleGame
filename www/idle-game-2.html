@@ -231,6 +231,58 @@
             </div>
         </div>
 
+        <!-- Modal View Contract Box -->
+        <div id="contractDetails" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div v-if="selectedContract">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4>Contract Details</h4>
+                        </div>
+                        <div class="modal-body">
+                            <h4>
+                                {{selectedContract.name}}
+
+                            </h4>
+                            <div v-if="selectedContract.contractAmount != undefined">{{selectedContract.contractAmount}} coins</div>
+                            <span>Requires</span>
+                            <div v-if="selectedContract.requirements != undefined">
+                                <div v-for="adventurerRequirement in selectedContract.requirements.adventurers">
+                                    {{adventurerRequirement.amount}} {{adventurerRequirement.type}} <span v-bind:class="{ 'text-danger': lessthan(getHiredCount(adventurerRequirement.type), adventurerRequirement.amount), 'text-success': !lessthan(getHiredCount(adventurerRequirement.type), adventurerRequirement.amount) }">({{getHiredCount(adventurerRequirement.type)}}/{{adventurerRequirement.amount}})</span>
+                                </div>
+                                <div v-for="attributesRequirement in selectedContract.requirements.attributes">
+                                    {{attributesRequirement.type}} {{attributesRequirement.amount}}
+                                </div>
+                            </div>
+
+                            <div>Duration: {{Math.ceil(Math.sqrt(selectedContract.duration)/42)}}/10</div>
+                            <div class="progress" style="height: 7px; margin-bottom: 0px;">
+                                <div class="progress-bar progress-bar-info" v-bind:style="{ width: Math.ceil(Math.sqrt(selectedContract.duration)/42)*10 + '%' }"></div>
+                            </div>
+                            <div>Risk: {{Math.ceil(selectedContract.risk * 10)}}/10</div>
+                            <div class="progress" style="height: 7px; margin-bottom: 0px;">
+                                <div class="progress-bar progress-bar-danger" v-bind:style="{ width: Math.ceil(selectedContract.risk * 10) * 10 + '%' }"></div>
+                            </div>
+                            <div>Reward: {{Math.ceil(selectedContract.rewardFactor * 10)}}/10</div>
+                            <div class="progress" style="height: 7px; margin-bottom: 0px;">
+                                <div class="progress-bar progress-bar-success" v-bind:style="{ width: Math.ceil(selectedContract.rewardFactor * 10) * 10 + '%' }"></div>
+                            </div>
+                            <div v-bind:class="{ 'text-danger': expiringDanger(selectedContract.expires), 'text-warning': expiringWarning(selectedContract.expires), 'text-success': expiringSuccess(selectedContract.expires) }">{{readableTime(selectedContract.expires - Date.now())}} remaining</div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn pull-right" data-dismiss="modal" v-bind:class="{ 'btn-success': canSendExpedition(selectedContract), 'btn-primary': !canSendExpedition(selectedContract) }" @click="sendExpedition(selectedContract)" :disabled="!canSendExpedition(selectedContract)">Start</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
         <div class="container" style="padding-bottom: 65px; padding-top: 65px;">
             <div id="container" class="row">
                 <ul class="nav nav-tabs">
@@ -315,12 +367,19 @@
                         <transition-group name="custom-classes-transition" enter-active-class="animated fadeIn" leave-active-class="noOutAnimation">
                             <div v-for="contract in LocationManager().getCurrentLocation().availableContracts" key="contract.name">
                                 <div class="well well-sm">
-                                    <h4>{{contract.name}} <button type="button" class="btn btn-sm pull-right" v-bind:class="{ 'btn-success': canSendExpedition(contract), 'btn-primary': !canSendExpedition(contract) }" @click="sendExpedition(contract)" :disabled="!canSendExpedition(contract)">Start</button>
+                                    <h4>
+                                        {{contract.name}}
+                                        <button type="button" class="btn btn-sm btn-info pull-right" data-toggle="modal" data-target="#contractDetails" @click="viewContract(contract)">View</button>
+                                        <!-- <button type="button" class="btn btn-sm pull-right" v-bind:class="{ 'btn-success': canSendExpedition(contract), 'btn-primary': !canSendExpedition(contract) }" @click="sendExpedition(contract)" :disabled="!canSendExpedition(contract)">Start</button> -->
                                     </h4>
-                                    <div v-if="contract.contractAmount != undefined">{{contract.contractAmount}} coins</div>
+                                    <!-- <div v-if="contract.contractAmount != undefined">{{contract.contractAmount}} coins</div>
+                                    <span>Requires</span>
                                     <div v-if="contract.requirements != undefined">
                                         <div v-for="adventurerRequirement in contract.requirements.adventurers">
                                             {{adventurerRequirement.amount}} {{adventurerRequirement.type}} <span v-bind:class="{ 'text-danger': lessthan(getHiredCount(adventurerRequirement.type), adventurerRequirement.amount), 'text-success': !lessthan(getHiredCount(adventurerRequirement.type), adventurerRequirement.amount) }">({{getHiredCount(adventurerRequirement.type)}}/{{adventurerRequirement.amount}})</span>
+                                        </div>
+                                        <div v-for="attributesRequirement in contract.requirements.attributes">
+                                            {{attributesRequirement.type}} {{attributesRequirement.amount}}
                                         </div>
                                     </div>
 
@@ -335,7 +394,7 @@
                                     <div>Reward: {{Math.ceil(contract.rewardFactor * 10)}}/10</div>
                                     <div class="progress" style="height: 7px; margin-bottom: 0px;">
                                         <div class="progress-bar progress-bar-success" v-bind:style="{ width: Math.ceil(contract.rewardFactor * 10) * 10 + '%' }"></div>
-                                    </div>
+                                    </div> -->
                                     <div v-bind:class="{ 'text-danger': expiringDanger(contract.expires), 'text-warning': expiringWarning(contract.expires), 'text-success': expiringSuccess(contract.expires) }">{{readableTime(contract.expires - Date.now())}} remaining</div>
                                 </div>
                             </div>

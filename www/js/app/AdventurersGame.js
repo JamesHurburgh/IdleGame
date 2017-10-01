@@ -246,6 +246,8 @@ define(["jquery",
                     this.currentEffects = [];
                 }
 
+                this.selectedContract = null;
+
                 if (savedData.version === undefined) {
                     if (!this.LocationManager().getCurrentLocation().availableContracts) this.LocationManager().getCurrentLocation().availableContracts = [];
                     if (!this.LocationManager().getCurrentLocation().availableHires) this.LocationManager().getCurrentLocation().availableHires = [];
@@ -478,6 +480,7 @@ define(["jquery",
             };
 
             this.getAdventurersOnTheJob = function(name) {
+                if (this.runningExpeditions === undefined || this.runningExpeditions.length === 0) return 0;
                 var total = this.runningExpeditions.map(function(expedition) {
                     return expedition.adventurers.filter(adventurer => adventurer.type == name).length;
                 }).reduce(function(accumulator, currentValue) {
@@ -522,6 +525,11 @@ define(["jquery",
             };
 
             // Contracts
+
+            this.viewContract = function(contract) {
+                this.selectedContract = contract;
+            };
+
             this.addNewContracts = function() {
                 // New contracts
                 var maxContracts = 5;
@@ -633,6 +641,8 @@ define(["jquery",
 
                 var availableContracts = this.LocationManager().getCurrentLocation().availableContracts;
                 availableContracts.splice(availableContracts.indexOf(contract), 1);
+                this.selectedContract = null;
+                //document.getElementById("contractDetails").modal("hide");
             };
 
             this.completeExpedition = function(expedition) {
@@ -808,6 +818,7 @@ define(["jquery",
                         if (availableContracts[j].expires <= Date.now()) {
                             this.trackStat("miss", "contract", 1);
                             this.trackStat("miss-contract", availableContracts[j].name, 1);
+                            if (this.selectedContract == availableContracts[j]) this.selectedContract = null;
                             availableContracts.splice(j, 1);
                         }
                     }
@@ -834,6 +845,7 @@ define(["jquery",
                             if (location.availableContracts[m].expires <= Date.now()) {
                                 this.trackStat("miss", "contract", 1);
                                 this.trackStat("miss-contract", location.availableContracts[m].name, 1);
+                                if (this.selectedContract == location.availableContracts[m]) this.selectedContract = null;
                                 location.availableContracts.splice(m, 1);
 
                             }
