@@ -42,5 +42,31 @@
             "name": "Quarry ?", "description" : "",
             "occurs" : { "month" : "Flinto", "date" : 19}
         }
+    ],
+    "timeOfDay": [
+        { "hour": 0, "description": "Midnight" },
+        { "hour": 1, "description": "Night" },
+        { "hour": 2, "description": "Night" },
+        { "hour": 3, "description": "Night" },
+        { "hour": 4, "description": "Night" },
+        { "hour": 5, "description": "Dawn" },
+        { "hour": 6, "description": "Dawn" },
+        { "hour": 7, "description": "Morning" },
+        { "hour": 8, "description": "Morning" },
+        { "hour": 9, "description": "Morning" },
+        { "hour": 10, "description": "Morning" },
+        { "hour": 11, "description": "Midday" },
+        { "hour": 12, "description": "Midday" },
+        { "hour": 13, "description": "Afternoon" },
+        { "hour": 14, "description": "Afternoon" },
+        { "hour": 15, "description": "Afternoon" },
+        { "hour": 16, "description": "Afternoon" },
+        { "hour": 17, "description": "Dusk" },
+        { "hour": 18, "description": "Dusk" },
+        { "hour": 19, "description": "Evening" },
+        { "hour": 20, "description": "Evening" },
+        { "hour": 21, "description": "Evening" },
+        { "hour": 22, "description": "Evening" },
+        { "hour": 23, "description": "Midnight" }
     ]
 }
