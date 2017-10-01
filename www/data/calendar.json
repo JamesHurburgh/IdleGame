@@ -12,5 +12,35 @@
         { "name": "Mauito", "season": "Spring", "averageTemperature": 22 },
         { "name": "Chram", "season": "Spring", "averageTemperature": 20 },
         { "name": "Stuga", "season": "Spring", "averageTemperature": 22 }
+    ],
+    "holidays" : [
+        { 
+            "name": "Yam day", 
+            "description" : "A celebration of the beginning of the harvest of Yams.",
+            "occurs" : { "month" : "Yam", "date" : 1}
+        },
+        { 
+            "name": "Midwinter", 
+            "description" : "The middle of winter.  Traditionally the residents of Otium meet together and share a meal around a roaring bonfire.",
+            "occurs" : { "month" : "Ponner", "date" : 15}
+        },
+        { 
+            "name": "Midsummer", 
+            "description" : "",
+            "occurs" : { "month" : "Rebotco", "date" : 15}
+        },
+        { 
+            "name": "Lirpa's lament", 
+            "description" : "Day of mourning for Lirpa, a beloved queen, and by extension all deceased monarchs." ,
+            "occurs" : { "month" : "Lirpa", "date" : 13}
+        },
+        { 
+            "name": "Cimalo", "description" : "The culmination of four days of testing for young men and women." ,
+            "occurs" : { "month" : "Chram", "date" : 27}
+        },
+        { 
+            "name": "Quarry ?", "description" : "",
+            "occurs" : { "month" : "Flinto", "date" : 19}
+        }
     ]
 }

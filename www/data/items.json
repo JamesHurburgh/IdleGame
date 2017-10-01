@@ -362,5 +362,13 @@
                 { "prefix": "Masterful", "valueModifier": 5 }
             ]
         ]
-    }
+    },
+    {
+        "type": "skins",
+        "subsets": [
+            "hides",
+            "furs",
+            "crossbow"
+        ]
+    },
 ]
