@@ -237,18 +237,17 @@
 
                 <!-- Modal content-->
                 <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4>Contract Details</h4>
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4>Contract Details</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div v-if="!selectedContract">
+                            <span class="text-muted">Contract expired or none selected.</span>
                         </div>
-                        <div class="modal-body">
-                            <div v-if="!selectedContract">
-                                <span class="text-muted">Contract expired or none selected.</span>
-                            </div>
-                            <div v-if="selectedContract">
+                        <div v-if="selectedContract">
                             <h4>
                                 {{selectedContract.name}}
-
                             </h4>
                             <div v-if="selectedContract.contractAmount != undefined">{{selectedContract.contractAmount}} coins</div>
                             <span>Requires</span>
@@ -276,12 +275,27 @@
                             <div v-bind:class="{ 'text-danger': expiringDanger(selectedContract.expires), 'text-warning': expiringWarning(selectedContract.expires), 'text-success': expiringSuccess(selectedContract.expires) }">{{readableTime(selectedContract.expires - Date.now())}} remaining</div>
 
                         </div>
+                        <div>
+                            <h4>Requirements</h4>
+                            <div v-for="attribute in AdventurerManager().getCurrentPartyAttributes()">
+                                {{attribute.name}}: {{attribute.amount}}
+                            </div>
+                            
+                            <h4>Adventurers</h4>
+                            <div v-for="adventurer in AdventurerManager().getAdventurersAtStatus('Idle')">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" v-model="adventurer.includeInParty">{{adventurer.name.full}}</input>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
-                        <div class="modal-footer">
-                            <button v-if="selectedContract" type="button" class="btn pull-right" data-dismiss="modal" v-bind:class="{ 'btn-success': canSendExpedition(selectedContract), 'btn-primary': !canSendExpedition(selectedContract) }" @click="sendExpedition(selectedContract)" :disabled="!canSendExpedition(selectedContract)">Start</button>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                    <div class="modal-footer">
+                        <button v-if="selectedContract" type="button" class="btn pull-right" data-dismiss="modal" v-bind:class="{ 'btn-success': canSendExpedition(selectedContract), 'btn-primary': !canSendExpedition(selectedContract) }" @click="sendExpedition(selectedContract)" :disabled="!canSendExpedition(selectedContract)">Start</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 
-                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -426,6 +440,7 @@
                                     <th>Idle</th>
                                     <th>Out</th>
                                     <th>Total</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tr v-for="adventurer in hiredAdventurers()">
@@ -433,8 +448,27 @@
                                 <td>{{getHiredCount(adventurer.name)}}</td>
                                 <td>{{getAdventurersOnTheJob(adventurer.name)}}</td>
                                 <td>{{totalAdventurers(adventurer)}}</td>
+                                <td>
+                                    <button type="button" class="btn btn-xs btn-info pull-right" @click="AdventurerManager().convertNumberToAdventurer(adventurer.name)">Meet one</button>
+                                </td>
                             </tr>
                         </table>
+                        <ul>
+                            <div v-for="adventurer in adventurerList">
+                                <div class="well well-sm">
+                                    <h4>
+                                        {{adventurer.name.full}} <span class="text-muted">({{adventurer.type}})</span>
+                                        <button type="button" class="btn btn-info pull-right" @click="AdventurerManager().talkTo(adventurer.name.first)">Talk to {{adventurer.name.first}}</button>
+                                    </h4>
+                                    <div>
+                                        <div>Age: {{adventurer.age}}</div>
+                                        <div v-for="skill in adventurer.skills">
+                                            {{skill.name}}: {{skill.amount}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ul>
                     </div>
                     <div class="tab-pane fade" id="items">
                         <span v-if="ownedItems.length == 0" class="text-muted text-center col-xs-12">No items</span>

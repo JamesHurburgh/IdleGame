@@ -5,7 +5,11 @@
     "cpt": 0,
     "baseCost": 1,
     "costMultiplier": 1,
-    "costExponent": 1.05
+    "costExponent": 1.05,
+    "skills" : [
+        { "name"  : "Toughness","amount" : 1 },
+        { "name"  : "Perception","amount" : 1 }
+    ]
 }, {
     "name": "Street rat",
     "plural": "Street rats",
@@ -13,7 +17,11 @@
     "cpt": 0,
     "baseCost": 2,
     "costMultiplier": 1,
-    "costExponent": 1.05
+    "costExponent": 1.05,
+    "skills" : [
+        { "name"  : "Toughness","amount" : 1 },
+        { "name"  : "Perception","amount" : 1 }
+    ]
 }, {
     "name": "Peasant",
     "plural": "Peasants",
@@ -21,7 +29,11 @@
     "cpt": 0,
     "baseCost": 10,
     "costMultiplier": 1,
-    "costExponent": 1.05
+    "costExponent": 1.05,
+    "skills" : [
+        { "name"  : "Toughness","amount" : 1 },
+        { "name"  : "Perception","amount" : 1 }
+    ]
 }, {
     "name": "Brawler",
     "plural": "Brawlers",
@@ -29,7 +41,11 @@
     "cpt": 0,
     "baseCost": 400,
     "costMultiplier": 5,
-    "costExponent": 1.05
+    "costExponent": 1.05,
+    "skills" : [
+        { "name"  : "Toughness","amount" : 1 },
+        { "name"  : "Perception","amount" : 1 }
+    ]
 }, {
     "name": "Thief",
     "plural": "Thieves",
@@ -37,7 +53,11 @@
     "cpt": 0,
     "baseCost": 150,
     "costMultiplier": 5,
-    "costExponent": 1.05
+    "costExponent": 1.05,
+    "skills" : [
+        { "name"  : "Toughness","amount" : 1 },
+        { "name"  : "Perception","amount" : 1 }
+    ]
 }, {
     "name": "Citizen",
     "plural": "Citizen",
@@ -45,7 +65,11 @@
     "cpt": 0,
     "baseCost": 100,
     "costMultiplier": 5,
-    "costExponent": 1.05
+    "costExponent": 1.05,
+    "skills" : [
+        { "name"  : "Toughness","amount" : 1 },
+        { "name"  : "Perception","amount" : 1 }
+    ]
 }, {
     "name": "Fighter",
     "plural": "Fighters",
@@ -53,7 +77,11 @@
     "cpt": 0,
     "baseCost": 1400,
     "costMultiplier": 5,
-    "costExponent": 1.05
+    "costExponent": 1.05,
+    "skills" : [
+        { "name"  : "Toughness","amount" : 1 },
+        { "name"  : "Perception","amount" : 1 }
+    ]
 }, {
     "name": "Cleric",
     "plural": "Clerics",
@@ -61,7 +89,11 @@
     "cpt": 0,
     "baseCost": 2100,
     "costMultiplier": 5,
-    "costExponent": 1.05
+    "costExponent": 1.05,
+    "skills" : [
+        { "name"  : "Toughness","amount" : 1 },
+        { "name"  : "Perception","amount" : 1 }
+    ]
 }, {
     "name": "Mage",
     "plural": "Mages",
@@ -69,5 +101,9 @@
     "cpt": 0,
     "baseCost": 3150,
     "costMultiplier": 5,
-    "costExponent": 1.05
+    "costExponent": 1.05,
+    "skills" : [
+        { "name"  : "Toughness","amount" : 1 },
+        { "name"  : "Perception","amount" : 1 }
+    ]
 }]

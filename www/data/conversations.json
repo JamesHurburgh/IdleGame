@@ -38,6 +38,28 @@
         "My greatest fear is dungeons.  And dragons.",
         "I don't know about you but I think the Adventurer's guild is exciting.  All those adventures!",
         "I threw a coin in a wishing well and made a wish.  An hour later the coin was gone.  Does that mean my wish will come true?",
-        "There are some bandits outside of town.  Look out if you go travelling."
+        "There are some bandits outside of town.  Look out if you go travelling.",
+        "A little hard work never killed anyone in charge.",
+        "Can I take my 30 year jail term in installments?",
+        "When I was a merchant my motto was 'Buy now. Ask questions later.'  I'm not a merchant anymore.",
+        "I'm missing a leg.  Not MY leg.  Someone else's leg that I once had.  Haven't seen it for a while.",
+        "Summer is the hottest thing this season.",
+        "Someone accused me of having my mother doing my laundry.  They couldn't be further from the truth.  No-one does my laundry.",
+        "I was beating my spouse's clothes with rocks to get the filth out.  Eventually they got undressed and ran off.",
+        "The cook in the tavern quit.  Or died, I forget.  Either way, I'm hungry.",
+        "Can I have tomorrow off, I need to uh...  Wash my... cat... hair... laundry.  Uh.  Nevermind.",
+        "The government, police and courthouse said no. So if there is anyone who can come clean my house, please let me know.",
+        "Sorry I couldn't hear you - I was ironing.",
+        "As I lie there, gazing at the stars, I realised I had forgotten my tent.",
+        "I could really see myself in a job cleaning mirrors.",
+        "I have nothing to say to you.",
+        "Yes, this is my cart.  No, I won't help you move.",
+        "Don't drink and ride.  No wait, we don't even have horses here."
+    ],
+    "lowHealthQuotes":[
+        "I don't have a broken arm! What are you talking about?....Oh THAT arm. Yeah that one's broken.",
+        "The plague?  I wouldn't be caught DEAD with the plague.",
+        "Black death?  No that wouldn't go with my hair colour.  I've got the dark brown death.",
+        "I tripped and feel over my own feet.  The troubles with having a peg leg."
     ]
 }
