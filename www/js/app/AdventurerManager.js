@@ -1,12 +1,87 @@
 /*jshint esversion: 6 */
 
-define(["app/CommonFunctions", "json!data/adventurers.json"],
-    function AdventurerManager(CommonFunctions, adventurers) {
+define([
+    "app/CommonFunctions",
+    "chance", 
+    "json!data/adventurers.json",
+    "json!data/conversations.json"],
+    function AdventurerManager(
+        CommonFunctions,
+        Chance, 
+        adventurers,
+        conversations) {
 
         commonFunctions = new CommonFunctions();
+        chance = new Chance();
         return function AdventurerManager(gameState) {
 
             this.gameState = gameState;
+
+            this.convertNumberToAdventurer = function(adventurerType){
+                var idleCount = gameState.getHiredCount(adventurerType);
+                if(idleCount <= 0) return;
+                
+                gameState.hired[adventurerType]--;
+                
+                this.addAdventurer(this.generateAdventurer(adventurerType));
+            };
+
+            this.addAdventurer = function(adventurer){
+                if(gameState.adventurerList === undefined || gameState.adventurerList === null) gameState.adventurerList = [];
+                gameState.adventurerList.push(adventurer);
+            };
+
+            this.generateAdventurer = function(adventurerType){
+                
+                var adventurerTemplate = adventurers.filter(adventurer => adventurer.name == adventurerType)[0];
+                if(adventurerTemplate === undefined || adventurerTemplate === null){
+                    // if no template specified, pick random
+                    adventurerTemplate = chance.pickone(adventurers);
+                }
+                // Clone template
+                var adventurer = commonFunctions.clone(adventurerTemplate);
+                
+                adventurer.type = adventurerType;
+                adventurer.id = commonFunctions.uuidv4();
+                adventurer.name = {};
+                adventurer.name.first = chance.first();
+                adventurer.name.last = chance.last();
+                adventurer.name.full = adventurer.name.first + " " + adventurer.name.last;
+                adventurer.age = Math.floor(Math.random() * 30) + 18;
+                adventurer.wage = adventurerTemplate.baseCost;
+                adventurer.status = "Idle";
+
+                return adventurer;
+            };
+
+            this.getCurrentParty = function(){
+                return gameState.adventurerList.filter(adventurer => adventurer.includeInParty);
+            };
+
+            this.getCurrentPartyAttributes = function(){
+                var party = this.getCurrentParty();
+                
+                var allSkills = party.reduce(function(attributeNames, adventurer){
+                    return attributeNames.concat(adventurer.skills);
+                }, []);
+                
+                var attributes = allSkills.reduce(function(attributes, skill){
+                    var attribute = attributes.filter(attribute => attribute.name == skill.name)[0];
+                    if(attribute === undefined || attribute === null) {
+                        attributes.push({"name":skill.name, "amount":skill.amount});
+                    }else{
+                        attribute.amount += skill.amount;
+                    }
+                    return attributes;
+                }, []);
+
+                return attributes;
+
+            };
+
+            this.getAdventurersAtStatus = function(status){
+                return gameState.adventurerList.filter(adventurer => adventurer.status == status);
+            };
 
             this.addNewAdverturersForHire = function() {
                 // New hires
@@ -49,6 +124,10 @@ define(["app/CommonFunctions", "json!data/adventurers.json"],
                 });
                 gameState.trackStat("available-adventurer", hireable.name, 1);
                 gameState.trackStat("available", "adventurers", 1);
+            };
+
+            this.talkTo = function(adventurerName){
+                gameState.message(adventurerName + " says '" + chance.pickone(conversations.randomStatements) + "'");
             };
 
         };

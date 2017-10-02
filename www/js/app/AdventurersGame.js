@@ -153,6 +153,10 @@ define(["jquery",
                 this.messages = [];
 
                 this.currentEffects = [];
+                
+                this.selectedContract = null;
+                this.selectedAdverturer = null;
+                this.currentParty = [];
 
                 this.version = game.versions[0].number;
 
@@ -247,6 +251,13 @@ define(["jquery",
                 }
 
                 this.selectedContract = null;
+                this.selectedAdverturer = null;
+                this.currentParty = [];
+                
+                this.adventurerList = savedData.adventurerList;
+                if(this.adventurerList === undefined) this.adventurerList = [];
+
+                // Begin standard version management
 
                 if (savedData.version === undefined) {
                     if (!this.LocationManager().getCurrentLocation().availableContracts) this.LocationManager().getCurrentLocation().availableContracts = [];
