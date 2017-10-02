@@ -1,13 +1,14 @@
 /*jshint esversion: 6 */
 
 define([
-    "app/CommonFunctions",
-    "chance", 
-    "json!data/adventurers.json",
-    "json!data/conversations.json"],
+        "app/CommonFunctions",
+        "chance",
+        "json!data/adventurers.json",
+        "json!data/conversations.json"
+    ],
     function AdventurerManager(
         CommonFunctions,
-        Chance, 
+        Chance,
         adventurers,
         conversations) {
 
@@ -17,30 +18,30 @@ define([
 
             this.gameState = gameState;
 
-            this.convertNumberToAdventurer = function(adventurerType){
+            this.convertNumberToAdventurer = function(adventurerType) {
                 var idleCount = gameState.getHiredCount(adventurerType);
-                if(idleCount <= 0) return;
-                
+                if (idleCount <= 0) return;
+
                 gameState.hired[adventurerType]--;
-                
+
                 this.addAdventurer(this.generateAdventurer(adventurerType));
             };
 
-            this.addAdventurer = function(adventurer){
-                if(gameState.adventurerList === undefined || gameState.adventurerList === null) gameState.adventurerList = [];
+            this.addAdventurer = function(adventurer) {
+                if (gameState.adventurerList === undefined || gameState.adventurerList === null) gameState.adventurerList = [];
                 gameState.adventurerList.push(adventurer);
             };
 
-            this.generateAdventurer = function(adventurerType){
-                
+            this.generateAdventurer = function(adventurerType) {
+
                 var adventurerTemplate = adventurers.filter(adventurer => adventurer.name == adventurerType)[0];
-                if(adventurerTemplate === undefined || adventurerTemplate === null){
+                if (adventurerTemplate === undefined || adventurerTemplate === null) {
                     // if no template specified, pick random
                     adventurerTemplate = chance.pickone(adventurers);
                 }
                 // Clone template
                 var adventurer = commonFunctions.clone(adventurerTemplate);
-                
+
                 adventurer.type = adventurerType;
                 adventurer.id = commonFunctions.uuidv4();
                 adventurer.name = {};
@@ -54,22 +55,22 @@ define([
                 return adventurer;
             };
 
-            this.getCurrentParty = function(){
+            this.getCurrentParty = function() {
                 return gameState.adventurerList.filter(adventurer => adventurer.includeInParty);
             };
 
-            this.getCurrentPartyAttributes = function(){
+            this.getCurrentPartyAttributes = function() {
                 var party = this.getCurrentParty();
-                
-                var allSkills = party.reduce(function(attributeNames, adventurer){
+
+                var allSkills = party.reduce(function(attributeNames, adventurer) {
                     return attributeNames.concat(adventurer.skills);
                 }, []);
-                
-                var attributes = allSkills.reduce(function(attributes, skill){
+
+                var attributes = allSkills.reduce(function(attributes, skill) {
                     var attribute = attributes.filter(attribute => attribute.name == skill.name)[0];
-                    if(attribute === undefined || attribute === null) {
-                        attributes.push({"name":skill.name, "amount":skill.amount});
-                    }else{
+                    if (attribute === undefined || attribute === null) {
+                        attributes.push({ "name": skill.name, "amount": skill.amount });
+                    } else {
                         attribute.amount += skill.amount;
                     }
                     return attributes;
@@ -79,7 +80,31 @@ define([
 
             };
 
-            this.getAdventurersAtStatus = function(status){
+            this.sendCurrentParty = function() {
+                this.sendParty(this.getCurrentParty());
+            };
+
+            this.sendParty = function(party) {
+                party.forEach(function(adventurer) {
+                    adventurer.status = "Questing";
+                    adventurer.includeInParty = false;
+                }, this);
+            };
+
+            this.getCurrentPartyAttribute = function(attributeName) {
+                var party = this.getCurrentParty();
+
+                return party.reduce(function(amount, adventurer) {
+                    var attribute = adventurer.skills.filter(skill => skill.name == attributeName)[0];
+                    if (!attribute) {
+                        return amount;
+                    } else {
+                        return amount += attribute.amount;
+                    }
+                }, 0);
+            };
+
+            this.getAdventurersAtStatus = function(status) {
                 return gameState.adventurerList.filter(adventurer => adventurer.status == status);
             };
 
@@ -126,7 +151,7 @@ define([
                 gameState.trackStat("available", "adventurers", 1);
             };
 
-            this.talkTo = function(adventurerName){
+            this.talkTo = function(adventurerName) {
                 gameState.message(adventurerName + " says '" + chance.pickone(conversations.randomStatements) + "'");
             };
 

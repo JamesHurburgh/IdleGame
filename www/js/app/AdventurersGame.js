@@ -8,6 +8,7 @@ define(["jquery",
         "app/ItemManager",
         "app/LocationManager",
         "app/AdventurerManager",
+        "app/QuestManager",
         "json!data/calendar.json",
         "json!data/contracts.json",
         "json!data/locations.json",
@@ -24,6 +25,7 @@ define(["jquery",
         ItemManager,
         LocationManager,
         AdventurerManager,
+        QuestManager,
         calendar,
         contracts,
         locations,
@@ -50,6 +52,11 @@ define(["jquery",
             _AdventurerManager = new AdventurerManager(this);
             this.AdventurerManager = function() {
                 return _AdventurerManager;
+            };
+
+            _QuestManager = new QuestManager(this);
+            this.QuestManager = function() {
+                return _QuestManager;
             };
 
             this.getGameTime = function(dateInMilliSeconds) {
@@ -153,10 +160,11 @@ define(["jquery",
                 this.messages = [];
 
                 this.currentEffects = [];
-                
+
                 this.selectedContract = null;
                 this.selectedAdverturer = null;
                 this.currentParty = [];
+                this.adventurerList = [];
 
                 this.version = game.versions[0].number;
 
@@ -253,9 +261,9 @@ define(["jquery",
                 this.selectedContract = null;
                 this.selectedAdverturer = null;
                 this.currentParty = [];
-                
+
                 this.adventurerList = savedData.adventurerList;
-                if(this.adventurerList === undefined) this.adventurerList = [];
+                if (this.adventurerList === undefined) this.adventurerList = [];
 
                 // Begin standard version management
 
@@ -493,7 +501,8 @@ define(["jquery",
             this.getAdventurersOnTheJob = function(name) {
                 if (this.runningExpeditions === undefined || this.runningExpeditions.length === 0) return 0;
                 var total = this.runningExpeditions.map(function(expedition) {
-                    return expedition.adventurers.filter(adventurer => adventurer.type == name).length;
+                    if (expedition.adventurers) return expedition.adventurers.filter(adventurer => adventurer.type == name).length;
+                    return 0;
                 }).reduce(function(accumulator, currentValue) {
                     return accumulator + currentValue;
                 });
@@ -580,16 +589,6 @@ define(["jquery",
             };
 
             // Expediations
-            this.canSendExpedition = function(contract) {
-                if (contract.requirements.adventurers) {
-                    for (var i = 0; i < contract.requirements.adventurers.length; i++) {
-                        if (contract.requirements.adventurers[i].amount > this.getHiredCount(contract.requirements.adventurers[i].type)) {
-                            return false;
-                        }
-                    }
-                }
-                return this.renown >= contract.requirements.renown;
-            };
 
             this.claimAllCompletedExpeditions = function() {
                 while (this.completedExpeditions.length > 0) {
@@ -607,122 +606,6 @@ define(["jquery",
 
             this.expeditionProgress = function(expedition) {
                 return 100 * ((Date.now() - expedition.start) / (expedition.expires - expedition.start));
-            };
-
-            this.getStartableContracts = function() {
-                return this.LocationManager().getCurrentLocation().availableContracts.filter(contract => this.canSendExpedition(contract));
-            };
-
-            this.startAllContracts = function() {
-                while (this.getStartableContracts().length > 0) {
-                    this.sendExpedition(this.getStartableContracts()[0]);
-                }
-            };
-
-            this.sendExpedition = function(contract) {
-                if (!this.canSendExpedition(contract)) {
-                    return;
-                }
-
-                this.trackStat("send", "expedition", 1);
-                this.trackStat("send-expedition", contract.name, 1);
-
-                var expedition = {
-                    id: commonFunctions.uuidv4(),
-                    contract: contract,
-                    start: Date.now(),
-                    expires: Date.now() + (contract.duration * this.millisecondsPerSecond),
-                    adventurers: []
-                };
-
-                if (contract.requirements.adventurers) {
-                    for (var i = 0; i < contract.requirements.adventurers.length; i++) {
-                        this.spendHires(contract.requirements.adventurers[i].type, contract.requirements.adventurers[i].amount);
-                        for (var j = 0; j < contract.requirements.adventurers[i].amount; j++) {
-                            expedition.adventurers.push({ "type": contract.requirements.adventurers[i].type });
-                        }
-                    }
-                }
-
-                this.runningExpeditions.push(expedition);
-
-                this.runningExpeditions.sort(function(a, b) {
-                    return a.expires - b.expires;
-                });
-
-                var availableContracts = this.LocationManager().getCurrentLocation().availableContracts;
-                availableContracts.splice(availableContracts.indexOf(contract), 1);
-                this.selectedContract = null;
-                //document.getElementById("contractDetails").modal("hide");
-            };
-
-            this.completeExpedition = function(expedition) {
-                this.runningExpeditions.splice(this.runningExpeditions.indexOf(expedition), 1);
-
-                var contract = expedition.contract;
-
-                this.trackStat("complete", "expedition", 1);
-                this.trackStat("complete-expedition", contract.name, 1);
-
-                // Return questers to sendable pool
-                expedition.upgradeMessages = "";
-                expedition.awol = false;
-                var survived = 0;
-
-                if (expedition.adventurers) {
-                    for (var i = 0; i < expedition.adventurers.length; i++) {
-                        var adventurerType = expedition.adventurers[i].type;
-                        var upgrade = this.getUpgrade(adventurerType);
-
-                        if (Math.random() * this.getGlobalValue("questRisk") < contract.risk) { // Then someone 'died'
-                            expedition.adventurers[i].awol = true;
-                            expedition.awol = true;
-                            this.trackStat("death", "adventurer", 1);
-                            this.trackStat("death-adventurer", adventurerType, 1);
-                        } else if (upgrade && Math.random() * this.getGlobalValue("upgradeChance") < contract.upgradeChance) { // Then someone 'upgraded'
-                            expedition.adventurers[i].upgradedTo = upgrade;
-                            this.hired[upgrade]++;
-                            survived++;
-                            this.trackStat("upgrade", "adventurer", 1);
-                            this.trackStat("upgrade-adventurer", adventurerType, 1);
-                            this.trackStat("upgrade-adventurer-to", upgrade, 1);
-                        } else {
-                            this.hired[adventurerType]++;
-                            survived++;
-                        }
-                    }
-                }
-                expedition.completionMessage = "";
-
-                // Calculate success
-                expedition.success = survived > 0 && Math.random() < contract.successChance;
-                if (expedition.success) {
-                    expedition.completionMessage = contract.successMessage;
-
-                    expedition.rewards = [];
-                    for (var j = 0; j < contract.rewards.length; j++) {
-                        var chance = contract.rewards[j].chance;
-                        if (Math.random() < chance) {
-                            var reward = contract.rewards[j].reward;
-                            if (reward.type == "item") {
-                                expedition.rewards.push({ "type": reward.type, "item": this.ItemManager().generateRewardItem(reward) });
-                            } else {
-                                var rewardAmount = this.varyAmount(reward.amount);
-                                if (rewardAmount > 0) {
-                                    expedition.rewards.push({ "type": reward.type, "amount": rewardAmount });
-                                }
-                            }
-                        }
-                    }
-                    this.trackStat("succeed", "expedition", 1);
-                    this.trackStat("succeed-expedition", contract.name, 1);
-                } else {
-                    expedition.completionMessage = contract.failureMessage;
-                    this.trackStat("fail", "expedition", 1);
-                    this.trackStat("fail-expedition", contract.name, 1);
-                }
-
-                this.completedExpeditions.push(expedition);
             };
 
             // Rewards
@@ -819,7 +702,7 @@ define(["jquery",
                 // Check for completed expeditions
                 for (var i = 0; i < this.runningExpeditions.length; i++) {
                     if (this.runningExpeditions[i].expires <= Date.now()) {
-                        this.completeExpedition(this.runningExpeditions[i]);
+                        this.QuestManager().completeQuest(this.runningExpeditions[i]);
                     }
                 }
                 // Remove expired contracts
@@ -906,7 +789,7 @@ define(["jquery",
                         this.hireAll();
                     }
                     if (this.options.automaticSend) {
-                        this.startAllContracts();
+                        //this.startAllContracts();
                     }
                 }
             };

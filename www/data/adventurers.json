@@ -6,9 +6,9 @@
     "baseCost": 1,
     "costMultiplier": 1,
     "costExponent": 1.05,
-    "skills" : [
-        { "name"  : "Toughness","amount" : 1 },
-        { "name"  : "Perception","amount" : 1 }
+    "skills": [
+        { "name": "Toughness", "amount": 1 },
+        { "name": "Perception", "amount": 1 }
     ]
 }, {
     "name": "Street rat",
@@ -18,9 +18,10 @@
     "baseCost": 2,
     "costMultiplier": 1,
     "costExponent": 1.05,
-    "skills" : [
-        { "name"  : "Toughness","amount" : 1 },
-        { "name"  : "Perception","amount" : 1 }
+    "skills": [
+        { "name": "Toughness", "amount": 1 },
+        { "name": "Perception", "amount": 1 },
+        { "name": "Deftness", "amount": 1 }
     ]
 }, {
     "name": "Peasant",
@@ -30,9 +31,10 @@
     "baseCost": 10,
     "costMultiplier": 1,
     "costExponent": 1.05,
-    "skills" : [
-        { "name"  : "Toughness","amount" : 1 },
-        { "name"  : "Perception","amount" : 1 }
+    "skills": [
+        { "name": "Toughness", "amount": 1 },
+        { "name": "Perception", "amount": 1 },
+        { "name": "Intelligence", "amount": 1 }
     ]
 }, {
     "name": "Brawler",
@@ -42,9 +44,11 @@
     "baseCost": 400,
     "costMultiplier": 5,
     "costExponent": 1.05,
-    "skills" : [
-        { "name"  : "Toughness","amount" : 1 },
-        { "name"  : "Perception","amount" : 1 }
+    "skills": [
+        { "name": "Toughness", "amount": 2 },
+        { "name": "Perception", "amount": 1 },
+        { "name": "Deftness", "amount": 1 },
+        { "name": "Fighting", "amount": 2 }
     ]
 }, {
     "name": "Thief",
@@ -54,9 +58,10 @@
     "baseCost": 150,
     "costMultiplier": 5,
     "costExponent": 1.05,
-    "skills" : [
-        { "name"  : "Toughness","amount" : 1 },
-        { "name"  : "Perception","amount" : 1 }
+    "skills": [
+        { "name": "Toughness", "amount": 2 },
+        { "name": "Perception", "amount": 2 },
+        { "name": "Deftness", "amount": 2 }
     ]
 }, {
     "name": "Citizen",
@@ -66,9 +71,10 @@
     "baseCost": 100,
     "costMultiplier": 5,
     "costExponent": 1.05,
-    "skills" : [
-        { "name"  : "Toughness","amount" : 1 },
-        { "name"  : "Perception","amount" : 1 }
+    "skills": [
+        { "name": "Toughness", "amount": 2 },
+        { "name": "Perception", "amount": 2 },
+        { "name": "Intelligence", "amount": 2 }
     ]
 }, {
     "name": "Fighter",
@@ -78,9 +84,11 @@
     "baseCost": 1400,
     "costMultiplier": 5,
     "costExponent": 1.05,
-    "skills" : [
-        { "name"  : "Toughness","amount" : 1 },
-        { "name"  : "Perception","amount" : 1 }
+    "skills": [
+        { "name": "Toughness", "amount": 4 },
+        { "name": "Perception", "amount": 1 },
+        { "name": "Deftness", "amount": 1 },
+        { "name": "Fighting", "amount": 2 }
     ]
 }, {
     "name": "Cleric",
@@ -90,9 +98,11 @@
     "baseCost": 2100,
     "costMultiplier": 5,
     "costExponent": 1.05,
-    "skills" : [
-        { "name"  : "Toughness","amount" : 1 },
-        { "name"  : "Perception","amount" : 1 }
+    "skills": [
+        { "name": "Toughness", "amount": 2 },
+        { "name": "Perception", "amount": 3 },
+        { "name": "Deftness", "amount": 2 },
+        { "name": "Healing", "amount": 1 }
     ]
 }, {
     "name": "Mage",
@@ -102,8 +112,10 @@
     "baseCost": 3150,
     "costMultiplier": 5,
     "costExponent": 1.05,
-    "skills" : [
-        { "name"  : "Toughness","amount" : 1 },
-        { "name"  : "Perception","amount" : 1 }
+    "skills": [
+        { "name": "Toughness", "amount": 2 },
+        { "name": "Perception", "amount": 3 },
+        { "name": "Deftness", "amount": 2 },
+        { "name": "Magic", "amount": 1 }
     ]
 }]
