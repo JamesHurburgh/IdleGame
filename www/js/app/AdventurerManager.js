@@ -18,6 +18,28 @@ define([
 
             this.gameState = gameState;
 
+            this.getCost = function(adventurer){
+                return adventurer.baseCost;
+            };
+
+            this.canHire = function(adventurer){
+                return gameState.coins >= this.getCost(adventurer);
+            };
+
+            this.hire = function(notice){
+                var adventurer = notice.adventurer;
+                if(this.canHire(adventurer)){
+                    gameState.spendCoins(this.getCost(adventurer));
+                }
+
+                this.addAdventurer(adventurer);
+                this.removeFromAvialableHires(notice);
+            };
+
+            this.removeFromAvialableHires = function(notice){
+                gameState.LocationManager().getCurrentLocation().availableAdventurers.splice(gameState.LocationManager().getCurrentLocation().availableAdventurers.indexOf(notice), 1);
+            };
+
             this.convertNumberToAdventurer = function(adventurerType) {
                 var idleCount = gameState.getHiredCount(adventurerType);
                 if (idleCount <= 0) return;
@@ -111,7 +133,7 @@ define([
             this.addNewAdverturersForHire = function() {
                 // New hires
                 var maxAvailableHires = 5;
-                if (gameState.LocationManager().getCurrentLocation().availableHires.length < maxAvailableHires && Math.random() < gameState.getGlobalValue("chanceOfNewHire")) {
+                if (gameState.LocationManager().getCurrentLocation().availableAdventurers.length < maxAvailableHires && Math.random() < gameState.getGlobalValue("chanceOfNewHire")) {
                     this.addAvailableHire();
                 }
             };
@@ -138,16 +160,17 @@ define([
 
                 var adventurerType = selection.type;
 
-                // var adventurerType = locationHireableTypes[Math.floor(locationHireableTypes.length * Math.random())].type; // TODO take chance into account
+                var adventurerNotice = 
+                {
+                    "adventurer" : this.generateAdventurer(adventurerType),
+                    "expires" :Date.now() + Math.floor(gameState.millisecondsPerSecond * 60 * (Math.random() + 0.5))
+                };
 
-
-                var hireable = commonFunctions.clone(gameState.adventurers.filter(hireable => hireable.name == adventurerType)[0]);
-                hireable.expires = Date.now() + Math.floor(gameState.millisecondsPerSecond * 60 * (Math.random() + 0.5));
-                gameState.LocationManager().getCurrentLocation().availableHires.push(hireable);
-                gameState.LocationManager().getCurrentLocation().availableHires.sort(function(a, b) {
+                gameState.LocationManager().getCurrentLocation().availableAdventurers.push(adventurerNotice);
+                gameState.LocationManager().getCurrentLocation().availableAdventurers.sort(function(a, b) {
                     return a.expires - b.expires;
                 });
-                gameState.trackStat("available-adventurer", hireable.name, 1);
+                gameState.trackStat("available-adventurer", adventurerType, 1);
                 gameState.trackStat("available", "adventurers", 1);
             };
 

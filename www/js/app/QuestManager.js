@@ -40,6 +40,7 @@ define([
 
             this.sendSelectedQuest = function() {
                 this.sendQuest(this.getSelectedContract());
+                this.selectNextContract();
             };
 
             this.sendQuest = function(contract) {

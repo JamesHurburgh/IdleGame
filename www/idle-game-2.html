@@ -377,10 +377,10 @@
 
                         <ul class="nav nav-tabs">
                             <li class="active">
-                                <a href="#questContracts" data-toggle="tab" aria-expanded="false">Quests <span class="badge">{{location.availableContracts.length}}</span></a>
+                                <a href="#questContracts" data-toggle="tab" aria-expanded="false">Quests <span class="badge">{{LocationManager().getCurrentLocation().availableContracts.length}}</span></a>
                             </li>
                             <li>
-                                <a href="#adventurerContracts" data-toggle="tab" aria-expanded="false">Adventurers <span class="badge">{{location.availableHires.length}}</span></a>
+                                <a href="#adventurerContracts" data-toggle="tab" aria-expanded="false">Adventurers <span class="badge">{{LocationManager().getCurrentLocation().availableAdventurers.length}}</span></a>
                             </li>
                         </ul>
                         <div id="myTabContent" class="tab-content">
@@ -400,14 +400,14 @@
                                 </transition-group>
                             </div>
                             <div class="tab-pane fade" id="adventurerContracts">
-                                <span v-if="LocationManager().getCurrentLocation().availableHires.length == 0" class="text-muted text-center col-xs-12">No adventurers for hire</span>
+                                <span v-if="LocationManager().getCurrentLocation().availableAdventurers.length == 0" class="text-muted text-center col-xs-12">No adventurers for hire</span>
                                 <button v-if="hireAllVisible()" type="button" class="btn btn-success btn-xs pull-right" @click="hireAll()">Hire All</button>
                                 <transition-group name="custom-classes-transition" enter-active-class="animated fadeIn" leave-active-class="noOutAnimation">
-                                    <div v-for="adventurer in LocationManager().getCurrentLocation().availableHires" key="adventurer.name">
+                                    <div v-for="notice in LocationManager().getCurrentLocation().availableAdventurers" key="adventurer.name">
                                         <div class="well well-sm">
-                                            <h4>{{adventurer.name}} <button type="button" class="btn btn-sm pull-right" v-bind:class="{ 'btn-success': canHire(adventurer.name), 'btn-primary': !canHire(adventurer.name) }" @click="hire(adventurer)" :disabled="!canHire(adventurer.name)">Hire ({{getCost(adventurer.name)}} coins)</button>
+                                            <h4>{{notice.adventurer.name.full}} ({{notice.adventurer.type}})<button type="button" class="btn btn-sm pull-right" v-bind:class="{ 'btn-success': AdventurerManager().canHire(notice.adventurer), 'btn-primary': !AdventurerManager().canHire(notice.adventurer) }" @click="AdventurerManager().hire(notice)" :disabled="!AdventurerManager().canHire(notice.adventurer)">Hire ({{AdventurerManager().getCost(notice.adventurer)}} coins)</button>
                                             </h4>
-                                            <div v-bind:class="{ 'text-danger': expiringDanger(adventurer.expires), 'text-warning': expiringWarning(adventurer.expires), 'text-success': expiringSuccess(adventurer.expires) }">{{readableTime(adventurer.expires - Date.now())}} remaining</div>
+                                            <div v-bind:class="{ 'text-danger': expiringDanger(notice.expires), 'text-warning': expiringWarning(notice.expires), 'text-success': expiringSuccess(notice.expires) }">{{readableTime(notice.expires - Date.now())}} remaining</div>
                                         </div>
                                     </div>
                                 </transition-group>

@@ -133,7 +133,7 @@ define(["jquery",
                 this.LocationManager().setCurrentLocation(this.allLocations[0].name);
 
                 this.LocationManager().getCurrentLocation().availableContracts = [];
-                this.LocationManager().getCurrentLocation().availableHires = [];
+                this.LocationManager().getCurrentLocation().availableAdventurers = [];
 
                 // Initilise options
                 this.options = {
@@ -212,8 +212,9 @@ define(["jquery",
                 this.allLocations = savedData.allLocations;
                 this.location = savedData.location;
                 this.LocationManager().getCurrentLocation().availableContracts = savedData.location.availableContracts;
-                this.LocationManager().getCurrentLocation().availableHires = savedData.location.availableHires;
-
+                this.LocationManager().getCurrentLocation().availableAdventurers = savedData.location.availableAdventurers;
+                if(this.LocationManager().getCurrentLocation().availableAdventurers === undefined) this.LocationManager().getCurrentLocation().availableAdventurers = [];
+                
                 this.options = savedData.options;
                 if (this.options !== undefined && this.options.automatic !== undefined) {
                     {
@@ -264,6 +265,8 @@ define(["jquery",
 
                 this.adventurerList = savedData.adventurerList;
                 if (this.adventurerList === undefined) this.adventurerList = [];
+                this.availableAdventurers = savedData.availableAdventurers;
+                if(this.availableAdventurers === undefined) this.availableAdventurers = [];
 
                 // Begin standard version management
 
@@ -719,13 +722,13 @@ define(["jquery",
                 }
 
                 // Remove expired hired
-                var availableHires = this.LocationManager().getCurrentLocation().availableHires;
-                if (availableHires) {
-                    for (var k = 0; k < availableHires.length; k++) {
-                        if (availableHires[k].expires <= Date.now()) {
+                var availableAdventurers = this.LocationManager().getCurrentLocation().availableAdventurers;
+                if (availableAdventurers) {
+                    for (var k = 0; k < availableAdventurers.length; k++) {
+                        if (availableAdventurers[k].expires <= Date.now()) {
                             this.trackStat("miss", "adventurer", 1);
-                            this.trackStat("miss-adventurer", availableHires[k].name, 1);
-                            availableHires.splice(k, 1);
+                            this.trackStat("miss-adventurer", availableAdventurers[k].name, 1);
+                            availableAdventurers.splice(k, 1);
                         }
                     }
                 }
@@ -747,12 +750,12 @@ define(["jquery",
                     }
 
                     // Remove expired hired
-                    if (location.availableHires) {
-                        for (var k = 0; k < location.availableHires.length; k++) {
-                            if (location.availableHires[k].expires <= Date.now()) {
+                    if (location.availableAdventurers) {
+                        for (var k = 0; k < location.availableAdventurers.length; k++) {
+                            if (location.availableAdventurers[k].expires <= Date.now()) {
                                 this.trackStat("miss", "adventurer", 1);
-                                this.trackStat("miss-adventurer", location.availableHires[k].name, 1);
-                                location.availableHires.splice(k, 1);
+                                this.trackStat("miss-adventurer", location.availableAdventurers[k].name, 1);
+                                location.availableAdventurers.splice(k, 1);
                             }
                         }
                     }
