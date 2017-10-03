@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Adventurers of Otium</title>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+
+    <script src="./js/lib/jquery.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="css/alertify.min.css" />
+    <!-- <link rel="stylesheet" href="css/bootstrap-glyphicons.min.css" /> -->
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+    <!-- Alertify Bootstrap theme -->
+    <link rel="stylesheet" href="css/alertify.bootstrap.min.css" />
+
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/bootstrap.slate.min.css" />
+    <link rel="stylesheet" href="css/animate.css" />
+
+    <!--This sets the baseUrl to the "scripts" directory, and
+    loads a script that will have a module ID of 'main'-->
+    <script data-main="js/app/app.js" src="js/require.js"></script>
+</head>
+<body>
+    <div id="app"></div>
+    <script>
+        $.get("./html/app.html", function(data) {
+            $("#app").replaceWith(data);
+        });
+    </script>
+</body>
+</html>
