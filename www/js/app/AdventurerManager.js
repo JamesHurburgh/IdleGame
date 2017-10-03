@@ -18,17 +18,17 @@ define([
 
             this.gameState = gameState;
 
-            this.getCost = function(adventurer){
+            this.getCost = function(adventurer) {
                 return adventurer.baseCost;
             };
 
-            this.canHire = function(adventurer){
+            this.canHire = function(adventurer) {
                 return gameState.coins >= this.getCost(adventurer);
             };
 
-            this.hire = function(notice){
+            this.hire = function(notice) {
                 var adventurer = notice.adventurer;
-                if(this.canHire(adventurer)){
+                if (this.canHire(adventurer)) {
                     gameState.spendCoins(this.getCost(adventurer));
                 }
 
@@ -36,7 +36,7 @@ define([
                 this.removeFromAvialableHires(notice);
             };
 
-            this.removeFromAvialableHires = function(notice){
+            this.removeFromAvialableHires = function(notice) {
                 gameState.LocationManager().getCurrentLocation().availableAdventurers.splice(gameState.LocationManager().getCurrentLocation().availableAdventurers.indexOf(notice), 1);
             };
 
@@ -75,6 +75,10 @@ define([
                 adventurer.status = "Idle";
 
                 return adventurer;
+            };
+
+            this.upgradeAdventurer = function(adventurer) {
+                chance.pickone(adventurer.skills).amount++;
             };
 
             this.getCurrentParty = function() {
@@ -160,10 +164,9 @@ define([
 
                 var adventurerType = selection.type;
 
-                var adventurerNotice = 
-                {
-                    "adventurer" : this.generateAdventurer(adventurerType),
-                    "expires" :Date.now() + Math.floor(gameState.millisecondsPerSecond * 60 * (Math.random() + 0.5))
+                var adventurerNotice = {
+                    "adventurer": this.generateAdventurer(adventurerType),
+                    "expires": Date.now() + Math.floor(gameState.millisecondsPerSecond * 60 * (Math.random() + 0.5))
                 };
 
                 gameState.LocationManager().getCurrentLocation().availableAdventurers.push(adventurerNotice);

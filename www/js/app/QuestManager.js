@@ -94,9 +94,11 @@ define([
                             adventurer.status = "Dead";
                             gameState.trackStat("death", "adventurer", 1);
                             died++;
+
                             // gameState.trackStat("death-adventurer", adventurer.type, 1);
                         } else {
                             if (Math.random() * gameState.getGlobalValue("upgradeChance") < contract.upgradeChance) { // Then someone 'upgraded'
+                                gameState.AdventurerManager().upgradeAdventurer(adventurer);
                                 // TODO handle upgrades
                             }
                             adventurer.status = "Idle";
