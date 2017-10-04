@@ -17,13 +17,6 @@ requirejs.config({
 requirejs(['jquery', 'vue', 'alertify', 'store', 'chance', 'app/AdventurersGame'],
     function($, Vue, alertify, store, chance, AdventurersGame) {
 
-        function loadWebComponent(name, path){
-
-            $.get("./" + path + name + ".html", function(content) {
-                $("#"+name).replaceWith(content);
-            });
-        }
-
         function uuidv4() {
             return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
                 (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
@@ -42,7 +35,13 @@ requirejs(['jquery', 'vue', 'alertify', 'store', 'chance', 'app/AdventurersGame'
             el: '#AdventurersGame',
             data: AdventurersGame,
             computed: {},
-            methods: {}
+            methods: {},
+            // created: alert("created"),
+            // ready: alert("ready"),
+            mounted: function(){
+                this.$nextTick(function (){
+                });
+            }
         });
 
         function tick() {
@@ -53,7 +52,6 @@ requirejs(['jquery', 'vue', 'alertify', 'store', 'chance', 'app/AdventurersGame'
             }
             setTimeout(tick, 100);
         }
-
         // boot up the first call
         tick();
 

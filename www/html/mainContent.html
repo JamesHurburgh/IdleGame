@@ -47,53 +47,25 @@
         </ul>
         <div id="myTabContent" class="tab-content">
             <div class="tab-pane fade active in" id="location">
-                <script id="locationTab">
-                    $.get("./html/tabs/location.html", function(data) {
-                        $("#locationTab").replaceWith(data);
-                    });
-                </script>
+                <script id="locationTab">loadWebComponent("locationTab","html/tabs/");</script>
             </div>
             <div class="tab-pane fade" id="contracts">
-                <script id="noticesTab">
-                    $.get("./html/tabs/notices.html", function(data) {
-                        $("#noticesTab").replaceWith(data);
-                    });
-                </script>
+                <script id="noticesTab">loadWebComponent("noticesTab","html/tabs/");</script>
             </div>
             <div class="tab-pane fade" id="hired">
-                <script id="adventurersTab">
-                    $.get("./html/tabs/adventurers.html", function(data) {
-                        $("#adventurersTab").replaceWith(data);
-                    });
-                </script>
+                <script id="adventurersTab">loadWebComponent("adventurersTab","html/tabs/");</script>
             </div>
             <div class="tab-pane fade" id="items">
-                <script id="itemsTab">
-                    $.get("./html/tabs/items.html", function(data) {
-                        $("#itemsTab").replaceWith(data);
-                    });
-                </script>
+                <script id="itemsTab">loadWebComponent("itemsTab","html/tabs/");</script>
             </div>
             <div class="tab-pane fade" id="finishedQuests">
-                <script id="finishedQuestsTab">
-                    $.get("./html/tabs/finishedQuests.html", function(data) {
-                        $("#finishedQuestsTab").replaceWith(data);
-                    });
-                </script>
+                <script id="finishedQuestsTab">loadWebComponent("finishedQuestsTab","html/tabs/");</script>
             </div>
             <div class="tab-pane fade" id="runningQuests">
-                <script id="runningQuestsTab">
-                    $.get("./html/tabs/runningQuests.html", function(data) {
-                        $("#runningQuestsTab").replaceWith(data);
-                    });
-                </script>
+                <script id="runningQuestsTab">loadWebComponent("runningQuestsTab","html/tabs/");</script>
             </div>
             <div class="tab-pane fade" id="messages">
-                <script id="messagesTab">
-                    $.get("./html/tabs/messages.html", function(data) {
-                        $("#messagesTab").replaceWith(data);
-                    });
-                </script>
+                <script id="messagesTab">loadWebComponent("messagesTab","html/tabs/");</script>
             </div>
             <!-- EXAMPLE 
                 <div class="tab-pane fade" id="EXAMPLE">

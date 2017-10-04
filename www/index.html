@@ -27,10 +27,35 @@
     <script data-main="js/app/app.js" src="js/require.js"></script>
 </head>
 <body>
+    
+    <div id="loadingbox" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Adventurer's of Otium
+                </div>
+                <div class="modal-body">
+                    Loading...
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <script id="app">
-        $.get("./html/app.html", function(data) {
-            $("#app").replaceWith(data);
-        });
+
+        var componentList = [];
+        function loadWebComponent(name, path){
+
+            // $('#loadingbox').modal('show');
+            componentList.push(name);
+
+            $.get("./" + path + name + ".html", function(content) {
+                $("#" + name).replaceWith(content);
+                componentList.splice(componentList.indexOf(name),1);
+            });
+        }
+        
+        loadWebComponent("app","html/");
     </script>
 </body>
 </html>
