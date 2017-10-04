@@ -1,0 +1,108 @@
+<!-- Main Content -->
+<div class="container" style="padding-bottom: 65px; padding-top: 65px;">
+    <div id="container" class="row">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a style="padding: 1px 2px;" href="#location" data-toggle="tab" aria-expanded="true">
+                    <img width="32px;" src="./img/icons/family-house.png" />
+                    <!-- <span class="hidden-md-down">Location</span> -->
+                </a>
+            </li>
+            <li class="">
+                <a style="padding: 1px 2px;" href="#contracts" data-toggle="tab" aria-expanded="false">
+                    <img width="32px;" src="./img/icons/stabbed-note.png" />
+                </a>
+            </li>
+            <li class="">
+                <a style="padding: 1px 2px;" href="#finishedQuests" data-toggle="tab" aria-expanded="false">
+                    <img v-if="completedExpeditions.length == 0" width="32px;" src="./img/icons/checklist.png" />
+                    <img v-if="completedExpeditions.length != 0" width="32px;" src="./img/icons/checklist-green.png" />
+                    <!--<span class="badge">{{completedExpeditions.length}}</span>-->
+                </a>
+            </li>
+            <li class="">
+                <a style="padding: 1px 2px;" href="#runningQuests" data-toggle="tab" aria-expanded="false">
+                    <img width="32px;" src="./img/icons/sands-of-time.png" />
+                    <!--<span class="badge">{{runningExpeditions.length}}</span>-->
+                </a>
+            </li>
+            <li class="">
+                <a style="padding: 1px 2px;" href="#hired" data-toggle="tab" aria-expanded="false">
+                    <img width="32px;" src="./img/icons/robe.png" />
+                </a>
+            </li>
+            <li class="" v-if="!lessthan(items.length, 1)">
+                <a style="padding: 1px 2px;" href="#items" data-toggle="tab" aria-expanded="false">
+                    <img width="32px;" src="./img/icons/backpack.png" />
+                    <!--<span class="badge">{{location.availableHires.length}}</span>-->
+                </a>
+            </li>
+            <li class="">
+                <a style="padding: 1px 2px;" href="#messages" data-toggle="tab" aria-expanded="false">
+                    <img v-if="messages.length == 0" width="32px;" src="./img/icons/scroll-unfurled.png" />
+                    <img v-if="messages.length != 0" width="32px;" src="./img/icons/scroll-unfurled-green.png" />
+                    <!--<span class="badge">{{messages.length}}</span>-->
+                </a>
+            </li>
+        </ul>
+        <div id="myTabContent" class="tab-content">
+            <div class="tab-pane fade active in" id="location">
+                <script id="locationTab">
+                    $.get("./html/tabs/location.html", function(data) {
+                        $("#locationTab").replaceWith(data);
+                    });
+                </script>
+            </div>
+            <div class="tab-pane fade" id="contracts">
+                <script id="noticesTab">
+                    $.get("./html/tabs/notices.html", function(data) {
+                        $("#noticesTab").replaceWith(data);
+                    });
+                </script>
+            </div>
+            <div class="tab-pane fade" id="hired">
+                <script id="adventurersTab">
+                    $.get("./html/tabs/adventurers.html", function(data) {
+                        $("#adventurersTab").replaceWith(data);
+                    });
+                </script>
+            </div>
+            <div class="tab-pane fade" id="items">
+                <script id="itemsTab">
+                    $.get("./html/tabs/items.html", function(data) {
+                        $("#itemsTab").replaceWith(data);
+                    });
+                </script>
+            </div>
+            <div class="tab-pane fade" id="finishedQuests">
+                <script id="finishedQuestsTab">
+                    $.get("./html/tabs/finishedQuests.html", function(data) {
+                        $("#finishedQuestsTab").replaceWith(data);
+                    });
+                </script>
+            </div>
+            <div class="tab-pane fade" id="runningQuests">
+                <script id="runningQuestsTab">
+                    $.get("./html/tabs/runningQuests.html", function(data) {
+                        $("#runningQuestsTab").replaceWith(data);
+                    });
+                </script>
+            </div>
+            <div class="tab-pane fade" id="messages">
+                <script id="messagesTab">
+                    $.get("./html/tabs/messages.html", function(data) {
+                        $("#messagesTab").replaceWith(data);
+                    });
+                </script>
+            </div>
+            <!-- EXAMPLE 
+                <div class="tab-pane fade" id="EXAMPLE">
+                <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo
+                    booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit.</p>
+                </div> 
+            -->
+
+
+        </div>
+    </div>
+</div>

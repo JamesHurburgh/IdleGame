@@ -1,0 +1,38 @@
+<span v-if="hiredAdventurers().length == 0" class="text-muted text-center col-xs-12">No adventurers</span>
+<table class="table table-striped table-hover ">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Idle</th>
+            <th>Out</th>
+            <th>Total</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tr v-for="adventurer in hiredAdventurers()">
+        <td>{{adventurer.plural}}</td>
+        <td>{{getHiredCount(adventurer.name)}}</td>
+        <td>{{getAdventurersOnTheJob(adventurer.name)}}</td>
+        <td>{{totalAdventurers(adventurer)}}</td>
+        <td>
+            <button type="button" class="btn btn-xs btn-info pull-right" @click="AdventurerManager().convertNumberToAdventurer(adventurer.name)">Meet one</button>
+        </td>
+    </tr>
+</table>
+<ul>
+    <div v-for="adventurer in adventurerList">
+        <div class="well well-sm">
+            <h4>
+                {{adventurer.name.full}} <span class="text-muted">({{adventurer.type}})</span>
+                <button type="button" class="btn btn-info pull-right" @click="AdventurerManager().talkTo(adventurer.name.first)">Talk to {{adventurer.name.first}}</button>
+            </h4>
+            <div>
+                <div>Status: {{adventurer.status}}</div>
+                <div>Age: {{adventurer.age}}</div>
+                <div v-for="skill in adventurer.skills">
+                    {{skill.name}}: {{skill.amount}}
+                </div>
+            </div>
+        </div>
+    </div>
+</ul>

@@ -27,8 +27,7 @@
     <script data-main="js/app/app.js" src="js/require.js"></script>
 </head>
 <body>
-    <div id="app"></div>
-    <script>
+    <script id="app">
         $.get("./html/app.html", function(data) {
             $("#app").replaceWith(data);
         });

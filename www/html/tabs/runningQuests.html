@@ -1,0 +1,17 @@
+<span v-if="runningExpeditions.length == 0" class="text-muted text-center col-xs-12">No running quests</span>
+<transition-group name="custom-classes-transition" enter-acti ve-class="animated fadeIn" leave-active-class="noOutAnimation">
+    <div v-for="expedition in runningExpeditions" key="expedition.id">
+        <div class="well well-sm">
+            <h4>{{expedition.contract.name}}</h4>
+            <ul>
+                <li v-for="adventurer in expedition.adventurers">
+                    {{adventurer.type}} {{adventurer.status}} {{adventurer.awol}} {{adventurer.upgradedTo}}
+                </li>
+            </ul>
+            <div class="progress progress-striped active">
+                <div class="progress-bar" v-bind:style="{ width: expeditionProgress(expedition) + '%' }"></div>
+            </div>
+            <div v-bind:class="{ 'text-success': expiringDanger(expedition.expires), 'text-warning': expiringWarning(expedition.expires), 'text-danger': expiringSuccess(expedition.expires) }">{{readableTime(expedition.expires - Date.now())}} remaining</div>
+        </div>
+    </div>
+</transition-group>
