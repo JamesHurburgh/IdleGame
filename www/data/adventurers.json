@@ -21,7 +21,7 @@
     "skills": [
         { "name": "Toughness", "amount": 1 },
         { "name": "Perception", "amount": 1 },
-        { "name": "Deftness", "amount": 1 }
+        { "name": "Agility", "amount": 1 }
     ]
 }, {
     "name": "Peasant",
@@ -47,7 +47,7 @@
     "skills": [
         { "name": "Toughness", "amount": 2 },
         { "name": "Perception", "amount": 1 },
-        { "name": "Deftness", "amount": 1 },
+        { "name": "Agility", "amount": 1 },
         { "name": "Fighting", "amount": 2 }
     ]
 }, {
@@ -61,7 +61,7 @@
     "skills": [
         { "name": "Toughness", "amount": 2 },
         { "name": "Perception", "amount": 2 },
-        { "name": "Deftness", "amount": 2 }
+        { "name": "Agility", "amount": 2 }
     ]
 }, {
     "name": "Citizen",
@@ -87,7 +87,7 @@
     "skills": [
         { "name": "Toughness", "amount": 4 },
         { "name": "Perception", "amount": 1 },
-        { "name": "Deftness", "amount": 1 },
+        { "name": "Agility", "amount": 1 },
         { "name": "Fighting", "amount": 2 }
     ]
 }, {
@@ -101,7 +101,7 @@
     "skills": [
         { "name": "Toughness", "amount": 2 },
         { "name": "Perception", "amount": 3 },
-        { "name": "Deftness", "amount": 2 },
+        { "name": "Agility", "amount": 2 },
         { "name": "Healing", "amount": 1 }
     ]
 }, {
@@ -115,7 +115,7 @@
     "skills": [
         { "name": "Toughness", "amount": 2 },
         { "name": "Perception", "amount": 3 },
-        { "name": "Deftness", "amount": 2 },
+        { "name": "Agility", "amount": 2 },
         { "name": "Magic", "amount": 1 }
     ]
 }]
