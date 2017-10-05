@@ -159,6 +159,12 @@
                                                             <input type="text" class="form-control" id="baseCost" placeholder="0" :value="adventurer.baseCost">
                                                         </div>
                                                     </div>
+                                                    <div class="form-group">
+                                                        <label for="baseExperience" class="col-lg-2 control-label">Base XP</label>
+                                                        <div class="col-lg-10">
+                                                            <input type="text" class="form-control" id="baseExperience" placeholder="0" :value="adventurer.baseExperience">
+                                                        </div>
+                                                    </div>
                                                     <legend>Skills</legend>
                                                     <span v-for="skill in adventurer.skills" :title="skill.name + ' ' + skill.amount"><img :alt="skill.name" v-for="n in skill.amount" width="24px" :src="'img/icons/' + getSkill(skill.name).icon + '.png'" /></span>
                                                 </fieldset>
