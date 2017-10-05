@@ -16,9 +16,12 @@
                     <div v-if="selectedContract.contractAmount != undefined">{{selectedContract.contractAmount}} coins</div>
                     <span>Requires</span>
                     <div v-if="selectedContract.requirements != undefined">
-                        <div v-for="attributesRequirement in selectedContract.requirements.attributes">
+                        <!-- TODO CONVERT TO THIS CODE -->
+                        <span v-for="skill in selectedContract.requirements.attributes" :title="skill.type + ' ' + skill.amount"><img :alt="skill.type" v-for="n in skill.amount" width="24px" :src="'img/icons/' + get('skills', skill.type).icon + '.png'" /></span>
+                            
+                        <!-- <div v-for="attributesRequirement in selectedContract.requirements.attributes">
                             {{attributesRequirement.amount}} {{attributesRequirement.type}} <span v-bind:class="{ 'text-danger': lessthan(AdventurerManager().getCurrentPartyAttribute(attributesRequirement.type), attributesRequirement.amount), 'text-success': !lessthan(AdventurerManager().getCurrentPartyAttribute(attributesRequirement.type), attributesRequirement.amount) }">({{AdventurerManager().getCurrentPartyAttribute(attributesRequirement.type)}}/{{attributesRequirement.amount}})</span>
-                        </div>
+                        </div> -->
                     </div>
 
                     <div>Duration: {{Math.ceil(Math.sqrt(selectedContract.duration)/42)}}/10</div>
@@ -50,9 +53,10 @@
                             <tr v-for="adventurer in AdventurerManager().getAdventurersAtStatus('Idle')" @click="adventurer.includeInParty = !adventurer.includeInParty" v-bind:class="{ 'default': !adventurer.includeInParty, 'success': adventurer.includeInParty }">
                                 <td>{{adventurer.name.full}}</td>
                                 <td>
-                                    <ul>
+                                    <span v-for="skill in adventurer.skills" :title="skill.name + ' ' + skill.amount"><img :alt="skill.name" v-for="n in skill.amount" width="24px" :src="'img/icons/' + get('skills', skill.name).icon + '.png'" /></span>
+                                    <!-- <ul>
                                         <li v-for="skill in adventurer.skills">{{skill.name}} {{skill.amount}}</li>
-                                    </ul>
+                                    </ul> -->
                                 </td>
                             </tr>
                         </tbody>

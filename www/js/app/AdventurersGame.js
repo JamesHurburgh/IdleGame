@@ -14,7 +14,8 @@ define(["jquery",
         "json!data/locations.json",
         "json!data/adventurers.json",
         "json!data/renown.json",
-        "json!data/achievements.json"
+        "json!data/achievements.json",
+        "json!data/skills.json"
     ],
     function AdventurersGame(
         jquery,
@@ -31,7 +32,24 @@ define(["jquery",
         locations,
         adventurers,
         renown,
-        achievements) {
+        achievements,
+        skills) {
+
+            
+        var data = {
+            achievements: achievements,
+            adventurers: adventurers,
+            //adversaries: adversaries,
+            skills: skills,
+            calendar: calendar,
+            contracts: contracts,
+            //conversations: conversations,
+            game: game,
+            items: items,
+            locations: locations,
+            renown: renown,
+            settings: settings
+        };
 
         commonFunctions = new CommonFunctions();
 
@@ -589,6 +607,14 @@ define(["jquery",
 
             this.getContract = function(name) {
                 return contracts.filter(contract => contract.name == name)[0];
+            };
+
+            this.get = function(type, name){
+                var item = data[type].filter(item => item.name == name)[0]
+                if(item === undefined){
+                    item = {"name":"undefined"};
+                }
+                return item;
             };
 
             // Expediations
