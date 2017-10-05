@@ -160,13 +160,7 @@
                                                         </div>
                                                     </div>
                                                     <legend>Skills</legend>
-                                                    <ul>
-                                                        <li v-for="skill in adventurer.skills">{{skill.name}} {{skill.amount}}
-                                                        </li>
-                                                    </ul>
-                                                    <ul>
-                                                        <li v-for="skill in adventurer.skills"><img v-for="n to skill.amount" width="24px" :src="'img/icons/' + getSkill(skill.name).icon + '.png'" /></li>
-                                                    </ul>
+                                                    <span v-for="skill in adventurer.skills" :title="skill.name + ' ' + skill.amount"><img :alt="skill.name" v-for="n in skill.amount" width="24px" :src="'img/icons/' + getSkill(skill.name).icon + '.png'" /></span>
                                                 </fieldset>
                                             </form>
                                         </div>
