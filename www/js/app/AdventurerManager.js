@@ -72,6 +72,7 @@ define([
                 adventurer.name.full = adventurer.name.first + " " + adventurer.name.last;
                 adventurer.age = Math.floor(Math.random() * 30) + 18;
                 adventurer.wage = adventurerTemplate.baseCost;
+                adventurer.experience = adventurerTemplate.baseExperience;
                 adventurer.status = "Idle";
 
                 return adventurer;

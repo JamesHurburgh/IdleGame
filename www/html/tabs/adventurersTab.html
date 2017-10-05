@@ -29,9 +29,9 @@
             <div>
                 <div>Status: {{adventurer.status}}</div>
                 <div>Age: {{adventurer.age}}</div>
-                <div v-for="skill in adventurer.skills">
-                    {{skill.name}}: {{skill.amount}}
-                </div>
+                <span v-for="skill in adventurer.skills" :title="skill.name + ' ' + skill.amount"><img :alt="skill.name" v-for="n in skill.amount" width="24px" :src="'img/icons/' + get('skills', skill.name).icon + '.png'" /></span>
+                
+                <div>Experience: {{adventurer.experience}}</div>
             </div>
         </div>
     </div>

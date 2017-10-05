@@ -4,6 +4,7 @@
     "becomes": ["Street rat", "Peasant", "Brawler"],
     "cpt": 0,
     "baseCost": 1,
+    "baseExperience" : 0,
     "costMultiplier": 1,
     "costExponent": 1.05,
     "skills": [
@@ -16,6 +17,7 @@
     "becomes": ["Brawler", "Thief"],
     "cpt": 0,
     "baseCost": 2,
+    "baseExperience" : 1,
     "costMultiplier": 1,
     "costExponent": 1.05,
     "skills": [
@@ -29,6 +31,7 @@
     "becomes": ["Citizen"],
     "cpt": 0,
     "baseCost": 10,
+    "baseExperience" : 2,
     "costMultiplier": 1,
     "costExponent": 1.05,
     "skills": [
@@ -42,6 +45,7 @@
     "becomes": ["Fighter"],
     "cpt": 0,
     "baseCost": 400,
+    "baseExperience" : 10,
     "costMultiplier": 5,
     "costExponent": 1.05,
     "skills": [
@@ -56,6 +60,7 @@
     "becomes": [],
     "cpt": 0,
     "baseCost": 150,
+    "baseExperience" : 15,
     "costMultiplier": 5,
     "costExponent": 1.05,
     "skills": [
@@ -69,6 +74,7 @@
     "becomes": ["Cleric", "Mage"],
     "cpt": 0,
     "baseCost": 100,
+    "baseExperience" : 5,
     "costMultiplier": 5,
     "costExponent": 1.05,
     "skills": [
@@ -82,6 +88,7 @@
     "becomes": [],
     "cpt": 0,
     "baseCost": 1400,
+    "baseExperience" : 50,
     "costMultiplier": 5,
     "costExponent": 1.05,
     "skills": [
@@ -96,6 +103,7 @@
     "becomes": [],
     "cpt": 0,
     "baseCost": 2100,
+    "baseExperience" : 65,
     "costMultiplier": 5,
     "costExponent": 1.05,
     "skills": [
@@ -110,6 +118,7 @@
     "becomes": [],
     "cpt": 0,
     "baseCost": 3150,
+    "baseExperience" : 70,
     "costMultiplier": 5,
     "costExponent": 1.05,
     "skills": [

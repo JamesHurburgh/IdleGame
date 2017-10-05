@@ -83,7 +83,7 @@ define([
                 // Return questers to sendable pool
                 quest.upgradeMessages = "";
                 quest.awol = false;
-                var survived = 0;
+                quest.survivors = [];
                 var died = 0;
                 var upgraded = 0;
 
@@ -97,20 +97,28 @@ define([
 
                             // gameState.trackStat("death-adventurer", adventurer.type, 1);
                         } else {
-                            if (Math.random() * gameState.getGlobalValue("upgradeChance") < contract.upgradeChance) { // Then someone 'upgraded'
-                                gameState.AdventurerManager().upgradeAdventurer(adventurer);
-                                // TODO handle upgrades
-                            }
+                            // if (Math.random() * gameState.getGlobalValue("upgradeChance") < contract.upgradeChance) { // Then someone 'upgraded'
+                            //     gameState.AdventurerManager().upgradeAdventurer(adventurer);
+                            //     // TODO handle upgrades
+                            // }
                             adventurer.status = "Idle";
-                            survived++;
+                            adventurer.experience++;
+                            quest.survivors.push(adventurer);
                         }
                     }, this);
+                }
+
+                if(quest.contract.experience > 0 && quest.survivors.length > 0){
+                    var xpEach = Math.ceil(quest.experience / survived);
+                    quest.survivors.foreach(function(adventurer) {
+                        adventurer.experience += xpEach;
+                    });
                 }
 
                 quest.completionMessage = "";
 
                 // Calculate success
-                quest.success = survived > 0 && Math.random() < contract.successChance;
+                quest.success = quest.survivors.length > 0 && Math.random() < contract.successChance;
                 if (quest.success) {
                     quest.completionMessage = contract.successMessage;
 
