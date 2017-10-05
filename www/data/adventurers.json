@@ -3,21 +3,22 @@
     "plural": "Drunkards",
     "becomes": ["Street rat", "Peasant", "Brawler"],
     "cpt": 0,
-    "baseCost": 1,
-    "baseExperience" : 0,
+    "baseCost": 4,
+    "baseExperience" : 3,
     "costMultiplier": 1,
     "costExponent": 1.05,
     "skills": [
         { "name": "Toughness", "amount": 1 },
-        { "name": "Perception", "amount": 1 }
+        { "name": "Perception", "amount": 1 },
+        { "name": "Fighting", "amount": 1 }
     ]
 }, {
     "name": "Street rat",
     "plural": "Street rats",
     "becomes": ["Brawler", "Thief"],
     "cpt": 0,
-    "baseCost": 2,
-    "baseExperience" : 1,
+    "baseCost": 6,
+    "baseExperience" : 3,
     "costMultiplier": 1,
     "costExponent": 1.05,
     "skills": [
@@ -31,7 +32,7 @@
     "becomes": ["Citizen"],
     "cpt": 0,
     "baseCost": 10,
-    "baseExperience" : 2,
+    "baseExperience" : 3,
     "costMultiplier": 1,
     "costExponent": 1.05,
     "skills": [
@@ -45,7 +46,7 @@
     "becomes": ["Fighter"],
     "cpt": 0,
     "baseCost": 400,
-    "baseExperience" : 10,
+    "baseExperience" : 6,
     "costMultiplier": 5,
     "costExponent": 1.05,
     "skills": [
@@ -60,7 +61,7 @@
     "becomes": [],
     "cpt": 0,
     "baseCost": 150,
-    "baseExperience" : 15,
+    "baseExperience" : 6,
     "costMultiplier": 5,
     "costExponent": 1.05,
     "skills": [
