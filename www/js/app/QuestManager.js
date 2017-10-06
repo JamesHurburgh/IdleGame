@@ -97,8 +97,7 @@ define([
                 quest.upgradeMessages = "";
                 quest.awol = false;
                 quest.survivors = [];
-                var died = 0;
-                var upgraded = 0;
+                quest.casualaties = [];
 
                 if (quest.party) {
                     quest.party.forEach(function(adventurer) {
@@ -106,7 +105,7 @@ define([
                         if (Math.random() * gameState.getGlobalValue("questRisk") < contract.risk) {
                             adventurer.status = "Dead";
                             gameState.trackStat("death", "adventurer", 1);
-                            died++;
+                            quest.casualaties.push(adventurer);
 
                             // gameState.trackStat("death-adventurer", adventurer.type, 1);
                         } else {

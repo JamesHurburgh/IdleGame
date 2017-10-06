@@ -45,9 +45,18 @@
                     </h4>
                     <div>
                         <span>{{expedition.completionMessage}}</span>
-                        <span v-if="expedition.awol" class="text-warning">{{expedition.contract.deathMessage}}</span>
+                        <span v-if="expedition.casualaties.length !== 0" class="text-warning">{{expedition.contract.deathMessage}}</span>
+                        <h5>Returned adventurers</h5>
                         <ul>
-                            <li v-for="adventurer in expedition.adventurers">
+                            <li v-for="adventurer in expedition.survivors">
+                                {{adventurer.name.full}} ({{adventurer.type}})
+                                <span v-if="adventurer.awol" class="text-danger">didn't come back</span>
+                                <span v-if="adventurer.upgradedTo != undefined" class="text-success">has become a {{adventurer.upgradedTo}}</span>
+                            </li>
+                        </ul>
+                        <h5>Deaths</h5>
+                        <ul>
+                            <li v-for="adventurer in expedition.casualities">
                                 {{adventurer.type}} {{adventurer.status}}
                                 <span v-if="adventurer.awol" class="text-danger">didn't come back</span>
                                 <span v-if="adventurer.upgradedTo != undefined" class="text-success">has become a {{adventurer.upgradedTo}}</span>
