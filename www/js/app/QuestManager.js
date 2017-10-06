@@ -32,6 +32,19 @@ define([
                 return this.canSendQuest(this.getSelectedContract());
             };
 
+            this.rejectSelectedContract = function(){
+                this.rejectContract(this.getSelectedContract());
+            };
+
+            this.rejectContract = function(contract){
+                var availableContracts = gameState.LocationManager().getCurrentLocation().availableContracts;
+                if (gameState.selectedContract == contract) {
+                    gameState.selectedContract = null;
+                    this.selectNextContract();
+                }
+                availableContracts.splice(availableContracts.indexOf(contract), 1);
+            };
+
             this.canSendQuest = function(contract) {
                 return contract.requirements.attributes.reduce(function(canSend, skillRequirement) {
                     return canSend && gameState.AdventurerManager().getCurrentPartyAttribute(skillRequirement.type) >= skillRequirement.amount;

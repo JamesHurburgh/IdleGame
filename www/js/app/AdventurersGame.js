@@ -594,7 +594,7 @@ define(["jquery",
                     return;
                 }
 
-                contract.expires = Date.now() + Math.floor(this.millisecondsPerSecond * 60 * (Math.random() + 0.5));
+                contract.expires = Date.now() + Math.floor(this.millisecondsPerSecond * this.getGlobalValue("averageJobContractExpiry") * (Math.random() + 0.5));
 
                 this.LocationManager().getCurrentLocation().availableContracts.push(contract);
 

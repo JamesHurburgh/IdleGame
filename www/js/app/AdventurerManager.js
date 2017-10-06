@@ -167,7 +167,7 @@ define([
 
                 var adventurerNotice = {
                     "adventurer": this.generateAdventurer(adventurerType),
-                    "expires": Date.now() + Math.floor(gameState.millisecondsPerSecond * 60 * (Math.random() + 0.5))
+                    "expires": Date.now() + Math.floor(gameState.millisecondsPerSecond * gameState.getGlobalValue("averageHireContractExpiry") * (Math.random() + 0.5))
                 };
 
                 gameState.LocationManager().getCurrentLocation().availableAdventurers.push(adventurerNotice);

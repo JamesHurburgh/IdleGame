@@ -5,7 +5,9 @@
     "author-uri": "",
     "globals": [
         { "name": "chanceOfNewContract", "baseValue": 0.05 },
+        { "name": "averageJobContractExpiry", "baseValue": 600 },
         { "name": "chanceOfNewHire", "baseValue": 0.05 },
+        { "name": "averageHireContractExpiry", "baseValue": 600 },
         { "name": "hireCostModifier", "baseValue": 1 },
         { "name": "freeCoinsModifier", "baseValue": 1 },
         { "name": "questRisk", "baseValue": 1 },

@@ -16,6 +16,7 @@
                     <h4>
                         {{contract.name}}
                         <button type="button" class="btn btn-sm btn-info pull-right" data-toggle="modal" data-target="#contractDetails" @click="viewContract(contract)">View</button>
+                        <button type="button" class="btn btn-sm btn-danger pull-right" @click="QuestManager().rejectContract(contract)">Reject</button>
                     </h4>
                     <div v-bind:class="{ 'text-danger': expiringDanger(contract.expires), 'text-warning': expiringWarning(contract.expires), 'text-success': expiringSuccess(contract.expires) }">{{readableTime(contract.expires - Date.now())}} remaining</div>
                 </div>
