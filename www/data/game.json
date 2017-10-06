@@ -4,8 +4,8 @@
     "author": "James Hurburgh",
     "author-uri": "",
     "globals": [
-        { "name": "chanceOfNewContract", "baseValue": 0.5 },
-        { "name": "chanceOfNewHire", "baseValue": 0.2 },
+        { "name": "chanceOfNewContract", "baseValue": 0.05 },
+        { "name": "chanceOfNewHire", "baseValue": 0.05 },
         { "name": "hireCostModifier", "baseValue": 1 },
         { "name": "freeCoinsModifier", "baseValue": 1 },
         { "name": "questRisk", "baseValue": 1 },
