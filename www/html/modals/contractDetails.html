@@ -13,16 +13,6 @@
                     <h4>
                         {{selectedContract.name}}
                     </h4>
-                    <div v-if="selectedContract.contractAmount != undefined">{{selectedContract.contractAmount}} coins</div>
-                    <span>Requires</span>
-                    <div v-if="selectedContract.requirements != undefined">
-                        <!-- TODO CONVERT TO THIS CODE -->
-                        <span v-for="skill in selectedContract.requirements.attributes" :title="skill.type + ' ' + skill.amount"><img :alt="skill.type" v-for="n in skill.amount" width="24px" :src="'img/icons/' + get('skills', skill.type).icon + '.png'" /></span>
-                            
-                        <!-- <div v-for="attributesRequirement in selectedContract.requirements.attributes">
-                            {{attributesRequirement.amount}} {{attributesRequirement.type}} <span v-bind:class="{ 'text-danger': lessthan(AdventurerManager().getCurrentPartyAttribute(attributesRequirement.type), attributesRequirement.amount), 'text-success': !lessthan(AdventurerManager().getCurrentPartyAttribute(attributesRequirement.type), attributesRequirement.amount) }">({{AdventurerManager().getCurrentPartyAttribute(attributesRequirement.type)}}/{{attributesRequirement.amount}})</span>
-                        </div> -->
-                    </div>
 
                     <div>Duration: {{Math.ceil(Math.sqrt(selectedContract.duration)/42)}}/10</div>
                     <div class="progress" style="height: 7px; margin-bottom: 0px;">
@@ -36,7 +26,19 @@
                     <div class="progress" style="height: 7px; margin-bottom: 0px;">
                         <div class="progress-bar progress-bar-success" v-bind:style="{ width: Math.ceil(selectedContract.rewardFactor * 10) * 10 + '%' }"></div>
                     </div>
+                    
                     <div v-bind:class="{ 'text-danger': expiringDanger(selectedContract.expires), 'text-warning': expiringWarning(selectedContract.expires), 'text-success': expiringSuccess(selectedContract.expires) }">{{readableTime(selectedContract.expires - Date.now())}} remaining</div>
+                    <div v-if="selectedContract.contractAmount != undefined">Contract amount: <strong>{{selectedContract.contractAmount}} coins</strong></div>
+                    <span>Requires adventurers with:</span>
+                    <div v-if="selectedContract.requirements != undefined">
+                        <!-- TODO CONVERT TO THIS CODE -->
+                        <span v-for="skill in selectedContract.requirements.attributes" :title="skill.type + ' ' + skill.amount"><img :alt="skill.type" v-for="n in skill.amount" width="24px" :src="'img/icons/' + get('skills', skill.type).icon + '.png'" /></span>
+                            
+                        <!-- <div v-for="attributesRequirement in selectedContract.requirements.attributes">
+                            {{attributesRequirement.amount}} {{attributesRequirement.type}} <span v-bind:class="{ 'text-danger': lessthan(AdventurerManager().getCurrentPartyAttribute(attributesRequirement.type), attributesRequirement.amount), 'text-success': !lessthan(AdventurerManager().getCurrentPartyAttribute(attributesRequirement.type), attributesRequirement.amount) }">({{AdventurerManager().getCurrentPartyAttribute(attributesRequirement.type)}}/{{attributesRequirement.amount}})</span>
+                        </div> -->
+                    </div>
+
                 </div>
             </div>
             <div class="modal-body" style="max-height: 50vh; overflow-y: auto;">
@@ -64,11 +66,11 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button v-if="selectedContract" type="button" class="btn pull-right" data-dismiss="modal" v-bind:class="{ 'btn-success': QuestManager().canSendSelectedQuest(), 'btn-primary': !QuestManager().canSendSelectedQuest() }" @click="QuestManager().sendSelectedQuest()"
+                <button type="button" class="btn pull-right"  v-if="selectedContract" data-dismiss="modal" v-bind:class="{ 'btn-success': QuestManager().canSendSelectedQuest(), 'btn-primary': !QuestManager().canSendSelectedQuest() }" @click="QuestManager().sendSelectedQuest()"
                     :disabled="!QuestManager().canSendSelectedQuest()">Start</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-info" @click="QuestManager().selectNextContract()">Next Contract</button>
-
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger pull-left"  v-if="selectedContract" @click="QuestManager().rejectSelectedContract(contract)">Reject</button>
+                <button type="button" class="btn btn-info" @click="QuestManager().selectNextContract()">Next</button>
             </div>
         </div>
     </div>
