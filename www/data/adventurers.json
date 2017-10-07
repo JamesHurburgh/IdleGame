@@ -4,7 +4,8 @@
     "becomes": ["Street rat", "Peasant", "Brawler"],
     "cpt": 0,
     "baseCost": 4,
-    "baseExperience" : 3,
+    "baseCut": 1.0,
+    "baseExperience": 3,
     "costMultiplier": 1,
     "costExponent": 1.05,
     "skills": [
@@ -18,7 +19,8 @@
     "becomes": ["Brawler", "Thief"],
     "cpt": 0,
     "baseCost": 6,
-    "baseExperience" : 3,
+    "baseCut": 1.5,
+    "baseExperience": 3,
     "costMultiplier": 1,
     "costExponent": 1.05,
     "skills": [
@@ -32,7 +34,8 @@
     "becomes": ["Citizen"],
     "cpt": 0,
     "baseCost": 10,
-    "baseExperience" : 3,
+    "baseCut": 2.0,
+    "baseExperience": 3,
     "costMultiplier": 1,
     "costExponent": 1.05,
     "skills": [
@@ -46,7 +49,8 @@
     "becomes": ["Fighter"],
     "cpt": 0,
     "baseCost": 400,
-    "baseExperience" : 6,
+    "baseCut": 2.5,
+    "baseExperience": 6,
     "costMultiplier": 5,
     "costExponent": 1.05,
     "skills": [
@@ -61,7 +65,8 @@
     "becomes": [],
     "cpt": 0,
     "baseCost": 150,
-    "baseExperience" : 6,
+    "baseCut": 3.5,
+    "baseExperience": 6,
     "costMultiplier": 5,
     "costExponent": 1.05,
     "skills": [
@@ -75,7 +80,8 @@
     "becomes": ["Cleric", "Mage"],
     "cpt": 0,
     "baseCost": 100,
-    "baseExperience" : 5,
+    "baseCut": 3.0,
+    "baseExperience": 5,
     "costMultiplier": 5,
     "costExponent": 1.05,
     "skills": [
@@ -89,7 +95,8 @@
     "becomes": [],
     "cpt": 0,
     "baseCost": 1400,
-    "baseExperience" : 50,
+    "baseCut": 4.5,
+    "baseExperience": 50,
     "costMultiplier": 5,
     "costExponent": 1.05,
     "skills": [
@@ -104,7 +111,8 @@
     "becomes": [],
     "cpt": 0,
     "baseCost": 2100,
-    "baseExperience" : 65,
+    "baseCut": 4.0,
+    "baseExperience": 65,
     "costMultiplier": 5,
     "costExponent": 1.05,
     "skills": [
@@ -119,7 +127,8 @@
     "becomes": [],
     "cpt": 0,
     "baseCost": 3150,
-    "baseExperience" : 70,
+    "baseCut": 5.0,
+    "baseExperience": 70,
     "costMultiplier": 5,
     "costExponent": 1.05,
     "skills": [
