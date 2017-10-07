@@ -30,36 +30,35 @@
         <span v-if="completedExpeditions.length == 0" class="text-muted text-center col-xs-12">No finished quests</span>
         <button v-if="claimAllVisible()" type="button" class="btn btn-success btn-xs pull-right" @click="claimAllCompletedExpeditions()">Claim All</button>
         <transition-group name="custom-classes-transition" enter-active-class="animated fadeIn" leave-active-class="noOutAnimation">
-            <div v-for="expedition in completedExpeditions" key="expedition.id">
-                <div class="well well-sm">
-                    <h4>{{expedition.contract.name}}
-                        <button v-if="expedition.success" type="button" class="btn btn-success pull-right" @click="claimReward(expedition)">
-                                Claim!
-                                <div v-if="expedition.contract.contractAmount != undefined">{{expedition.contract.contractAmount}} coins</div>
-                                <div v-for="reward in expedition.rewards">
-                                    <div v-if="reward.amount">{{reward.amount}} {{reward.type}}</div>
-                                    <div v-if="reward.type == 'item'">{{reward.item.name}}</div>
-                                </div>
-                            </button>
-                        <button v-if="!expedition.success" type="button" class="btn btn-danger pull-right" @click="removeExpedition(expedition)">Darnation!</button>
-                    </h4>
-                    <div>
-                        <span>{{expedition.completionMessage}}</span>
-                        <span v-if="expedition.casualaties.length !== 0" class="text-warning">{{expedition.contract.deathMessage}}</span>
-                        <h5>Returned adventurers</h5>
+            <div class="panel panel-default" v-for="expedition in completedExpeditions" key="expedition.id">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{expedition.contract.name}}
+                        <button v-if="expedition.success" type="button" class="btn btn-xs btn-success pull-right" @click="claimReward(expedition)">Claim rewards</button>
+                        <button v-if="!expedition.success" type="button" class="btn btn-xs btn-danger pull-right" @click="removeExpedition(expedition)">Dismiss</button>
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <span>{{expedition.completionMessage}}</span>
+                    <span v-if="expedition.casualaties.length !== 0" class="text-warning">{{expedition.contract.deathMessage}}</span>
+                    <h4>Rewards</h4>
+                    <div v-if="expedition.contract.contractAmount != undefined">{{expedition.contract.contractAmount}} coins</div>
+                    <div v-for="reward in expedition.rewards">
+                        <div v-if="reward.amount">{{reward.amount}} {{reward.type}}</div>
+                        <div v-if="reward.type == 'item'">{{reward.item.name}}</div>
+                    </div>
+                    <div v-if="expedition.survivors.length !== 0">
+                        <h4>Returned adventurers</h4>
                         <ul>
                             <li v-for="adventurer in expedition.survivors">
                                 {{adventurer.name.full}} ({{adventurer.type}})
-                                <span v-if="adventurer.awol" class="text-danger">didn't come back</span>
-                                <span v-if="adventurer.upgradedTo != undefined" class="text-success">has become a {{adventurer.upgradedTo}}</span>
                             </li>
                         </ul>
-                        <h5>Deaths</h5>
+                    </div>
+                    <div v-if="expedition.casualaties.length !== 0">
+                        <h4>Deaths</h4>
                         <ul>
-                            <li v-for="adventurer in expedition.casualities">
+                            <li v-for="adventurer in expedition.casualaties">
                                 {{adventurer.type}} {{adventurer.status}}
-                                <span v-if="adventurer.awol" class="text-danger">didn't come back</span>
-                                <span v-if="adventurer.upgradedTo != undefined" class="text-success">has become a {{adventurer.upgradedTo}}</span>
                             </li>
                         </ul>
                     </div>
