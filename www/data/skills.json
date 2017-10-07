@@ -1,9 +1,9 @@
 [{
     "name": "Toughness",
-    "icon": "mailed-fist"
+    "icon": "person"
 }, {
     "name": "Fighting",
-    "icon": "sword-clash"
+    "icon": "mailed-fist"
 }, {
     "name": "Agility",
     "icon": "run"
