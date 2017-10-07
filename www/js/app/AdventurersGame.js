@@ -197,6 +197,7 @@ define(["jquery",
                 this.achievements = achievements;
                 this.items = items;
                 this.game = game;
+                this.data = data;
 
                 this.calculate();
             };
@@ -315,6 +316,7 @@ define(["jquery",
                 this.achievements = achievements;
                 this.game = game;
                 this.items = items;
+                this.data = data;
 
                 for (var i = 0; i < this.allLocations.length; i++) {
                     this.allLocations[i].contracts = this.locations[i].contracts;
