@@ -10,18 +10,13 @@
         { "name": "Ponner", "season": "Winter", "averageTemperature": 15 },
         { "name": "Glinto", "season": "Winter", "averageTemperature": 17 },
         { "name": "Mauito", "season": "Spring", "averageTemperature": 22 },
-        { "name": "Chram", "season": "Spring", "averageTemperature": 20 },
+        { "name": "Charm", "season": "Spring", "averageTemperature": 20 },
         { "name": "Stuga", "season": "Spring", "averageTemperature": 22 }
     ],
     "holidays": [{
-            "name": "Yam day",
-            "description": "A celebration of the beginning of the harvest of Yams.",
-            "occurs": { "month": "Yam", "date": 1 }
-        },
-        {
-            "name": "Midwinter",
-            "description": "The middle of winter.  Traditionally the residents of Otium meet together and share a meal around a roaring bonfire.",
-            "occurs": { "month": "Ponner", "date": 15 }
+            "name": "Quarry Race",
+            "description": "The local youngsters build makeshift carts and race them through the old quarry for a moderate prize.",
+            "occurs": { "month": "Flinto", "date": 19 }
         },
         {
             "name": "Midsummer",
@@ -29,25 +24,56 @@
             "occurs": { "month": "Rebotco", "date": 15 }
         },
         {
+            "name": "Cimalo",
+            "description": "The culmination of four days of testing for young men and women. Those who pass go on to apprentice in their chosen fields, those who fail are placed where they are needed.",
+            "occurs": { "month": "Venson", "date": 27 }
+        },
+        {
+            "name": "Smith's Festival",
+            "description": "The people come from all around to see the finest work from craftmen and woman.",
+            "occurs": { "month": "Geldor", "date": 7 }
+        },
+        {
+            "name": "Yam day",
+            "description": "A celebration of the beginning of the harvest of Yams.",
+            "occurs": { "month": "Yam", "date": 1 }
+        },
+        {
             "name": "Lirpa's lament",
             "description": "Day of mourning for Lirpa, a beloved queen, and by extension all deceased monarchs.",
             "occurs": { "month": "Lirpa", "date": 13 }
         },
         {
-            "name": "Cimalo",
-            "description": "The culmination of four days of testing for young men and women. Those who pass go on to apprentice in their chosen fields, those who fail are placed where they are needed.",
-            "occurs": { "month": "Chram", "date": 27 }
+            "name": "Foundation Day",
+            "description": "The day the city was founded.",
+            "occurs": { "month": "Kilmoi", "date": 7 }
         },
         {
-            "name": "Smith's Festivus",
-            "description": "The people come from all around to see the finest work from craftmen and woman.",
-            "occurs": { "month": "Geldor", "date": 7 }
+            "name": "Midwinter",
+            "description": "The middle of winter.  Traditionally the residents of Otium meet together and share a meal around a roaring bonfire.",
+            "occurs": { "month": "Ponner", "date": 15 }
         },
         {
-            "name": "Quarry Race",
-            "description": "The locals youngsters build makeshift carts and race them through the old quarry for a moderate prize.",
-            "occurs": { "month": "Flinto", "date": 19 }
+            "name": "",
+            "description": "",
+            "occurs": { "month": "Glinto", "date": 0 }
+        },
+        {
+            "name": "",
+            "description": "",
+            "occurs": { "month": "Mauito", "date": 0 }
+        },
+        {
+            "name": "Charm Courting Day",
+            "description": "Anyone unmarried traditionally begins courting or asks to court another on this day.",
+            "occurs": { "month": "Charm", "date": 19 }
+        },
+        {
+            "name": "",
+            "description": "",
+            "occurs": { "month": "Stuga", "date": 0 }
         }
+
     ],
     "timeOfDay": [
         { "hour": 0, "description": "Midnight", "colourHex": "#000000" },
