@@ -138,6 +138,9 @@ define([
             this.addNewAdverturersForHire = function() {
                 // New hires
                 var maxAvailableHires = 5;
+                if (!gameState.LocationManager().getCurrentLocation().availableAdventurers) {
+                    gameState.LocationManager().getCurrentLocation().availableAdventurers = [];
+                }
                 if (gameState.LocationManager().getCurrentLocation().availableAdventurers.length < maxAvailableHires && Math.random() < gameState.getGlobalValue("chanceOfNewHire")) {
                     this.addAvailableHire();
                 }

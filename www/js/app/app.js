@@ -38,9 +38,8 @@ requirejs(['jquery', 'vue', 'alertify', 'store', 'chance', 'app/AdventurersGame'
             methods: {},
             // created: alert("created"),
             // ready: alert("ready"),
-            mounted: function(){
-                this.$nextTick(function (){
-                });
+            mounted: function() {
+                this.$nextTick(function() {});
             }
         });
 

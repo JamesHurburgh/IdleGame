@@ -35,7 +35,7 @@ define(["jquery",
         achievements,
         skills) {
 
-            
+
         var data = {
             achievements: achievements,
             adventurers: adventurers,
@@ -99,18 +99,22 @@ define(["jquery",
                 gameDateTime.hours = (gameHours % 12);
                 if (gameDateTime.hours === 0) gameDateTime.hours = 12;
 
+                gameDateTime.timeColour = gameDateTime.timeOfDay.colourHex;
 
                 var gameDate = Math.floor(gameHours / 24);
                 gameDateTime.date = (gameDate % 30) + 1;
                 gameDateTime.gameDateOrdinalIndicator = commonFunctions.nth(gameDateTime.date);
 
                 var gameMonth = Math.floor(gameDate / 30);
-                gameDateTime.month = calendar.months[(gameMonth % 12)];
+                var gameMonthNumber = (gameMonth % 12) + 1;
+                gameDateTime.month = calendar.months[gameMonthNumber - 1];
                 gameDateTime.monthName = gameDateTime.month.name;
 
                 gameDateTime.season = gameDateTime.month.season;
 
                 gameDateTime.year = Math.floor(gameMonth / 12);
+
+                gameDateTime.holiday = calendar.holidays.filter(holiday => holiday.occurs.month == gameDateTime.month.name && holiday.occurs.date == gameDateTime.date)[0];
 
                 gameDateTime.toDateString = function() {
                     return this.date + this.gameDateOrdinalIndicator + " of " + this.monthName + " " + this.year;
@@ -231,8 +235,8 @@ define(["jquery",
                 this.location = savedData.location;
                 this.LocationManager().getCurrentLocation().availableContracts = savedData.location.availableContracts;
                 this.LocationManager().getCurrentLocation().availableAdventurers = savedData.location.availableAdventurers;
-                if(this.LocationManager().getCurrentLocation().availableAdventurers === undefined) this.LocationManager().getCurrentLocation().availableAdventurers = [];
-                
+                if (this.LocationManager().getCurrentLocation().availableAdventurers === undefined) this.LocationManager().getCurrentLocation().availableAdventurers = [];
+
                 this.options = savedData.options;
                 if (this.options !== undefined && this.options.automatic !== undefined) {
                     {
@@ -284,7 +288,7 @@ define(["jquery",
                 this.adventurerList = savedData.adventurerList;
                 if (this.adventurerList === undefined) this.adventurerList = [];
                 this.availableAdventurers = savedData.availableAdventurers;
-                if(this.availableAdventurers === undefined) this.availableAdventurers = [];
+                if (this.availableAdventurers === undefined) this.availableAdventurers = [];
 
                 // Begin standard version management
 
@@ -609,10 +613,10 @@ define(["jquery",
                 return contracts.filter(contract => contract.name == name)[0];
             };
 
-            this.get = function(type, name){
+            this.get = function(type, name) {
                 var item = data[type].filter(item => item.name == name)[0]
-                if(item === undefined){
-                    item = {"name":"undefined"};
+                if (item === undefined) {
+                    item = { "name": "undefined" };
                 }
                 return item;
             };
