@@ -33,18 +33,20 @@
             <div class="panel panel-default" v-for="expedition in completedExpeditions" key="expedition.id">
                 <div class="panel-heading">
                     <h3 class="panel-title">{{expedition.contract.name}}
+                        <span v-if="expedition.success" class="text-success">- Success</span>
+                        <span v-if="!expedition.success" class="text-danger">- Fail</span>
                         <button v-if="expedition.success" type="button" class="btn btn-xs btn-success pull-right" @click="claimReward(expedition)">Claim rewards</button>
                         <button v-if="!expedition.success" type="button" class="btn btn-xs btn-danger pull-right" @click="removeExpedition(expedition)">Dismiss</button>
                     </h3>
                 </div>
                 <div class="panel-body">
-                    <span>{{expedition.completionMessage}}</span>
+                    <span class="text-info">{{expedition.completionMessage}}</span>
                     <span v-if="expedition.casualaties.length !== 0" class="text-warning">{{expedition.contract.deathMessage}}</span>
                     <h4>Rewards</h4>
                     <div v-if="expedition.contract.contractAmount != undefined">{{expedition.contract.contractAmount}} coins</div>
                     <div v-for="reward in expedition.rewards">
-                        <div v-if="reward.amount">{{reward.amount}} {{reward.type}}</div>
-                        <div v-if="reward.type == 'item'">{{reward.item.name}}</div>
+                        <div class="text-success" v-if="reward.amount">{{reward.amount}} {{reward.type}}</div>
+                        <div class="text-success" v-if="reward.type == 'item'">{{reward.item.name}}</div>
                     </div>
                     <div v-if="expedition.survivors.length !== 0">
                         <h4>Returned adventurers</h4>
@@ -58,7 +60,7 @@
                         <h4>Deaths</h4>
                         <ul>
                             <li v-for="adventurer in expedition.casualaties">
-                                {{adventurer.type}} {{adventurer.status}}
+                                {{adventurer.name.full}} ({{adventurer.type}})
                             </li>
                         </ul>
                     </div>
