@@ -32,11 +32,11 @@ define([
                 return this.canSendQuest(this.getSelectedContract());
             };
 
-            this.rejectSelectedContract = function(){
+            this.rejectSelectedContract = function() {
                 this.rejectContract(this.getSelectedContract());
             };
 
-            this.rejectContract = function(contract){
+            this.rejectContract = function(contract) {
                 var availableContracts = gameState.LocationManager().getCurrentLocation().availableContracts;
                 if (gameState.selectedContract == contract) {
                     gameState.selectedContract = null;
@@ -49,6 +49,29 @@ define([
                 return contract.requirements.attributes.reduce(function(canSend, skillRequirement) {
                     return canSend && gameState.AdventurerManager().getCurrentPartyAttribute(skillRequirement.type) >= skillRequirement.amount;
                 }, true);
+            };
+
+            this.getCurrentQuestRequiredAndAssignedSkillCount = function(skillName) {
+                return this.getRequiredAndAssignedSkillCount(this.getSelectedContract(), skillName);
+            };
+
+            this.getRequiredAndAssignedSkillCount = function(contract, skillName) {
+                var currentlyAssigned = gameState.AdventurerManager().getCurrentPartyAttribute(skillName);
+                if (currentlyAssigned === 0) return 0;
+                var requiredSkill = contract.requirements.attributes.filter(skill => skill.type == skillName)[0];
+                if (!requiredSkill) return 0;
+                return Math.min(currentlyAssigned, requiredSkill.amount);
+            };
+
+            this.getCurrentQuestRequiredAndUnassignedSkillCount = function(skillName) {
+                return this.getRequiredAndUnassignedSkillCount(this.getSelectedContract(), skillName);
+            };
+
+            this.getRequiredAndUnassignedSkillCount = function(contract, skillName) {
+                var currentlyAssigned = gameState.AdventurerManager().getCurrentPartyAttribute(skillName);
+                var requiredSkill = contract.requirements.attributes.filter(skill => skill.type == skillName)[0];
+                if (!requiredSkill) return 0;
+                return Math.max(requiredSkill.amount - currentlyAssigned, 0);
             };
 
             this.sendSelectedQuest = function() {
@@ -120,7 +143,7 @@ define([
                     }, this);
                 }
 
-                if(quest.contract.experience > 0 && quest.survivors.length > 0){
+                if (quest.contract.experience > 0 && quest.survivors.length > 0) {
                     var xpEach = Math.ceil(quest.experience / survived);
                     quest.survivors.foreach(function(adventurer) {
                         adventurer.experience += xpEach;
