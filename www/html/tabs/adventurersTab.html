@@ -1,38 +1,15 @@
-<span v-if="hiredAdventurers().length == 0" class="text-muted text-center col-xs-12">No adventurers</span>
-<table class="table table-striped table-hover ">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Idle</th>
-            <th>Out</th>
-            <th>Total</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tr v-for="adventurer in hiredAdventurers()">
-        <td>{{adventurer.plural}}</td>
-        <td>{{getHiredCount(adventurer.name)}}</td>
-        <td>{{getAdventurersOnTheJob(adventurer.name)}}</td>
-        <td>{{totalAdventurers(adventurer)}}</td>
-        <td>
-            <button type="button" class="btn btn-xs btn-info pull-right" @click="AdventurerManager().convertNumberToAdventurer(adventurer.name)">Meet one</button>
-        </td>
-    </tr>
-</table>
-<ul>
-    <div v-for="adventurer in adventurerList">
-        <div class="well well-sm">
-            <h4>
-                {{adventurer.name.full}} <span class="text-muted">({{adventurer.type}})</span>
-                <button type="button" class="btn btn-info pull-right" @click="AdventurerManager().talkTo(adventurer.name.first)">Talk to {{adventurer.name.first}}</button>
-            </h4>
-            <div>
-                <div>Status: {{adventurer.status}}</div>
-                <div>Age: {{adventurer.age}}</div>
-                <span v-for="skill in adventurer.skills" :title="skill.name + ' ' + skill.amount"><img :alt="skill.name" v-for="n in skill.amount" width="24px" :src="'img/icons/' + get('skills', skill.name).icon + '.png'" /></span>
-                
-                <div>Experience: {{adventurer.experience}}</div>
-            </div>
-        </div>
+<span v-if="adventurerList.length == 0" class="text-muted text-center col-xs-12">No adventurers</span>
+<div class="panel panel-default" v-for="adventurer in adventurerList">
+    <div class="panel-heading">
+        <h3 class="panel-title">{{adventurer.name.full}} <span class="text-muted">({{adventurer.type}} - {{adventurer.status}})</span>
+            <button v-if="adventurer.status == 'Idle'" type="button" class="btn btn-info btn-xs pull-right" @click="AdventurerManager().talkTo(adventurer.name.first)">Talk to {{adventurer.name.first}}</button>
+        </h3>
     </div>
-</ul>
+    <div class="panel-body">
+        <span v-for="skill in adventurer.skills" :title="skill.name + ' ' + skill.amount"><img :alt="skill.name" v-for="n in skill.amount" width="24px" :src="'img/icons/' + get('skills', skill.name).icon + '.png'" /></span>
+    </div>
+    <div class="panel-footer">
+        {{adventurer.age}} years old
+        <div class="pull-right">{{adventurer.experience}}xp</div>
+    </div>
+</div>
