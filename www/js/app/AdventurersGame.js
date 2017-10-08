@@ -637,6 +637,18 @@ define(["jquery",
                 return item;
             };
 
+            this.getIcon = function(iconFor) {
+                switch (iconFor) {
+                    case "coins":
+                        return "./img/icons/crown-coin.png";
+                    case "renown":
+                        return "./img/icons/thumb-up.png";
+                    case "item":
+                        return "./img/icons/swap-bag.png";
+                }
+
+            }
+
             // Expediations
 
             this.claimAllCompletedExpeditions = function() {
