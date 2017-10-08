@@ -208,8 +208,6 @@ define(["jquery",
                 console.log("calculate");
                 // Do all calculations here
                 this.calculateCounter = 0;
-                // Autosave
-                this.autoSave();
 
                 this.addNewContracts();
                 this.AdventurerManager().addNewAdverturersForHire();
@@ -217,6 +215,10 @@ define(["jquery",
                 this.checkAndClaimAllAchievements();
 
                 this.gameDateTime = this.getGameTime();
+
+                // Autosave
+                this.stillLoggedIn();
+                this.autoSave();
             };
 
             this.loadFromSavedData = function(savedData) {
@@ -294,8 +296,8 @@ define(["jquery",
                 if (this.availableAdventurers === undefined) this.availableAdventurers = [];
 
                 this.loginTracker = savedData.loginTracker;
-                // Begin standard version management
 
+                // Begin standard version management
                 if (savedData.version === undefined) {
                     if (!this.LocationManager().getCurrentLocation().availableContracts) this.LocationManager().getCurrentLocation().availableContracts = [];
                     if (!this.LocationManager().getCurrentLocation().availableHires) this.LocationManager().getCurrentLocation().availableHires = [];
@@ -335,9 +337,17 @@ define(["jquery",
                 if (this.loginTracker === undefined) {
                     this.loginTracker = [];
                 } else {
-                    this.timeSinceLastLogin = loginTime - this.loginTracker[this.loginTracker.length - 1];
+                    this.timeSinceLastLogin = loginTime - this.loginTracker[this.loginTracker.length - 1].logout;
                 }
-                this.loginTracker.push(loginTime);
+                this.loginTracker.push({ "login": loginTime });
+            };
+
+            this.stillLoggedIn = function() {
+                if (this.loginTracker === undefined) {
+                    this.loginTracker = [];
+                    this.loginTracker.push({ "login": Date.now() });
+                }
+                this.loginTracker[this.loginTracker.length - 1].logout = Date.now();
             };
 
             // Achievements
