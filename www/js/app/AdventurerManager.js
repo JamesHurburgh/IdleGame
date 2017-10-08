@@ -185,6 +185,13 @@ define([
                 gameState.message(adventurerName + " says '" + chance.pickone(conversations.randomStatements) + "'");
             };
 
+            this.prepAdventurersQueue = function(millisecondsSinceLastLogin) {
+                var numberToPrep = millisecondsSinceLastLogin / 1000 / 60 / 10; // Prep one every 10 minutes
+                for (var i = 0; i < numberToPrep; i++) {
+                    this.addAvailableHire();
+                }
+            };
+
         };
     }
 );

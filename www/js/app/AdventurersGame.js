@@ -188,6 +188,8 @@ define(["jquery",
                 this.currentParty = [];
                 this.adventurerList = [];
 
+                this.loginTracker = [];
+
                 this.version = game.versions[0].number;
 
                 // Data
@@ -291,6 +293,7 @@ define(["jquery",
                 this.availableAdventurers = savedData.availableAdventurers;
                 if (this.availableAdventurers === undefined) this.availableAdventurers = [];
 
+                this.loginTracker = savedData.loginTracker;
                 // Begin standard version management
 
                 if (savedData.version === undefined) {
@@ -324,6 +327,17 @@ define(["jquery",
                 }
 
                 this.calculate();
+            };
+            // Login
+            this.login = function() {
+                this.timeSinceLastLogin = -1;
+                var loginTime = Date.now();
+                if (this.loginTracker === undefined) {
+                    this.loginTracker = [];
+                } else {
+                    this.timeSinceLastLogin = loginTime - this.loginTracker[this.loginTracker.length - 1];
+                }
+                this.loginTracker.push(loginTime);
             };
 
             // Achievements
@@ -837,6 +851,9 @@ define(["jquery",
             } else {
                 this.loadFromSavedData(saveData);
             }
+            this.login();
+            this.QuestManager().prepContractQueue(this.timeSinceLastLogin);
+            this.AdventurerManager().prepAdventurersQueue(this.timeSinceLastLogin);
 
         };
     });

@@ -63,6 +63,13 @@ define([
                 return Math.min(currentlyAssigned, requiredSkill.amount);
             };
 
+            this.prepContractQueue = function(millisecondsSinceLastLogin) {
+                var numberToPrep = millisecondsSinceLastLogin / 1000 / 60 / 10; // Prep one every 10 minutes
+                for (var i = 0; i < numberToPrep; i++) {
+                    gameState.addContract();
+                }
+            };
+
             this.getCurrentQuestRequiredAndUnassignedSkillCount = function(skillName) {
                 return this.getRequiredAndUnassignedSkillCount(this.getSelectedContract(), skillName);
             };
