@@ -34,14 +34,12 @@ define([
 
             this.rejectSelectedContract = function() {
                 this.rejectContract(this.getSelectedContract());
+                gameState.selectedContract = null;
+                this.selectNextContract();
             };
 
             this.rejectContract = function(contract) {
                 var availableContracts = gameState.LocationManager().getCurrentLocation().availableContracts;
-                if (gameState.selectedContract == contract) {
-                    gameState.selectedContract = null;
-                    this.selectNextContract();
-                }
                 availableContracts.splice(availableContracts.indexOf(contract), 1);
             };
 
