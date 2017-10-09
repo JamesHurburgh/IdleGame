@@ -82,8 +82,15 @@ define([
                 chance.pickone(adventurer.skills).amount++;
             };
 
+            this.getAdventurerList = function(){
+                if(!gameState.adventurerList){
+                    gameState.adventurerList = [];
+                }
+                return gameState.adventurerList;
+            };
+
             this.getCurrentParty = function() {
-                return gameState.adventurerList.filter(adventurer => adventurer.includeInParty);
+                return this.getAdventurerList().filter(adventurer => adventurer.includeInParty);
             };
 
             this.getCurrentPartyAttributes = function() {
@@ -133,6 +140,14 @@ define([
 
             this.getAdventurersAtStatus = function(status) {
                 return gameState.adventurerList.filter(adventurer => adventurer.status == status);
+            };
+
+            this.getAdventurersQuest = function(adventurer){
+                gameState.runningExpeditions.forEach(function(quest) {
+                    if(quest.party.filter(a => a == adventurer).length > 0){
+                        return quest;
+                    }
+                }, this);
             };
 
             this.addNewAdverturersForHire = function() {
