@@ -30,7 +30,7 @@ define(["json!data/locations.json"],
             };
 
             this.getCurrentLocation = function() {
-                return this.getLocation(gameState.location.name);
+                return gameState.location;
             };
 
             this.setCurrentLocation = function(name) {
