@@ -54,6 +54,8 @@ To scale duration, take the square root of the seconds divide by 425.  THis give
 * Retreive a valueable artifact
 * Investigate a string of local murders
 * Clear rats out of the tavern basement
-* Guard duty
+* Guard an expedition
 * Collect ingredients for a rare potion
 * Defeat a local liche
+* Finding a missing resident
+* 
