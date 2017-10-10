@@ -15,7 +15,7 @@
     ],
     "versions": [{
         "number": "0.10.4",
-        "description": "Removal of inline code.",
+        "description": "Removal of inline code and formatting.",
         "features": [
             "Improved formatting of notices."
         ],
