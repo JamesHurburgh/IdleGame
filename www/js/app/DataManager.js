@@ -26,7 +26,7 @@ define([
     "json!data/achievements.json",
     "json!data/skills.json"],
     function DataManager(
-        CommonFunctions, 
+        CommonFunctions,
         game,
         settings,
         calendar,
@@ -42,6 +42,8 @@ define([
         return function DataManager(gameState) {
 
             this.gameState = gameState;
+
+            this.calendar = calendar;
 
         };
     }

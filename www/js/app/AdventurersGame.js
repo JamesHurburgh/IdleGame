@@ -1,24 +1,26 @@
 /*jshint esversion: 6 */
 
 define(["jquery",
-        "app/CommonFunctions",
-        "alertify",
-        "json!data/game.json",
-        "json!data/settings.json",
-        "app/ItemManager",
-        "app/LocationManager",
-        "app/AdventurerManager",
-        "app/AchievementManager",
-        "app/QuestManager",
-        "app/MessageManager",
-        "json!data/calendar.json",
-        "json!data/contracts.json",
-        "json!data/locations.json",
-        "json!data/adventurers.json",
-        "json!data/renown.json",
-        "json!data/achievements.json",
-        "json!data/skills.json"
-    ],
+    "app/CommonFunctions",
+    "alertify",
+    "json!data/game.json",
+    "json!data/settings.json",
+    "app/ItemManager",
+    "app/LocationManager",
+    "app/AdventurerManager",
+    "app/AchievementManager",
+    "app/QuestManager",
+    "app/MessageManager",
+    "app/DataManager",
+    "app/TimeManager",
+    "json!data/calendar.json",
+    "json!data/contracts.json",
+    "json!data/locations.json",
+    "json!data/adventurers.json",
+    "json!data/renown.json",
+    "json!data/achievements.json",
+    "json!data/skills.json"
+],
     function AdventurersGame(
         jquery,
         CommonFunctions,
@@ -31,6 +33,8 @@ define(["jquery",
         AchievementManager,
         QuestManager,
         MessageManager,
+        DataManager,
+        TimeManager,
         calendar,
         contracts,
         locations,
@@ -64,99 +68,45 @@ define(["jquery",
             this.millisecondsPerSecond = 1000;
 
             _itemManager = new ItemManager(this);
-            this.ItemManager = function() {
+            this.ItemManager = function () {
                 return _itemManager;
             };
             _locationManager = new LocationManager(this);
-            this.LocationManager = function() {
+            this.LocationManager = function () {
                 return _locationManager;
             };
 
             _AdventurerManager = new AdventurerManager(this);
-            this.AdventurerManager = function() {
+            this.AdventurerManager = function () {
                 return _AdventurerManager;
             };
 
             _QuestManager = new QuestManager(this);
-            this.QuestManager = function() {
+            this.QuestManager = function () {
                 return _QuestManager;
             };
-            
+
             _MessageManager = new MessageManager(this);
-            this.MessageManager = function() {
+            this.MessageManager = function () {
                 return _MessageManager;
             };
-            
+
             _AchievementManager = new AchievementManager(this);
-            this.AchievementManager = function() {
+            this.AchievementManager = function () {
                 return _AchievementManager;
             };
-            
+
             _DataManager = new DataManager(this);
-            this.DataManager = function() {
+            this.DataManager = function () {
                 return _DataManager;
             };
 
-            this.getGameTime = function(dateInMilliSeconds) {
-
-                if (dateInMilliSeconds === undefined || dateInMilliSeconds === null) {
-                    dateInMilliSeconds = Date.now();
-                }
-
-                var gameDateTime = {};
-                gameDateTime.realDateTime = dateInMilliSeconds;
-
-                var gameMinutes = dateInMilliSeconds / 1000;
-                gameDateTime.minutes = Math.floor(gameMinutes % 60);
-
-                var gameHours = Math.floor(gameMinutes / 60);
-                gameDateTime.hours = (gameHours % 24);
-
-                gameDateTime.timeOfDay = calendar.timeOfDay[gameDateTime.hours];
-
-                gameDateTime.amPm = "am";
-                if (gameDateTime.hours >= 12) gameDateTime.amPm = "pm";
-                gameDateTime.hours = (gameHours % 12);
-                if (gameDateTime.hours === 0) gameDateTime.hours = 12;
-
-                gameDateTime.timeColour = gameDateTime.timeOfDay.colourHex;
-
-                var gameDate = Math.floor(gameHours / 24);
-                gameDateTime.date = (gameDate % 30) + 1;
-                gameDateTime.gameDateOrdinalIndicator = commonFunctions.nth(gameDateTime.date);
-
-                var gameMonth = Math.floor(gameDate / 30);
-                var gameMonthNumber = (gameMonth % 12) + 1;
-                gameDateTime.month = calendar.months[gameMonthNumber - 1];
-                gameDateTime.monthName = gameDateTime.month.name;
-
-                gameDateTime.season = gameDateTime.month.season;
-
-                gameDateTime.year = Math.floor(gameMonth / 12);
-
-                gameDateTime.holiday = calendar.holidays.filter(holiday => holiday.occurs.month == gameDateTime.month.name && holiday.occurs.date == gameDateTime.date)[0];
-
-                gameDateTime.toDateString = function() {
-                    return this.date + this.gameDateOrdinalIndicator + " of " + this.monthName + " " + this.year;
-                };
-
-                gameDateTime.toTimeString = function() {
-                    return this.hours + ":" + this.minutes.toString().padStart(2, "0") + this.amPm;
-                };
-
-                gameDateTime.toString = function() {
-                    return this.toTimeString() + " " + this.toDateString();
-                };
-
-                gameDateTime.toFullString = function() {
-                    return this.timeOfDay.description + " - " + this.toTimeString() + " " + this.toDateString() + " - " + this.season;
-                };
-
-                return gameDateTime;
-
+            _TimeManager = new TimeManager(this);
+            this.TimeManager = function () {
+                return _TimeManager;
             };
 
-            this.reset = function() {
+            this.reset = function () {
                 log("reset");
                 // Then initialise new
                 this.calculateCounter = 0;
@@ -223,12 +173,12 @@ define(["jquery",
 
                 this.login();
                 this.calculate();
-                
+
                 this.QuestManager().prepContractQueue(5);
                 this.AdventurerManager().prepAdventurersQueue(5);
             };
 
-            this.calculate = function() {
+            this.calculate = function () {
                 log("calculate");
                 // Do all calculations here
                 this.calculateCounter = 0;
@@ -238,14 +188,14 @@ define(["jquery",
 
                 this.AchievementManager().checkAndClaimAllAchievements();
 
-                this.gameDateTime = this.getGameTime();
+                this.gameDateTime = this.TimeManager().getGameTime();
 
                 // Autosave
                 this.stillLoggedIn();
                 this.autoSave();
             };
 
-            this.loadFromSavedData = function(savedData) {
+            this.loadFromSavedData = function (savedData) {
                 log("loadFromSavedData");
 
                 this.coins = savedData.coins;
@@ -356,20 +306,20 @@ define(["jquery",
                 this.calculate();
             };
             // Login
-            this.login = function() {
+            this.login = function () {
                 log("login");
-                
+
                 this.timeSinceLastLogin = -1;
                 var loginTime = Date.now();
                 if (this.loginTracker === undefined) {
                     this.loginTracker = [];
-                } else if(this.loginTracker.length > 0) {
+                } else if (this.loginTracker.length > 0) {
                     this.timeSinceLastLogin = loginTime - this.loginTracker[this.loginTracker.length - 1].logout;
                 }
                 this.loginTracker.push({ "login": loginTime });
             };
 
-            this.stillLoggedIn = function() {
+            this.stillLoggedIn = function () {
                 if (this.loginTracker === undefined) {
                     this.loginTracker = [];
                     this.loginTracker.push({ "login": Date.now() });
@@ -378,15 +328,15 @@ define(["jquery",
             };
 
             // Stats
-            this.getStatName = function(action, subject) {
+            this.getStatName = function (action, subject) {
                 return (action + "-" + subject).toLowerCase().replace(/ /g, "_");
             };
 
-            this.getStat = function(name) {
+            this.getStat = function (name) {
                 return this.stats.filter(stat => stat.name == name)[0];
             };
 
-            this.trackStat = function(action, subject, amount) {
+            this.trackStat = function (action, subject, amount) {
                 var name = this.getStatName(action, subject);
                 stat = this.getStat(name);
                 if (!stat) {
@@ -397,7 +347,7 @@ define(["jquery",
                 }
             };
 
-            this.filteredStats = function(filter) {
+            this.filteredStats = function (filter) {
                 if (!filter) {
                     return this.stats;
                 }
@@ -405,7 +355,7 @@ define(["jquery",
             };
 
             // Options
-            this.cheat = function() {
+            this.cheat = function () {
                 log("cheat");
                 this.giveCoins(100000000000);
                 this.giveRenown(100000000000);
@@ -415,33 +365,33 @@ define(["jquery",
                 }
             };
 
-            this.toggleClaimAll = function() {
+            this.toggleClaimAll = function () {
                 this.options.claimAllButtons = !this.options.claimAllButtons;
             };
 
-            this.claimAllVisible = function() {
+            this.claimAllVisible = function () {
                 return this.options.claimAllButtons && this.completedExpeditions.length > 0;
             };
 
-            this.startAllVisible = function() {
+            this.startAllVisible = function () {
                 return this.options.claimAllButtons && this.LocationManager().getCurrentLocation().availableContracts.length > 0;
             };
 
-            this.hireAllVisible = function() {
+            this.hireAllVisible = function () {
                 return this.options.claimAllButtons && this.LocationManager().getCurrentLocation().availableHires.length > 0;
             };
 
-            this.toggleAutomatic = function() {
+            this.toggleAutomatic = function () {
                 this.options.automatic = !this.options.automatic;
             };
 
             // Renown
-            this.renownText = function() {
+            this.renownText = function () {
                 return renown.filter(r => r.minimum <= this.renown && r.maximum > this.renown)[0].name;
             };
 
             // Globals
-            this.getGlobalValue = function(name) {
+            this.getGlobalValue = function (name) {
                 var global = this.game.globals.filter(global => global.name == name)[0];
                 if (global === undefined) { return null; }
                 var effects = this.currentEffects.filter(effect => effect.affects === name);
@@ -453,16 +403,16 @@ define(["jquery",
             };
 
             // Effect
-            this.addEffect = function(name, valueModifier, expires) {
+            this.addEffect = function (name, valueModifier, expires) {
                 this.currentEffects.push({ "name": name, "valueModifier": valueModifier, "expires": expires });
             };
 
             // Coins
-            this.canGetFreeCoins = function() {
+            this.canGetFreeCoins = function () {
                 return this.freeCoinsTimeout <= 0;
             };
 
-            this.freeCoins = function(location) {
+            this.freeCoins = function (location) {
                 var amount = location.freeCoins * this.getGlobalValue("freeCoinsModifier");
                 this.giveCoins(amount);
                 this.trackStat("click", "free-coins", 1);
@@ -470,81 +420,81 @@ define(["jquery",
                 this.freeCoinsTimeout = location.freeCoinsTimeout;
             };
 
-            this.spendCoins = function(coins) {
+            this.spendCoins = function (coins) {
                 this.coins -= coins;
                 this.trackStat("spend", "coins", coins);
             };
 
-            this.giveCoins = function(amount) {
+            this.giveCoins = function (amount) {
                 $('#footerCoin').animateCss('bounce');
                 this.trackStat("get", "coins", amount);
                 this.coins += amount;
             };
 
             // Adventurers
-            this.hiredAdventurers = function() {
+            this.hiredAdventurers = function () {
                 return adventurers.filter(hireable => this.totalAdventurers(hireable) > 0);
             };
 
-            this.totalAdventurers = function(adventurer) {
+            this.totalAdventurers = function (adventurer) {
                 return this.getHiredCount(adventurer.name) + this.getAdventurersOnTheJob(adventurer.name);
             };
 
-            this.canHire = function(name) {
+            this.canHire = function (name) {
                 return this.coins >= this.getCost(name);
             };
 
-            this.getHireable = function(name) {
+            this.getHireable = function (name) {
                 return adventurers.filter(hireable => hireable.name == name)[0];
             };
 
-            this.getAllHireableAdventurers = function() {
+            this.getAllHireableAdventurers = function () {
                 return this.LocationManager().getCurrentLocation().availableHires.filter(adventurer => this.canHire(adventurer.name));
             };
 
-            this.hireAll = function() {
+            this.hireAll = function () {
                 while (this.getAllHireableAdventurers().length > 0) {
                     this.hire(this.getAllHireableAdventurers()[0]);
                 }
             };
 
-            this.getHiredCount = function(name) {
+            this.getHiredCount = function (name) {
                 var hiredCount = this.hired[name];
                 if (!hiredCount) hiredCount = 0;
                 return hiredCount;
             };
 
-            this.getAdventurersOnTheJob = function(name) {
+            this.getAdventurersOnTheJob = function (name) {
                 if (this.runningExpeditions === undefined || this.runningExpeditions.length === 0) return 0;
-                var total = this.runningExpeditions.map(function(expedition) {
+                var total = this.runningExpeditions.map(function (expedition) {
                     if (expedition.adventurers) return expedition.adventurers.filter(adventurer => adventurer.type == name).length;
                     return 0;
-                }).reduce(function(accumulator, currentValue) {
+                }).reduce(function (accumulator, currentValue) {
                     return accumulator + currentValue;
                 });
                 return total;
             };
 
-            this.spendHires = function(name, amount) {
+            this.spendHires = function (name, amount) {
                 this.hired[name] = this.hired[name] - amount;
                 this.trackStat("send-adventurer", name, amount);
                 this.trackStat("send", "adventurers", amount);
             };
 
-            this.getUpgrade = function(adventurerType) {
+            this.getUpgrade = function (adventurerType) {
                 var becomesList = this.getHireable(adventurerType).becomes;
                 if (becomesList.length === 0) {
                     return null;
                 }
                 return becomesList[Math.floor(Math.random() * becomesList.length)];
             };
-            this.getCost = function(name) {
+            this.getCost = function (name) {
                 var hiredCount = this.getHiredCount(name);
                 var hireable = this.getHireable(name);
                 return this.getGlobalValue("hireCostModifier") * Math.floor(hireable.baseCost + hireable.costMultiplier * hiredCount + Math.pow(hireable.costExponent, hiredCount));
             };
 
-            this.hire = function(hireable) {
+            this.hire = function (hireable) {
                 if (!this.canHire(hireable.name)) {
                     return;
                 }
@@ -562,11 +512,11 @@ define(["jquery",
 
             // Contracts
 
-            this.viewContract = function(contract) {
+            this.viewContract = function (contract) {
                 this.selectedContract = contract;
             };
 
-            this.addNewContracts = function() {
+            this.addNewContracts = function () {
                 // New contracts
                 var maxContracts = 5;
                 if (this.LocationManager().getCurrentLocation().availableContracts.length < maxContracts && Math.random() < this.getGlobalValue("chanceOfNewContract")) {
@@ -574,7 +524,7 @@ define(["jquery",
                 }
             };
 
-            this.addContract = function() {
+            this.addContract = function () {
 
                 var location = this.LocationManager().getCurrentLocation();
                 var locationContractsTypes = location.contracts;
@@ -593,18 +543,18 @@ define(["jquery",
 
                 this.LocationManager().getCurrentLocation().availableContracts.push(contract);
 
-                this.LocationManager().getCurrentLocation().availableContracts.sort(function(a, b) {
+                this.LocationManager().getCurrentLocation().availableContracts.sort(function (a, b) {
                     return a.expires - b.expires;
                 });
                 this.trackStat("available-contract", contract.name, 1);
                 this.trackStat("available", "contract", 1);
             };
 
-            this.getContract = function(name) {
+            this.getContract = function (name) {
                 return contracts.filter(contract => contract.name == name)[0];
             };
 
-            this.get = function(type, name) {
+            this.get = function (type, name) {
                 var item = data[type].filter(item => item.name == name)[0]
                 if (item === undefined) {
                     item = { "name": "undefined" };
@@ -612,7 +562,7 @@ define(["jquery",
                 return item;
             };
 
-            this.getIcon = function(iconFor) {
+            this.getIcon = function (iconFor) {
                 switch (iconFor) {
                     case "coins":
                         return "./img/icons/crown-coin.png";
@@ -626,7 +576,7 @@ define(["jquery",
 
             // Expediations
 
-            this.claimAllCompletedExpeditions = function() {
+            this.claimAllCompletedExpeditions = function () {
                 while (this.completedExpeditions.length > 0) {
                     if (this.completedExpeditions[0].success) {
                         this.claimReward(this.completedExpeditions[0]);
@@ -636,22 +586,22 @@ define(["jquery",
                 }
             };
 
-            this.removeExpedition = function(expedition) {
+            this.removeExpedition = function (expedition) {
                 this.completedExpeditions.splice(this.completedExpeditions.indexOf(expedition), 1);
             };
 
-            this.expeditionProgress = function(expedition) {
+            this.expeditionProgress = function (expedition) {
                 return 100 * ((Date.now() - expedition.start) / (expedition.expires - expedition.start));
             };
 
             // Rewards
-            this.giveRenown = function(amount) {
+            this.giveRenown = function (amount) {
                 $('#footerRenown').animateCss('bounce');
                 this.trackStat("get", "renown", amount);
                 this.renown += amount;
             };
 
-            this.giveReward = function(reward) {
+            this.giveReward = function (reward) {
                 switch (reward.type) {
                     case "coins":
                         this.giveCoins(reward.amount);
@@ -668,7 +618,7 @@ define(["jquery",
                 }
             };
 
-            this.claimReward = function(expedition) {
+            this.claimReward = function (expedition) {
                 this.trackStat("claim", "reward", 1);
                 if (expedition.contract.contractAmount) {
                     this.giveCoins(expedition.contract.contractAmount);
@@ -680,13 +630,13 @@ define(["jquery",
             };
 
             // Other
-            this.varyAmount = function(amount) {
+            this.varyAmount = function (amount) {
                 return Math.floor(amount * (Math.random() + 0.5));
             };
 
 
 
-            this.readableTime = function(milliseconds) {
+            this.readableTime = function (milliseconds) {
 
                 var totalSeconds = Math.floor(milliseconds / 1000);
                 var seconds = totalSeconds % 60;
@@ -711,23 +661,23 @@ define(["jquery",
                 return timeString;
             };
 
-            this.expiringSoon = function(date) {
+            this.expiringSoon = function (date) {
                 return date - Date.now() <= 5000;
             };
 
-            this.expiringDanger = function(date) {
+            this.expiringDanger = function (date) {
                 return date - Date.now() <= 5000;
             };
 
-            this.expiringWarning = function(date) {
+            this.expiringWarning = function (date) {
                 return !this.expiringDanger(date) && date - Date.now() <= 15000;
             };
 
-            this.expiringSuccess = function(date) {
+            this.expiringSuccess = function (date) {
                 return !this.expiringDanger(date) && !this.expiringWarning(date);
             };
 
-            this.expireAllExpired = function() {
+            this.expireAllExpired = function () {
 
                 // Remove completed effects
                 for (var h = 0; h < this.currentEffects.length; h++) {
@@ -796,11 +746,11 @@ define(["jquery",
                 }
             };
 
-            this.lessthan = function(a, b) {
+            this.lessthan = function (a, b) {
                 return a < b;
             };
 
-            this.tick = function() {
+            this.tick = function () {
                 this.freeCoinsTimeout--;
 
                 this.expireAllExpired();
@@ -840,7 +790,7 @@ define(["jquery",
                 this.loadFromSavedData(saveData);
             }
             var numberToPrep = Math.min(this.timeSinceLastLogin / 1000 / 60 / 10, 5); // Prep one every 10 minutes
-            
+
             this.QuestManager().prepContractQueue(numberToPrep);
             this.AdventurerManager().prepAdventurersQueue(numberToPrep);
 
