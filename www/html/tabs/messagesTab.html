@@ -9,7 +9,7 @@
         <td>{{message.message}}</td>
         <td><span v-if="!options.showMessageTimeAsRealTime">{{getGameTime(message.time).toString()}}</span><span v-if="options.showMessageTimeAsRealTime">{{new Date(message.time).toLocaleString()}}</span></td>
         <td>
-            <button type="button" class="btn btn-danger btn-xs pull-right" @click="dismissMessage(message)">X
+            <button type="button" class="btn btn-danger btn-xs pull-right" @click="MessageManager().dismissMessage(message)">X
         </td>
     </tr>
 </table>

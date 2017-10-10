@@ -9,6 +9,7 @@ define(["jquery",
         "app/LocationManager",
         "app/AdventurerManager",
         "app/QuestManager",
+        "app/MessageManager",
         "json!data/calendar.json",
         "json!data/contracts.json",
         "json!data/locations.json",
@@ -27,6 +28,7 @@ define(["jquery",
         LocationManager,
         AdventurerManager,
         QuestManager,
+        MessageManager,
         calendar,
         contracts,
         locations,
@@ -76,6 +78,11 @@ define(["jquery",
             _QuestManager = new QuestManager(this);
             this.QuestManager = function() {
                 return _QuestManager;
+            };
+            
+            _MessageManager = new MessageManager(this);
+            this.MessageManager = function() {
+                return _MessageManager;
             };
 
             this.getGameTime = function(dateInMilliSeconds) {
@@ -204,6 +211,9 @@ define(["jquery",
 
                 this.login();
                 this.calculate();
+                
+                this.QuestManager().prepContractQueue(5);
+                this.AdventurerManager().prepAdventurersQueue(5);
             };
 
             this.calculate = function() {
@@ -465,20 +475,6 @@ define(["jquery",
             // Renown
             this.renownText = function() {
                 return renown.filter(r => r.minimum <= this.renown && r.maximum > this.renown)[0].name;
-            };
-
-            // Messages
-            this.recentMessages = function() {
-                return this.messages.filter(message => message.time + 60000 > Date.now());
-            };
-
-            this.message = function(message) {
-                alertify.alert(message);
-                this.messages.unshift({ "id": commonFunctions.uuidv4, "message": message, "time": Date.now() });
-            };
-
-            this.dismissMessage = function(message) {
-                this.messages.splice(this.messages.indexOf(message), 1);
             };
 
             // Globals
@@ -880,8 +876,10 @@ define(["jquery",
             } else {
                 this.loadFromSavedData(saveData);
             }
-            this.QuestManager().prepContractQueue(this.timeSinceLastLogin);
-            this.AdventurerManager().prepAdventurersQueue(this.timeSinceLastLogin);
+            var numberToPrep = Math.min(this.timeSinceLastLogin / 1000 / 60 / 10, 5); // Prep one every 10 minutes
+            
+            this.QuestManager().prepContractQueue(numberToPrep);
+            this.AdventurerManager().prepAdventurersQueue(numberToPrep);
 
         };
     });
