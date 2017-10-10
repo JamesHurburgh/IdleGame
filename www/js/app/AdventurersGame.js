@@ -8,6 +8,7 @@ define(["jquery",
         "app/ItemManager",
         "app/LocationManager",
         "app/AdventurerManager",
+        "app/AchievementManager",
         "app/QuestManager",
         "app/MessageManager",
         "json!data/calendar.json",
@@ -27,6 +28,7 @@ define(["jquery",
         ItemManager,
         LocationManager,
         AdventurerManager,
+        AchievementManager,
         QuestManager,
         MessageManager,
         calendar,
@@ -83,6 +85,11 @@ define(["jquery",
             _MessageManager = new MessageManager(this);
             this.MessageManager = function() {
                 return _MessageManager;
+            };
+            
+            _AchievementManager = new AchievementManager(this);
+            this.AchievementManager = function() {
+                return _AchievementManager;
             };
 
             this.getGameTime = function(dateInMilliSeconds) {
@@ -224,7 +231,7 @@ define(["jquery",
                 this.addNewContracts();
                 this.AdventurerManager().addNewAdverturersForHire();
 
-                this.checkAndClaimAllAchievements();
+                this.AchievementManager().checkAndClaimAllAchievements();
 
                 this.gameDateTime = this.getGameTime();
 
@@ -363,55 +370,6 @@ define(["jquery",
                     this.loginTracker.push({ "login": Date.now() });
                 }
                 this.loginTracker[this.loginTracker.length - 1].logout = Date.now();
-            };
-
-            // Achievements
-            this.hasAchievement = function(achievement) {
-                return this.claimedAchievements.filter(claimedAchievement => claimedAchievement.name == achievement.name).length > 0;
-            };
-
-            this.claimAchievement = function(achievement) {
-                if (!this.hasAchievement(achievement.name)) {
-                    this.claimedAchievements.push({ "name": achievement.name, "timeClaimed": Date.now() });
-                    this.message("Got achievement:" + achievement.name + " (" + achievement.description + ")");
-                }
-            };
-
-            this.canClaimAchievement = function(achievement) {
-                if (this.hasAchievement(achievement)) {
-                    return false;
-                }
-                switch (achievement.trigger.type) {
-                    case "statistic":
-                        var stat = this.getStat(achievement.trigger.statistic);
-                        return stat && stat.current > achievement.trigger.statisticamount;
-                }
-            };
-
-            this.checkAndClaimAchievement = function(achievement) {
-                if (this.canClaimAchievement(achievement)) {
-                    this.claimAchievement(achievement);
-                }
-            };
-
-            this.checkAndClaimAllAchievements = function() {
-                for (var i = 0; i < achievements.length; i++) {
-                    this.checkAndClaimAchievement(achievements[i]);
-                }
-            };
-
-            this.achievementProgress = function(achievement) {
-                if (this.hasAchievement(achievement)) {
-                    return 100;
-                }
-                switch (achievement.trigger.type) {
-                    case "statistic":
-                        var stat = this.getStat(achievement.trigger.statistic);
-                        if (stat) {
-                            return (stat.current / achievement.trigger.statisticamount) * 100;
-                        }
-                }
-                return 0;
             };
 
             // Stats
