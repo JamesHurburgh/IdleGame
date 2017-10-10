@@ -91,6 +91,11 @@ define(["jquery",
             this.AchievementManager = function() {
                 return _AchievementManager;
             };
+            
+            _DataManager = new DataManager(this);
+            this.DataManager = function() {
+                return _DataManager;
+            };
 
             this.getGameTime = function(dateInMilliSeconds) {
 
