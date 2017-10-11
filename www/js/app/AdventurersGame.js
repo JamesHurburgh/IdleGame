@@ -11,6 +11,7 @@ define(["jquery",
     "app/AchievementManager",
     "app/QuestManager",
     "app/MessageManager",
+    "app/SessionManager",
     "app/DataManager",
     "app/TimeManager",
     "json!data/calendar.json",
@@ -31,6 +32,7 @@ define(["jquery",
         AchievementManager,
         QuestManager,
         MessageManager,
+        SessionManager,
         DataManager,
         TimeManager,
         calendar,
@@ -38,8 +40,6 @@ define(["jquery",
         locations,
         adventurers,
         achievements) {
-
-
 
         commonFunctions = new CommonFunctions();
 
@@ -86,6 +86,11 @@ define(["jquery",
             _TimeManager = new TimeManager(this);
             this.TimeManager = function () {
                 return _TimeManager;
+            };
+
+            _SessionManager = new SessionManager(this);
+            this.SessionManager = function () {
+                return _SessionManager;
             };
 
             this.reset = function () {
@@ -152,7 +157,7 @@ define(["jquery",
                 this.items = items;
                 this.game = game;
 
-                this.login();
+                this.SessionManager().login();
                 this.calculate();
 
                 this.QuestManager().prepContractQueue(5);
@@ -172,7 +177,7 @@ define(["jquery",
                 this.gameDateTime = this.TimeManager().getGameTime();
 
                 // Autosave
-                this.stillLoggedIn();
+                this.SessionManager().stillLoggedIn();
                 this.autoSave();
             };
 
@@ -282,29 +287,8 @@ define(["jquery",
                     this.allLocations[i].adventurers = this.locations[i].adventurers;
                 }
 
-                this.login();
+                this.SessionManager().login();
                 this.calculate();
-            };
-            // Login
-            this.login = function () {
-                log("login");
-
-                this.timeSinceLastLogin = -1;
-                var loginTime = Date.now();
-                if (this.loginTracker === undefined) {
-                    this.loginTracker = [];
-                } else if (this.loginTracker.length > 0) {
-                    this.timeSinceLastLogin = loginTime - this.loginTracker[this.loginTracker.length - 1].logout;
-                }
-                this.loginTracker.push({ "login": loginTime });
-            };
-
-            this.stillLoggedIn = function () {
-                if (this.loginTracker === undefined) {
-                    this.loginTracker = [];
-                    this.loginTracker.push({ "login": Date.now() });
-                }
-                this.loginTracker[this.loginTracker.length - 1].logout = Date.now();
             };
 
             // Stats
