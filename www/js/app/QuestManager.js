@@ -65,12 +65,6 @@ define([
                 return Math.min(currentlyAssigned, requiredSkill.amount);
             };
 
-            this.prepContractQueue = function(numberToPrep) {
-                for (var i = 0; i < numberToPrep; i++) {
-                    gameState.addContract();
-                }
-            };
-
             this.getCurrentQuestRequiredAndUnassignedSkillCount = function(skillName) {
                 return this.getRequiredAndUnassignedSkillCount(this.getSelectedContract(), skillName);
             };
@@ -225,17 +219,11 @@ define([
 
             this.checkForCompletedQuests = function() {
 
-                gameState.runningExpeditions
-                    .filter(quest => quest.expires <= Date.now())
-                    .forEach(function(quest) {
-                        this.completeQuest(quest);
-                    });
+                var expired = gameState.runningExpeditions.filter(quest => quest.expires <= Date.now());
 
-                // for (var i = 0; i < gameState.runningExpeditions.length; i++) {
-                //     if (gameState.runningExpeditions[i].expires <= Date.now()) {
-                //         this.completeQuest(gameState.runningExpeditions[i]);
-                //     }
-                // }
+                for (var i = 0; i < expired.length; i++) {
+                    this.completeQuest(expired[i]);
+                }
             };
 
         };

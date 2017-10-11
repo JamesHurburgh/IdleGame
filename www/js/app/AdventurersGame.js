@@ -138,7 +138,7 @@ define(["jquery",
                 // Do all calculations here
                 this.calculateCounter = 0;
 
-                this.addNewContracts();
+                this.NoticeManager().addNewContracts();
                 this.AdventurerManager().addNewAdverturersForHire();
 
                 this.AchievementManager().checkAndClaimAllAchievements();
@@ -217,7 +217,7 @@ define(["jquery",
                 this.SessionManager().login();
                 this.majorTick();
 
-                this.QuestManager().prepContractQueue(5);
+                this.NoticeManager().prepContractQueue(5);
                 this.AdventurerManager().prepAdventurersQueue(5);
             };
 
@@ -361,46 +361,6 @@ define(["jquery",
                 this.freeCoinsTimeout = location.freeCoinsTimeout;
             };
 
-            // Contracts
-
-            this.addNewContracts = function() {
-                // New contracts
-                var maxContracts = 5;
-                if (this.LocationManager().getCurrentLocation().availableContracts.length < maxContracts && Math.random() < this.getGlobalValue("chanceOfNewContract")) {
-                    this.addContract();
-                }
-            };
-
-            this.addContract = function() {
-
-                var location = this.LocationManager().getCurrentLocation();
-                var locationContractsTypes = location.contracts;
-
-                if (locationContractsTypes === undefined || locationContractsTypes.length === 0) { return; }
-
-                var contractName = locationContractsTypes[Math.floor(locationContractsTypes.length * Math.random())];
-
-                var contract = commonFunctions.clone(this.getContract(contractName));
-                if (contract === undefined) {
-                    log("Contract '" + contractName + "' is listed for location '" + location.name + "' but has no definition.");
-                    return;
-                }
-
-                contract.expires = Date.now() + Math.floor(this.millisecondsPerSecond * this.getGlobalValue("averageJobContractExpiry") * (Math.random() + 0.5));
-
-                this.LocationManager().getCurrentLocation().availableContracts.push(contract);
-
-                this.LocationManager().getCurrentLocation().availableContracts.sort(function(a, b) {
-                    return a.expires - b.expires;
-                });
-                this.StatisticsManager().trackStat("available-contract", contract.name, 1);
-                this.StatisticsManager().trackStat("available", "contract", 1);
-            };
-
-            this.getContract = function(name) {
-                return contracts.filter(contract => contract.name == name)[0];
-            };
-
             this.getIcon = function(iconFor) {
                 switch (iconFor) {
                     case "coins":
@@ -441,58 +401,7 @@ define(["jquery",
 
                 this.QuestManager().checkForCompletedQuests();
 
-                // Remove expired contracts
-                var availableContracts = this.LocationManager().getCurrentLocation().availableContracts;
-                if (availableContracts) {
-                    for (var j = 0; j < availableContracts.length; j++) {
-                        if (availableContracts[j].expires <= Date.now()) {
-                            this.StatisticsManager().trackStat("miss", "contract", 1);
-                            this.StatisticsManager().trackStat("miss-contract", availableContracts[j].name, 1);
-                            if (this.selectedContract == availableContracts[j]) this.selectedContract = null;
-                            availableContracts.splice(j, 1);
-                        }
-                    }
-                }
-
-                // Remove expired hired
-                var availableAdventurers = this.LocationManager().getCurrentLocation().availableAdventurers;
-                if (availableAdventurers) {
-                    for (var k = 0; k < availableAdventurers.length; k++) {
-                        if (availableAdventurers[k].expires <= Date.now()) {
-                            this.StatisticsManager().trackStat("miss", "adventurer", 1);
-                            this.StatisticsManager().trackStat("miss-adventurer", availableAdventurers[k].name, 1);
-                            availableAdventurers.splice(k, 1);
-                        }
-                    }
-                }
-
-                for (var locationIndex = 0; locationIndex < this.allLocations.length; locationIndex++) {
-                    var location = this.allLocations[locationIndex];
-
-                    // Remove expired contracts
-                    if (location.availableContracts) {
-                        for (var m = 0; m < location.availableContracts.length; m++) {
-                            if (location.availableContracts[m].expires <= Date.now()) {
-                                this.StatisticsManager().trackStat("miss", "contract", 1);
-                                this.StatisticsManager().trackStat("miss-contract", location.availableContracts[m].name, 1);
-                                if (this.selectedContract == location.availableContracts[m]) this.selectedContract = null;
-                                location.availableContracts.splice(m, 1);
-
-                            }
-                        }
-                    }
-
-                    // Remove expired hired
-                    if (location.availableAdventurers) {
-                        for (var k = 0; k < location.availableAdventurers.length; k++) {
-                            if (location.availableAdventurers[k].expires <= Date.now()) {
-                                this.StatisticsManager().trackStat("miss", "adventurer", 1);
-                                this.StatisticsManager().trackStat("miss-adventurer", location.availableAdventurers[k].name, 1);
-                                location.availableAdventurers.splice(k, 1);
-                            }
-                        }
-                    }
-                }
+                this.NoticeManager().removeExpired();
             };
 
             this.doAutomation = function() {
@@ -524,7 +433,7 @@ define(["jquery",
             }
             var numberToPrep = Math.min(this.timeSinceLastLogin / 1000 / 60 / 10, 5); // Prep one every 10 minutes
 
-            this.QuestManager().prepContractQueue(numberToPrep);
+            this.NoticeManager().prepContractQueue(numberToPrep);
             this.AdventurerManager().prepAdventurersQueue(numberToPrep);
 
         };
