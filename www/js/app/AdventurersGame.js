@@ -342,11 +342,6 @@ define(["jquery",
                 this.freeCoinsTimeout = location.freeCoinsTimeout;
             };
 
-            this.spendCoins = function (coins) {
-                this.coins -= coins;
-                this.StatisticsManager().trackStat("spend", "coins", coins);
-            };
-
             this.giveCoins = function (amount) {
                 $('#footerCoin').animateCss('bounce');
                 this.StatisticsManager().trackStat("get", "coins", amount);
@@ -380,12 +375,6 @@ define(["jquery",
                 }
             };
 
-            this.getHiredCount = function (name) {
-                var hiredCount = this.hired[name];
-                if (!hiredCount) hiredCount = 0;
-                return hiredCount;
-            };
-
             this.getAdventurersOnTheJob = function (name) {
                 if (this.runningExpeditions === undefined || this.runningExpeditions.length === 0) return 0;
                 var total = this.runningExpeditions.map(function (expedition) {
@@ -397,12 +386,6 @@ define(["jquery",
                 return total;
             };
 
-            this.spendHires = function (name, amount) {
-                this.hired[name] = this.hired[name] - amount;
-                this.StatisticsManager().trackStat("send-adventurer", name, amount);
-                this.StatisticsManager().trackStat("send", "adventurers", amount);
-            };
-
             this.getUpgrade = function (adventurerType) {
                 var becomesList = this.getHireable(adventurerType).becomes;
                 if (becomesList.length === 0) {
@@ -410,6 +393,7 @@ define(["jquery",
                 }
                 return becomesList[Math.floor(Math.random() * becomesList.length)];
             };
+
             this.getCost = function (name) {
                 var hiredCount = this.getHiredCount(name);
                 var hireable = this.getHireable(name);
@@ -422,7 +406,7 @@ define(["jquery",
                 }
                 var hiredCount = this.getHiredCount(hireable.name);
                 var cost = this.getCost(hireable.name);
-                this.spendCoins(cost);
+                this.PlayerManager().spendCoins(cost);
                 this.StatisticsManager().trackStat("spend-coins-on", hireable.name, cost);
                 this.hired[hireable.name] = hiredCount + 1;
 

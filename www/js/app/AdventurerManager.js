@@ -33,7 +33,7 @@ define([
             this.hire = function (notice) {
                 var adventurer = notice.adventurer;
                 if (this.canHire(adventurer)) {
-                    gameState.spendCoins(this.getCost(adventurer));
+                    gameState.PlayerManager().spendCoins(this.getCost(adventurer));
                 }
 
                 this.addAdventurer(adventurer);

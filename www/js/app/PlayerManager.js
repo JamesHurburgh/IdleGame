@@ -18,6 +18,13 @@ define([
                 return DataManager().renown.filter(r => r.minimum <= gameState.renown && r.maximum > gameState.renown)[0];
             };
 
+
+            // Coins
+            this.spendCoins = function (coins) {
+                this.coins -= coins;
+                this.StatisticsManager().trackStat("spend", "coins", coins);
+            };
+
         };
     }
 );
