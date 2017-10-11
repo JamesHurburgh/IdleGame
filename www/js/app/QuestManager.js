@@ -223,6 +223,21 @@ define([
                 return 100 * ((Date.now() - expedition.start) / (expedition.expires - expedition.start));
             };
 
+            this.checkForCompletedQuests = function() {
+
+                gameState.runningExpeditions
+                    .filter(quest => quest.expires <= Date.now())
+                    .forEach(function(quest) {
+                        this.completeQuest(quest);
+                    });
+
+                // for (var i = 0; i < gameState.runningExpeditions.length; i++) {
+                //     if (gameState.runningExpeditions[i].expires <= Date.now()) {
+                //         this.completeQuest(gameState.runningExpeditions[i]);
+                //     }
+                // }
+            };
+
         };
     }
 );

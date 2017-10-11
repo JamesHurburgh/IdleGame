@@ -362,9 +362,6 @@ define(["jquery",
             };
 
             // Contracts
-            this.viewContract = function(contract) {
-                this.selectedContract = contract;
-            };
 
             this.addNewContracts = function() {
                 // New contracts
@@ -441,12 +438,9 @@ define(["jquery",
                         this.currentEffects.splice(h, 1);
                     }
                 }
-                // Check for completed expeditions
-                for (var i = 0; i < this.runningExpeditions.length; i++) {
-                    if (this.runningExpeditions[i].expires <= Date.now()) {
-                        this.QuestManager().completeQuest(this.runningExpeditions[i]);
-                    }
-                }
+
+                this.QuestManager().checkForCompletedQuests();
+
                 // Remove expired contracts
                 var availableContracts = this.LocationManager().getCurrentLocation().availableContracts;
                 if (availableContracts) {
@@ -500,6 +494,7 @@ define(["jquery",
                     }
                 }
             };
+
             this.doAutomation = function() {
 
                 if (this.options.automaticRelocate) {

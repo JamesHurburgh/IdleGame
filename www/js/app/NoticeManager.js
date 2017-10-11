@@ -23,6 +23,10 @@ define([
 
             this.gameState = gameState;
 
+            this.viewContract = function(contract) {
+                gameState.selectedContract = contract;
+            };
+
         };
     }
 );
