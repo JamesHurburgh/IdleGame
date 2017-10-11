@@ -40,6 +40,18 @@ define([
                     }
                 }
             };
+
+            // Globals
+            this.getGlobalValue = function(name) {
+                var global = data.game.globals.filter(global => global.name == name)[0];
+                if (global === undefined) { return null; }
+                var effects = gameState.currentEffects.filter(effect => effect.affects === name);
+                var value = global.baseValue;
+                for (var i = 0; i < effects.length; i++) {
+                    value *= effects[i].valueModifier;
+                }
+                return value;
+            };
         };
     }
 );

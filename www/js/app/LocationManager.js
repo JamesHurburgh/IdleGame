@@ -1,7 +1,12 @@
 /*jshint esversion: 6 */
 
-define(["json!data/locations.json"],
-    function LocationManager(locations) {
+define([
+        "app/CommonFunctions",
+        "app/DataManager"
+    ],
+    function LocationManager(
+        CommonFunctions,
+        DataManager) {
 
         return function LocationManager(gameState) {
 
@@ -26,7 +31,7 @@ define(["json!data/locations.json"],
             };
 
             this.getLocation = function(name) {
-                return locations.filter(location => location.name == name)[0];
+                return data.locations.filter(location => location.name == name)[0];
             };
 
             this.getCurrentLocation = function() {
@@ -39,7 +44,7 @@ define(["json!data/locations.json"],
 
             // Locations
             this.currentLocationIndex = function() {
-                return locations.indexOf(locations.filter(location => location.name == gameState.location.name)[0]);
+                return data.locations.indexOf(data.locations.filter(location => location.name == gameState.location.name)[0]);
             };
 
             this.canRelocateDown = function() {
@@ -48,7 +53,7 @@ define(["json!data/locations.json"],
 
             this.relocateDown = function() {
                 if (this.canRelocateDown()) {
-                    gameState.location = locations[this.currentLocationIndex() - 1];
+                    gameState.location = data.locations[this.currentLocationIndex() - 1];
                     if (!gameState.location.availableContracts) gameState.location.availableContracts = [];
                     if (!gameState.location.availableHires) gameState.location.availableHires = [];
                     gameState.StatisticsManager().trackStat("relocate-to", gameState.location.name, 1);
@@ -60,16 +65,16 @@ define(["json!data/locations.json"],
                 if (gameState.location.disabled !== undefined && gameState.location.disabled) {
                     return false;
                 }
-                if (this.currentLocationIndex() == locations.length - 1) {
+                if (this.currentLocationIndex() == data.locations.length - 1) {
                     return false;
                 }
-                var newLocation = locations[this.currentLocationIndex() + 1];
+                var newLocation = data.locations[this.currentLocationIndex() + 1];
                 return newLocation.renownRequired <= gameState.renown;
             };
 
             this.relocateUp = function() {
                 if (this.canRelocateUp()) {
-                    gameState.location = locations[this.currentLocationIndex() + 1];
+                    gameState.location = common.clone(data.locations[this.currentLocationIndex() + 1]);
                     if (!gameState.location.availableContracts) gameState.location.availableContracts = [];
                     if (!gameState.location.availableHires) gameState.location.availableHires = [];
                     gameState.StatisticsManager().trackStat("relocate-to", gameState.location.name, 1);

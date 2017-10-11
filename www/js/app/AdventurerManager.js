@@ -171,7 +171,7 @@ define([
                 if (!gameState.LocationManager().getCurrentLocation().availableAdventurers) {
                     gameState.LocationManager().getCurrentLocation().availableAdventurers = [];
                 }
-                if (gameState.LocationManager().getCurrentLocation().availableAdventurers.length < maxAvailableHires && Math.random() < gameState.getGlobalValue("chanceOfNewHire")) {
+                if (gameState.LocationManager().getCurrentLocation().availableAdventurers.length < maxAvailableHires && Math.random() < gameState.EffectsManager().getGlobalValue("chanceOfNewHire")) {
                     this.addAvailableHire();
                 }
             };
@@ -200,7 +200,7 @@ define([
 
                 var adventurerNotice = {
                     "adventurer": this.generateAdventurer(adventurerType),
-                    "expires": Date.now() + Math.floor(gameState.millisecondsPerSecond * gameState.getGlobalValue("averageHireContractExpiry") * (Math.random() + 0.5))
+                    "expires": Date.now() + Math.floor(gameState.millisecondsPerSecond * gameState.EffectsManager().getGlobalValue("averageHireContractExpiry") * (Math.random() + 0.5))
                 };
 
                 gameState.LocationManager().getCurrentLocation().availableAdventurers.push(adventurerNotice);

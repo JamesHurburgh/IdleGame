@@ -30,7 +30,7 @@ define([
             this.addNewContracts = function() {
                 // New contracts
                 var maxContracts = 5;
-                if (gameState.LocationManager().getCurrentLocation().availableContracts.length < maxContracts && Math.random() < gameState.getGlobalValue("chanceOfNewContract")) {
+                if (gameState.LocationManager().getCurrentLocation().availableContracts.length < maxContracts && Math.random() < gameState.EffectsManager().getGlobalValue("chanceOfNewContract")) {
                     this.addContract();
                 }
             };
@@ -50,7 +50,7 @@ define([
                     return;
                 }
 
-                contract.expires = Date.now() + Math.floor(gameState.millisecondsPerSecond * gameState.getGlobalValue("averageJobContractExpiry") * (Math.random() + 0.5));
+                contract.expires = Date.now() + Math.floor(gameState.millisecondsPerSecond * gameState.EffectsManager().getGlobalValue("averageJobContractExpiry") * (Math.random() + 0.5));
 
                 gameState.LocationManager().getCurrentLocation().availableContracts.push(contract);
 
@@ -63,8 +63,9 @@ define([
 
             this.removeExpired = function() {
 
+                var currentLocation = gameState.LocationManager().getCurrentLocation();
                 // Remove expired contracts
-                var availableContracts = gameState.LocationManager().getCurrentLocation().availableContracts;
+                var availableContracts = currentLocation.availableContracts;
                 if (availableContracts) {
                     for (var j = 0; j < availableContracts.length; j++) {
                         if (availableContracts[j].expires <= Date.now()) {
@@ -72,6 +73,16 @@ define([
                             gameState.StatisticsManager().trackStat("miss-contract", availableContracts[j].name, 1);
                             if (gameState.selectedContract == availableContracts[j]) gameState.selectedContract = null;
                             availableContracts.splice(j, 1);
+                        }
+                    }
+                }
+                // Remove expired adventurers
+                if (currentLocation.availableAdventurers) {
+                    for (var k = 0; k < currentLocation.availableAdventurers.length; k++) {
+                        if (currentLocation.availableAdventurers[k].expires <= Date.now()) {
+                            gameState.StatisticsManager().trackStat("miss", "adventurer", 1);
+                            gameState.StatisticsManager().trackStat("miss-adventurer", currentLocation.availableAdventurers[k].name, 1);
+                            currentLocation.availableAdventurers.splice(k, 1);
                         }
                     }
                 }

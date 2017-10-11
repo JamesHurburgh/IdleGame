@@ -127,14 +127,14 @@ define([
                 if (quest.party) {
                     quest.party.forEach(function(adventurer) {
                         // Did they die?
-                        if (Math.random() * gameState.getGlobalValue("questRisk") < contract.risk) {
+                        if (Math.random() * gameState.EffectsManager().getGlobalValue("questRisk") < contract.risk) {
                             adventurer.status = "Dead";
                             gameState.StatisticsManager().trackStat("death", "adventurer", 1);
                             quest.casualaties.push(adventurer);
 
                             // gameState.StatisticsManager().trackStat("death-adventurer", adventurer.type, 1);
                         } else {
-                            // if (Math.random() * gameState.getGlobalValue("upgradeChance") < contract.upgradeChance) { // Then someone 'upgraded'
+                            // if (Math.random() * gameState.EffectsManager().getGlobalValue("upgradeChance") < contract.upgradeChance) { // Then someone 'upgraded'
                             //     gameState.AdventurerManager().upgradeAdventurer(adventurer);
                             //     // TODO handle upgrades
                             // }
