@@ -1,8 +1,9 @@
 /*jshint esversion: 6 */
 
 define([
-    "app/CommonFunctions",
-    "app/DataManager"],
+        "app/CommonFunctions",
+        "app/DataManager"
+    ],
     function PlayerManager(
         CommonFunctions,
         DataManager) {
@@ -14,15 +15,15 @@ define([
             this.gameState = gameState;
 
             // Renown
-            this.getRenown = function () {
-                return DataManager().renown.filter(r => r.minimum <= gameState.renown && r.maximum > gameState.renown)[0];
+            this.getRenown = function() {
+                return data.renown.filter(r => r.minimum <= this.gameState.renown && r.maximum > this.gameState.renown)[0];
             };
 
 
             // Coins
-            this.spendCoins = function (coins) {
+            this.spendCoins = function(coins) {
                 this.coins -= coins;
-                this.StatisticsManager().trackStat("spend", "coins", coins);
+                gameState.StatisticsManager().trackStat("spend", "coins", coins);
             };
 
         };

@@ -1,9 +1,9 @@
 /*jshint esversion: 6 */
 
 define([
-    "app/CommonFunctions",
-    "json!data/contracts.json"
-],
+        "app/CommonFunctions",
+        "json!data/contracts.json"
+    ],
     function QuestManager(
         CommonFunctions,
         contracts) {
@@ -14,15 +14,15 @@ define([
 
             this.gameState = gameState;
 
-            this.showQuestsTab = function () {
+            this.showQuestsTab = function() {
                 return gameState.completedExpeditions.length + gameState.runningExpeditions.length !== 0;
             };
 
-            this.getSelectedContract = function () {
+            this.getSelectedContract = function() {
                 return gameState.selectedContract;
             };
 
-            this.selectNextContract = function () {
+            this.selectNextContract = function() {
                 var availableContracts = gameState.LocationManager().getCurrentLocation().availableContracts;
                 var selectedContract = this.getSelectedContract();
                 var index = 0;
@@ -32,32 +32,32 @@ define([
                 gameState.selectedContract = availableContracts[index];
             };
 
-            this.canSendSelectedQuest = function () {
+            this.canSendSelectedQuest = function() {
                 return this.canSendQuest(this.getSelectedContract());
             };
 
-            this.rejectSelectedContract = function () {
+            this.rejectSelectedContract = function() {
                 this.rejectContract(this.getSelectedContract());
                 gameState.selectedContract = null;
                 this.selectNextContract();
             };
 
-            this.rejectContract = function (contract) {
+            this.rejectContract = function(contract) {
                 var availableContracts = gameState.LocationManager().getCurrentLocation().availableContracts;
                 availableContracts.splice(availableContracts.indexOf(contract), 1);
             };
 
-            this.canSendQuest = function (contract) {
-                return contract.requirements.attributes.reduce(function (canSend, skillRequirement) {
+            this.canSendQuest = function(contract) {
+                return contract.requirements.attributes.reduce(function(canSend, skillRequirement) {
                     return canSend && gameState.AdventurerManager().getCurrentPartyAttribute(skillRequirement.type) >= skillRequirement.amount;
                 }, true);
             };
 
-            this.getCurrentQuestRequiredAndAssignedSkillCount = function (skillName) {
+            this.getCurrentQuestRequiredAndAssignedSkillCount = function(skillName) {
                 return this.getRequiredAndAssignedSkillCount(this.getSelectedContract(), skillName);
             };
 
-            this.getRequiredAndAssignedSkillCount = function (contract, skillName) {
+            this.getRequiredAndAssignedSkillCount = function(contract, skillName) {
                 var currentlyAssigned = gameState.AdventurerManager().getCurrentPartyAttribute(skillName);
                 if (currentlyAssigned === 0) return 0;
                 var requiredSkill = contract.requirements.attributes.filter(skill => skill.type == skillName)[0];
@@ -65,35 +65,35 @@ define([
                 return Math.min(currentlyAssigned, requiredSkill.amount);
             };
 
-            this.prepContractQueue = function (numberToPrep) {
+            this.prepContractQueue = function(numberToPrep) {
                 for (var i = 0; i < numberToPrep; i++) {
                     gameState.addContract();
                 }
             };
 
-            this.getCurrentQuestRequiredAndUnassignedSkillCount = function (skillName) {
+            this.getCurrentQuestRequiredAndUnassignedSkillCount = function(skillName) {
                 return this.getRequiredAndUnassignedSkillCount(this.getSelectedContract(), skillName);
             };
 
-            this.getRequiredAndUnassignedSkillCount = function (contract, skillName) {
+            this.getRequiredAndUnassignedSkillCount = function(contract, skillName) {
                 var currentlyAssigned = gameState.AdventurerManager().getCurrentPartyAttribute(skillName);
                 var requiredSkill = contract.requirements.attributes.filter(skill => skill.type == skillName)[0];
                 if (!requiredSkill) return 0;
                 return Math.max(requiredSkill.amount - currentlyAssigned, 0);
             };
 
-            this.sendSelectedQuest = function () {
+            this.sendSelectedQuest = function() {
                 this.sendQuest(this.getSelectedContract());
                 this.selectNextContract();
             };
 
-            this.sendQuest = function (contract) {
+            this.sendQuest = function(contract) {
                 if (!this.canSendQuest(contract)) {
                     return;
                 }
 
-                gameState.trackStat("send", "quest", 1);
-                gameState.trackStat("send-quest", contract.name, 1);
+                gameState.StatisticsManager().trackStat("send", "quest", 1);
+                gameState.StatisticsManager().trackStat("send-quest", contract.name, 1);
 
                 var quest = {
                     id: commonFunctions.uuidv4(),
@@ -107,7 +107,7 @@ define([
 
                 gameState.runningExpeditions.push(quest);
 
-                gameState.runningExpeditions.sort(function (a, b) {
+                gameState.runningExpeditions.sort(function(a, b) {
                     return a.expires - b.expires;
                 });
 
@@ -116,13 +116,13 @@ define([
                 gameState.selectedContract = null;
             };
 
-            this.completeQuest = function (quest) {
+            this.completeQuest = function(quest) {
                 gameState.runningExpeditions.splice(gameState.runningExpeditions.indexOf(quest), 1);
 
                 var contract = quest.contract;
 
-                gameState.trackStat("complete", "quest", 1);
-                gameState.trackStat("complete-quest", contract.name, 1);
+                gameState.StatisticsManager().trackStat("complete", "quest", 1);
+                gameState.StatisticsManager().trackStat("complete-quest", contract.name, 1);
 
                 // Return questers to sendable pool
                 quest.upgradeMessages = "";
@@ -131,14 +131,14 @@ define([
                 quest.casualaties = [];
 
                 if (quest.party) {
-                    quest.party.forEach(function (adventurer) {
+                    quest.party.forEach(function(adventurer) {
                         // Did they die?
                         if (Math.random() * gameState.getGlobalValue("questRisk") < contract.risk) {
                             adventurer.status = "Dead";
-                            gameState.trackStat("death", "adventurer", 1);
+                            gameState.StatisticsManager().trackStat("death", "adventurer", 1);
                             quest.casualaties.push(adventurer);
 
-                            // gameState.trackStat("death-adventurer", adventurer.type, 1);
+                            // gameState.StatisticsManager().trackStat("death-adventurer", adventurer.type, 1);
                         } else {
                             // if (Math.random() * gameState.getGlobalValue("upgradeChance") < contract.upgradeChance) { // Then someone 'upgraded'
                             //     gameState.AdventurerManager().upgradeAdventurer(adventurer);
@@ -153,7 +153,7 @@ define([
 
                 if (quest.contract.experience > 0 && quest.survivors.length > 0) {
                     var xpEach = Math.ceil(quest.experience / survived);
-                    quest.survivors.foreach(function (adventurer) {
+                    quest.survivors.foreach(function(adventurer) {
                         adventurer.experience += xpEach;
                     });
                 }
@@ -180,18 +180,18 @@ define([
                             }
                         }
                     }
-                    gameState.trackStat("succeed", "quest", 1);
-                    gameState.trackStat("succeed-quest", contract.name, 1);
+                    gameState.StatisticsManager().trackStat("succeed", "quest", 1);
+                    gameState.StatisticsManager().trackStat("succeed-quest", contract.name, 1);
                 } else {
                     quest.completionMessage = contract.failureMessage;
-                    gameState.trackStat("fail", "quest", 1);
-                    gameState.trackStat("fail-quest", contract.name, 1);
+                    gameState.StatisticsManager().trackStat("fail", "quest", 1);
+                    gameState.StatisticsManager().trackStat("fail-quest", contract.name, 1);
                 }
 
                 gameState.completedExpeditions.push(quest);
             };
 
-            this.claimReward = function (expedition) {
+            this.claimReward = function(expedition) {
                 gameState.StatisticsManager().trackStat("claim", "reward", 1);
                 if (expedition.contract.contractAmount) {
                     gameState.giveCoins(expedition.contract.contractAmount);
@@ -205,7 +205,7 @@ define([
 
             // Expediations
 
-            this.claimAllCompletedExpeditions = function () {
+            this.claimAllCompletedExpeditions = function() {
                 // while (this.completedExpeditions.length > 0) {
                 //     if (this.completedExpeditions[0].success) {
                 //         this.claimReward(this.completedExpeditions[0]);
@@ -215,11 +215,11 @@ define([
                 // }
             };
 
-            this.removeQuest = function (expedition) {
+            this.removeQuest = function(expedition) {
                 gameState.completedExpeditions.splice(gameState.completedExpeditions.indexOf(expedition), 1);
             };
 
-            this.questProgress = function (expedition) {
+            this.questProgress = function(expedition) {
                 return 100 * ((Date.now() - expedition.start) / (expedition.expires - expedition.start));
             };
 

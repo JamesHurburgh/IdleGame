@@ -21,7 +21,7 @@
                         </li>
                     </ul>
                     <div class="progress progress-striped active">
-                        <div class="progress-bar" v-bind:style="{ width: questProgress(expedition) + '%' }"></div>
+                        <div class="progress-bar" v-bind:style="{ width: QuestManager().questProgress(expedition) + '%' }"></div>
                     </div>
                     <div v-bind:class="{ 'text-success': expiringDanger(expedition.expires), 'text-warning': expiringWarning(expedition.expires), 'text-danger': expiringSuccess(expedition.expires) }">{{TimeManager().readableTime(expedition.expires - Date.now())}} remaining</div>
                 </div>
@@ -30,7 +30,6 @@
     </div>
     <div class="tab-pane fade" id="finishedQuests">
         <span v-if="completedExpeditions.length == 0" class="text-muted text-center col-xs-12">No finished quests</span>
-        <button v-if="claimAllVisible()" type="button" class="btn btn-success btn-xs pull-right" @click="claimAllCompletedExpeditions()">Claim All</button>
         <div class="col-md-6" v-for="expedition in completedExpeditions" key="expedition.id">
             <div class="panel" :class="{ 'panel-success': expedition.success, 'panel-danger': !expedition.success}">
                 <div class="panel-heading">
