@@ -15,6 +15,7 @@ define(["jquery",
     "app/DataManager",
     "app/TimeManager",
     "app/StatisticsManager",
+    "app/OptionsManager",
     "json!data/calendar.json",
     "json!data/contracts.json",
     "json!data/locations.json",
@@ -37,6 +38,7 @@ define(["jquery",
         DataManager,
         TimeManager,
         StatisticsManager,
+        OptionsManager,
         calendar,
         contracts,
         locations,
@@ -98,6 +100,11 @@ define(["jquery",
             _StatisticsManager = new StatisticsManager(this);
             this.StatisticsManager = function () {
                 return _StatisticsManager;
+            };
+
+            _OptionsManager = new OptionsManager(this);
+            this.OptionsManager = function () {
+                return _OptionsManager;
             };
 
             this.calculate = function () {
@@ -296,37 +303,6 @@ define(["jquery",
 
                 this.SessionManager().login();
                 this.calculate();
-            };
-
-            // Options
-            this.cheat = function () {
-                log("cheat");
-                this.giveCoins(100000000000);
-                this.giveRenown(100000000000);
-
-                for (var i = 0; i < adventurers.length; i++) {
-                    this.hired[adventurers[i].name] += 100000;
-                }
-            };
-
-            this.toggleClaimAll = function () {
-                this.options.claimAllButtons = !this.options.claimAllButtons;
-            };
-
-            this.claimAllVisible = function () {
-                return this.options.claimAllButtons && this.completedExpeditions.length > 0;
-            };
-
-            this.startAllVisible = function () {
-                return this.options.claimAllButtons && this.LocationManager().getCurrentLocation().availableContracts.length > 0;
-            };
-
-            this.hireAllVisible = function () {
-                return this.options.claimAllButtons && this.LocationManager().getCurrentLocation().availableHires.length > 0;
-            };
-
-            this.toggleAutomatic = function () {
-                this.options.automatic = !this.options.automatic;
             };
 
             // Renown
