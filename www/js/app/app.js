@@ -78,7 +78,7 @@ requirejs(['jquery', 'vue', 'alertify', 'store', 'chance', 'app/AdventurersGame'
 
         function tick() {
             try {
-                adventurersGame.tick();
+                adventurersGame.minorTick();
                 setTimeout(tick, 100);
             } catch (ex) {
                 handleException(ex);

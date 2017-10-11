@@ -17,6 +17,7 @@ define(["jquery",
         "app/TimeManager",
         "app/StatisticsManager",
         "app/OptionsManager",
+        "app/NoticeManager",
         "json!data/calendar.json",
         "json!data/contracts.json",
         "json!data/locations.json",
@@ -41,6 +42,7 @@ define(["jquery",
         TimeManager,
         StatisticsManager,
         OptionsManager,
+        NoticeManager,
         calendar,
         contracts,
         locations,
@@ -114,19 +116,24 @@ define(["jquery",
                 return _PlayerManager;
             };
 
-            this.tick = function() {
+            _NoticeManager = new NoticeManager(this);
+            this.NoticeManager = function() {
+                return _NoticeManager;
+            };
+
+            this.minorTick = function() {
                 this.freeCoinsTimeout--;
 
                 this.expireAllExpired();
 
                 this.calculateCounter++;
                 if (this.calculateCounter > 10) {
-                    this.calculate();
+                    this.majorTick();
                     this.doAutomation();
                 }
             };
 
-            this.calculate = function() {
+            this.majorTick = function() {
                 log("calculate");
                 // Do all calculations here
                 this.calculateCounter = 0;
@@ -208,7 +215,7 @@ define(["jquery",
                 this.game = game;
 
                 this.SessionManager().login();
-                this.calculate();
+                this.majorTick();
 
                 this.QuestManager().prepContractQueue(5);
                 this.AdventurerManager().prepAdventurersQueue(5);
@@ -321,7 +328,7 @@ define(["jquery",
                 }
 
                 this.SessionManager().login();
-                this.calculate();
+                this.majorTick();
             };
 
             // Globals
@@ -354,76 +361,7 @@ define(["jquery",
                 this.freeCoinsTimeout = location.freeCoinsTimeout;
             };
 
-            // Adventurers
-            this.hiredAdventurers = function() {
-                return adventurers.filter(hireable => this.totalAdventurers(hireable) > 0);
-            };
-
-            this.totalAdventurers = function(adventurer) {
-                return this.getHiredCount(adventurer.name) + this.getAdventurersOnTheJob(adventurer.name);
-            };
-
-            this.canHire = function(name) {
-                return this.coins >= this.getCost(name);
-            };
-
-            this.getHireable = function(name) {
-                return adventurers.filter(hireable => hireable.name == name)[0];
-            };
-
-            this.getAllHireableAdventurers = function() {
-                return this.LocationManager().getCurrentLocation().availableHires.filter(adventurer => this.canHire(adventurer.name));
-            };
-
-            this.hireAll = function() {
-                while (this.getAllHireableAdventurers().length > 0) {
-                    this.hire(this.getAllHireableAdventurers()[0]);
-                }
-            };
-
-            this.getAdventurersOnTheJob = function(name) {
-                if (this.runningExpeditions === undefined || this.runningExpeditions.length === 0) return 0;
-                var total = this.runningExpeditions.map(function(expedition) {
-                    if (expedition.adventurers) return expedition.adventurers.filter(adventurer => adventurer.type == name).length;
-                    return 0;
-                }).reduce(function(accumulator, currentValue) {
-                    return accumulator + currentValue;
-                });
-                return total;
-            };
-
-            this.getUpgrade = function(adventurerType) {
-                var becomesList = this.getHireable(adventurerType).becomes;
-                if (becomesList.length === 0) {
-                    return null;
-                }
-                return becomesList[Math.floor(Math.random() * becomesList.length)];
-            };
-
-            this.getCost = function(name) {
-                var hiredCount = this.getHiredCount(name);
-                var hireable = this.getHireable(name);
-                return this.getGlobalValue("hireCostModifier") * Math.floor(hireable.baseCost + hireable.costMultiplier * hiredCount + Math.pow(hireable.costExponent, hiredCount));
-            };
-
-            this.hire = function(hireable) {
-                if (!this.canHire(hireable.name)) {
-                    return;
-                }
-                var hiredCount = this.getHiredCount(hireable.name);
-                var cost = this.getCost(hireable.name);
-                this.PlayerManager().spendCoins(cost);
-                this.StatisticsManager().trackStat("spend-coins-on", hireable.name, cost);
-                this.hired[hireable.name] = hiredCount + 1;
-
-                this.LocationManager().getCurrentLocation().availableHires.splice(this.LocationManager().getCurrentLocation().availableHires.indexOf(hireable), 1);
-
-                this.StatisticsManager().trackStat("hire", "adventurer", 1);
-                this.StatisticsManager().trackStat("hire-adventurer", hireable.name, 1);
-            };
-
             // Contracts
-
             this.viewContract = function(contract) {
                 this.selectedContract = contract;
             };
@@ -577,12 +515,8 @@ define(["jquery",
                 if (this.options.automaticClaim) {
                     this.claimAllCompletedExpeditions();
                 }
-                if (this.options.automaticHire) {
-                    this.hireAll();
-                }
-                if (this.options.automaticSend) {
-                    //this.startAllContracts();
-                }
+                if (this.options.automaticHire) {}
+                if (this.options.automaticSend) {}
             };
 
 

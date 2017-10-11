@@ -221,6 +221,10 @@ define([
                 }
             };
 
+            this.getAge = function(adventurer) {
+
+            };
+
         };
     }
 );
