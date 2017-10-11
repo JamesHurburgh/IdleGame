@@ -14,6 +14,7 @@ define(["jquery",
     "app/SessionManager",
     "app/DataManager",
     "app/TimeManager",
+    "app/StatisticsManager",
     "json!data/calendar.json",
     "json!data/contracts.json",
     "json!data/locations.json",
@@ -35,6 +36,7 @@ define(["jquery",
         SessionManager,
         DataManager,
         TimeManager,
+        StatisticsManager,
         calendar,
         contracts,
         locations,
@@ -91,6 +93,28 @@ define(["jquery",
             _SessionManager = new SessionManager(this);
             this.SessionManager = function () {
                 return _SessionManager;
+            };
+
+            _StatisticsManager = new StatisticsManager(this);
+            this.StatisticsManager = function () {
+                return _StatisticsManager;
+            };
+
+            this.calculate = function () {
+                log("calculate");
+                // Do all calculations here
+                this.calculateCounter = 0;
+
+                this.addNewContracts();
+                this.AdventurerManager().addNewAdverturersForHire();
+
+                this.AchievementManager().checkAndClaimAllAchievements();
+
+                this.gameDateTime = this.TimeManager().getGameTime();
+
+                // Autosave
+                this.SessionManager().stillLoggedIn();
+                this.autoSave();
             };
 
             this.reset = function () {
@@ -162,23 +186,6 @@ define(["jquery",
 
                 this.QuestManager().prepContractQueue(5);
                 this.AdventurerManager().prepAdventurersQueue(5);
-            };
-
-            this.calculate = function () {
-                log("calculate");
-                // Do all calculations here
-                this.calculateCounter = 0;
-
-                this.addNewContracts();
-                this.AdventurerManager().addNewAdverturersForHire();
-
-                this.AchievementManager().checkAndClaimAllAchievements();
-
-                this.gameDateTime = this.TimeManager().getGameTime();
-
-                // Autosave
-                this.SessionManager().stillLoggedIn();
-                this.autoSave();
             };
 
             this.loadFromSavedData = function (savedData) {
@@ -291,33 +298,6 @@ define(["jquery",
                 this.calculate();
             };
 
-            // Stats
-            this.getStatName = function (action, subject) {
-                return (action + "-" + subject).toLowerCase().replace(/ /g, "_");
-            };
-
-            this.getStat = function (name) {
-                return this.stats.filter(stat => stat.name == name)[0];
-            };
-
-            this.trackStat = function (action, subject, amount) {
-                var name = this.getStatName(action, subject);
-                stat = this.getStat(name);
-                if (!stat) {
-                    this.stats.push({ name: name, current: amount, allTime: amount });
-                } else {
-                    stat.current += amount;
-                    stat.allTime += amount;
-                }
-            };
-
-            this.filteredStats = function (filter) {
-                if (!filter) {
-                    return this.stats;
-                }
-                return this.stats.filter(stat => stat.name.indexOf(filter.toLowerCase().trim()) !== -1);
-            };
-
             // Options
             this.cheat = function () {
                 log("cheat");
@@ -379,19 +359,19 @@ define(["jquery",
             this.freeCoins = function (location) {
                 var amount = location.freeCoins * this.getGlobalValue("freeCoinsModifier");
                 this.giveCoins(amount);
-                this.trackStat("click", "free-coins", 1);
-                this.trackStat("collect", "free-coins", amount);
+                this.StatisticsManager().trackStat("click", "free-coins", 1);
+                this.StatisticsManager().trackStat("collect", "free-coins", amount);
                 this.freeCoinsTimeout = location.freeCoinsTimeout;
             };
 
             this.spendCoins = function (coins) {
                 this.coins -= coins;
-                this.trackStat("spend", "coins", coins);
+                this.StatisticsManager().trackStat("spend", "coins", coins);
             };
 
             this.giveCoins = function (amount) {
                 $('#footerCoin').animateCss('bounce');
-                this.trackStat("get", "coins", amount);
+                this.StatisticsManager().trackStat("get", "coins", amount);
                 this.coins += amount;
             };
 
@@ -441,8 +421,8 @@ define(["jquery",
 
             this.spendHires = function (name, amount) {
                 this.hired[name] = this.hired[name] - amount;
-                this.trackStat("send-adventurer", name, amount);
-                this.trackStat("send", "adventurers", amount);
+                this.StatisticsManager().trackStat("send-adventurer", name, amount);
+                this.StatisticsManager().trackStat("send", "adventurers", amount);
             };
 
             this.getUpgrade = function (adventurerType) {
@@ -465,13 +445,13 @@ define(["jquery",
                 var hiredCount = this.getHiredCount(hireable.name);
                 var cost = this.getCost(hireable.name);
                 this.spendCoins(cost);
-                this.trackStat("spend-coins-on", hireable.name, cost);
+                this.StatisticsManager().trackStat("spend-coins-on", hireable.name, cost);
                 this.hired[hireable.name] = hiredCount + 1;
 
                 this.LocationManager().getCurrentLocation().availableHires.splice(this.LocationManager().getCurrentLocation().availableHires.indexOf(hireable), 1);
 
-                this.trackStat("hire", "adventurer", 1);
-                this.trackStat("hire-adventurer", hireable.name, 1);
+                this.StatisticsManager().trackStat("hire", "adventurer", 1);
+                this.StatisticsManager().trackStat("hire-adventurer", hireable.name, 1);
             };
 
             // Contracts
@@ -510,8 +490,8 @@ define(["jquery",
                 this.LocationManager().getCurrentLocation().availableContracts.sort(function (a, b) {
                     return a.expires - b.expires;
                 });
-                this.trackStat("available-contract", contract.name, 1);
-                this.trackStat("available", "contract", 1);
+                this.StatisticsManager().trackStat("available-contract", contract.name, 1);
+                this.StatisticsManager().trackStat("available", "contract", 1);
             };
 
             this.getContract = function (name) {
@@ -553,7 +533,7 @@ define(["jquery",
             // Rewards
             this.giveRenown = function (amount) {
                 $('#footerRenown').animateCss('bounce');
-                this.trackStat("get", "renown", amount);
+                this.StatisticsManager().trackStat("get", "renown", amount);
                 this.renown += amount;
             };
 
@@ -575,7 +555,7 @@ define(["jquery",
             };
 
             this.claimReward = function (expedition) {
-                this.trackStat("claim", "reward", 1);
+                this.StatisticsManager().trackStat("claim", "reward", 1);
                 if (expedition.contract.contractAmount) {
                     this.giveCoins(expedition.contract.contractAmount);
                 }
@@ -653,8 +633,8 @@ define(["jquery",
                 if (availableContracts) {
                     for (var j = 0; j < availableContracts.length; j++) {
                         if (availableContracts[j].expires <= Date.now()) {
-                            this.trackStat("miss", "contract", 1);
-                            this.trackStat("miss-contract", availableContracts[j].name, 1);
+                            this.StatisticsManager().trackStat("miss", "contract", 1);
+                            this.StatisticsManager().trackStat("miss-contract", availableContracts[j].name, 1);
                             if (this.selectedContract == availableContracts[j]) this.selectedContract = null;
                             availableContracts.splice(j, 1);
                         }
@@ -666,8 +646,8 @@ define(["jquery",
                 if (availableAdventurers) {
                     for (var k = 0; k < availableAdventurers.length; k++) {
                         if (availableAdventurers[k].expires <= Date.now()) {
-                            this.trackStat("miss", "adventurer", 1);
-                            this.trackStat("miss-adventurer", availableAdventurers[k].name, 1);
+                            this.StatisticsManager().trackStat("miss", "adventurer", 1);
+                            this.StatisticsManager().trackStat("miss-adventurer", availableAdventurers[k].name, 1);
                             availableAdventurers.splice(k, 1);
                         }
                     }
@@ -680,8 +660,8 @@ define(["jquery",
                     if (location.availableContracts) {
                         for (var m = 0; m < location.availableContracts.length; m++) {
                             if (location.availableContracts[m].expires <= Date.now()) {
-                                this.trackStat("miss", "contract", 1);
-                                this.trackStat("miss-contract", location.availableContracts[m].name, 1);
+                                this.StatisticsManager().trackStat("miss", "contract", 1);
+                                this.StatisticsManager().trackStat("miss-contract", location.availableContracts[m].name, 1);
                                 if (this.selectedContract == location.availableContracts[m]) this.selectedContract = null;
                                 location.availableContracts.splice(m, 1);
 
@@ -693,8 +673,8 @@ define(["jquery",
                     if (location.availableAdventurers) {
                         for (var k = 0; k < location.availableAdventurers.length; k++) {
                             if (location.availableAdventurers[k].expires <= Date.now()) {
-                                this.trackStat("miss", "adventurer", 1);
-                                this.trackStat("miss-adventurer", location.availableAdventurers[k].name, 1);
+                                this.StatisticsManager().trackStat("miss", "adventurer", 1);
+                                this.StatisticsManager().trackStat("miss-adventurer", location.availableAdventurers[k].name, 1);
                                 location.availableAdventurers.splice(k, 1);
                             }
                         }

@@ -23,7 +23,7 @@
                             <th>All Time</th>
                         </tr>
                     </thead>
-                    <tr v-for="stat in filteredStats(options.statFilter)">
+                    <tr v-for="stat in StatisticsManager().filteredStats(options.statFilter)">
                         <td>{{stat.name}}</td>
                         <td>{{stat.current}}</td>
                         <td>{{stat.allTime}}</td>

@@ -1,11 +1,11 @@
 /*jshint esversion: 6 */
 
 define([
-        "app/CommonFunctions",
-        "chance",
-        "json!data/adventurers.json",
-        "json!data/conversations.json"
-    ],
+    "app/CommonFunctions",
+    "chance",
+    "json!data/adventurers.json",
+    "json!data/conversations.json"
+],
     function AdventurerManager(
         CommonFunctions,
         Chance,
@@ -18,19 +18,19 @@ define([
 
             this.gameState = gameState;
 
-            this.showAdventurerTab = function(){
+            this.showAdventurerTab = function () {
                 return gameState.adventurerList.length !== 0;
             };
 
-            this.getCost = function(adventurer) {
+            this.getCost = function (adventurer) {
                 return adventurer.baseCost;
             };
 
-            this.canHire = function(adventurer) {
+            this.canHire = function (adventurer) {
                 return gameState.coins >= this.getCost(adventurer);
             };
 
-            this.hire = function(notice) {
+            this.hire = function (notice) {
                 var adventurer = notice.adventurer;
                 if (this.canHire(adventurer)) {
                     gameState.spendCoins(this.getCost(adventurer));
@@ -40,11 +40,11 @@ define([
                 this.removeFromAvialableHires(notice);
             };
 
-            this.removeFromAvialableHires = function(notice) {
+            this.removeFromAvialableHires = function (notice) {
                 gameState.LocationManager().getCurrentLocation().availableAdventurers.splice(gameState.LocationManager().getCurrentLocation().availableAdventurers.indexOf(notice), 1);
             };
 
-            this.convertNumberToAdventurer = function(adventurerType) {
+            this.convertNumberToAdventurer = function (adventurerType) {
                 var idleCount = gameState.getHiredCount(adventurerType);
                 if (idleCount <= 0) return;
 
@@ -53,12 +53,12 @@ define([
                 this.addAdventurer(this.generateAdventurer(adventurerType));
             };
 
-            this.addAdventurer = function(adventurer) {
+            this.addAdventurer = function (adventurer) {
                 if (gameState.adventurerList === undefined || gameState.adventurerList === null) gameState.adventurerList = [];
                 gameState.adventurerList.push(adventurer);
             };
 
-            this.generateAdventurer = function(adventurerType) {
+            this.generateAdventurer = function (adventurerType) {
 
                 var adventurerTemplate = adventurers.filter(adventurer => adventurer.name == adventurerType)[0];
                 if (adventurerTemplate === undefined || adventurerTemplate === null) {
@@ -82,29 +82,29 @@ define([
                 return adventurer;
             };
 
-            this.upgradeAdventurer = function(adventurer) {
+            this.upgradeAdventurer = function (adventurer) {
                 chance.pickone(adventurer.skills).amount++;
             };
 
-            this.getAdventurerList = function(){
-                if(!gameState.adventurerList){
+            this.getAdventurerList = function () {
+                if (!gameState.adventurerList) {
                     gameState.adventurerList = [];
                 }
                 return gameState.adventurerList;
             };
 
-            this.getCurrentParty = function() {
+            this.getCurrentParty = function () {
                 return this.getAdventurerList().filter(adventurer => adventurer.includeInParty);
             };
 
-            this.getCurrentPartyAttributes = function() {
+            this.getCurrentPartyAttributes = function () {
                 var party = this.getCurrentParty();
 
-                var allSkills = party.reduce(function(attributeNames, adventurer) {
+                var allSkills = party.reduce(function (attributeNames, adventurer) {
                     return attributeNames.concat(adventurer.skills);
                 }, []);
 
-                var attributes = allSkills.reduce(function(attributes, skill) {
+                var attributes = allSkills.reduce(function (attributes, skill) {
                     var attribute = attributes.filter(attribute => attribute.name == skill.name)[0];
                     if (attribute === undefined || attribute === null) {
                         attributes.push({ "name": skill.name, "amount": skill.amount });
@@ -118,21 +118,21 @@ define([
 
             };
 
-            this.sendCurrentParty = function() {
+            this.sendCurrentParty = function () {
                 this.sendParty(this.getCurrentParty());
             };
 
-            this.sendParty = function(party) {
-                party.forEach(function(adventurer) {
+            this.sendParty = function (party) {
+                party.forEach(function (adventurer) {
                     adventurer.status = "Questing";
                     adventurer.includeInParty = false;
                 }, this);
             };
 
-            this.getCurrentPartyAttribute = function(attributeName) {
+            this.getCurrentPartyAttribute = function (attributeName) {
                 var party = this.getCurrentParty();
 
-                return party.reduce(function(amount, adventurer) {
+                return party.reduce(function (amount, adventurer) {
                     var attribute = adventurer.skills.filter(skill => skill.name == attributeName)[0];
                     if (!attribute) {
                         return amount;
@@ -142,19 +142,19 @@ define([
                 }, 0);
             };
 
-            this.getAdventurersAtStatus = function(status) {
+            this.getAdventurersAtStatus = function (status) {
                 return gameState.adventurerList.filter(adventurer => adventurer.status == status);
             };
 
-            this.getAdventurersQuest = function(adventurer){
-                gameState.runningExpeditions.forEach(function(quest) {
-                    if(quest.party.filter(a => a == adventurer).length > 0){
+            this.getAdventurersQuest = function (adventurer) {
+                gameState.runningExpeditions.forEach(function (quest) {
+                    if (quest.party.filter(a => a == adventurer).length > 0) {
                         return quest;
                     }
                 }, this);
             };
 
-            this.addNewAdverturersForHire = function() {
+            this.addNewAdverturersForHire = function () {
                 // New hires
                 var maxAvailableHires = 5;
                 if (!gameState.LocationManager().getCurrentLocation().availableAdventurers) {
@@ -165,7 +165,7 @@ define([
                 }
             };
 
-            this.addAvailableHire = function() {
+            this.addAvailableHire = function () {
                 // Choose type from location list first, then look it up.
                 var location = gameState.LocationManager().getCurrentLocation();
                 var locationHireableTypes = location.adventurers;
@@ -193,18 +193,18 @@ define([
                 };
 
                 gameState.LocationManager().getCurrentLocation().availableAdventurers.push(adventurerNotice);
-                gameState.LocationManager().getCurrentLocation().availableAdventurers.sort(function(a, b) {
+                gameState.LocationManager().getCurrentLocation().availableAdventurers.sort(function (a, b) {
                     return a.expires - b.expires;
                 });
-                gameState.trackStat("available-adventurer", adventurerType, 1);
-                gameState.trackStat("available", "adventurers", 1);
+                gameState.StatisticsManager().trackStat("available-adventurer", adventurerType, 1);
+                gameState.StatisticsManager().trackStat("available", "adventurers", 1);
             };
 
-            this.talkTo = function(adventurerName) {
+            this.talkTo = function (adventurerName) {
                 gameState.MessageManager().message(adventurerName + " says '" + chance.pickone(conversations.randomStatements) + "'");
             };
 
-            this.prepAdventurersQueue = function(numberToPrep) {
+            this.prepAdventurersQueue = function (numberToPrep) {
                 for (var i = 0; i < numberToPrep; i++) {
                     this.addAvailableHire();
                 }
