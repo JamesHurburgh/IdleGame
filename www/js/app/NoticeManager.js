@@ -76,8 +76,8 @@ define([
                     }
                 }
 
-                for (var locationIndex = 0; locationIndex < data.locations.length; locationIndex++) {
-                    var location = data.locations[locationIndex];
+                for (var locationIndex = 0; locationIndex < gameState.allLocations.length; locationIndex++) {
+                    var location = gameState.allLocations[locationIndex];
 
                     // Remove expired contracts
                     if (location.availableContracts) {

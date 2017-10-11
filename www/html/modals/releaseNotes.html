@@ -10,7 +10,7 @@
             </div>
             <div class="modal-body">
                 <div class="list-group">
-                    <div v-for="version in game.versions" class="list-group-item">
+                    <div v-for="version in DataManager().game.versions" class="list-group-item">
                         <h3 class="list-group-item-heading">{{version.number}}</h3>
                         <p class="list-group-item-text">{{version.description}}</p>
                         <h4>Features</h4>
