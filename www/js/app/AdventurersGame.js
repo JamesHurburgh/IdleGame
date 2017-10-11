@@ -1,28 +1,28 @@
 /*jshint esversion: 6 */
 
 define(["jquery",
-    "app/CommonFunctions",
-    "alertify",
-    "json!data/game.json",
-    "json!data/settings.json",
-    "app/PlayerManager",
-    "app/ItemManager",
-    "app/LocationManager",
-    "app/AdventurerManager",
-    "app/AchievementManager",
-    "app/QuestManager",
-    "app/MessageManager",
-    "app/SessionManager",
-    "app/DataManager",
-    "app/TimeManager",
-    "app/StatisticsManager",
-    "app/OptionsManager",
-    "json!data/calendar.json",
-    "json!data/contracts.json",
-    "json!data/locations.json",
-    "json!data/adventurers.json",
-    "json!data/achievements.json"
-],
+        "app/CommonFunctions",
+        "alertify",
+        "json!data/game.json",
+        "json!data/settings.json",
+        "app/PlayerManager",
+        "app/ItemManager",
+        "app/LocationManager",
+        "app/AdventurerManager",
+        "app/AchievementManager",
+        "app/QuestManager",
+        "app/MessageManager",
+        "app/SessionManager",
+        "app/DataManager",
+        "app/TimeManager",
+        "app/StatisticsManager",
+        "app/OptionsManager",
+        "json!data/calendar.json",
+        "json!data/contracts.json",
+        "json!data/locations.json",
+        "json!data/adventurers.json",
+        "json!data/achievements.json"
+    ],
     function AdventurersGame(
         jquery,
         CommonFunctions,
@@ -56,65 +56,77 @@ define(["jquery",
             this.millisecondsPerSecond = 1000;
 
             _itemManager = new ItemManager(this);
-            this.ItemManager = function () {
+            this.ItemManager = function() {
                 return _itemManager;
             };
             _locationManager = new LocationManager(this);
-            this.LocationManager = function () {
+            this.LocationManager = function() {
                 return _locationManager;
             };
 
             _AdventurerManager = new AdventurerManager(this);
-            this.AdventurerManager = function () {
+            this.AdventurerManager = function() {
                 return _AdventurerManager;
             };
 
             _QuestManager = new QuestManager(this);
-            this.QuestManager = function () {
+            this.QuestManager = function() {
                 return _QuestManager;
             };
 
             _MessageManager = new MessageManager(this);
-            this.MessageManager = function () {
+            this.MessageManager = function() {
                 return _MessageManager;
             };
 
             _AchievementManager = new AchievementManager(this);
-            this.AchievementManager = function () {
+            this.AchievementManager = function() {
                 return _AchievementManager;
             };
 
             _DataManager = new DataManager(this);
-            this.DataManager = function () {
+            this.DataManager = function() {
                 return _DataManager;
             };
 
             _TimeManager = new TimeManager(this);
-            this.TimeManager = function () {
+            this.TimeManager = function() {
                 return _TimeManager;
             };
 
             _SessionManager = new SessionManager(this);
-            this.SessionManager = function () {
+            this.SessionManager = function() {
                 return _SessionManager;
             };
 
             _StatisticsManager = new StatisticsManager(this);
-            this.StatisticsManager = function () {
+            this.StatisticsManager = function() {
                 return _StatisticsManager;
             };
 
             _OptionsManager = new OptionsManager(this);
-            this.OptionsManager = function () {
+            this.OptionsManager = function() {
                 return _OptionsManager;
             };
 
             _PlayerManager = new PlayerManager(this);
-            this.PlayerManager = function () {
+            this.PlayerManager = function() {
                 return _PlayerManager;
             };
 
-            this.calculate = function () {
+            this.tick = function() {
+                this.freeCoinsTimeout--;
+
+                this.expireAllExpired();
+
+                this.calculateCounter++;
+                if (this.calculateCounter > 10) {
+                    this.calculate();
+                    this.doAutomation();
+                }
+            };
+
+            this.calculate = function() {
                 log("calculate");
                 // Do all calculations here
                 this.calculateCounter = 0;
@@ -131,7 +143,7 @@ define(["jquery",
                 this.autoSave();
             };
 
-            this.reset = function () {
+            this.reset = function() {
                 log("reset");
                 // Then initialise new
                 this.calculateCounter = 0;
@@ -202,7 +214,7 @@ define(["jquery",
                 this.AdventurerManager().prepAdventurersQueue(5);
             };
 
-            this.loadFromSavedData = function (savedData) {
+            this.loadFromSavedData = function(savedData) {
                 log("loadFromSavedData");
 
                 this.coins = savedData.coins;
@@ -313,7 +325,7 @@ define(["jquery",
             };
 
             // Globals
-            this.getGlobalValue = function (name) {
+            this.getGlobalValue = function(name) {
                 var global = this.game.globals.filter(global => global.name == name)[0];
                 if (global === undefined) { return null; }
                 var effects = this.currentEffects.filter(effect => effect.affects === name);
@@ -325,68 +337,62 @@ define(["jquery",
             };
 
             // Effect
-            this.addEffect = function (name, valueModifier, expires) {
+            this.addEffect = function(name, valueModifier, expires) {
                 this.currentEffects.push({ "name": name, "valueModifier": valueModifier, "expires": expires });
             };
 
             // Coins
-            this.canGetFreeCoins = function () {
+            this.canGetFreeCoins = function() {
                 return this.freeCoinsTimeout <= 0;
             };
 
-            this.freeCoins = function (location) {
+            this.freeCoins = function(location) {
                 var amount = location.freeCoins * this.getGlobalValue("freeCoinsModifier");
-                this.giveCoins(amount);
+                this.PlayerManager().giveCoins(amount);
                 this.StatisticsManager().trackStat("click", "free-coins", 1);
                 this.StatisticsManager().trackStat("collect", "free-coins", amount);
                 this.freeCoinsTimeout = location.freeCoinsTimeout;
             };
 
-            this.giveCoins = function (amount) {
-                $('#footerCoin').animateCss('bounce');
-                this.StatisticsManager().trackStat("get", "coins", amount);
-                this.coins += amount;
-            };
-
             // Adventurers
-            this.hiredAdventurers = function () {
+            this.hiredAdventurers = function() {
                 return adventurers.filter(hireable => this.totalAdventurers(hireable) > 0);
             };
 
-            this.totalAdventurers = function (adventurer) {
+            this.totalAdventurers = function(adventurer) {
                 return this.getHiredCount(adventurer.name) + this.getAdventurersOnTheJob(adventurer.name);
             };
 
-            this.canHire = function (name) {
+            this.canHire = function(name) {
                 return this.coins >= this.getCost(name);
             };
 
-            this.getHireable = function (name) {
+            this.getHireable = function(name) {
                 return adventurers.filter(hireable => hireable.name == name)[0];
             };
 
-            this.getAllHireableAdventurers = function () {
+            this.getAllHireableAdventurers = function() {
                 return this.LocationManager().getCurrentLocation().availableHires.filter(adventurer => this.canHire(adventurer.name));
             };
 
-            this.hireAll = function () {
+            this.hireAll = function() {
                 while (this.getAllHireableAdventurers().length > 0) {
                     this.hire(this.getAllHireableAdventurers()[0]);
                 }
             };
 
-            this.getAdventurersOnTheJob = function (name) {
+            this.getAdventurersOnTheJob = function(name) {
                 if (this.runningExpeditions === undefined || this.runningExpeditions.length === 0) return 0;
-                var total = this.runningExpeditions.map(function (expedition) {
+                var total = this.runningExpeditions.map(function(expedition) {
                     if (expedition.adventurers) return expedition.adventurers.filter(adventurer => adventurer.type == name).length;
                     return 0;
-                }).reduce(function (accumulator, currentValue) {
+                }).reduce(function(accumulator, currentValue) {
                     return accumulator + currentValue;
                 });
                 return total;
             };
 
-            this.getUpgrade = function (adventurerType) {
+            this.getUpgrade = function(adventurerType) {
                 var becomesList = this.getHireable(adventurerType).becomes;
                 if (becomesList.length === 0) {
                     return null;
@@ -394,13 +400,13 @@ define(["jquery",
                 return becomesList[Math.floor(Math.random() * becomesList.length)];
             };
 
-            this.getCost = function (name) {
+            this.getCost = function(name) {
                 var hiredCount = this.getHiredCount(name);
                 var hireable = this.getHireable(name);
                 return this.getGlobalValue("hireCostModifier") * Math.floor(hireable.baseCost + hireable.costMultiplier * hiredCount + Math.pow(hireable.costExponent, hiredCount));
             };
 
-            this.hire = function (hireable) {
+            this.hire = function(hireable) {
                 if (!this.canHire(hireable.name)) {
                     return;
                 }
@@ -418,11 +424,11 @@ define(["jquery",
 
             // Contracts
 
-            this.viewContract = function (contract) {
+            this.viewContract = function(contract) {
                 this.selectedContract = contract;
             };
 
-            this.addNewContracts = function () {
+            this.addNewContracts = function() {
                 // New contracts
                 var maxContracts = 5;
                 if (this.LocationManager().getCurrentLocation().availableContracts.length < maxContracts && Math.random() < this.getGlobalValue("chanceOfNewContract")) {
@@ -430,7 +436,7 @@ define(["jquery",
                 }
             };
 
-            this.addContract = function () {
+            this.addContract = function() {
 
                 var location = this.LocationManager().getCurrentLocation();
                 var locationContractsTypes = location.contracts;
@@ -449,18 +455,18 @@ define(["jquery",
 
                 this.LocationManager().getCurrentLocation().availableContracts.push(contract);
 
-                this.LocationManager().getCurrentLocation().availableContracts.sort(function (a, b) {
+                this.LocationManager().getCurrentLocation().availableContracts.sort(function(a, b) {
                     return a.expires - b.expires;
                 });
                 this.StatisticsManager().trackStat("available-contract", contract.name, 1);
                 this.StatisticsManager().trackStat("available", "contract", 1);
             };
 
-            this.getContract = function (name) {
+            this.getContract = function(name) {
                 return contracts.filter(contract => contract.name == name)[0];
             };
 
-            this.getIcon = function (iconFor) {
+            this.getIcon = function(iconFor) {
                 switch (iconFor) {
                     case "coins":
                         return "./img/icons/crown-coin.png";
@@ -473,20 +479,15 @@ define(["jquery",
             };
 
             // Rewards
-            this.giveRenown = function (amount) {
-                $('#footerRenown').animateCss('bounce');
-                this.StatisticsManager().trackStat("get", "renown", amount);
-                this.renown += amount;
-            };
 
-            this.giveReward = function (reward) {
+            this.giveReward = function(reward) {
                 switch (reward.type) {
                     case "coins":
-                        this.giveCoins(reward.amount);
+                        this.PlayerManager().giveCoins(reward.amount);
                         break;
                     case "reknown":
                     case "renown":
-                        this.giveRenown(reward.amount);
+                        this.PlayerManager().giveRenown(reward.amount);
                         break;
                     case "item":
                         this.ItemManager().giveItem(reward.item);
@@ -496,23 +497,23 @@ define(["jquery",
                 }
             };
 
-            this.expiringSoon = function (date) {
+            this.expiringSoon = function(date) {
                 return date - Date.now() <= 5000;
             };
 
-            this.expiringDanger = function (date) {
+            this.expiringDanger = function(date) {
                 return date - Date.now() <= 5000;
             };
 
-            this.expiringWarning = function (date) {
+            this.expiringWarning = function(date) {
                 return !this.expiringDanger(date) && date - Date.now() <= 15000;
             };
 
-            this.expiringSuccess = function (date) {
+            this.expiringSuccess = function(date) {
                 return !this.expiringDanger(date) && !this.expiringWarning(date);
             };
 
-            this.expireAllExpired = function () {
+            this.expireAllExpired = function() {
 
                 // Remove completed effects
                 for (var h = 0; h < this.currentEffects.length; h++) {
@@ -580,35 +581,26 @@ define(["jquery",
                     }
                 }
             };
+            this.doAutomation = function() {
 
-            this.tick = function () {
-                this.freeCoinsTimeout--;
-
-                this.expireAllExpired();
-
-                this.calculateCounter++;
-                if (this.calculateCounter > 10) {
-                    this.calculate();
-
-                    if (this.options.automaticRelocate) {
-                        if (this.LocationManager().canRelocateUp()) {
-                            this.LocationManager().relocateUp();
-                        }
+                if (this.options.automaticRelocate) {
+                    if (this.LocationManager().canRelocateUp()) {
+                        this.LocationManager().relocateUp();
                     }
-                    if (this.options.automaticFreeCoins) {
-                        if (this.canGetFreeCoins()) {
-                            this.freeCoins(this.LocationManager().getCurrentLocation());
-                        }
+                }
+                if (this.options.automaticFreeCoins) {
+                    if (this.canGetFreeCoins()) {
+                        this.freeCoins(this.LocationManager().getCurrentLocation());
                     }
-                    if (this.options.automaticClaim) {
-                        this.claimAllCompletedExpeditions();
-                    }
-                    if (this.options.automaticHire) {
-                        this.hireAll();
-                    }
-                    if (this.options.automaticSend) {
-                        //this.startAllContracts();
-                    }
+                }
+                if (this.options.automaticClaim) {
+                    this.claimAllCompletedExpeditions();
+                }
+                if (this.options.automaticHire) {
+                    this.hireAll();
+                }
+                if (this.options.automaticSend) {
+                    //this.startAllContracts();
                 }
             };
 

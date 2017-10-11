@@ -194,7 +194,7 @@ define([
             this.claimReward = function(expedition) {
                 gameState.StatisticsManager().trackStat("claim", "reward", 1);
                 if (expedition.contract.contractAmount) {
-                    gameState.giveCoins(expedition.contract.contractAmount);
+                    gameState.PlayerManager().giveCoins(expedition.contract.contractAmount);
                 }
                 for (var i = 0; i < expedition.rewards.length; i++) {
                     gameState.giveReward(expedition.rewards[i]);

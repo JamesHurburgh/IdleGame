@@ -10,6 +10,7 @@ define([
 
         common = new CommonFunctions();
         data = new DataManager();
+
         return function PlayerManager(gameState) {
 
             this.gameState = gameState;
@@ -19,10 +20,22 @@ define([
                 return data.renown.filter(r => r.minimum <= this.gameState.renown && r.maximum > this.gameState.renown)[0];
             };
 
+            this.giveRenown = function(amount) {
+                $('#footerRenown').animateCss('bounce');
+                gameState.StatisticsManager().trackStat("get", "renown", amount);
+                gameState.renown += amount;
+            };
 
             // Coins
+
+            this.giveCoins = function(amount) {
+                $('#footerCoin').animateCss('bounce');
+                gameState.StatisticsManager().trackStat("get", "coins", amount);
+                gameState.coins += amount;
+            };
+
             this.spendCoins = function(coins) {
-                this.coins -= coins;
+                gameState.coins -= coins;
                 gameState.StatisticsManager().trackStat("spend", "coins", coins);
             };
 
