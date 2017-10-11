@@ -7,7 +7,7 @@
         </div>
         <div class="panel-body ">
             {{AdventurerManager().getAdventurersQuest(adventurer)}}
-            <span v-for="skill in adventurer.skills " :title="skill.name + ' ' + skill.amount "><img :alt="skill.name " v-for="n in skill.amount " width="24px " :src=" 'img/icons/' + get( 'skills', skill.name).icon + '.png' " /></span>
+            <span v-for="skill in adventurer.skills " :title="skill.name + ' ' + skill.amount "><img :alt="skill.name " v-for="n in skill.amount " width="24px " :src=" 'img/icons/' + DataManager().getData( 'skills', skill.name).icon + '.png' " /></span>
         </div>
         <div class="panel-footer ">
             {{adventurer.age}} years old

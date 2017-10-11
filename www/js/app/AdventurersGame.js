@@ -17,9 +17,7 @@ define(["jquery",
     "json!data/contracts.json",
     "json!data/locations.json",
     "json!data/adventurers.json",
-    "json!data/renown.json",
-    "json!data/achievements.json",
-    "json!data/skills.json"
+    "json!data/achievements.json"
 ],
     function AdventurersGame(
         jquery,
@@ -39,25 +37,9 @@ define(["jquery",
         contracts,
         locations,
         adventurers,
-        renown,
-        achievements,
-        skills) {
+        achievements) {
 
 
-        var data = {
-            achievements: achievements,
-            adventurers: adventurers,
-            //adversaries: adversaries,
-            skills: skills,
-            calendar: calendar,
-            contracts: contracts,
-            //conversations: conversations,
-            game: game,
-            items: items,
-            locations: locations,
-            renown: renown,
-            settings: settings
-        };
 
         commonFunctions = new CommonFunctions();
 
@@ -169,7 +151,6 @@ define(["jquery",
                 this.achievements = achievements;
                 this.items = items;
                 this.game = game;
-                this.data = data;
 
                 this.login();
                 this.calculate();
@@ -295,7 +276,6 @@ define(["jquery",
                 this.achievements = achievements;
                 this.game = game;
                 this.items = items;
-                this.data = data;
 
                 for (var i = 0; i < this.allLocations.length; i++) {
                     this.allLocations[i].contracts = this.locations[i].contracts;
@@ -387,7 +367,7 @@ define(["jquery",
 
             // Renown
             this.renownText = function () {
-                return renown.filter(r => r.minimum <= this.renown && r.maximum > this.renown)[0].name;
+                return this.DataManager().renown.filter(r => r.minimum <= this.renown && r.maximum > this.renown)[0].name;
             };
 
             // Globals
@@ -552,14 +532,6 @@ define(["jquery",
 
             this.getContract = function (name) {
                 return contracts.filter(contract => contract.name == name)[0];
-            };
-
-            this.get = function (type, name) {
-                var item = data[type].filter(item => item.name == name)[0]
-                if (item === undefined) {
-                    item = { "name": "undefined" };
-                }
-                return item;
             };
 
             this.getIcon = function (iconFor) {

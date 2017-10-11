@@ -49,8 +49,26 @@ define([
 
             this.gameState = gameState;
 
+            this.achievements = achievements;
+            this.adventurers = adventurers;
+            this.adversaries = adversaries;
+            this.skills = skills;
             this.calendar = calendar;
+            this.contracts = contracts;
+            this.conversations = conversations;
+            this.game = game;
+            this.items = items;
+            this.locations = locations;
+            this.renown = renown;
+            this.settings = settings;
 
+            this.getData = function (type, name) {
+                var item = this[type].filter(item => item.name == name)[0]
+                if (item === undefined) {
+                    item = { "name": "undefined" };
+                }
+                return item;
+            };
         };
     }
 );
