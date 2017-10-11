@@ -17,10 +17,14 @@ define([
                 gameState.selectedContract = contract;
             };
 
-            this.prepContractQueue = function(numberToPrep) {
+            this.prepContractQueue = function() {
+                var numberToPrep = Math.min(gameState.timeSinceLastLogin / 1000 / 60 / 10, 5); // Prep one every 10 minutes
+
                 for (var i = 0; i < numberToPrep; i++) {
                     this.addContract();
                 }
+                gameState.AdventurerManager().prepAdventurersQueue(numberToPrep);
+
             };
 
             this.addNewContracts = function() {
@@ -98,6 +102,22 @@ define([
                         }
                     }
                 }
+            };
+
+            this.expiringSoon = function(date) {
+                return date - Date.now() <= 5000;
+            };
+
+            this.expiringDanger = function(date) {
+                return date - Date.now() <= 5000;
+            };
+
+            this.expiringWarning = function(date) {
+                return !this.expiringDanger(date) && date - Date.now() <= 15000;
+            };
+
+            this.expiringSuccess = function(date) {
+                return !this.expiringDanger(date) && !this.expiringWarning(date);
             };
         };
     }

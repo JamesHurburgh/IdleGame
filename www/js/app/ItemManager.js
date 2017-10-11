@@ -27,43 +27,43 @@ define([
                     {
                         "description": "Suddenly every seems to have a job for you.",
                         "effect": function(game) {
-                            game.addEffect("chanceOfNewContract", 2, Date.now() + 60000);
+                            game.EffectsManager().addEffect("chanceOfNewContract", 2, Date.now() + 60000);
                         }
                     },
                     {
                         "description": "Suddenly every seems to want to work for you.",
                         "effect": function(game) {
-                            game.addEffect("chanceOfNewHire", 2, Date.now() + 60000);
+                            game.EffectsManager().addEffect("chanceOfNewHire", 2, Date.now() + 60000);
                         }
                     },
                     {
                         "description": "Suddenly every seems to be willing to work for much less.",
                         "effect": function(game) {
-                            game.addEffect("hireCostModifier", 2, Date.now() + 60000);
+                            game.EffectsManager().addEffect("hireCostModifier", 2, Date.now() + 60000);
                         }
                     },
                     {
                         "description": "Suddenly it seems like there are lots more coins around for the taking.",
                         "effect": function(game) {
-                            game.addEffect("freeCoinsModifier", 10, Date.now() + 60000);
+                            game.EffectsManager().addEffect("freeCoinsModifier", 10, Date.now() + 60000);
                         }
                     },
                     {
                         "description": "Suddenly it seems like everyone on quests are a lot safer.",
                         "effect": function(game) {
-                            game.addEffect("questRisk", 0.1, Date.now() + 60000);
+                            game.EffectsManager().addEffect("questRisk", 0.1, Date.now() + 60000);
                         }
                     },
                     {
                         "description": "Suddenly it seems like everyone on quests are learning new things.",
                         "effect": function(game) {
-                            game.addEffect("upgradeChance", 5, Date.now() + 60000);
+                            game.EffectsManager().addEffect("upgradeChance", 5, Date.now() + 60000);
                         }
                     }
                 ];
 
                 var effect = effects[Math.floor(Math.random() * effects.length)];
-                game.message("You read a mysterious scroll. " + effect.description);
+                game.MessageManager().message("You read a mysterious scroll. " + effect.description);
                 effect.effect(game);
             };
             this.itemFunctions["use-mysterious-scroll"] = this.itemFunctions["use-minor-mysterious-scroll"];

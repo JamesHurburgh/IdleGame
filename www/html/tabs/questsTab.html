@@ -23,7 +23,7 @@
                     <div class="progress progress-striped active">
                         <div class="progress-bar" v-bind:style="{ width: QuestManager().questProgress(expedition) + '%' }"></div>
                     </div>
-                    <div v-bind:class="{ 'text-success': expiringDanger(expedition.expires), 'text-warning': expiringWarning(expedition.expires), 'text-danger': expiringSuccess(expedition.expires) }">{{TimeManager().readableTime(expedition.expires - Date.now())}} remaining</div>
+                    <div v-bind:class="{ 'text-success': NoticeManager().expiringDanger(expedition.expires), 'text-warning': NoticeManager().expiringWarning(expedition.expires), 'text-danger': NoticeManager().expiringSuccess(expedition.expires) }">{{TimeManager().readableTime(expedition.expires - Date.now())}} remaining</div>
                 </div>
             </div>
         </div>

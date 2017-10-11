@@ -18,6 +18,7 @@ define(["jquery",
         "app/StatisticsManager",
         "app/OptionsManager",
         "app/NoticeManager",
+        "app/EffectsManager",
         "json!data/calendar.json",
         "json!data/contracts.json",
         "json!data/locations.json",
@@ -43,6 +44,7 @@ define(["jquery",
         StatisticsManager,
         OptionsManager,
         NoticeManager,
+        EffectsManager,
         calendar,
         contracts,
         locations,
@@ -121,13 +123,21 @@ define(["jquery",
                 return _NoticeManager;
             };
 
+            _EffectsManager = new EffectsManager(this);
+            this.EffectsManager = function() {
+                return _EffectsManager;
+            };
+
             this.minorTick = function() {
                 this.freeCoinsTimeout--;
 
-                this.expireAllExpired();
 
-                this.calculateCounter++;
-                if (this.calculateCounter > 10) {
+                this.QuestManager().checkForCompletedQuests();
+
+                this.NoticeManager().removeExpired();
+
+                this.majorTickCounter++;
+                if (this.majorTickCounter > 10) {
                     this.majorTick();
                     this.doAutomation();
                 }
@@ -136,8 +146,9 @@ define(["jquery",
             this.majorTick = function() {
                 log("calculate");
                 // Do all calculations here
-                this.calculateCounter = 0;
+                this.majorTickCounter = 0;
 
+                this.EffectsManager().removeExpired();
                 this.NoticeManager().addNewContracts();
                 this.AdventurerManager().addNewAdverturersForHire();
 
@@ -153,7 +164,7 @@ define(["jquery",
             this.reset = function() {
                 log("reset");
                 // Then initialise new
-                this.calculateCounter = 0;
+                this.majorTickCounter = 0;
 
                 this.coins = 10;
                 this.renown = 0;
@@ -223,6 +234,10 @@ define(["jquery",
 
             this.loadFromSavedData = function(savedData) {
                 log("loadFromSavedData");
+                if (!saveData) {
+                    this.reset();
+                    return;
+                }
 
                 this.coins = savedData.coins;
                 this.renown = savedData.renown;
@@ -343,11 +358,6 @@ define(["jquery",
                 return value;
             };
 
-            // Effect
-            this.addEffect = function(name, valueModifier, expires) {
-                this.currentEffects.push({ "name": name, "valueModifier": valueModifier, "expires": expires });
-            };
-
             // Coins
             this.canGetFreeCoins = function() {
                 return this.freeCoinsTimeout <= 0;
@@ -373,37 +383,6 @@ define(["jquery",
 
             };
 
-            this.expiringSoon = function(date) {
-                return date - Date.now() <= 5000;
-            };
-
-            this.expiringDanger = function(date) {
-                return date - Date.now() <= 5000;
-            };
-
-            this.expiringWarning = function(date) {
-                return !this.expiringDanger(date) && date - Date.now() <= 15000;
-            };
-
-            this.expiringSuccess = function(date) {
-                return !this.expiringDanger(date) && !this.expiringWarning(date);
-            };
-
-            this.expireAllExpired = function() {
-
-                // Remove completed effects
-                for (var h = 0; h < this.currentEffects.length; h++) {
-                    var effect = this.currentEffects[h];
-                    if (this.currentEffects[h].expires === undefined || this.currentEffects[h].expires <= Date.now()) {
-                        this.currentEffects.splice(h, 1);
-                    }
-                }
-
-                this.QuestManager().checkForCompletedQuests();
-
-                this.NoticeManager().removeExpired();
-            };
-
             this.doAutomation = function() {
 
                 if (this.options.automaticRelocate) {
@@ -426,15 +405,9 @@ define(["jquery",
 
             log("initialising");
 
-            if (!saveData) {
-                this.reset();
-            } else {
-                this.loadFromSavedData(saveData);
-            }
-            var numberToPrep = Math.min(this.timeSinceLastLogin / 1000 / 60 / 10, 5); // Prep one every 10 minutes
+            this.loadFromSavedData(saveData);
 
-            this.NoticeManager().prepContractQueue(numberToPrep);
-            this.AdventurerManager().prepAdventurersQueue(numberToPrep);
+            this.NoticeManager().prepContractQueue();
 
         };
     });
