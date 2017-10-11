@@ -510,26 +510,6 @@ define(["jquery",
 
             };
 
-            // Expediations
-
-            this.claimAllCompletedExpeditions = function () {
-                while (this.completedExpeditions.length > 0) {
-                    if (this.completedExpeditions[0].success) {
-                        this.claimReward(this.completedExpeditions[0]);
-                    } else {
-                        this.removeExpedition(this.completedExpeditions[0]);
-                    }
-                }
-            };
-
-            this.removeExpedition = function (expedition) {
-                this.completedExpeditions.splice(this.completedExpeditions.indexOf(expedition), 1);
-            };
-
-            this.expeditionProgress = function (expedition) {
-                return 100 * ((Date.now() - expedition.start) / (expedition.expires - expedition.start));
-            };
-
             // Rewards
             this.giveRenown = function (amount) {
                 $('#footerRenown').animateCss('bounce');
@@ -552,49 +532,6 @@ define(["jquery",
                     default:
                         this.hired[type] += amount;
                 }
-            };
-
-            this.claimReward = function (expedition) {
-                this.StatisticsManager().trackStat("claim", "reward", 1);
-                if (expedition.contract.contractAmount) {
-                    this.giveCoins(expedition.contract.contractAmount);
-                }
-                for (var i = 0; i < expedition.rewards.length; i++) {
-                    this.giveReward(expedition.rewards[i]);
-                }
-                this.removeExpedition(expedition);
-            };
-
-            // Other
-            this.varyAmount = function (amount) {
-                return Math.floor(amount * (Math.random() + 0.5));
-            };
-
-
-
-            this.readableTime = function (milliseconds) {
-
-                var totalSeconds = Math.floor(milliseconds / 1000);
-                var seconds = totalSeconds % 60;
-                var totalMinutes = (totalSeconds - seconds) / 60;
-                var minutes = totalMinutes % 60;
-                var hours = (totalSeconds - (seconds + minutes * 60)) % 60;
-
-                var timeString = "";
-                if (hours) {
-                    timeString += hours + "hr ";
-                }
-                if (minutes) {
-                    timeString += minutes + "m ";
-                }
-                if (seconds) {
-                    timeString += seconds + "s";
-                }
-
-                if (timeString.length === 0) {
-                    timeString = "0s";
-                }
-                return timeString;
             };
 
             this.expiringSoon = function (date) {
@@ -680,10 +617,6 @@ define(["jquery",
                         }
                     }
                 }
-            };
-
-            this.lessthan = function (a, b) {
-                return a < b;
             };
 
             this.tick = function () {

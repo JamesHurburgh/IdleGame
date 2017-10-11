@@ -1,7 +1,11 @@
 /*jshint esversion: 6 */
 
-define(["json!data/items.json"],
-    function ItemManager(items) {
+define([
+    "app/CommonFunctions",
+    "json!data/items.json"],
+    function ItemManager(
+        CommonFunctions,
+        items) {
 
         function uuidv4() {
             return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
@@ -15,10 +19,6 @@ define(["json!data/items.json"],
             } catch (exception) {
                 log("Unable to parse object: " + JSON.stringify(object));
             }
-        }
-
-        function varyAmount(amount) {
-            return Math.floor(amount * (Math.random() + 0.5));
         }
 
         return function ItemManager(gameState) {
@@ -138,7 +138,7 @@ define(["json!data/items.json"],
             this.generateItem = function (itemType, value) {
                 var itemDefinition = this.getItemDefinition(itemType);
                 if (itemDefinition === undefined) {
-                    return { "name": itemType, "value": varyAmount(value) };
+                    return { "name": itemType, "value": commonFunctions.varyAmount(value) };
                 }
                 // Check for subsets first
                 if (itemDefinition.subsets !== undefined) {

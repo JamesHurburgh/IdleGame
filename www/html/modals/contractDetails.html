@@ -25,7 +25,7 @@
                         <div class="progress-bar progress-bar-success" v-bind:style="{ width: Math.ceil(selectedContract.rewardFactor * 10) * 10 + '%' }"></div>
                     </div>
 
-                    <div v-bind:class="{ 'text-danger': expiringDanger(selectedContract.expires), 'text-warning': expiringWarning(selectedContract.expires), 'text-success': expiringSuccess(selectedContract.expires) }">{{readableTime(selectedContract.expires - Date.now())}} remaining</div>
+                    <div v-bind:class="{ 'text-danger': expiringDanger(selectedContract.expires), 'text-warning': expiringWarning(selectedContract.expires), 'text-success': expiringSuccess(selectedContract.expires) }">{{TimeManager().readableTime(selectedContract.expires - Date.now())}} remaining</div>
                     <div v-if="selectedContract.contractAmount != undefined">Contract amount: <strong>{{selectedContract.contractAmount}} coins</strong></div>
                     <span>Requires adventurers with:</span>
                     <div v-if="selectedContract.requirements != undefined">

@@ -86,6 +86,31 @@ define([
 
             };
 
+            this.readableTime = function (milliseconds) {
+
+                var totalSeconds = Math.floor(milliseconds / 1000);
+                var seconds = totalSeconds % 60;
+                var totalMinutes = (totalSeconds - seconds) / 60;
+                var minutes = totalMinutes % 60;
+                var hours = (totalSeconds - (seconds + minutes * 60)) % 60;
+
+                var timeString = "";
+                if (hours) {
+                    timeString += hours + "hr ";
+                }
+                if (minutes) {
+                    timeString += minutes + "m ";
+                }
+                if (seconds) {
+                    timeString += seconds + "s";
+                }
+
+                if (timeString.length === 0) {
+                    timeString = "0s";
+                }
+                return timeString;
+            };
+
         };
     }
 );

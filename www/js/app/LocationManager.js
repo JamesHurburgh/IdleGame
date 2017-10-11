@@ -17,10 +17,6 @@ define(["json!data/locations.json"],
             }
         }
 
-        function varyAmount(amount) {
-            return Math.floor(amount * (Math.random() + 0.5));
-        }
-
         return function LocationManager(gameState) {
 
             this.gameState = gameState;
