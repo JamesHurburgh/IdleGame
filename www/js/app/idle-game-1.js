@@ -14,7 +14,7 @@ requirejs.config({
 
 // Start the main app logic.
 requirejs(['jquery', 'vue', 'alertify', 'store', 'chance', 'app/faces'],
-    function($, Vue, alertify, store, chance, faces) {
+    function ($, Vue, alertify, store, chance, faces) {
 
         function uuidv4() {
             return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
@@ -33,24 +33,24 @@ requirejs(['jquery', 'vue', 'alertify', 'store', 'chance', 'app/faces'],
                 ticks: 0,
                 firstTick: new Date(),
                 timeOfLastTick: new Date(),
-                tick: function() {
+                tick: function () {
                     var now = new Date();
                     var ticksElapsed = now - this.timeOfLastTick;
                     this.doTicks(ticksElapsed);
                     this.timeOfLastTick = now;
                 },
-                doTicks: function(ticks) {
+                doTicks: function (ticks) {
                     this.ticks += ticks;
 
-                    this.taskAssignments.forEach(function(taskAssignment) {
+                    this.taskAssignments.forEach(function (taskAssignment) {
                         var task = idleGameData.getActivity(taskAssignment.taskName);
                         var worker = idleGameData.getWorker(taskAssignment.workerName);
-                        if(worker.taskStatus == 'active' && task.canDo()){
+                        if (worker.taskStatus == 'active' && task.canDo()) {
 
                             var effortModifier = 1;
-                            task.skills.forEach(function(skill) {
+                            task.skills.forEach(function (skill) {
                                 var skillFound = false;
-                                worker.skills.forEach(function(workerSkill) {
+                                worker.skills.forEach(function (workerSkill) {
                                     if (skill == workerSkill.name) {
                                         var modifier = Math.floor(Math.sqrt(workerSkill.level)) / 100 + 1;
                                         effortModifier *= modifier;
@@ -78,9 +78,9 @@ requirejs(['jquery', 'vue', 'alertify', 'store', 'chance', 'app/faces'],
                     });
                 },
 
-                getActivityAssignmentsByActivity: function(name) {
+                getActivityAssignmentsByActivity: function (name) {
                     var assignments = [];
-                    idleGameData.taskAssignments.forEach(function(taskAssignment) {
+                    idleGameData.taskAssignments.forEach(function (taskAssignment) {
                         if (taskAssignment.name == name) {
                             assignments.push(taskAssignment);
                         }
@@ -88,36 +88,36 @@ requirejs(['jquery', 'vue', 'alertify', 'store', 'chance', 'app/faces'],
                     return assignments;
                 },
 
-                getActivity: function(name) {
+                getActivity: function (name) {
                     var taskFound;
-                    idleGameData.activities.forEach(function(activity) {
+                    idleGameData.activities.forEach(function (activity) {
                         if (activity.name == name) {
                             taskFound = activity;
                         }
                     });
                     return taskFound;
                 },
-                getWorker: function(name) {
+                getWorker: function (name) {
                     var workerFound;
-                    idleGameData.workers.forEach(function(worker) {
+                    idleGameData.workers.forEach(function (worker) {
                         if (worker.name == name) {
                             workerFound = worker;
                         }
                     });
                     return workerFound;
                 },
-                getResource: function(name) {
+                getResource: function (name) {
                     var resourceFound;
-                    idleGameData.resources.forEach(function(resource) {
+                    idleGameData.resources.forEach(function (resource) {
                         if (resource.name == name) {
                             resourceFound = resource;
                         }
                     });
                     return resourceFound;
                 },
-                getStat: function(name) {
+                getStat: function (name) {
                     var statFound;
-                    idleGameData.stats.forEach(function(stat) {
+                    idleGameData.stats.forEach(function (stat) {
                         if (stat.name == name) {
                             statFound = stat;
                         }
@@ -126,129 +126,129 @@ requirejs(['jquery', 'vue', 'alertify', 'store', 'chance', 'app/faces'],
                 },
 
                 activities: [{
-                        name: "rock collecting",
-                        skills: ["collecting", "rocks"],
-                        difficulty: function() { return 200 * gameDifficulty; },
-                        active: true,
-                        action: function(amount) {
-                            idleGameData.getResource("rocks").amount += amount;
-                        },
-                        canDo: function(){ return true; }
+                    name: "rock collecting",
+                    skills: ["collecting", "rocks"],
+                    difficulty: function () { return 200 * gameDifficulty; },
+                    active: true,
+                    action: function (amount) {
+                        idleGameData.getResource("rocks").amount += amount;
                     },
-                    {
-                        name: "stick collecting",
-                        skills: ["collecting", "sticks"],
-                        difficulty: function() { return 200 * gameDifficulty; },
-                        active: false,
-                        action: function(amount) {
-                            idleGameData.getResource("sticks").amount += amount;
-                        },
-                        canDo: function(){ return true; }
+                    canDo: function () { return true; }
+                },
+                {
+                    name: "stick collecting",
+                    skills: ["collecting", "sticks"],
+                    difficulty: function () { return 200 * gameDifficulty; },
+                    active: false,
+                    action: function (amount) {
+                        idleGameData.getResource("sticks").amount += amount;
                     },
-                    {
-                        name: "dirt collecting",
-                        skills: ["collecting", "dirt"],
-                        difficulty: function() { return 200 * gameDifficulty; },
-                        active: false,
-                        action: function(amount) {
-                            idleGameData.getResource("dirt").amount += amount;
-                        },
-                        canDo: function(){ return true; }
+                    canDo: function () { return true; }
+                },
+                {
+                    name: "dirt collecting",
+                    skills: ["collecting", "dirt"],
+                    difficulty: function () { return 200 * gameDifficulty; },
+                    active: false,
+                    action: function (amount) {
+                        idleGameData.getResource("dirt").amount += amount;
                     },
-                    {
-                        name: "berry collecting",
-                        skills: ["collecting", "berries"],
-                        difficulty: function() { return 400 * gameDifficulty; },
-                        active: false,
-                        action: function(amount) {
-                            idleGameData.getResource("berries").amount += amount;
-                        },
-                        canDo: function(){ return true; }
+                    canDo: function () { return true; }
+                },
+                {
+                    name: "berry collecting",
+                    skills: ["collecting", "berries"],
+                    difficulty: function () { return 400 * gameDifficulty; },
+                    active: false,
+                    action: function (amount) {
+                        idleGameData.getResource("berries").amount += amount;
                     },
-                    {
-                        name: "vine collecting",
-                        skills: ["collecting", "vines"],
-                        difficulty: function() { return 400 * gameDifficulty; },
-                        active: false,
-                        action: function(amount) {
-                            idleGameData.getResource("vines").amount += amount;
-                        },
-                        canDo: function(){ return true; }
+                    canDo: function () { return true; }
+                },
+                {
+                    name: "vine collecting",
+                    skills: ["collecting", "vines"],
+                    difficulty: function () { return 400 * gameDifficulty; },
+                    active: false,
+                    action: function (amount) {
+                        idleGameData.getResource("vines").amount += amount;
                     },
-                    {
-                        name: "leaf collecting",
-                        skills: ["collecting", "leaves"],
-                        difficulty: function() { return 400 * gameDifficulty; },
-                        active: false,
-                        action: function(amount) {
-                            idleGameData.getResource("leaves").amount += amount;
-                        },
-                        canDo: function(){ return true; }
+                    canDo: function () { return true; }
+                },
+                {
+                    name: "leaf collecting",
+                    skills: ["collecting", "leaves"],
+                    difficulty: function () { return 400 * gameDifficulty; },
+                    active: false,
+                    action: function (amount) {
+                        idleGameData.getResource("leaves").amount += amount;
                     },
-                    {
-                        name: "water collecting",
-                        skills: ["collecting", "water"],
-                        difficulty: function() { return 600 * gameDifficulty; },
-                        active: false,
-                        action: function(amount) {
-                            idleGameData.getResource("water").amount += amount;
-                        },
-                        canDo: function(){ return true; }
+                    canDo: function () { return true; }
+                },
+                {
+                    name: "water collecting",
+                    skills: ["collecting", "water"],
+                    difficulty: function () { return 600 * gameDifficulty; },
+                    active: false,
+                    action: function (amount) {
+                        idleGameData.getResource("water").amount += amount;
                     },
-                    {
-                        name: "tent building",
-                        skills: ["tent", "building"],
-                        difficulty: function() { return 6000 * gameDifficulty; },
-                        active: false,
-                        action: function(amount) {
-                            idleGameData.getResource("sticks").amount -= amount * 10;
-                            idleGameData.getResource("leaves").amount -= amount * 100;
-                            idleGameData.getResource("vines").amount -= amount * 5;
-                            idleGameData.getResource("tents").amount += amount;
-                        },
-                        canDo: function(){ 
-                            return idleGameData.getResource("sticks").amount >= 10 &&
+                    canDo: function () { return true; }
+                },
+                {
+                    name: "tent building",
+                    skills: ["tent", "building"],
+                    difficulty: function () { return 6000 * gameDifficulty; },
+                    active: false,
+                    action: function (amount) {
+                        idleGameData.getResource("sticks").amount -= amount * 10;
+                        idleGameData.getResource("leaves").amount -= amount * 100;
+                        idleGameData.getResource("vines").amount -= amount * 5;
+                        idleGameData.getResource("tents").amount += amount;
+                    },
+                    canDo: function () {
+                        return idleGameData.getResource("sticks").amount >= 10 &&
                             idleGameData.getResource("leaves").amount >= 100 &&
-                            idleGameData.getResource("vines").amount >= 5; 
+                            idleGameData.getResource("vines").amount >= 5;
+                    }
+                },
+                {
+                    name: "recruiting",
+                    skills: ["recruiting", "talking"],
+                    difficulty: function () { return 2000 * gameDifficulty * Math.pow(idleGameData.getStat("crowding").value(), 2); },
+                    active: false,
+                    action: function (amount) {
+                        for (var i = 0; i < amount; i++) {
+                            var newWorker = createNewWorker(1);
+                            idleGameData.workers.push(newWorker);
+                            alertify.success("New worker recruited: " + newWorker.name);
                         }
+                        return;
                     },
-                    {
-                        name: "recruiting",
-                        skills: ["recruiting", "talking"],
-                        difficulty: function() { return 2000 * gameDifficulty * Math.pow(idleGameData.getStat("crowding").value(), 2); },
-                        active: false,
-                        action: function(amount) {
-                            for (var i = 0; i < amount; i++) {
-                                var newWorker = createNewWorker(1);
-                                idleGameData.workers.push(newWorker);
-                                alertify.success("New worker recruited: " + newWorker.name);
-                            }
-                            return;
-                        },
-                        canDo: function(){ return true; }
-                    },
-                    {
-                        name: "managing",
-                        skills: ["organising", "talking"],
-                        difficulty: function() { return 100 * gameDifficulty * idleGameData.workers.length; },
-                        active: false,
-                        action: function(amount, activeWorker) {
-                            for (var i = 0; i < amount; i++) {
-                                var idleWorker;
-                                for(var w = 0; w < idleGameData.workers.length && idleWorker === undefined; w++){
-                                    var worker = idleGameData.workers[w];
-                                    if(worker.taskStatus == "done"){
-                                        idleWorker = worker;
-                                        idleWorker.taskStatus = "active";
-                                    }
+                    canDo: function () { return true; }
+                },
+                {
+                    name: "managing",
+                    skills: ["organising", "talking"],
+                    difficulty: function () { return 100 * gameDifficulty * idleGameData.workers.length; },
+                    active: false,
+                    action: function (amount, activeWorker) {
+                        for (var i = 0; i < amount; i++) {
+                            var idleWorker;
+                            for (var w = 0; w < idleGameData.workers.length && idleWorker === undefined; w++) {
+                                var worker = idleGameData.workers[w];
+                                if (worker.taskStatus == "done") {
+                                    idleWorker = worker;
+                                    idleWorker.taskStatus = "active";
                                 }
-
-                                activeWorker.taskStatus = "active";
                             }
-                            return;
-                        },
-                        canDo: function(){ return true; }
+
+                            activeWorker.taskStatus = "active";
+                        }
+                        return;
                     },
+                    canDo: function () { return true; }
+                },
                 ],
 
                 resources: [
@@ -265,13 +265,13 @@ requirejs(['jquery', 'vue', 'alertify', 'store', 'chance', 'app/faces'],
                 ],
                 stats: [{
                     name: "crowding",
-                    value: function() {
+                    value: function () {
                         var tents = idleGameData.getResource("tents").amount;
                         var houses = idleGameData.getResource("houses").amount;
                         var housing = tents + 5 * houses;
                         return idleGameData.workers.length / housing;
                     },
-                    modifier: function() {
+                    modifier: function () {
                         return this.value * this.value;
                     }
                 }],
@@ -305,28 +305,28 @@ requirejs(['jquery', 'vue', 'alertify', 'store', 'chance', 'app/faces'],
             el: '#idle-game',
             data: idleGameData,
             computed: {
-                ticksSinceLastTick: function() {
+                ticksSinceLastTick: function () {
                     return new Date() - this.timeOfLastTick;
                 }
             },
             methods: {
-                reset: function(event) {
+                reset: function (event) {
                     store.set("idleGameData", null);
                 },
-                assignWorkers: function(event) {
+                assignWorkers: function (event) {
                     idleGameData.taskAssignments = [];
                     var taskName = event.currentTarget.dataset.task;
-                    idleGameData.workers.forEach(function(worker) {
+                    idleGameData.workers.forEach(function (worker) {
                         idleGameData.taskAssignments.push({ taskName: taskName, workerName: worker.name });
                         worker.currentTask = taskName;
                         worker.taskStatus = "active";
                     }, this);
                 },
-                assignWorker: function(event) {
+                assignWorker: function (event) {
                     var taskName = event.currentTarget.dataset.task;
                     var workerName = event.currentTarget.dataset.worker;
                     var assigned = false;
-                    idleGameData.taskAssignments.forEach(function(taskAssignment) {
+                    idleGameData.taskAssignments.forEach(function (taskAssignment) {
                         if (taskAssignment.workerName == workerName) {
                             taskAssignment.taskName = taskName;
                             assigned = true;
@@ -335,7 +335,7 @@ requirejs(['jquery', 'vue', 'alertify', 'store', 'chance', 'app/faces'],
                     if (!assigned) {
                         idleGameData.taskAssignments.push({ taskName: taskName, workerName: workerName });
                     }
-                    idleGameData.workers.forEach(function(worker) {
+                    idleGameData.workers.forEach(function (worker) {
                         if (worker.name == workerName) {
                             worker.currentTask = taskName;
                             worker.taskStatus = "active";
