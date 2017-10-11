@@ -5,6 +5,7 @@ define(["jquery",
     "alertify",
     "json!data/game.json",
     "json!data/settings.json",
+    "app/PlayerManager",
     "app/ItemManager",
     "app/LocationManager",
     "app/AdventurerManager",
@@ -28,6 +29,7 @@ define(["jquery",
         alertify,
         game,
         settings,
+        PlayerManager,
         ItemManager,
         LocationManager,
         AdventurerManager,
@@ -105,6 +107,11 @@ define(["jquery",
             _OptionsManager = new OptionsManager(this);
             this.OptionsManager = function () {
                 return _OptionsManager;
+            };
+
+            _PlayerManager = new PlayerManager(this);
+            this.PlayerManager = function () {
+                return _PlayerManager;
             };
 
             this.calculate = function () {
@@ -303,11 +310,6 @@ define(["jquery",
 
                 this.SessionManager().login();
                 this.calculate();
-            };
-
-            // Renown
-            this.renownText = function () {
-                return this.DataManager().renown.filter(r => r.minimum <= this.renown && r.maximum > this.renown)[0].name;
             };
 
             // Globals
