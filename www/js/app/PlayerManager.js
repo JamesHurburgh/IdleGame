@@ -27,7 +27,6 @@ define([
             };
 
             // Coins
-
             this.giveCoins = function(amount) {
                 $('#footerCoin').animateCss('bounce');
                 gameState.StatisticsManager().trackStat("get", "coins", amount);
@@ -37,6 +36,23 @@ define([
             this.spendCoins = function(coins) {
                 gameState.coins -= coins;
                 gameState.StatisticsManager().trackStat("spend", "coins", coins);
+            };
+
+            // Rewards
+            this.giveReward = function(reward) {
+                switch (reward.type) {
+                    case "coins":
+                        this.giveCoins(reward.amount);
+                        break;
+                    case "reknown":
+                    case "renown":
+                        this.giveRenown(reward.amount);
+                        break;
+                    case "item":
+                        this.ItemManager().giveItem(reward.item);
+                        break;
+                    default:
+                }
             };
 
         };

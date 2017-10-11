@@ -478,25 +478,6 @@ define(["jquery",
 
             };
 
-            // Rewards
-
-            this.giveReward = function(reward) {
-                switch (reward.type) {
-                    case "coins":
-                        this.PlayerManager().giveCoins(reward.amount);
-                        break;
-                    case "reknown":
-                    case "renown":
-                        this.PlayerManager().giveRenown(reward.amount);
-                        break;
-                    case "item":
-                        this.ItemManager().giveItem(reward.item);
-                        break;
-                    default:
-                        this.hired[type] += amount;
-                }
-            };
-
             this.expiringSoon = function(date) {
                 return date - Date.now() <= 5000;
             };

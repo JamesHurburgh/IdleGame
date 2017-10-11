@@ -197,7 +197,7 @@ define([
                     gameState.PlayerManager().giveCoins(expedition.contract.contractAmount);
                 }
                 for (var i = 0; i < expedition.rewards.length; i++) {
-                    gameState.giveReward(expedition.rewards[i]);
+                    gameState.PlayerManager().giveReward(expedition.rewards[i]);
                 }
                 this.removeQuest(expedition);
             };
