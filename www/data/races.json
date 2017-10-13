@@ -1,0 +1,9 @@
+[
+    { "name": "Human", "description": "" },
+    { "name": "Elf", "description": "" },
+    { "name": "Orc", "description": "" },
+    { "name": "Pixie", "description": "" },
+    { "name": "Merfolk", "description": "" },
+    { "name": "Lightfoot", "description": "A small race known for excellent sneaking abilities." },
+    { "name": "Dwarf", "description": "" }
+]
