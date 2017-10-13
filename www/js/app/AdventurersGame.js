@@ -1,32 +1,32 @@
 /*jshint esversion: 6 */
 
 define(["jquery",
-        "app/CommonFunctions",
-        "alertify",
-        "json!data/game.json",
-        "json!data/settings.json",
-        "app/PlayerManager",
-        "app/ItemManager",
-        "app/LocationManager",
-        "app/AdventurerManager",
-        "app/AchievementManager",
-        "app/QuestManager",
-        "app/MessageManager",
-        "app/SessionManager",
-        "app/DataManager",
-        "app/TimeManager",
-        "app/StatisticsManager",
-        "app/OptionsManager",
-        "app/NoticeManager",
-        "app/EffectsManager",
-        "app/GameStateManager",
-        "app/SpriteManager",
-        "json!data/calendar.json",
-        "json!data/contracts.json",
-        "json!data/locations.json",
-        "json!data/adventurers.json",
-        "json!data/achievements.json"
-    ],
+    "app/CommonFunctions",
+    "alertify",
+    "json!data/game.json",
+    "json!data/settings.json",
+    "app/PlayerManager",
+    "app/ItemManager",
+    "app/LocationManager",
+    "app/AdventurerManager",
+    "app/AchievementManager",
+    "app/QuestManager",
+    "app/MessageManager",
+    "app/SessionManager",
+    "app/DataManager",
+    "app/TimeManager",
+    "app/StatisticsManager",
+    "app/OptionsManager",
+    "app/NoticeManager",
+    "app/EffectsManager",
+    "app/GameStateManager",
+    "app/SpriteManager",
+    "json!data/calendar.json",
+    "json!data/contracts.json",
+    "json!data/locations.json",
+    "json!data/adventurers.json",
+    "json!data/achievements.json"
+],
     function AdventurersGame(
         jquery,
         CommonFunctions,
@@ -58,108 +58,124 @@ define(["jquery",
         commonFunctions = new CommonFunctions();
         data = new DataManager();
 
-        return function AdventurersGame(saveData, autoSaveFunction, logFunction) {
+        return function AdventurersGame(saveData, saveFunction, logFunction) {
 
             log = logFunction;
-            this.autoSave = autoSaveFunction;
-            this.millisecondsPerSecond = 1000;
+            this.gameState = saveData;
 
-            _itemManager = new ItemManager(this);
-            this.ItemManager = function() {
-                return _itemManager;
-            };
-            _locationManager = new LocationManager(this);
-            this.LocationManager = function() {
-                return _locationManager;
+            this._GameStateManager = new GameStateManager(this, this.gameState, saveFunction);
+            this.GameStateManager = function () {
+                if (this._GameStateManager) return this._GameStateManager;
+                return this.$data._GameStateManager;
             };
 
-            _AdventurerManager = new AdventurerManager(this);
-            this.AdventurerManager = function() {
-                return _AdventurerManager;
+            this._itemManager = new ItemManager(this, this.gameState);
+            this.ItemManager = function () {
+                if (this._itemManager) return this._itemManager;
+                return this.$data._itemManager;
             };
 
-            _QuestManager = new QuestManager(this);
-            this.QuestManager = function() {
-                return _QuestManager;
+            this._locationManager = new LocationManager(this, this.gameState);
+            this.LocationManager = function () {
+                if (this._locationManager) return this._locationManager;
+                return this.$data._locationManager;
             };
 
-            _MessageManager = new MessageManager(this);
-            this.MessageManager = function() {
-                return _MessageManager;
+            this._AdventurerManager = new AdventurerManager(this, this.gameState);
+            this.AdventurerManager = function () {
+                if (this._AdventurerManager) return this._AdventurerManager;
+                return this.$data._AdventurerManager;
             };
 
-            _AchievementManager = new AchievementManager(this);
-            this.AchievementManager = function() {
-                return _AchievementManager;
+            this._QuestManager = new QuestManager(this, this.gameState);
+            this.QuestManager = function () {
+                if (this._QuestManager) return this._QuestManager;
+                return this.$data._QuestManager;
             };
 
-            _DataManager = new DataManager(this);
-            this.DataManager = function() {
-                return _DataManager;
+            this._MessageManager = new MessageManager(this, this.gameState);
+            this.MessageManager = function () {
+                if (this._MessageManager) return this._MessageManager;
+                return this.$data._MessageManager;
             };
 
-            _TimeManager = new TimeManager(this);
-            this.TimeManager = function() {
-                return _TimeManager;
+            this._AchievementManager = new AchievementManager(this, this.gameState);
+            this.AchievementManager = function () {
+                if (this._AchievementManager) return this._AchievementManager;
+                return this.$data._AchievementManager;
             };
 
-            _SessionManager = new SessionManager(this);
-            this.SessionManager = function() {
-                return _SessionManager;
+            this._DataManager = new DataManager(this);
+            this.DataManager = function () {
+                if (this._DataManager) return this._DataManager;
+                return this.$data._DataManager;
             };
 
-            _StatisticsManager = new StatisticsManager(this);
-            this.StatisticsManager = function() {
-                return _StatisticsManager;
+            this._TimeManager = new TimeManager(this);
+            this.TimeManager = function () {
+                if (this._TimeManager) return this._TimeManager;
+                return this.$data._TimeManager;
             };
 
-            _OptionsManager = new OptionsManager(this);
-            this.OptionsManager = function() {
-                return _OptionsManager;
+            this._SessionManager = new SessionManager(this);
+            this.SessionManager = function () {
+                if (this._SessionManager) return this._SessionManager;
+                return this.$data._SessionManager;
             };
 
-            _PlayerManager = new PlayerManager(this);
-            this.PlayerManager = function() {
-                return _PlayerManager;
+            this._StatisticsManager = new StatisticsManager(this, this.gameState);
+            this.StatisticsManager = function () {
+                if (this._StatisticsManager) return this._StatisticsManager;
+                return this.$data._StatisticsManager;
             };
 
-            _NoticeManager = new NoticeManager(this);
-            this.NoticeManager = function() {
-                return _NoticeManager;
+            this._OptionsManager = new OptionsManager(this);
+            this.OptionsManager = function () {
+                if (this._OptionsManager) return this._OptionsManager;
+                return this.$data._OptionsManager;
             };
 
-            _EffectsManager = new EffectsManager(this);
-            this.EffectsManager = function() {
-                return _EffectsManager;
+            this._PlayerManager = new PlayerManager(this, this.gameState);
+            this.PlayerManager = function () {
+                if (this._PlayerManager) return this._PlayerManager;
+                return this.$data._PlayerManager;
             };
 
-            _GameStateManager = new GameStateManager(this);
-            this.GameStateManager = function() {
-                return _GameStateManager;
+            this._NoticeManager = new NoticeManager(this, this.gameState);
+            this.NoticeManager = function () {
+                if (this._NoticeManager) return this._NoticeManager;
+                return this.$data._NoticeManager;
             };
 
-            _SpriteManager = new SpriteManager(this);
-            this.SpriteManager = function() {
-                return _SpriteManager;
+            this._EffectsManager = new EffectsManager(this, this.gameState);
+            this.EffectsManager = function () {
+                if (this._EffectsManager) return this._EffectsManager;
+                return this.$data._EffectsManager;
             };
 
-            this.minorTick = function() {
+            this._SpriteManager = new SpriteManager(this);
+            this.SpriteManager = function () {
+                if (this._SpriteManager) return this._SpriteManager;
+                return this.$data._SpriteManager;
+            };
+
+            this.minorTick = function () {
 
                 this.QuestManager().checkForCompletedQuests();
 
                 this.NoticeManager().removeExpired();
 
-                this.majorTickCounter++;
-                if (this.majorTickCounter > 10) {
+                this.gameState.majorTickCounter++;
+                if (this.gameState.majorTickCounter > 10) {
                     this.majorTick();
                     this.doAutomation();
                 }
             };
 
-            this.majorTick = function() {
+            this.majorTick = function () {
                 log("majorTick");
                 // Do all calculations here
-                this.majorTickCounter = 0;
+                this.gameState.majorTickCounter = 0;
 
                 this.EffectsManager().removeExpired();
                 this.NoticeManager().addNewContracts();
@@ -167,27 +183,27 @@ define(["jquery",
 
                 this.AchievementManager().checkAndClaimAllAchievements();
 
-                this.gameDateTime = this.TimeManager().getGameTime();
+                this.gameState.gameDateTime = this.TimeManager().getGameTime();
 
                 // Autosave
                 this.SessionManager().stillLoggedIn();
-                this.autoSave();
+                this.GameStateManager().save();
             };
 
-            this.doAutomation = function() {
-                if (this.options.automaticRelocate) {
+            this.doAutomation = function () {
+                if (this.OptionsManager().getOptions().automaticRelocate) {
                     if (this.LocationManager().canRelocateUp()) {
                         this.LocationManager().relocateUp();
                     }
                 }
-                if (this.options.automaticClaim) {}
-                if (this.options.automaticHire) {}
-                if (this.options.automaticSend) {}
+                if (this.OptionsManager().getOptions().automaticClaim) { }
+                if (this.OptionsManager().getOptions().automaticHire) { }
+                if (this.OptionsManager().getOptions().automaticSend) { }
             };
 
-            this.initialise = function() {
+            this.initialise = function () {
                 log("initialising");
-                this.GameStateManager().loadFromSavedData(saveData);
+                //this.gameState = this.GameStateManager().loadFromSavedData(saveData);
                 this.NoticeManager().prepContractQueue();
                 this.SessionManager().login();
                 this.majorTick();

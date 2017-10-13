@@ -14,38 +14,48 @@
 */
 
 define([
-        "app/CommonFunctions",
-        "app/DataManager"
-    ],
+    "app/CommonFunctions",
+    "app/DataManager"
+],
     function EffectsManager(
         CommonFunctions,
         DataManager) {
 
         common = new CommonFunctions();
         data = new DataManager();
-        return function EffectsManager(gameState) {
+        return function EffectsManager(gameController, gameState) {
 
             this.gameState = gameState;
+            this.gameController = gameController;
 
-            // Effect
-            this.addEffect = function(name, valueModifier, expires) {
-                gameState.currentEffects.push({ "name": name, "valueModifier": valueModifier, "expires": expires });
+            this.getCurrentEffects = function () {
+                if (!this.gameState.currentEffects) {
+                    this.gameState.currentEffects = [];
+                }
+                return this.gameState.currentEffects;
             };
 
-            this.removeExpired = function() {
-                for (var h = 0; h < gameState.currentEffects.length; h++) {
-                    var effect = gameState.currentEffects[h];
-                    if (gameState.currentEffects[h].expires === undefined || gameState.currentEffects[h].expires <= Date.now()) {
-                        gameState.currentEffects.splice(h, 1);
+            // Effect
+            this.addEffect = function (name, valueModifier, expires) {
+                this.getCurrentEffects().push({ "name": name, "valueModifier": valueModifier, "expires": expires });
+            };
+
+
+            this.removeExpired = function () {
+                var currentEffects = this.getCurrentEffects();
+                for (var h = 0; h < currentEffects.length; h++) {
+                    var effect = currentEffects[h];
+                    if (currentEffects[h].expires === undefined || currentEffects[h].expires <= Date.now()) {
+                        currentEffects.splice(h, 1);
                     }
                 }
             };
 
             // Globals
-            this.getGlobalValue = function(name) {
+            this.getGlobalValue = function (name) {
                 var global = data.game.globals.filter(global => global.name == name)[0];
                 if (global === undefined) { return null; }
-                var effects = gameState.currentEffects.filter(effect => effect.affects === name);
+                var effects = this.getCurrentEffects().filter(effect => effect.affects === name);
                 var value = global.baseValue;
                 for (var i = 0; i < effects.length; i++) {
                     value *= effects[i].valueModifier;

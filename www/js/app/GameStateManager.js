@@ -1,42 +1,52 @@
 /*jshint esversion: 6 */
 
 define([
-        "app/CommonFunctions",
-        "app/DataManager"
-    ],
+    "app/CommonFunctions",
+    "app/DataManager",
+    "alertify"
+],
     function GameStateManager(
         CommonFunctions,
-        DataManager) {
+        DataManager,
+        alertify) {
 
         common = new CommonFunctions();
         data = new DataManager();
-        return function GameStateManager(gameState) {
+        return function GameStateManager(gameController, gameState, saveFunction) {
 
+            this.externalSaveFunction = saveFunction;
             this.gameState = gameState;
+            this.gameController = gameController;
 
-            this.reset = function() {
+            this.save = function () {
+                this.externalSaveFunction(gameState);
+            };
+
+            this.reset = function () {
                 log("reset");
+                this.gameState = this.newGame();
+            };
+
+            this.newGame = function () {
                 // Then initialise new
-                gameState.majorTickCounter = 0;
+                var newGameState = {};
+                newGameState.majorTickCounter = 0;
 
-                gameState.coins = 10;
-                gameState.renown = 0;
-                gameState.freeCoinsTimeout = 0;
+                newGameState.coins = 10;
+                newGameState.renown = 0;
 
-                gameState.hired = {};
-
-                gameState.runningExpeditions = [];
-                gameState.completedExpeditions = [];
+                newGameState.runningExpeditions = [];
+                newGameState.completedExpeditions = [];
 
                 // Take a local copy of the locations
-                gameState.allLocations = commonFunctions.clone(locations);
-                gameState.LocationManager().setCurrentLocation(gameState.allLocations[0].name);
+                newGameState.locationList = commonFunctions.clone(data.locations);
+                this.gameController.LocationManager().setCurrentLocation(newGameState.locationList[0].name);
 
-                gameState.LocationManager().getCurrentLocation().availableContracts = [];
-                gameState.LocationManager().getCurrentLocation().availableAdventurers = [];
+                this.gameController.LocationManager().getCurrentLocation().availableContracts = [];
+                this.gameController.LocationManager().getCurrentLocation().availableAdventurers = [];
 
                 // Initilise options
-                gameState.options = {
+                newGameState.options = {
                     "claimAllButtons": false,
                     "automaticHire": false,
                     "automaticClaim": false,
@@ -47,124 +57,51 @@ define([
                 };
 
                 // Initialise stats
-                if (!gameStatethis.stats) {
-                    gameState.stats = [];
+                if (!newGameState.stats) {
+                    newGameState.stats = [];
                 } else {
-                    for (var i = 0; i < gameState.stats.length; i++) {
-                        gameState.stats[i].current = 0;
+                    for (var i = 0; i < newGameState.stats.length; i++) {
+                        newGameState.stats[i].current = 0;
                     }
                 }
-                gameState.claimedAchievements = [];
+                newGameState.claimedAchievements = [];
 
-                gameState.ownedItems = [];
-                gameState.messages = [];
+                newGameState.ownedItems = [];
+                newGameState.messages = [];
 
-                gameState.currentEffects = [];
+                newGameState.currentEffects = [];
 
-                gameState.selectedContract = null;
-                gameState.selectedAdverturer = null;
-                gameState.currentParty = [];
-                gameState.adventurerList = [];
+                newGameState.selectedContract = null;
+                newGameState.selectedAdverturer = null;
+                newGameState.currentParty = [];
+                newGameState.adventurerList = [];
 
-                gameState.loginTracker = [];
+                newGameState.loginTracker = [];
 
-                gameState.version = game.versions[0].number;
+                newGameState.version = data.game.versions[0].number;
+
+                return newGameState;
 
             };
 
-            this.loadFromSavedData = function(savedData) {
+            this.loadFromSavedData = function (savedData) {
                 log("loadFromSavedData");
                 if (!savedData) {
-                    this.reset();
+                    this.newGameState = this.newGame();
                     return;
                 }
 
-                gameState.coins = savedData.coins;
-                gameState.renown = savedData.renown;
-                if (savedData.reknown !== undefined) {
-                    gameState.renown = savedData.reknown;
-                }
+                this.gameState = savedData;
 
-                gameState.runningExpeditions = savedData.runningExpeditions;
-                gameState.completedExpeditions = savedData.completedExpeditions;
-
-                gameState.allLocations = savedData.allLocations;
-                gameState.location = savedData.location;
-                gameState.LocationManager().getCurrentLocation().availableContracts = savedData.location.availableContracts;
-                gameState.LocationManager().getCurrentLocation().availableAdventurers = savedData.location.availableAdventurers;
-                if (gameState.LocationManager().getCurrentLocation().availableAdventurers === undefined) gameState.LocationManager().getCurrentLocation().availableAdventurers = [];
-
-                gameState.options = savedData.options;
-                if (gameState.options !== undefined && gameState.options.automatic !== undefined) {
-                    {
-                        gameState.automaticHire = gameState.options.automatic;
-                        gameState.automaticClaim = gameState.options.automatic;
-                        gameState.automaticSend = gameState.options.automatic;
-                        gameState.automaticRelocate = gameState.options.automatic;
-                        gameState.automaticFreeCoins = gameState.options.automatic;
-                        gameState.options.automatic = undefined;
-                    }
-                }
-                if (gameState.options === undefined) {
-                    gameState.options = {
-                        "claimAllButtons": false,
-                        "automaticHire": false,
-                        "automaticClaim": false,
-                        "automaticSend": false,
-                        "automaticRelocate": false,
-                        "automaticFreeCoins": false,
-                        "showMessageTimeAsRealTime": false
-                    };
-                }
-
-                gameState.stats = savedData.stats;
-                if (gameState.stats === undefined) {
-                    gameState.stats = [];
-                }
-                gameState.claimedAchievements = savedData.claimedAchievements;
-                if (gameState.claimedAchievements === undefined) {
-                    gameState.claimedAchievements = [];
-                }
-                gameState.ownedItems = savedData.ownedItems;
-                if (gameState.ownedItems === undefined) {
-                    gameState.ownedItems = [];
-                }
-                gameState.messages = savedData.messages;
-                if (gameState.messages === undefined) {
-                    gameState.messages = [];
-                }
-                gameState.currentEffects = savedData.currentEffects;
-                if (gameState.currentEffects === undefined) {
-                    gameState.currentEffects = [];
-                }
-
-                gameState.selectedContract = null;
-                gameState.selectedAdverturer = null;
-                gameState.currentParty = [];
-
-                gameState.adventurerList = savedData.adventurerList;
-                if (gameState.adventurerList === undefined) gameState.adventurerList = [];
-                gameState.availableAdventurers = savedData.availableAdventurers;
-                if (gameState.availableAdventurers === undefined) gameState.availableAdventurers = [];
-
-                gameState.loginTracker = savedData.loginTracker;
-
-                // Begin standard version management
-                if (savedData.version === undefined) {
-                    if (!gameState.LocationManager().getCurrentLocation().availableContracts) gameState.LocationManager().getCurrentLocation().availableContracts = [];
-                    if (!gameState.LocationManager().getCurrentLocation().availableHires) gameState.LocationManager().getCurrentLocation().availableHires = [];
-                    if (!gameState.allLocations) gameState.allLocations = clone(locations);
-                    if (!gameState.renown) gameState.renown = 0;
-                    if (!gameState.coins) gameState.coins = 0;
-                }
-
-                gameState.version = data.game.versions[0].number;
+                this.gameState.version = data.game.versions[0].number;
                 if (savedData.version != gameState.version) {
                     var releaseNotesButton = '<button class="btn btn-info" data-toggle="modal" data-target="#releaseNotes">Release Notes</button>';
                     var versionUpdateMessage = "Version updated from " + savedData.version + " to " + gameState.version + ". Check the " + releaseNotesButton + ".";
                     alertify.delay(10000);
                     alertify.alert("<h2>Version update!</h2><p class='text-info'>" + versionUpdateMessage + "</p>");
                 }
+
+                return this.gameState;
 
             };
 

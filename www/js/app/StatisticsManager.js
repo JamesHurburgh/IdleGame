@@ -21,23 +21,29 @@ define([
 
         commonFunctions = new CommonFunctions();
 
-        return function StatisticsManager(gameState) {
+        return function StatisticsManager(gameController, gameState) {
 
             this.gameState = gameState;
+            this.gameController = gameController;
+
+            this.getStatistics = function () {
+                if (!this.gameState.stats) this.gameState.stats = [];
+                return this.gameState.stats;
+            };
 
             this.getStatName = function (action, subject) {
                 return (action + "-" + subject).toLowerCase().replace(/ /g, "_");
             };
 
             this.getStat = function (name) {
-                return gameState.stats.filter(stat => stat.name == name)[0];
+                return this.getStatistics().filter(stat => stat.name == name)[0];
             };
 
             this.trackStat = function (action, subject, amount) {
                 var name = this.getStatName(action, subject);
                 stat = this.getStat(name);
                 if (!stat) {
-                    gameState.stats.push({ name: name, current: amount, allTime: amount });
+                    this.getStatistics().push({ name: name, current: amount, allTime: amount });
                 } else {
                     stat.current += amount;
                     stat.allTime += amount;
@@ -46,9 +52,9 @@ define([
 
             this.filteredStats = function (filter) {
                 if (!filter) {
-                    return gameState.stats;
+                    return this.getStatistics();
                 }
-                return gameState.stats.filter(stat => stat.name.indexOf(filter.toLowerCase().trim()) !== -1);
+                return this.getStatistics().filter(stat => stat.name.indexOf(filter.toLowerCase().trim()) !== -1);
             };
         };
     }

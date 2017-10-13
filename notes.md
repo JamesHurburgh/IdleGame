@@ -59,3 +59,5 @@ To scale duration, take the square root of the seconds divide by 425.  THis give
 * Defeat a local liche
 * Finding a missing resident
 * 
+
+Scrounging in the dirt gives bad results.

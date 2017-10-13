@@ -1,9 +1,9 @@
 /*jshint esversion: 6 */
 
 define([
-        "app/CommonFunctions",
-        "app/DataManager"
-    ],
+    "app/CommonFunctions",
+    "app/DataManager"
+],
     function PlayerManager(
         CommonFunctions,
         DataManager) {
@@ -11,35 +11,46 @@ define([
         common = new CommonFunctions();
         data = new DataManager();
 
-        return function PlayerManager(gameState) {
+        return function PlayerManager(gameController, gameState) {
 
             this.gameState = gameState;
+            this.gameController = gameController;
 
             // Renown
-            this.getRenown = function() {
-                return data.renown.filter(r => r.minimum <= this.gameState.renown && r.maximum > this.gameState.renown)[0];
+            this.getRenownValue = function () {
+                if (!this.gameState.renown) this.gameState.renown = 0;
+                return this.gameState.renown;
             };
 
-            this.giveRenown = function(amount) {
+            this.getRenown = function () {
+                return data.renown.filter(r => r.minimum <= this.getRenownValue() && r.maximum > this.getRenownValue())[0];
+            };
+
+            this.getCoins = function () {
+                if (this.gameState.coins === undefined || this.gameState.coins === null) this.gameState.coins = 10;
+                return this.gameState.coins;
+            };
+
+            this.giveRenown = function (amount) {
                 $('#footerRenown').animateCss('bounce');
-                gameState.StatisticsManager().trackStat("get", "renown", amount);
-                gameState.renown += amount;
+                this.gameController.StatisticsManager().trackStat("get", "renown", amount);
+                this.gameState.renown = this.getRenownValue() + amount;
             };
 
             // Coins
-            this.giveCoins = function(amount) {
+            this.giveCoins = function (amount) {
                 $('#footerCoin').animateCss('bounce');
-                gameState.StatisticsManager().trackStat("get", "coins", amount);
-                gameState.coins += amount;
+                this.gameController.StatisticsManager().trackStat("get", "coins", amount);
+                this.gameState.coins += amount;
             };
 
-            this.spendCoins = function(coins) {
-                gameState.coins -= coins;
-                gameState.StatisticsManager().trackStat("spend", "coins", coins);
+            this.spendCoins = function (coins) {
+                this.gameState.coins -= coins;
+                this.gameController.StatisticsManager().trackStat("spend", "coins", coins);
             };
 
             // Rewards
-            this.giveReward = function(reward) {
+            this.giveReward = function (reward) {
                 switch (reward.type) {
                     case "coins":
                         this.giveCoins(reward.amount);
@@ -49,7 +60,7 @@ define([
                         this.giveRenown(reward.amount);
                         break;
                     case "item":
-                        this.ItemManager().giveItem(reward.item);
+                        this.gameController.ItemManager().giveItem(reward.item);
                         break;
                     default:
                 }
