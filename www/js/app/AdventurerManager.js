@@ -21,7 +21,6 @@ define([
             this.gameController = gameController;
 
             this.getAdventurerList = function() {
-                log("getAdventurerList");
                 if (!this.gameState.adventurerList) this.gameState.adventurerList = [];
                 this.gameState.adventurerList.forEach(function(adventurer) {
                     if (!adventurer.race) {

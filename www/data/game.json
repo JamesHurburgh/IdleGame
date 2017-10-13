@@ -38,10 +38,10 @@
     ],
     "versions": [{
             "number": "0.10.7",
-            "description": "Stability.",
-            "features": [],
+            "description": "The race is on!",
+            "features": ["Added irrelevant races!"],
             "bugfixes": [
-                "Alerts are now readable."
+                "Fixed version not updating bug."
             ]
         }, {
             "number": "0.10.6",
