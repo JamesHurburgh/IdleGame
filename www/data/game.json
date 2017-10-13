@@ -3,10 +3,9 @@
     "description": "Adventuring is dangerous. Hire someone else to do it for you!",
     "author": "James Hurburgh",
     "author-uri": "",
-    "globals": [
-        {
+    "globals": [{
             "name": "chanceOfNewContract",
-            "baseValue": 0.5
+            "baseValue": 0.05
         },
         {
             "name": "averageJobContractExpiry",
@@ -14,7 +13,7 @@
         },
         {
             "name": "chanceOfNewHire",
-            "baseValue": 0.5
+            "baseValue": 0.05
         },
         {
             "name": "averageHireContractExpiry",
@@ -37,8 +36,15 @@
             "baseValue": 1
         }
     ],
-    "versions": [
-        {
+    "versions": [{
+            "number": "0.11.0",
+            "description": "Save management improved.",
+            "features": [
+                "Stability patches.",
+                "Save management improved."
+            ],
+            "bugfixes": []
+        }, {
             "number": "0.10.5",
             "description": "Adenturer views bettered.",
             "features": [

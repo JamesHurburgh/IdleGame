@@ -1,8 +1,8 @@
 /*jshint esversion: 6 */
 define([
-    "app/CommonFunctions",
-    "app/DataManager"
-],
+        "app/CommonFunctions",
+        "app/DataManager"
+    ],
     function NoticeManager(
         CommonFunctions,
         DataManager) {
@@ -14,15 +14,15 @@ define([
             this.gameState = gameState;
             this.gameController = gameController;
 
-            this.viewContract = function (contract) {
+            this.viewContract = function(contract) {
                 this.gameState.selectedContract = contract;
             };
 
-            this.getSelectedJobNotice = function () {
+            this.getSelectedJobNotice = function() {
                 return this.gameState.selectedContract;
             }
 
-            this.prepContractQueue = function () {
+            this.prepContractQueue = function() {
                 var numberToPrep = Math.min(this.gameState.timeSinceLastLogin / 1000 / 60 / 10, 5); // Prep one every 10 minutes
 
                 for (var i = 0; i < numberToPrep; i++) {
@@ -33,12 +33,12 @@ define([
             };
 
             // TODO make this more generic
-            this.getJobNoticesAtLocation = function (location) {
+            this.getJobNoticesAtLocation = function(location) {
                 if (!location.availableContracts) location.availableContracts = [];
                 return location.availableContracts;
             };
 
-            this.addNewContracts = function () {
+            this.addNewContracts = function() {
                 // New contracts
                 var maxContracts = 5;
                 var noticesAtCurrentLocation = this.getJobNoticesAtLocation(this.gameController.LocationManager().getCurrentLocation());
@@ -47,7 +47,7 @@ define([
                 }
             };
 
-            this.addContract = function () {
+            this.addContract = function() {
 
                 var location = this.gameController.LocationManager().getCurrentLocation();
                 var locationContractsTypes = location.contracts;
@@ -66,25 +66,27 @@ define([
 
                 this.gameController.LocationManager().getCurrentLocation().availableContracts.push(contract);
 
-                this.gameController.LocationManager().getCurrentLocation().availableContracts.sort(function (a, b) {
+                this.gameController.LocationManager().getCurrentLocation().availableContracts.sort(function(a, b) {
                     return a.expires - b.expires;
                 });
                 this.gameController.StatisticsManager().trackStat("available-contract", contract.name, 1);
                 this.gameController.StatisticsManager().trackStat("available", "contract", 1);
             };
 
-            this.removeExpired = function () {
+            this.removeExpired = function() {
 
                 var currentLocation = this.gameController.LocationManager().getCurrentLocation();
                 this.removeExpiredNoticesAtLocation(currentLocation);
 
-                for (var locationIndex = 0; locationIndex < this.gameState.locationList.length; locationIndex++) {
-                    var location = this.gameState.locationList[locationIndex];
+                var allLocations = this.gameController.LocationManager().getLocationList;
+
+                for (var locationIndex = 0; locationIndex < allLocations; locationIndex++) {
+                    var location = allLocations[locationIndex];
                     this.removeExpiredNoticesAtLocation(location);
                 }
             };
 
-            this.removeExpiredNoticesAtLocation = function (location) {
+            this.removeExpiredNoticesAtLocation = function(location) {
 
                 // Remove expired contracts
                 if (location.availableContracts) {
@@ -112,19 +114,19 @@ define([
                 }
             };
 
-            this.expiringSoon = function (date) {
+            this.expiringSoon = function(date) {
                 return date - Date.now() <= 5000;
             };
 
-            this.expiringDanger = function (date) {
+            this.expiringDanger = function(date) {
                 return date - Date.now() <= 5000;
             };
 
-            this.expiringWarning = function (date) {
+            this.expiringWarning = function(date) {
                 return !this.expiringDanger(date) && date - Date.now() <= 15000;
             };
 
-            this.expiringSuccess = function (date) {
+            this.expiringSuccess = function(date) {
                 return !this.expiringDanger(date) && !this.expiringWarning(date);
             };
         };

@@ -1,10 +1,10 @@
 /*jshint esversion: 6 */
 
 define([
-    "app/CommonFunctions",
-    "app/DataManager",
-    "alertify"
-],
+        "app/CommonFunctions",
+        "app/DataManager",
+        "alertify"
+    ],
     function GameStateManager(
         CommonFunctions,
         DataManager,
@@ -18,16 +18,16 @@ define([
             this.gameState = gameState;
             this.gameController = gameController;
 
-            this.save = function () {
+            this.save = function() {
                 this.externalSaveFunction(gameState);
             };
 
-            this.reset = function () {
+            this.reset = function() {
                 log("reset");
                 this.gameState = this.newGame();
             };
 
-            this.newGame = function () {
+            this.newGame = function() {
                 // Then initialise new
                 var newGameState = {};
                 newGameState.majorTickCounter = 0;
@@ -36,7 +36,7 @@ define([
                 newGameState.renown = 0;
 
                 newGameState.runningExpeditions = [];
-                newGameState.completedExpeditions = [];
+                newGameState.completedQuests = [];
 
                 // Take a local copy of the locations
                 newGameState.locationList = commonFunctions.clone(data.locations);
@@ -84,7 +84,7 @@ define([
 
             };
 
-            this.loadFromSavedData = function (savedData) {
+            this.loadFromSavedData = function(savedData) {
                 log("loadFromSavedData");
                 if (!savedData) {
                     this.newGameState = this.newGame();

@@ -15,34 +15,36 @@
 */
 
 define([
-    "app/CommonFunctions"],
+        "app/CommonFunctions"
+    ],
     function SessionManager(CommonFunctions) {
 
         commonFunctions = new CommonFunctions();
 
-        return function SessionManager(gameState) {
+        return function SessionManager(gameController) {
 
-            this.gameState = gameState;
+            this.gameController = gameController;
+            this.gameState = gameController.gameState;
             // Login
-            this.login = function () {
+            this.login = function() {
                 log("login");
 
-                gameState.timeSinceLastLogin = -1;
+                this.gameState.timeSinceLastLogin = -1;
                 var loginTime = Date.now();
-                if (gameState.loginTracker === undefined) {
-                    gameState.loginTracker = [];
-                } else if (gameState.loginTracker.length > 0) {
-                    gameState.timeSinceLastLogin = loginTime - gameState.loginTracker[gameState.loginTracker.length - 1].logout;
+                if (this.gameState.loginTracker === undefined) {
+                    this.gameState.loginTracker = [];
+                } else if (this.gameState.loginTracker.length > 0) {
+                    this.gameState.timeSinceLastLogin = loginTime - this.gameState.loginTracker[this.gameState.loginTracker.length - 1].logout;
                 }
-                gameState.loginTracker.push({ "login": loginTime });
+                this.gameState.loginTracker.push({ "login": loginTime });
             };
 
-            this.stillLoggedIn = function () {
-                if (gameState.loginTracker === undefined) {
-                    gameState.loginTracker = [];
-                    gameState.loginTracker.push({ "login": Date.now() });
+            this.stillLoggedIn = function() {
+                if (this.gameState.loginTracker === undefined) {
+                    this.gameState.loginTracker = [];
+                    this.gameState.loginTracker.push({ "login": Date.now() });
                 }
-                gameState.loginTracker[gameState.loginTracker.length - 1].logout = Date.now();
+                this.gameState.loginTracker[this.gameState.loginTracker.length - 1].logout = Date.now();
             };
 
         };
