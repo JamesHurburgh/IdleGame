@@ -37,8 +37,8 @@
         }
     ],
     "versions": [{
-            "number": "0.11.0",
-            "description": "Save management improved.",
+            "number": "0.10.6",
+            "description": "Stability.",
             "features": [
                 "Stability patches.",
                 "Save management improved."
