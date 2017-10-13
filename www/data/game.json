@@ -37,6 +37,13 @@
         }
     ],
     "versions": [{
+            "number": "0.10.7",
+            "description": "Stability.",
+            "features": [],
+            "bugfixes": [
+                "Alerts are now readable."
+            ]
+        }, {
             "number": "0.10.6",
             "description": "Stability.",
             "features": [
