@@ -15,18 +15,18 @@
         <div class="col-md-6" v-for="adventurer in AdventurerManager().getAdventurersAtStatus('Idle')">
             <div class="panel panel-default ">
                 <div class="panel-heading ">
-                    <h3 class="panel-title ">{{adventurer.name.full}} <span class="text-muted ">({{adventurer.race.adjective}} {{adventurer.type}} - {{adventurer.status}})</span>
+                    <h3 class="panel-title ">{{adventurer.name.full}}
                         <button v-if="adventurer.status=='Idle' " type="button " class="btn btn-info btn-xs pull-right " @click="AdventurerManager().talkTo(adventurer.name.first) ">Talk to {{adventurer.name.first}}</button>
                     </h3>
                 </div>
                 <div class="panel-body ">
+                    <div>Race: {{adventurer.race.adjective}}</div>
+                    <div>Occupation: {{adventurer.type}}</div>
+                    <div>Birth Date: {{TimeManager().getGameTime(adventurer.birthTime).toDateString()}}</div>
                     <span v-for="skill in adventurer.skills " :title="skill.name + ' ' + skill.amount "><img :alt="skill.name " v-for="n in skill.amount " width="24px " :src=" 'img/icons/' + DataManager().getData( 'skills', skill.name).icon + '.png' " /></span>
-                    <div v-if="AdventurerManager().getAdventurersQuest(adventurer) !== undefined">
-                        Quest: {{AdventurerManager().getAdventurersQuest(adventurer).contract.name}}
-                    </div>
                 </div>
                 <div class="panel-footer ">
-                    {{adventurer.age}} years old
+                    {{AdventurerManager().getAge(adventurer)}} years old
                     <div class="pull-right ">{{adventurer.experience}}xp</div>
                 </div>
             </div>
@@ -37,11 +37,15 @@
         <div class="col-md-6" v-for="adventurer in AdventurerManager().getAdventurersAtStatus('Questing')">
             <div class="panel panel-default ">
                 <div class="panel-heading ">
-                    <h3 class="panel-title ">{{adventurer.name.full}} <span class="text-muted ">({{adventurer.race.adjective}} {{adventurer.type}} - {{adventurer.status}})</span>
+                    <h3 class="panel-title ">{{adventurer.name.full}}
                         <button v-if="adventurer.status=='Idle' " type="button " class="btn btn-info btn-xs pull-right " @click="AdventurerManager().talkTo(adventurer.name.first) ">Talk to {{adventurer.name.first}}</button>
                     </h3>
                 </div>
                 <div class="panel-body ">
+                    <div>Race: {{adventurer.race.adjective}}</div>
+                    <div>Occupation: {{adventurer.type}}</div>
+                    <div>Birth Date: {{TimeManager().getGameTime(adventurer.birthTime).toDateString()}}</div>
+
                     <span v-for="skill in adventurer.skills " :title="skill.name + ' ' + skill.amount "><img :alt="skill.name " v-for="n in skill.amount " width="24px " :src=" 'img/icons/' + DataManager().getData( 'skills', skill.name).icon + '.png' " /></span>
                     <div v-if="AdventurerManager().getAdventurersQuest(adventurer) !== undefined">
                         Quest: {{AdventurerManager().getAdventurersQuest(adventurer).contract.name}}
@@ -59,15 +63,15 @@
         <div class="col-md-6" v-for="adventurer in AdventurerManager().getAdventurersAtStatus('Dead')">
             <div class="panel panel-default ">
                 <div class="panel-heading ">
-                    <h3 class="panel-title ">{{adventurer.name.full}} <span class="text-muted ">({{adventurer.race.adjective}} {{adventurer.type}} - {{adventurer.status}})</span>
+                    <h3 class="panel-title ">{{adventurer.name.full}}
                         <button v-if="adventurer.status=='Idle' " type="button " class="btn btn-info btn-xs pull-right " @click="AdventurerManager().talkTo(adventurer.name.first) ">Talk to {{adventurer.name.first}}</button>
                     </h3>
                 </div>
                 <div class="panel-body ">
+                    <div>Race: {{adventurer.race.adjective}}</div>
+                    <div>Occupation: {{adventurer.type}}</div>
+                    <div>Birth Date: {{TimeManager().getGameTime(adventurer.birthTime).toDateString()}}</div>
                     <span v-for="skill in adventurer.skills " :title="skill.name + ' ' + skill.amount "><img :alt="skill.name " v-for="n in skill.amount " width="24px " :src=" 'img/icons/' + DataManager().getData( 'skills', skill.name).icon + '.png' " /></span>
-                    <div v-if="AdventurerManager().getAdventurersQuest(adventurer) !== undefined">
-                        Quest: {{AdventurerManager().getAdventurersQuest(adventurer).contract.name}}
-                    </div>
                 </div>
                 <div class="panel-footer ">
                     {{adventurer.age}} years old
