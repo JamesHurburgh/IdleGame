@@ -20,13 +20,17 @@
                     </h3>
                 </div>
                 <div class="panel-body ">
-                    <div>Race: {{adventurer.race.adjective}}</div>
-                    <div>Occupation: {{adventurer.type}}</div>
-                    <div>Birth Date: {{TimeManager().getGameTime(adventurer.birthTime).toDateString()}}</div>
+                    <legend>Personal</legend>
+                    <div>Race: <strong>{{adventurer.race.adjective}}</strong></div>
+                    <div>Occupation: <strong>{{adventurer.type}}</strong></div>
+                    <div>Birth Date: <strong>{{TimeManager().getGameTime(adventurer.birthTime).toDateString()}}</strong> (<strong>{{AdventurerManager().getAge(adventurer)}}</strong> years old)</div>
+                    <legend>Skills</legend>
                     <span v-for="skill in adventurer.skills " :title="skill.name + ' ' + skill.amount "><img :alt="skill.name " v-for="n in skill.amount " width="24px " :src=" 'img/icons/' + DataManager().getData( 'skills', skill.name).icon + '.png' " /></span>
+                    <legend>Employment</legend>
+                    <img src="./img/icons/crown-coin.png" width="16px" /> Claims <strong>{{adventurer.wage}}</strong>% of earnings
+                    <div class="col-xs-12">"<em>{{AdventurerManager().getQuote(adventurer)}}</em>"</div>
                 </div>
                 <div class="panel-footer ">
-                    {{AdventurerManager().getAge(adventurer)}} years old
                     <div class="pull-right ">{{adventurer.experience}}xp</div>
                 </div>
             </div>
@@ -42,17 +46,19 @@
                     </h3>
                 </div>
                 <div class="panel-body ">
-                    <div>Race: {{adventurer.race.adjective}}</div>
-                    <div>Occupation: {{adventurer.type}}</div>
-                    <div>Birth Date: {{TimeManager().getGameTime(adventurer.birthTime).toDateString()}}</div>
-
+                    <h4>Personal</h4>
+                    <div>Race: <strong>{{adventurer.race.adjective}}</strong></div>
+                    <div>Occupation: <strong>{{adventurer.type}}</strong></div>
+                    <div>Birth Date: <strong>{{TimeManager().getGameTime(adventurer.birthTime).toDateString()}}</strong> (<strong>{{AdventurerManager().getAge(adventurer)}}</strong> years old)</div>
+                    <h4>Skills</h4>
                     <span v-for="skill in adventurer.skills " :title="skill.name + ' ' + skill.amount "><img :alt="skill.name " v-for="n in skill.amount " width="24px " :src=" 'img/icons/' + DataManager().getData( 'skills', skill.name).icon + '.png' " /></span>
+                    <h4>Employment</h4>
+                    <img src="./img/icons/crown-coin.png" width="16px" /> Claims <strong>{{adventurer.wage}}</strong>% of earnings
                     <div v-if="AdventurerManager().getAdventurersQuest(adventurer) !== undefined">
                         Quest: {{AdventurerManager().getAdventurersQuest(adventurer).contract.name}}
                     </div>
                 </div>
                 <div class="panel-footer ">
-                    {{adventurer.age}} years old
                     <div class="pull-right ">{{adventurer.experience}}xp</div>
                 </div>
             </div>
@@ -68,9 +74,9 @@
                     </h3>
                 </div>
                 <div class="panel-body ">
-                    <div>Race: {{adventurer.race.adjective}}</div>
-                    <div>Occupation: {{adventurer.type}}</div>
-                    <div>Birth Date: {{TimeManager().getGameTime(adventurer.birthTime).toDateString()}}</div>
+                    <div>Race: <strong>{{adventurer.race.adjective}}</strong></div>
+                    <div>Occupation: <strong>{{adventurer.type}}</strong></div>
+                    <div>Birth Date: <strong>{{TimeManager().getGameTime(adventurer.birthTime).toDateString()}}</strong></div>
                     <span v-for="skill in adventurer.skills " :title="skill.name + ' ' + skill.amount "><img :alt="skill.name " v-for="n in skill.amount " width="24px " :src=" 'img/icons/' + DataManager().getData( 'skills', skill.name).icon + '.png' " /></span>
                 </div>
                 <div class="panel-footer ">

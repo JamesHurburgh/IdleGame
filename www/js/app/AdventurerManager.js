@@ -99,7 +99,7 @@ define([
                 adventurer.name.full = adventurer.name.first + " " + adventurer.name.last;
                 var age = Math.floor(Math.random() * (raceTemplate.oldAge - raceTemplate.matureAge)) + raceTemplate.matureAge;
                 adventurer.birthTime = Date.now() - (age * 518400000) - (Math.random() * 518400000);
-                adventurer.wage = adventurerTemplate.baseCost;
+                adventurer.wage = common.varyFloat(adventurerTemplate.baseCost, 0.3);
                 adventurer.experience = adventurerTemplate.baseExperience;
                 adventurer.status = "Idle";
 
@@ -222,8 +222,12 @@ define([
                 }
             };
 
+            this.getQuote = function(adventurer) {
+                return chance.pickone(data.conversations.randomStatements);
+            };
+
             this.talkTo = function(adventurerName) {
-                this.gameController.MessageManager().message(adventurerName + " says '" + chance.pickone(conversations.randomStatements) + "'");
+                this.gameController.MessageManager().message(adventurerName + " says '" + this.getQuote() + "'");
             };
 
             this.prepAdventurersQueue = function(numberToPrep) {
