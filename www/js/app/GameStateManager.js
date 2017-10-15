@@ -30,11 +30,11 @@ define([
                 this.gameState.coins = 50;
                 this.gameState.renown = 0;
 
-                this.gameState.runningExpeditions = [];
+                this.gameState.runningQuests = [];
                 this.gameState.completedQuests = [];
 
                 // Take a local copy of the locations
-                this.gameState.locationList = commonFunctions.clone(data.locations);
+                this.gameController.LocationManager().resetLocations();
 
                 // var locationManager = this.gameController.LocationManager();
                 // locationManager.setCurrentLocation(this.gameState.locationList[0].name);

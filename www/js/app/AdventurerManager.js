@@ -100,6 +100,7 @@ define([
                 var age = Math.floor(Math.random() * (raceTemplate.oldAge - raceTemplate.matureAge)) + raceTemplate.matureAge;
                 adventurer.birthTime = Date.now() - (age * 518400000) - (Math.random() * 518400000);
                 adventurer.wage = common.varyFloat(adventurerTemplate.baseCost, 0.3);
+                adventurer.coins = Math.floor(Math.random() * 10);
                 adventurer.experience = adventurerTemplate.baseExperience;
                 adventurer.status = "Idle";
 
@@ -246,6 +247,26 @@ define([
 
             this.getAge = function(adventurer) {
                 return Math.floor((Date.now() - adventurer.birthTime) / 518400000);
+            };
+
+            this.giveAdventurerCoins = function(adventurer, coinsGained) {
+                adventurer = this.gameState.adventurerList.filter(a => a.id == adventurer.id)[0];
+                if (!adventurer.coins) adventurer.coins = 0;
+                adventurer.coins += coinsGained;
+            };
+
+            this.giveAdventurerXP = function(adventurer, xpGained) {
+                adventurer = this.gameState.adventurerList.filter(a => a.id == adventurer.id)[0];
+                if (!adventurer.experience) adventurer.experience = 0;
+                adventurer.experience += xpGained;
+            };
+
+            this.recoverRecoveredAdventureres = function() {
+                var adventures = this.getAdventurersAtStatus("Recovering").filter(adventurer => !adventurer.recoverTime || adventurer.recoverTime <= Date.now());
+                adventures.forEach(function(adventurer) {
+                    adventurer.status = "Idle";
+                    adventurer.recoverTime = null;
+                }, this);
             };
 
         };
