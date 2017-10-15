@@ -222,6 +222,14 @@ define([
                 }
             };
 
+            this.updateQuotes = function() {
+                var adventures = this.getAdventurersAtStatus("Idle").filter(adventurer => !adventurer.quoteExpires || adventurer.quoteExpires <= Date.now());
+                adventures.forEach(function(adventurer) {
+                    adventurer.quote = this.getQuote(adventurer);
+                    adventurer.quoteExpires = Math.floor(Date.now() + 60000 + Math.random() * 1440000);
+                }, this);
+            };
+
             this.getQuote = function(adventurer) {
                 return chance.pickone(data.conversations.randomStatements);
             };
