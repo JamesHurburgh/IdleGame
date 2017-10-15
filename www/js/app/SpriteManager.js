@@ -10,9 +10,9 @@
 */
 
 define([
-        "app/CommonFunctions",
-        "app/DataManager"
-    ],
+    "app/CommonFunctions",
+    "app/DataManager"
+],
     function SpriteManager(
         CommonFunctions,
         DataManager) {
@@ -23,7 +23,7 @@ define([
 
             this.gameState = gameState;
 
-            this.getIcon = function(iconFor) {
+            this.getIcon = function (iconFor) {
                 switch (iconFor) {
                     case "coins":
                         return "./img/icons/crown-coin.png";
@@ -31,6 +31,16 @@ define([
                         return "./img/icons/thumb-up.png";
                     case "item":
                         return "./img/icons/swap-bag.png";
+                    case "dead":
+                        return "./img/icons/dead-head.png";
+                    case "idle":
+                        return "./img/icons/sleepy.png";
+                    case "injured":
+                        return "./img/icons/pummeled.png";
+                    case "questing":
+                        return "./img/icons/cowled.png";
+                    case "adventurer":
+                        return "./img/characters/base.png";
                 }
             };
 
