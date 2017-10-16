@@ -274,12 +274,27 @@ define([
                 }, this);
 
                 // TODO THis logic need to look at each specific injury, not just the whole adventurer
-                // var healingAdventures = this.getAdventurersAtStatus("Injured").filter(adventurer => !adventurer.healTime || adventurer.healTime <= Date.now());
-                // healingAdventures.forEach(function (adventurer) {
-                //     adventurer.status = "Recovering";
-                //     adventurer.recoverTime = null;
-                //     adventurer.healTime = null;
-                // }, this);
+                var healingAdventures = this.getAdventurersAtStatus("Injured").filter(adventurer => adventurer.injuries.filter(injury => injury.healTime <= Date.now()).length > 0);
+
+                healingAdventures.forEach(function (adventurer) {
+
+                    var healedInjuries = adventurer.injuries.filter(injury => injury.healTime <= Date.now());
+
+                    healedInjuries.forEach(function (injury) {
+                        adventurer.injuries.splice(adventurer.injuries.indexOf(injury));
+                    }, this);
+
+                    if (adventurer.injuries.length === 0) {
+                        this.setAdventurerRecovering(adventurer);
+                        adventurer.status = "Recovering";
+                        adventurer.recoverTime = Date.now() + 1440000; // Recover for one day
+                    }
+                }, this);
+            };
+
+            this.setAdventurerRecovering = function (adventurer) {
+                adventurer.status = "Recovering";
+                adventurer.recoverTime = Date.now() + 1440000; // Recover for one day
             };
 
             this.generateInjury = function () {

@@ -159,9 +159,7 @@ define([
                                 quest.survivors.push({ adventurer: adventurer, injuriesGained: injury });
                             }
                         } else {
-                            adventurer.status = "Recovering";
-                            adventurer.recoverTime = Date.now() + 1440000; // Recover for one day
-
+                            this.gameController.AdventurerManager().setAdventurerRecovering(adventurer);
                             quest.survivors.push({ adventurer: adventurer });
                         }
                     }, this);

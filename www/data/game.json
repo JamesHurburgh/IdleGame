@@ -43,7 +43,8 @@
             "description": "Adventurers recover",
             "features": [
                 "Adventurers who die have their time and cause of death remembered.",
-                "Adventurers are now injured instead of killed."
+                "Adventurers are now injured instead of killed.",
+                "Injuries heal over time."
             ],
             "bugfixes": []
         },
