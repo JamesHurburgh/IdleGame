@@ -39,6 +39,15 @@
     ],
     "versions": [
         {
+            "number": "0.11.2",
+            "description": "Adventurers recover",
+            "features": [
+                "Adventurers who die have their time and cause of death remembered.",
+                "Adventurers are now injured instead of killed."
+            ],
+            "bugfixes": []
+        },
+        {
             "number": "0.11.1",
             "description": "Adventurers recover",
             "features": [],

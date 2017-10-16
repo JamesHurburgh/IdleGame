@@ -249,6 +249,11 @@ define([
                 return Math.floor((Date.now() - adventurer.birthTime) / 518400000);
             };
 
+            this.getAgeAtDeath = function (adventurer) {
+                if (!adventurer.timeOfDeath) adventurer.timeOfDeath = Date.now();
+                return Math.floor((adventurer.timeOfDeath - adventurer.birthTime) / 518400000);
+            };
+
             this.giveAdventurerCoins = function (adventurer, coinsGained) {
                 adventurer = this.gameState.adventurerList.filter(a => a.id == adventurer.id)[0];
                 if (!adventurer.coins) adventurer.coins = 0;
@@ -267,6 +272,45 @@ define([
                     adventurer.status = "Idle";
                     adventurer.recoverTime = null;
                 }, this);
+
+                // TODO THis logic need to look at each specific injury, not just the whole adventurer
+                // var healingAdventures = this.getAdventurersAtStatus("Injured").filter(adventurer => !adventurer.healTime || adventurer.healTime <= Date.now());
+                // healingAdventures.forEach(function (adventurer) {
+                //     adventurer.status = "Recovering";
+                //     adventurer.recoverTime = null;
+                //     adventurer.healTime = null;
+                // }, this);
+            };
+
+            this.generateInjury = function () {
+                var anatomy = data.anatomy.filter(a => a.race == "human")[0];
+                return {
+                    injuryType: "Injured",
+                    bodyPart: chance.pickone(anatomy.bodyparts),
+                    healTime: Date.now() + Math.floor(Math.random() * 50000) + 10000
+                };
+            };
+
+            this.injureAdventurer = function (adventurer, causeOfInjury) {
+                adventurer = this.gameState.adventurerList.filter(a => a.id == adventurer.id)[0];
+                if (!adventurer.injuries) adventurer.injuries = [];
+
+                var injury = this.generateInjury();
+                adventurer.injuries.push(injury);
+                adventurer.status = "Injured";
+                if (adventurer.injuries.length > 2) {
+                    this.killAdventurer(adventurer, causeOfInjury);
+                }
+                return injury;
+            };
+
+            this.killAdventurer = function (adventurer, causeOfDeath) {
+                this.gameController.StatisticsManager().trackStat("death", "adventurer", 1);
+                adventurer = this.gameState.adventurerList.filter(a => a.id == adventurer.id)[0];
+                adventurer.status = "Dead";
+                adventurer.timeOfDeath = Date.now();
+                adventurer.causeOfDeath = causeOfDeath;
+
             };
 
         };
