@@ -28,6 +28,7 @@ Each byte represents a different part of an image, for example a dwarf might hav
 1. Features
 
 ## Time spans
+
 The Otium hours minutes and seconds work as per the real world.  The week is 8 days long, each month is consistently 30 days long and there are 12 months.  Year counting is from the time 'It' retreated from the world and left the races to their own devices.
 
 1 second real-time is 1 minute in game therefore the following is also true:
@@ -44,26 +45,58 @@ The Otium hours minutes and seconds work as per the real world.  The week is 8 d
 | 6 days        | 1 year    | 518400000     | 518400    |
 
 ## Mythology and the history of magic
+
 A supreme being exists, but is mostly ambivilent.  Eons ago It tired of dealing with puny mortals but still felt pity for their short lives so It set in place contracts by which they could still petition It for 'miracles'.  There were two opposing sides of the clergy when It retreated from the world.  Those closest to 'It' knew what power they could wield and planned ahead, asking 'It' for a base set of rituals that they could combine to form almost any effect they desired.  Those closest to the people simply wished for some predefined 'miracles' that they could petition to use for the benfit of all.
 
 ### Other gods
+
 Over time, some mages and clerics have accumulated enough power to set themselves up as demi-gods, seeming essentially god like to mortals.  However all their power comes from the ambilalence of 'It' and 'It' could at any time withdraw their power if 'It' saw fit.
 
 ### Mages and Clerics
+
 Those who studied the rituals become what are now known as mages, while those who followed the petitioning of miracles became what are now known as clerics.
 
 ## Quests
+
 * Slay a white/red/green/black/blue/yellow dragon
 * Defeat an evil wizard
 * Defend peasants from zombies
+* * Travel to the location [Toughness]
+* * Fight zombies [Fighting]
+* * Dodge the zombies [Agility]
+* * Fight more zombies [Fighting]
 * Close a portal to Heck
 * Retreive a valueable artifact
+* * Travel to the location [Toughness]
+* * Find the artefact [Perception]
+* * Dodge the traps [Agility]
+* * Travel home [Toughness]
 * Investigate a string of local murders
 * Clear rats out of the tavern basement
+* * Fight rats [Fighting]
+* * Fight more rats [Fighting]
 * Guard an expedition
 * Collect ingredients for a rare potion
+* * Travel to the location [Toughness]
+* * Find ingredients [Perception]
 * Defeat a local liche
 * Finding a missing resident
-* 
+* * Look for clues [Perception]
+* * Investigate clues [Intelligence]
+* * Rescue resident [Fighting]
 
-Scrounging in the dirt gives bad results.
+## Mantis Body Parts
+
+Head
+Left Antennae
+Right Antennae
+Thorax
+Abdomen
+Left Upper Arm
+Right Upper Arm
+Left Lower Arm
+Right Lower Arm
+Left Leg
+Right Leg
+Left Wing
+Right Wing
