@@ -108,6 +108,6 @@ Each race will initially have some weakness or idosyncracy.  Once that weakness 
 * Lighfoot - Childish
 * Dwarf - Drunk
 * Giants - Dumb
-* Tarkash - 
+* Tarkash -
 * Boldorn - Slow
 * Phsytik - Confused

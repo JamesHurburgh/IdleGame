@@ -51,7 +51,7 @@ define([
                 if (!skill || !contract) return false;
                 var skillRequiredForContract = contract.requirements.attributes.filter(sk => sk.type == skill.name)[0];
                 return skillRequiredForContract !== undefined && skillRequiredForContract.amount > 0;
-            }
+            };
 
             this.rejectSelectedContract = function() {
                 this.rejectContract(this.getSelectedContract());
@@ -228,12 +228,12 @@ define([
                         //     return accumulator + survivor.adventurer.wage;
                         // });
 
-                        for (var survivorIndex = 0; survivorIndex < quest.survivors.length; survivorIndex++) {
-                            var survivor = quest.survivors[survivorIndex];
-                            var coinsGained = Math.ceil((survivor.adventurer.wage / 100) * coins);
+                        for (var survivorIndexCoins = 0; survivorIndexCoins < quest.survivors.length; survivorIndexCoins++) {
+                            var survivorCoin = quest.survivors[survivorIndexCoins];
+                            var coinsGained = Math.ceil((survivorCoin.adventurer.wage / 100) * coins);
                             remainingCoins -= coinsGained;
-                            survivor.coinsGained = coinsGained;
-                            this.gameController.AdventurerManager().giveAdventurerCoins(survivor.adventurer, coinsGained);
+                            survivorCoin.coinsGained = coinsGained;
+                            this.gameController.AdventurerManager().giveAdventurerCoins(survivorCoin.adventurer, coinsGained);
                         }
 
                     }
