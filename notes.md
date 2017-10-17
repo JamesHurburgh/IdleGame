@@ -85,18 +85,17 @@ Those who studied the rituals become what are now known as mages, while those wh
 * * Investigate clues [Intelligence]
 * * Rescue resident [Fighting]
 
-## Mantis Body Parts
+## Races
+Each race will initially seem weak in some way.  Once that weakness is removed from a particular character of that race it will help reinforce that this character is special in some way.
 
-Head
-Left Antennae
-Right Antennae
-Thorax
-Abdomen
-Left Upper Arm
-Right Upper Arm
-Left Lower Arm
-Right Lower Arm
-Left Leg
-Right Leg
-Left Wing
-Right Wing
+* Humans - Ambivilence
+* Elf - Arrogant?
+* Orc - Anger
+* Pixie - Insanity
+* Merfolk - Distant
+* Lighfoot - Childish
+* Dwarf - Drunk
+* Giants - Dumb
+* Tarkash - 
+* Boldorn - Slow
+* Phsytik - Confused
