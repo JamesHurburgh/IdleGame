@@ -106,7 +106,7 @@ define([
                 adventurer.name.full = adventurer.name.first + " " + adventurer.name.last;
                 var age = Math.floor(Math.random() * (raceTemplate.oldAge - raceTemplate.matureAge)) + raceTemplate.matureAge;
                 adventurer.birthTime = Date.now() - (age * 518400000) - (Math.random() * 518400000);
-                adventurer.wage = common.varyFloat(adventurerTemplate.baseCost, 0.3);
+                adventurer.wage = common.varyFloat(adventurerTemplate.baseCut, 0.3);
                 adventurer.coins = Math.floor(Math.random() * 10);
                 adventurer.experience = adventurerTemplate.baseExperience;
                 adventurer.status = "Idle";
