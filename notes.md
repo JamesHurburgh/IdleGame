@@ -85,13 +85,25 @@ Those who studied the rituals become what are now known as mages, while those wh
 * * Investigate clues [Intelligence]
 * * Rescue resident [Fighting]
 
+### Report Example
+
+Travelling to wishing well ...
+Looking for coins ... FAILED!
+Looking for coins ... FAILED!
+Looking for coins ... Found!
+Retrieving coins ... FAILED!
+    Evan fell into the well and hit his head.
+Retrieving coins ... Done!!
+Travelling home ...
+
 ## Races
-Each race will initially seem weak in some way.  Once that weakness is removed from a particular character of that race it will help reinforce that this character is special in some way.
+
+Each race will initially have some weakness or idosyncracy.  Once that weakness is removed from a particular character of that race it will help reinforce that this character is special in some way.
 
 * Humans - Ambivilence
 * Elf - Arrogant?
 * Orc - Anger
-* Pixie - Insanity
+* Pixie - Insane
 * Merfolk - Distant
 * Lighfoot - Childish
 * Dwarf - Drunk

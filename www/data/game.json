@@ -41,7 +41,7 @@
             "description": "Statistics and Achievements catch-up",
             "features": [
                 "Added statistics to: Achievements, Adventurers, Rejecting contracts",
-                "Added achievements for: ",
+                "Added achievements for: hiring genders, races nd for deaths",
                 "Adventurers have genders."
             ],
             "bugfixes": []
