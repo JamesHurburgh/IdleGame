@@ -3,8 +3,7 @@
     "description": "Adventuring is dangerous. Hire someone else to do it for you!",
     "author": "James Hurburgh",
     "author-uri": "",
-    "globals": [
-        {
+    "globals": [{
             "name": "chanceOfNewContract",
             "baseValue": 0.05
         },
@@ -37,12 +36,11 @@
             "baseValue": 1
         }
     ],
-    "versions": [
-        {
+    "versions": [{
             "number": "0.11.3",
             "description": "Statistics and Achievements catch-up",
             "features": [
-                "Added statistics to: Achievements, Hiring, ",
+                "Added statistics to: Achievements, Adventurers, Rejecting contracts",
                 "Added achievements for: ",
                 "Adventurers have genders."
             ],
