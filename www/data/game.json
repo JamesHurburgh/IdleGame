@@ -44,6 +44,7 @@
             "features": [
                 "Adventurers who die have their time and cause of death remembered.",
                 "Adventurers are now injured instead of killed.",
+                "Injuries are based on the anatomy of the injured race.",
                 "Injuries heal over time."
             ],
             "bugfixes": []

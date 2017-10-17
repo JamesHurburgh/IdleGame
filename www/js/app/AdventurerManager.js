@@ -297,12 +297,11 @@ define([
                 adventurer.recoverTime = Date.now() + 1440000; // Recover for one day
             };
 
-            this.generateInjury = function () {
-                var anatomy = data.anatomy.filter(a => a.race == "human")[0];
+            this.generateInjury = function (anatomy) {
                 return {
                     injuryType: "Injured",
                     bodyPart: chance.pickone(anatomy.bodyparts),
-                    healTime: Date.now() + Math.floor(Math.random() * 50000) + 10000
+                    healTime: Date.now() + Math.floor(Math.random() * 7 * 1440000) + 1440000 // Recover for at least one day, up to a week.
                 };
             };
 
@@ -310,7 +309,9 @@ define([
                 adventurer = this.gameState.adventurerList.filter(a => a.id == adventurer.id)[0];
                 if (!adventurer.injuries) adventurer.injuries = [];
 
-                var injury = this.generateInjury();
+                var anatomy = data.anatomy.filter(a => a.race == adventurer.race.name)[0];
+
+                var injury = this.generateInjury(anatomy);
                 adventurer.injuries.push(injury);
                 adventurer.status = "Injured";
                 if (adventurer.injuries.length > 2) {
