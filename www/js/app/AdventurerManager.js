@@ -68,10 +68,10 @@ define([
                 var adventurer = notice.adventurer;
                 if (this.canHire(adventurer)) {
                     this.gameController.PlayerManager().spendCoins(this.getCost(adventurer));
+                    this.addAdventurer(adventurer);
+                    this.removeFromAvialableHires(notice);
+                    this.trackAdventurerStats(adventurer, "hire", 1);
                 }
-
-                this.addAdventurer(adventurer);
-                this.removeFromAvialableHires(notice);
             };
 
             this.removeFromAvialableHires = function (notice) {
@@ -93,8 +93,9 @@ define([
                 adventurer.type = adventurerTemplate.name;
                 adventurer.race = raceTemplate;
                 adventurer.id = common.uuidv4();
+                adventurer.gender = chance.pickone(["male", "female"]);
                 adventurer.name = {};
-                adventurer.name.first = chance.first();
+                adventurer.name.first = chance.first({ gender: adventurer.gender });
                 adventurer.name.last = chance.last();
                 adventurer.name.full = adventurer.name.first + " " + adventurer.name.last;
                 var age = Math.floor(Math.random() * (raceTemplate.oldAge - raceTemplate.matureAge)) + raceTemplate.matureAge;
@@ -144,7 +145,9 @@ define([
                 party.forEach(function (adventurer) {
                     adventurer.status = "Questing";
                     adventurer.includeInParty = false;
+                    this.trackAdventurerStats(adventurer, "send", 1);
                 }, this);
+                this.gameController.StatisticsManager().trackStat("send", "party");
             };
 
             this.getCurrentPartyAttribute = function (attributeName) {
@@ -216,8 +219,7 @@ define([
                     this.gameController.LocationManager().getCurrentLocation().availableAdventurers.sort(function (a, b) {
                         return a.expires - b.expires;
                     });
-                    this.gameController.StatisticsManager().trackStat("available-adventurer", adventurerTemplate.name, 1);
-                    this.gameController.StatisticsManager().trackStat("available", "adventurers", 1);
+                    this.trackAdventurerStats(adventurer, "available", 1);
                 } catch (error) {
                     log(error);
                 }
@@ -233,10 +235,6 @@ define([
 
             this.getQuote = function (adventurer) {
                 return chance.pickone(data.conversations.randomStatements);
-            };
-
-            this.talkTo = function (adventurerName) {
-                this.gameController.MessageManager().message(adventurerName + " says '" + this.getQuote() + "'");
             };
 
             this.prepAdventurersQueue = function (numberToPrep) {
@@ -258,12 +256,19 @@ define([
                 adventurer = this.gameState.adventurerList.filter(a => a.id == adventurer.id)[0];
                 if (!adventurer.coins) adventurer.coins = 0;
                 adventurer.coins += coinsGained;
+                this.trackAdventurerStats(adventurer, "give-coins", coinsGained);
             };
 
             this.giveAdventurerXP = function (adventurer, xpGained) {
                 adventurer = this.gameState.adventurerList.filter(a => a.id == adventurer.id)[0];
                 if (!adventurer.experience) adventurer.experience = 0;
                 adventurer.experience += xpGained;
+                this.trackAdventurerStats(adventurer, "give-xp", xpGained);
+
+            };
+
+            this.trackAdventurerStats = function (adventurer, action, amount) {
+                this.gameController.StatisticsManager().trackStats(action, ["adventurer", adventurer.type, adventurer.race.name, adventurer.gender], amount);
             };
 
             this.recoverAdventurers = function () {
@@ -271,6 +276,8 @@ define([
                 adventures.forEach(function (adventurer) {
                     adventurer.status = "Idle";
                     adventurer.recoverTime = null;
+                    this.trackAdventurerStats(adventurer, "recover", 1);
+
                 }, this);
 
                 // TODO THis logic need to look at each specific injury, not just the whole adventurer
@@ -286,8 +293,6 @@ define([
 
                     if (adventurer.injuries.length === 0) {
                         this.setAdventurerRecovering(adventurer);
-                        adventurer.status = "Recovering";
-                        adventurer.recoverTime = Date.now() + 1440000; // Recover for one day
                     }
                 }, this);
             };
@@ -295,6 +300,7 @@ define([
             this.setAdventurerRecovering = function (adventurer) {
                 adventurer.status = "Recovering";
                 adventurer.recoverTime = Date.now() + 1440000; // Recover for one day
+                this.trackAdventurerStats(adventurer, "heal", 1);
             };
 
             this.generateInjury = function (anatomy) {
@@ -314,6 +320,7 @@ define([
                 var injury = this.generateInjury(anatomy);
                 adventurer.injuries.push(injury);
                 adventurer.status = "Injured";
+                this.trackAdventurerStats(adventurer, "injure", 1);
                 if (adventurer.injuries.length > 2) {
                     this.killAdventurer(adventurer, causeOfInjury);
                 }
@@ -321,14 +328,12 @@ define([
             };
 
             this.killAdventurer = function (adventurer, causeOfDeath) {
-                this.gameController.StatisticsManager().trackStat("death", "adventurer", 1);
                 adventurer = this.gameState.adventurerList.filter(a => a.id == adventurer.id)[0];
                 adventurer.status = "Dead";
                 adventurer.timeOfDeath = Date.now();
                 adventurer.causeOfDeath = causeOfDeath;
-
+                this.trackAdventurerStats(adventurer, "death", 1);
             };
-
         };
     }
 );

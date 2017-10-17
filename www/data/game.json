@@ -39,8 +39,18 @@
     ],
     "versions": [
         {
+            "number": "0.11.3",
+            "description": "Statistics and Achievements catch-up",
+            "features": [
+                "Added statistics to: Achievements, Hiring, ",
+                "Added achievements for: ",
+                "Adventurers have genders."
+            ],
+            "bugfixes": []
+        },
+        {
             "number": "0.11.2",
-            "description": "Inury update.",
+            "description": "Injury update.",
             "features": [
                 "Adventurers who die have their time and cause of death remembered.",
                 "Adventurers are now injured instead of killed.",
