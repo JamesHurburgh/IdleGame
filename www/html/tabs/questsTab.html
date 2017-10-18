@@ -15,6 +15,14 @@
                     <h3 class="panel-title">{{quest.contract.name}}</h3>
                 </div>
                 <div class="panel-body">
+                    <div v-if="quest.tasks">
+                        <h4>Tasks</h4>
+                        <ul>
+                            <li v-for="task in quest.tasks">
+                                {{task.name}}
+                            </li>
+                        </ul>
+                    </div>
                     <ul>
                         <li v-for="adventurer in quest.party">
                             {{adventurer.name.full}}
@@ -40,6 +48,14 @@
                 <div class="panel-body">
                     <span class="text-info">{{quest.completionMessage}}</span>
                     <span v-if="quest.casualaties.length !== 0" class="text-warning">{{quest.contract.deathMessage}}</span>
+                    <div v-if="quest.tasks">
+                        <h4>Tasks</h4>
+                        <ul>
+                            <li v-for="task in quest.tasks">
+                                {{task}}
+                            </li>
+                        </ul>
+                    </div>
                     <div>Ran from {{TimeManager().getGameTime(quest.start).toString()}} to {{TimeManager().getGameTime(quest.expires).toString()}}</div>
                     <div v-if="quest.success">
                         <h4>Rewards</h4>

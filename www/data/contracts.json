@@ -1,4 +1,5 @@
-[{
+[
+    {
         "name": "Follow a dubious treasure map",
         "successMessage": "You are given a sack, presumably what's left of the treasure.",
         "failureMessage": "Either the map was a fake, or someone else got there first.",
@@ -9,7 +10,8 @@
         "duration": 3500,
         "successChance": 0.05,
         "rewardFactor": 0.2,
-        "rewards": [{
+        "rewards": [
+            {
                 "chance": 1,
                 "reward": {
                     "type": "coins",
@@ -42,7 +44,8 @@
         ],
         "requirements": {
             "renown": 0,
-            "adventurers": [{
+            "adventurers": [
+                {
                     "type": "Peasant",
                     "amount": 1
                 },
@@ -55,7 +58,8 @@
                     "amount": 1
                 }
             ],
-            "attributes": [{
+            "attributes": [
+                {
                     "type": "Toughness",
                     "amount": 2
                 },
@@ -81,7 +85,8 @@
         "duration": 3500,
         "successChance": 0.15,
         "rewardFactor": 0.2,
-        "rewards": [{
+        "rewards": [
+            {
                 "chance": 1,
                 "reward": {
                     "type": "coins",
@@ -114,7 +119,8 @@
         ],
         "requirements": {
             "renown": 0,
-            "adventurers": [{
+            "adventurers": [
+                {
                     "type": "Peasant",
                     "amount": 1
                 },
@@ -139,7 +145,8 @@
                     "amount": 1
                 }
             ],
-            "attributes": [{
+            "attributes": [
+                {
                     "type": "Toughness",
                     "amount": 5
                 },
@@ -165,7 +172,8 @@
         "duration": 3500,
         "successChance": 0.25,
         "rewardFactor": 0.2,
-        "rewards": [{
+        "rewards": [
+            {
                 "chance": 1,
                 "reward": {
                     "type": "coins",
@@ -198,7 +206,8 @@
         ],
         "requirements": {
             "renown": 0,
-            "adventurers": [{
+            "adventurers": [
+                {
                     "type": "Peasant",
                     "amount": 1
                 },
@@ -235,7 +244,8 @@
                     "amount": 1
                 }
             ],
-            "attributes": [{
+            "attributes": [
+                {
                     "type": "Toughness",
                     "amount": 10
                 },
@@ -262,28 +272,50 @@
         "successChance": 1,
         "contractAmount": 15,
         "rewardFactor": 0.1,
+        "startTaskId": "1",
         "tasks": [
-            { "name": "Travel to the work site", "duration": 15 },
-            { "name": "Honest labor", "duration": 560 },
-            { "name": "Travel home", "duration": 15 }
-        ],
-        "rewards": [{
-            "chance": 1,
-            "reward": {
-                "type": "renown",
-                "amount": 1
+            {
+                "id": "1",
+                "name": "Travel to the work site",
+                "duration": 15,
+                "afterSuccessGoToTaskId": "2"
+            },
+            {
+                "id": "2",
+                "name": "Honest labor",
+                "duration": 560,
+                "afterSuccessGoToTaskId": "3"
+            },
+            {
+                "id": "3",
+                "name": "Travel home",
+                "duration": 15,
+                "afterSuccessFinishQuest": "true"
             }
-        }],
+        ],
+        "rewards": [
+            {
+                "chance": 1,
+                "reward": {
+                    "type": "renown",
+                    "amount": 1
+                }
+            }
+        ],
         "requirements": {
             "renown": 0,
-            "adventurers": [{
-                "type": "Peasant",
-                "amount": 1
-            }],
-            "attributes": [{
-                "type": "Toughness",
-                "amount": 1
-            }]
+            "adventurers": [
+                {
+                    "type": "Peasant",
+                    "amount": 1
+                }
+            ],
+            "attributes": [
+                {
+                    "type": "Toughness",
+                    "amount": 1
+                }
+            ]
         }
     },
     {
@@ -298,12 +330,25 @@
         "successChance": 0.9,
         "rewardFactor": 0.1,
         "tasks": [
-            { "name": "Travel to the graveyard", "duration": 10 },
-            { "name": "Search for valuables", "duration": 50 },
-            { "name": "Collect valuables", "duration": 15 },
-            { "name": "Travel home", "duration": 10 }
+            {
+                "name": "Travel to the graveyard",
+                "duration": 10
+            },
+            {
+                "name": "Search for valuables",
+                "duration": 50
+            },
+            {
+                "name": "Collect valuables",
+                "duration": 15
+            },
+            {
+                "name": "Travel home",
+                "duration": 10
+            }
         ],
-        "rewards": [{
+        "rewards": [
+            {
                 "chance": 1,
                 "reward": {
                     "type": "coins",
@@ -321,14 +366,18 @@
         ],
         "requirements": {
             "renown": 0,
-            "adventurers": [{
-                "type": "Drunkard",
-                "amount": 1
-            }],
-            "attributes": [{
-                "type": "Perception",
-                "amount": 1
-            }]
+            "adventurers": [
+                {
+                    "type": "Drunkard",
+                    "amount": 1
+                }
+            ],
+            "attributes": [
+                {
+                    "type": "Perception",
+                    "amount": 1
+                }
+            ]
         }
     },
     {
@@ -343,28 +392,46 @@
         "successChance": 0.9,
         "rewardFactor": 0.1,
         "tasks": [
-            { "name": "Travel to wishing well", "duration": 5 },
-            { "name": "Search for coins", "duration": 5 },
-            { "name": "Collect coins", "duration": 5 },
-            { "name": "Travel home", "duration": 5 }
-        ],
-        "rewards": [{
-            "chance": 1,
-            "reward": {
-                "type": "coins",
-                "amount": 5
+            {
+                "name": "Travel to wishing well",
+                "duration": 5
+            },
+            {
+                "name": "Search for coins",
+                "duration": 5
+            },
+            {
+                "name": "Collect coins",
+                "duration": 5
+            },
+            {
+                "name": "Travel home",
+                "duration": 5
             }
-        }],
+        ],
+        "rewards": [
+            {
+                "chance": 1,
+                "reward": {
+                    "type": "coins",
+                    "amount": 5
+                }
+            }
+        ],
         "requirements": {
             "renown": 0,
-            "adventurers": [{
-                "type": "Drunkard",
-                "amount": 1
-            }],
-            "attributes": [{
-                "type": "Perception",
-                "amount": 1
-            }]
+            "adventurers": [
+                {
+                    "type": "Drunkard",
+                    "amount": 1
+                }
+            ],
+            "attributes": [
+                {
+                    "type": "Perception",
+                    "amount": 1
+                }
+            ]
         }
     },
     {
@@ -378,7 +445,8 @@
         "duration": 75,
         "successChance": 0.5,
         "rewardFactor": 0.1,
-        "rewards": [{
+        "rewards": [
+            {
                 "chance": 1,
                 "reward": {
                     "type": "coins",
@@ -396,11 +464,14 @@
         ],
         "requirements": {
             "renown": 0,
-            "adventurers": [{
-                "type": "Street rat",
-                "amount": 2
-            }],
-            "attributes": [{
+            "adventurers": [
+                {
+                    "type": "Street rat",
+                    "amount": 2
+                }
+            ],
+            "attributes": [
+                {
                     "type": "Fighting",
                     "amount": 1
                 },
@@ -424,26 +495,46 @@
         "contractAmount": 75,
         "rewardFactor": 0.1,
         "tasks": [
-            { "name": "Find the mark", "duration": 10 },
-            { "name": "Tail the mark", "duration": 250 },
-            { "name": "Hide from the mark", "duration": 15 },
-            { "name": "Continue tailing the mark", "duration": 150 },
-            { "name": "Travel home", "duration": 10 }
-        ],
-        "rewards": [{
-            "chance": 1,
-            "reward": {
-                "type": "renown",
-                "amount": 1
+            {
+                "name": "Find the mark",
+                "duration": 10
+            },
+            {
+                "name": "Tail the mark",
+                "duration": 250
+            },
+            {
+                "name": "Hide from the mark",
+                "duration": 15
+            },
+            {
+                "name": "Continue tailing the mark",
+                "duration": 150
+            },
+            {
+                "name": "Travel home",
+                "duration": 10
             }
-        }],
+        ],
+        "rewards": [
+            {
+                "chance": 1,
+                "reward": {
+                    "type": "renown",
+                    "amount": 1
+                }
+            }
+        ],
         "requirements": {
             "renown": 0,
-            "adventurers": [{
-                "type": "Street rat",
-                "amount": 1
-            }],
-            "attributes": [{
+            "adventurers": [
+                {
+                    "type": "Street rat",
+                    "amount": 1
+                }
+            ],
+            "attributes": [
+                {
                     "type": "Intelligence",
                     "amount": 2
                 },
@@ -466,13 +557,29 @@
         "successChance": 0.6,
         "rewardFactor": 0.2,
         "tasks": [
-            { "name": "Wander around", "duration": 10 },
-            { "name": "Chose target", "duration": 150 },
-            { "name": "Pick the target's pocket", "duration": 15 },
-            { "name": "Run away from the target", "duration": 50 },
-            { "name": "Travel home", "duration": 10 }
+            {
+                "name": "Wander around",
+                "duration": 10
+            },
+            {
+                "name": "Chose target",
+                "duration": 150
+            },
+            {
+                "name": "Pick the target's pocket",
+                "duration": 15
+            },
+            {
+                "name": "Run away from the target",
+                "duration": 50
+            },
+            {
+                "name": "Travel home",
+                "duration": 10
+            }
         ],
-        "rewards": [{
+        "rewards": [
+            {
                 "chance": 1,
                 "reward": {
                     "type": "coins",
@@ -490,14 +597,18 @@
         ],
         "requirements": {
             "renown": 0,
-            "adventurers": [{
-                "type": "Street rat",
-                "amount": 1
-            }],
-            "attributes": [{
-                "type": "Agility",
-                "amount": 1
-            }]
+            "adventurers": [
+                {
+                    "type": "Street rat",
+                    "amount": 1
+                }
+            ],
+            "attributes": [
+                {
+                    "type": "Agility",
+                    "amount": 1
+                }
+            ]
         }
     },
     {
@@ -512,20 +623,25 @@
         "successChance": 0.8,
         "contractAmount": 750,
         "rewardFactor": 0.2,
-        "rewards": [{
-            "chance": 1,
-            "reward": {
-                "type": "renown",
-                "amount": 1
+        "rewards": [
+            {
+                "chance": 1,
+                "reward": {
+                    "type": "renown",
+                    "amount": 1
+                }
             }
-        }],
+        ],
         "requirements": {
             "renown": 0,
-            "adventurers": [{
-                "type": "Drunkard",
-                "amount": 10
-            }],
-            "attributes": [{
+            "adventurers": [
+                {
+                    "type": "Drunkard",
+                    "amount": 10
+                }
+            ],
+            "attributes": [
+                {
                     "type": "Toughness",
                     "amount": 10
                 },
@@ -547,7 +663,8 @@
         "duration": 1000,
         "successChance": 0.5,
         "rewardFactor": 0.3,
-        "rewards": [{
+        "rewards": [
+            {
                 "chance": 1,
                 "reward": {
                     "type": "coins",
@@ -572,7 +689,8 @@
         ],
         "requirements": {
             "renown": 1,
-            "adventurers": [{
+            "adventurers": [
+                {
                     "type": "Brawler",
                     "amount": 1
                 },
@@ -585,7 +703,8 @@
                     "amount": 10
                 }
             ],
-            "attributes": [{
+            "attributes": [
+                {
                     "type": "Toughness",
                     "amount": 20
                 },
@@ -608,7 +727,8 @@
         "successChance": 0.5,
         "rewardFactor": 0.3,
         "contractAmount": 750,
-        "rewards": [{
+        "rewards": [
+            {
                 "chance": 1,
                 "reward": {
                     "type": "renown",
@@ -626,11 +746,14 @@
         ],
         "requirements": {
             "renown": 1,
-            "adventurers": [{
-                "type": "Fighter",
-                "amount": 2
-            }],
-            "attributes": [{
+            "adventurers": [
+                {
+                    "type": "Fighter",
+                    "amount": 2
+                }
+            ],
+            "attributes": [
+                {
                     "type": "Intelligence",
                     "amount": 5
                 },
@@ -656,7 +779,8 @@
         "duration": 1200,
         "successChance": 0.5,
         "rewardFactor": 0.4,
-        "rewards": [{
+        "rewards": [
+            {
                 "chance": 1,
                 "reward": {
                     "type": "coins",
@@ -681,7 +805,8 @@
         ],
         "requirements": {
             "renown": 1,
-            "adventurers": [{
+            "adventurers": [
+                {
                     "type": "Brawler",
                     "amount": 15
                 },
@@ -694,7 +819,8 @@
                     "amount": 10
                 }
             ],
-            "attributes": [{
+            "attributes": [
+                {
                     "type": "Intelligence",
                     "amount": 5
                 },
@@ -720,7 +846,8 @@
         "duration": 400,
         "successChance": 0.7,
         "rewardFactor": 0.2,
-        "rewards": [{
+        "rewards": [
+            {
                 "chance": 1,
                 "reward": {
                     "type": "coins",
@@ -737,14 +864,18 @@
         ],
         "requirements": {
             "renown": 1,
-            "adventurers": [{
-                "type": "Brawler",
-                "amount": 1
-            }],
-            "attributes": [{
-                "type": "Fighting",
-                "amount": 5
-            }]
+            "adventurers": [
+                {
+                    "type": "Brawler",
+                    "amount": 1
+                }
+            ],
+            "attributes": [
+                {
+                    "type": "Fighting",
+                    "amount": 5
+                }
+            ]
         }
     },
     {
@@ -759,16 +890,19 @@
         "successChance": 0.7,
         "rewardFactor": 0.2,
         "contractAmount": 600,
-        "rewards": [{
-            "chance": 1,
-            "reward": {
-                "type": "renown",
-                "amount": 2
+        "rewards": [
+            {
+                "chance": 1,
+                "reward": {
+                    "type": "renown",
+                    "amount": 2
+                }
             }
-        }],
+        ],
         "requirements": {
             "renown": 1,
-            "adventurers": [{
+            "adventurers": [
+                {
                     "type": "Brawler",
                     "amount": 1
                 },
@@ -781,7 +915,8 @@
                     "amount": 1
                 }
             ],
-            "attributes": [{
+            "attributes": [
+                {
                     "type": "Fighting",
                     "amount": 5
                 },
@@ -807,7 +942,8 @@
         "duration": 350,
         "successChance": 0.5,
         "rewardFactor": 0.2,
-        "rewards": [{
+        "rewards": [
+            {
                 "chance": 1,
                 "reward": {
                     "type": "coins",
@@ -833,11 +969,14 @@
         ],
         "requirements": {
             "renown": 1,
-            "adventurers": [{
-                "type": "Thief",
-                "amount": 2
-            }],
-            "attributes": [{
+            "adventurers": [
+                {
+                    "type": "Thief",
+                    "amount": 2
+                }
+            ],
+            "attributes": [
+                {
                     "type": "Intelligence",
                     "amount": 5
                 },
@@ -860,23 +999,29 @@
         "successChance": 1,
         "contractAmount": 125,
         "rewardFactor": 0.2,
-        "rewards": [{
-            "chance": 1,
-            "reward": {
-                "type": "renown",
-                "amount": 2
+        "rewards": [
+            {
+                "chance": 1,
+                "reward": {
+                    "type": "renown",
+                    "amount": 2
+                }
             }
-        }],
+        ],
         "requirements": {
             "renown": 0,
-            "adventurers": [{
-                "type": "Peasant",
-                "amount": 1
-            }],
-            "attributes": [{
-                "type": "Toughness",
-                "amount": 15
-            }]
+            "adventurers": [
+                {
+                    "type": "Peasant",
+                    "amount": 1
+                }
+            ],
+            "attributes": [
+                {
+                    "type": "Toughness",
+                    "amount": 15
+                }
+            ]
         }
     },
     {
@@ -891,20 +1036,25 @@
         "successChance": 1,
         "contractAmount": 750,
         "rewardFactor": 0.2,
-        "rewards": [{
-            "chance": 1,
-            "reward": {
-                "type": "renown",
-                "amount": 2
+        "rewards": [
+            {
+                "chance": 1,
+                "reward": {
+                    "type": "renown",
+                    "amount": 2
+                }
             }
-        }],
+        ],
         "requirements": {
             "renown": 0,
-            "adventurers": [{
-                "type": "Citizen",
-                "amount": 1
-            }],
-            "attributes": [{
+            "adventurers": [
+                {
+                    "type": "Citizen",
+                    "amount": 1
+                }
+            ],
+            "attributes": [
+                {
                     "type": "Toughness",
                     "amount": 5
                 },
@@ -927,20 +1077,25 @@
         "successChance": 1,
         "contractAmount": 750,
         "rewardFactor": 0.2,
-        "rewards": [{
-            "chance": 1,
-            "reward": {
-                "type": "renown",
-                "amount": 2
+        "rewards": [
+            {
+                "chance": 1,
+                "reward": {
+                    "type": "renown",
+                    "amount": 2
+                }
             }
-        }],
+        ],
         "requirements": {
             "renown": 0,
-            "adventurers": [{
-                "type": "Citizen",
-                "amount": 10
-            }],
-            "attributes": [{
+            "adventurers": [
+                {
+                    "type": "Citizen",
+                    "amount": 10
+                }
+            ],
+            "attributes": [
+                {
                     "type": "Toughness",
                     "amount": 10
                 },
@@ -963,23 +1118,29 @@
         "successChance": 1,
         "contractAmount": 150,
         "rewardFactor": 0.2,
-        "rewards": [{
-            "chance": 1,
-            "reward": {
-                "type": "renown",
-                "amount": 2
+        "rewards": [
+            {
+                "chance": 1,
+                "reward": {
+                    "type": "renown",
+                    "amount": 2
+                }
             }
-        }],
+        ],
         "requirements": {
             "renown": 0,
-            "adventurers": [{
-                "type": "Peasant",
-                "amount": 10
-            }],
-            "attributes": [{
-                "type": "Toughness",
-                "amount": 20
-            }]
+            "adventurers": [
+                {
+                    "type": "Peasant",
+                    "amount": 10
+                }
+            ],
+            "attributes": [
+                {
+                    "type": "Toughness",
+                    "amount": 20
+                }
+            ]
         }
     },
     {
@@ -993,7 +1154,8 @@
         "duration": 200,
         "successChance": 1,
         "rewardFactor": 0.3,
-        "rewards": [{
+        "rewards": [
+            {
                 "chance": 1,
                 "reward": {
                     "type": "coins",
@@ -1025,7 +1187,8 @@
         ],
         "requirements": {
             "renown": 0,
-            "adventurers": [{
+            "adventurers": [
+                {
                     "type": "Thief",
                     "amount": 1
                 },
@@ -1034,7 +1197,8 @@
                     "amount": 5
                 }
             ],
-            "attributes": [{
+            "attributes": [
+                {
                     "type": "Toughness",
                     "amount": 7
                 },
@@ -1061,7 +1225,8 @@
         "successChance": 1,
         "contractAmount": 1000,
         "rewardFactor": 0.3,
-        "rewards": [{
+        "rewards": [
+            {
                 "chance": 1,
                 "reward": {
                     "type": "renown",
@@ -1079,7 +1244,8 @@
         ],
         "requirements": {
             "renown": 0,
-            "adventurers": [{
+            "adventurers": [
+                {
                     "type": "Thief",
                     "amount": 2
                 },
@@ -1092,7 +1258,8 @@
                     "amount": 2
                 }
             ],
-            "attributes": [{
+            "attributes": [
+                {
                     "type": "Toughness",
                     "amount": 7
                 },
