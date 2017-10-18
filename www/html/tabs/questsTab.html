@@ -19,7 +19,8 @@
                         <h4>Tasks</h4>
                         <ul>
                             <li v-for="task in quest.tasks">
-                                {{task.name}}
+                                <span v-if="task.status == 'in-progress'">[{{TimeManager().getGameTime(task.startTime).toTimeString()}} - {{TimeManager().getGameTime(task.finishes).toTimeString()}}] {{task.name}} <span class="text-info">{{TimeManager().readableTime(task.finishes - Date.now())}} remaining</span></span>
+                                <span v-if="task.status == 'complete'">[{{TimeManager().getGameTime(task.startTime).toTimeString()}} - {{TimeManager().getGameTime(task.finishes).toTimeString()}}] {{task.name}}</span>
                             </li>
                         </ul>
                     </div>
@@ -52,15 +53,15 @@
                         <h4>Tasks</h4>
                         <ul>
                             <li v-for="task in quest.tasks">
-                                {{task}}
+                                <span v-if="task.status == 'in-progress'">[{{TimeManager().getGameTime(task.startTime).toTimeString()}} - {{TimeManager().getGameTime(task.finishes).toTimeString()}}] {{task.name}} <span class="text-info">{{TimeManager().readableTime(task.finishes - Date.now())}} remaining</span></span>
+                                <span v-if="task.status == 'complete'">[{{TimeManager().getGameTime(task.startTime).toTimeString()}} - {{TimeManager().getGameTime(task.finishes).toTimeString()}}] {{task.name}}</span>
                             </li>
                         </ul>
                     </div>
                     <div>Ran from {{TimeManager().getGameTime(quest.start).toString()}} to {{TimeManager().getGameTime(quest.expires).toString()}}</div>
                     <div v-if="quest.success">
                         <h4>Rewards</h4>
-                        <div v-if="quest.contract.contractAmount != undefined" class="text-success"><img src="./img/icons/crown-coin.png" width="24px" /> Contract amount: {{quest.contract.contractAmount}}
-                            coins
+                        <div v-if="quest.contract.contractAmount != undefined" class="text-success"><img src="./img/icons/crown-coin.png" width="24px" /> Contract amount: {{quest.contract.contractAmount}} coins
                         </div>
                         <div v-for="reward in quest.rewards">
                             <div class="text-success" v-if="reward.amount"><img :src="SpriteManager().getIcon(reward.type)" width="24px" /> {{reward.amount}} {{reward.type}}</div>
