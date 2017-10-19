@@ -1,0 +1,14 @@
+[{
+    "race": "Dwarf",
+    "translations": [
+        "elf|tree hugger"
+    ]
+}, {
+    "race": "Boldorn",
+    "translations": [
+        "human|squishy",
+        "giant|big squishy",
+        "dwarf|little squishy",
+        "lighfoot|tiny squishy"
+    ]
+}]
