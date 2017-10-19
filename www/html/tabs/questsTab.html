@@ -15,24 +15,33 @@
                     <h3 class="panel-title">{{quest.contract.name}}</h3>
                 </div>
                 <div class="panel-body">
-                    <div v-if="quest.tasks">
-                        <h4>Tasks</h4>
+                    <div v-if="quest.tasks.length !== 0">
+                        <h4>Timeline</h4>
                         <ul>
                             <li v-for="task in quest.tasks">
-                                <span v-if="task.status == 'in-progress'">[{{TimeManager().getGameTime(task.startTime).toTimeString()}} - {{TimeManager().getGameTime(task.finishes).toTimeString()}}] {{task.name}} <span class="text-info">{{TimeManager().readableTime(task.finishes - Date.now())}} remaining</span></span>
-                                <span v-if="task.status == 'complete'">[{{TimeManager().getGameTime(task.startTime).toTimeString()}} - {{TimeManager().getGameTime(task.finishes).toTimeString()}}] {{task.name}}</span>
+                                <span v-if="task.status == 'complete'">{{TimeManager().getGameTime(task.startTime).toTimeString()}}: {{task.name}}</span>
+                                <span v-if="task.status == 'in-progress'">{{TimeManager().getGameTime(task.startTime).toTimeString()}}: {{task.name}} <span class="text-info">{{TimeManager().readableTime(task.finishes - Date.now())}} remaining</span>
+                                <ul v-if="task.skillTest">
+                                    <li>{{task.skillTest}} test</li>
+                                    <li>Difficulty: {{task.difficulty}}</li>
+                                    <li>Party Skill: {{task.partySkill}}</li>
+                                </ul>
+                                </span>
                             </li>
                         </ul>
                     </div>
+                    <h4>Party</h4>
                     <ul>
                         <li v-for="adventurer in quest.party">
                             {{adventurer.name.full}}
                         </li>
                     </ul>
-                    <div class="progress progress-striped active">
-                        <div class="progress-bar" v-bind:style="{ width: QuestManager().questProgress(quest) + '%' }"></div>
+                    <div v-if="quest.tasks.length === 0">
+                        <div class="progress progress-striped active">
+                            <div class="progress-bar" v-bind:style="{ width: QuestManager().questProgress(quest) + '%' }"></div>
+                        </div>
+                        <div v-bind:class="{ 'text-success': NoticeManager().expiringDanger(quest.expires), 'text-warning': NoticeManager().expiringWarning(quest.expires), 'text-danger': NoticeManager().expiringSuccess(quest.expires) }">{{TimeManager().readableTime(quest.expires - Date.now())}} remaining</div>
                     </div>
-                    <div v-bind:class="{ 'text-success': NoticeManager().expiringDanger(quest.expires), 'text-warning': NoticeManager().expiringWarning(quest.expires), 'text-danger': NoticeManager().expiringSuccess(quest.expires) }">{{TimeManager().readableTime(quest.expires - Date.now())}} remaining</div>
                 </div>
             </div>
         </div>
@@ -47,18 +56,18 @@
                     </h3>
                 </div>
                 <div class="panel-body">
-                    <span class="text-info">{{quest.completionMessage}}</span>
-                    <span v-if="quest.casualaties.length !== 0" class="text-warning">{{quest.contract.deathMessage}}</span>
+                    <div v-if="!quest.tasks"><span class="text-info">{{quest.completionMessage}}</span></div>
                     <div v-if="quest.tasks">
-                        <h4>Tasks</h4>
+                        <h4>Timeline:</h4>
                         <ul>
                             <li v-for="task in quest.tasks">
-                                <span v-if="task.status == 'in-progress'">[{{TimeManager().getGameTime(task.startTime).toTimeString()}} - {{TimeManager().getGameTime(task.finishes).toTimeString()}}] {{task.name}} <span class="text-info">{{TimeManager().readableTime(task.finishes - Date.now())}} remaining</span></span>
-                                <span v-if="task.status == 'complete'">[{{TimeManager().getGameTime(task.startTime).toTimeString()}} - {{TimeManager().getGameTime(task.finishes).toTimeString()}}] {{task.name}}</span>
+                                <span v-if="task.status == 'complete'">{{TimeManager().getGameTime(task.startTime).toTimeString()}}: {{task.name}}</span>
                             </li>
+                            <li>{{TimeManager().getGameTime(quest.finishTime).toTimeString()}}: <span class="text-info">{{quest.completionMessage}}</span></li>
                         </ul>
                     </div>
-                    <div>Ran from {{TimeManager().getGameTime(quest.start).toString()}} to {{TimeManager().getGameTime(quest.expires).toString()}}</div>
+                    <span v-if="quest.casualaties.length !== 0" class="text-warning">{{quest.contract.deathMessage}}</span>
+                    <!-- <div>Ran from {{TimeManager().getGameTime(quest.start).toString()}} to {{TimeManager().getGameTime(quest.expires).toString()}}</div> -->
                     <div v-if="quest.success">
                         <h4>Rewards</h4>
                         <div v-if="quest.contract.contractAmount != undefined" class="text-success"><img src="./img/icons/crown-coin.png" width="24px" /> Contract amount: {{quest.contract.contractAmount}} coins

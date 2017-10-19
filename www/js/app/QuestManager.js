@@ -140,10 +140,11 @@ define([
                 this.gameState.selectedContract = null;
             };
 
-            this.completeQuest = function(quest) {
+            this.completeQuest = function(quest, finishes) {
+                if (!finishes) finishes = Date.now();
                 log("completeQuest");
                 var contract = quest.contract;
-                quest.finishTime = Date.now();
+                quest.finishTime = finishes;
 
                 // Remove the quest from the running tab
                 this.getRunningQuests().splice(this.getRunningQuests().indexOf(quest), 1);
@@ -176,7 +177,10 @@ define([
 
 
                 // Calculate success
-                quest.success = quest.survivors.length > 0 && Math.random() < contract.successChance;
+                if (quest.success === undefined || quest.success === null) {
+                    quest.success = quest.survivors.length > 0 && Math.random() < contract.successChance;
+                }
+
                 if (quest.success) {
                     quest.completionMessage = contract.successMessage;
                     this.gameController.StatisticsManager().trackStat("succeed", "quest", 1);
@@ -297,19 +301,40 @@ define([
 
             this.completeTasks = function(quest) {
                 var completedTasks = quest.tasks.filter(task => task.status == "in-progress" && task.finishes <= Date.now());
+                var partySkills = this.gameController.AdventurerManager().getPartyAttributes(quest.party);
                 completedTasks.forEach(function(task) {
-                    // TODO Check for success, failure, injury, etc.
-                    task.status = "complete";
-                    if (task.afterSuccessFinishQuest) {
-                        this.finishQuest(quest);
+                    if (task.skillTest) {
+                        var partySkill = partySkills.filter(s => s.name == task.skillTest)[0];
+                        var partySkillAmount = 0;
+                        if (partySkill) partySkillAmount = partySkill.amount;
+
+                        var difficulty = task.difficulty;
+
+                        task.success = Math.random() * partySkillAmount >= Math.random() * difficulty;
+                        if (!task.success) task.retryCounter++;
+
                     } else {
-                        this.startTask(quest, task.afterSuccessGoToTaskId);
+                        task.success = true;
                     }
+
+                    if (task.success) {
+                        task.status = "complete";
+                        if (task.afterSuccessFinishQuest) {
+                            this.finishQuest(quest, task.finishes);
+                        } else {
+                            this.startTask(quest, task.afterSuccessGoToTaskId, task.finishes);
+                        }
+                    } else {
+                        task.status = "complete";
+                        quest.success = false;
+                        this.finishQuest(quest, task.finishes);
+                    }
+                    // TODO Check for success, failure, injury, etc.
                 }, this);
             };
 
-            this.finishQuest = function(quest) {
-                this.completeQuest(quest);
+            this.finishQuest = function(quest, finishes) {
+                this.completeQuest(quest, finishes);
             };
 
             this.startTask = function(quest, taskId, startTime) {
@@ -323,6 +348,12 @@ define([
                 task.startTime = startTime;
                 task.finishes = startTime + task.duration * 1000;
                 task.status = "in-progress";
+                task.retryCounter = 0;
+                if (task.skillTest) {
+                    var partySkills = this.gameController.AdventurerManager().getPartyAttributes(quest.party);
+
+                    task.partySkill = partySkills.filter(s => s.name == task.skillTest)[0].amount;
+                }
                 quest.tasks.push(task);
             };
 

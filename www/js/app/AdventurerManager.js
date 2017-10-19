@@ -122,8 +122,7 @@ define([
                 return this.getAdventurerList().filter(adventurer => adventurer.includeInParty);
             };
 
-            this.getCurrentPartyAttributes = function() {
-                var party = this.getCurrentParty();
+            this.getPartyAttributes = function(party) {
 
                 var allSkills = party.reduce(function(attributeNames, adventurer) {
                     return attributeNames.concat(adventurer.skills);
@@ -140,6 +139,12 @@ define([
                 }, []);
 
                 return attributes;
+
+            };
+
+            this.getCurrentPartyAttributes = function() {
+                var party = this.getCurrentParty();
+                return this.getPartyAttributes(party);
 
             };
 

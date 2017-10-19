@@ -478,33 +478,29 @@
         "successChance": 0.9,
         "contractAmount": 75,
         "rewardFactor": 0.1,
-        "startTaskId": "1",
+        "startTaskId": "start",
         "tasks": [{
-                "id": "1",
+                "id": "start",
                 "afterSuccessGoToTaskId": "2",
+                "afterFailGoToTaskId": "end",
                 "name": "Find the mark",
-                "duration": 10
+                "duration": 10,
+                "skillTest": "Perception",
+                "difficulty": 0.5,
+                "retry": 0
             },
             {
                 "id": "2",
                 "afterSuccessGoToTaskId": "3",
                 "name": "Tail the mark",
-                "duration": 250
+                "afterFailGoToTaskId": "end",
+                "duration": 350,
+                "skillTest": "Agility",
+                "difficulty": 0.5,
+                "retry": 0
             },
             {
-                "id": "3",
-                "afterSuccessGoToTaskId": "4",
-                "name": "Hide from the mark",
-                "duration": 15
-            },
-            {
-                "id": "4",
-                "afterSuccessGoToTaskId": "5",
-                "name": "Continue tailing the mark",
-                "duration": 150
-            },
-            {
-                "id": "5",
+                "id": "end",
                 "name": "Travel home",
                 "duration": 10,
                 "afterSuccessFinishQuest": "true"
