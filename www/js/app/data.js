@@ -78,6 +78,9 @@ requirejs([
                         skill = { "name": "unknown" };
                     }
                     return skill;
+                },
+                exportData: function (data) {
+                    alert(JSON.stringify(data));
                 }
             },
         });
