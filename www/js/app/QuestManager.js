@@ -326,7 +326,7 @@ define([
 
                         if (task.injuryOnFail) {
                             var adventurer = chance.pickone(quest.party);
-                            this.injureAdventurerOnQuest(adventurer, task.injuryOnFail, task.finishes);
+                            this.gameConrtoller.AdventurerManager().injureAdventurerOnQuest(adventurer, task.injuryOnFail, task.finishes);
                         }
 
                         if (task.attempt > task.retry) {
