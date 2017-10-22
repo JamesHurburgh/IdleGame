@@ -19,7 +19,13 @@
                         <h4>Timeline</h4>
                         <ul>
                             <li v-for="task in quest.tasks">
-                                <span v-if="task.status == 'complete'">{{TimeManager().getGameTime(task.startTime).toTimeString()}}: {{task.name}}</span>
+                                <span v-if="task.status == 'complete'">{{TimeManager().getGameTime(task.startTime).toTimeString()}}: {{task.name}}
+                                    <span v-if="task.skillTest === undefined" class='text-info'>Complete</span>
+                                <span v-else>
+                                            <span v-if="task.success" class="text-success">Success</span>
+                                <span v-if="!task.success" class="text-danger">Fail</span>
+                                </span>
+                                </span>
                                 <span v-if="task.status == 'in-progress'">{{TimeManager().getGameTime(task.startTime).toTimeString()}}: {{task.name}} <span class="text-info">{{TimeManager().readableTime(task.finishes - Date.now())}} remaining</span>
                                 <ul v-if="task.skillTest">
                                     <li>{{task.skillTest}} test</li>
@@ -61,7 +67,14 @@
                         <h4>Timeline:</h4>
                         <ul>
                             <li v-for="task in quest.tasks">
-                                <span v-if="task.status == 'complete'">{{TimeManager().getGameTime(task.startTime).toTimeString()}}: {{task.name}}</span>
+                                <span v-if="task.status == 'complete'">{{TimeManager().getGameTime(task.startTime).toTimeString()}}: {{task.name}}
+                                        <span v-if="task.skillTest === undefined" class='text-info'>Complete</span>
+                                <span v-else>
+                                                <span v-if="task.success" class="text-success">Success</span>
+                                <span v-if="!task.success" class="text-danger">Fail</span>
+                                </span>
+                                </span>
+                                </span>
                             </li>
                             <li>{{TimeManager().getGameTime(quest.finishTime).toTimeString()}}: <span class="text-info">{{quest.completionMessage}}</span></li>
                         </ul>
