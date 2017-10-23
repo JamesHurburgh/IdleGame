@@ -80,7 +80,7 @@
                             <li>{{TimeManager().getGameTime(quest.finishTime).toTimeString()}}: <span class="text-info">{{quest.completionMessage}}</span></li>
                         </ul>
                     </div>
-                    <span v-if="quest.casualaties.length !== 0" class="text-warning">{{quest.contract.deathMessage}}</span>
+                    <span v-if="quest.casualaties && quest.casualaties.length !== 0" class="text-warning">{{quest.contract.deathMessage}}</span>
                     <!-- <div>Ran from {{TimeManager().getGameTime(quest.start).toString()}} to {{TimeManager().getGameTime(quest.expires).toString()}}</div> -->
                     <div v-if="quest.success">
                         <h4>Rewards</h4>
@@ -93,7 +93,7 @@
                         <h4>Wages paid</h4>
                         <div v-if="quest.wagesPaid" class="text-danger"><img src="./img/icons/crown-coin.png" width="24px" /> -{{quest.wagesPaid}} coins</div>
                     </div>
-                    <div v-if="quest.survivors.length !== 0">
+                    <div v-if="quest.party && quest.party.length !== 0">
                         <h4>Returned adventurers</h4>
                         <ul>
                             <li v-for="survivor in quest.survivors">
@@ -104,7 +104,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div v-if="quest.casualaties.length !== 0">
+                    <div v-if="quest.casualaties && quest.casualaties.length !== 0">
                         <h4>Deaths</h4>
                         <ul>
                             <li v-for="adventurer in quest.casualaties">

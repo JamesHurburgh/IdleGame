@@ -354,15 +354,16 @@ define([
                 adventurer.status = "Injured";
                 this.trackAdventurerStats(adventurer, "injure", 1);
                 if (adventurer.injuries.length > 2) {
-                    this.killAdventurer(adventurer, causeOfInjury);
+                    this.killAdventurer(adventurer, causeOfInjury, injuryTime);
                 }
                 return injury;
             };
 
-            this.killAdventurer = function(adventurer, causeOfDeath) {
+            this.killAdventurer = function(adventurer, causeOfDeath, timeOfDeath) {
+                if (!timeOfDeath) timeOfDeath = Date.now();
                 adventurer = this.gameState.adventurerList.filter(a => a.id == adventurer.id)[0];
                 adventurer.status = "Dead";
-                adventurer.timeOfDeath = Date.now();
+                adventurer.timeOfDeath = timeOfDeath;
                 adventurer.causeOfDeath = causeOfDeath;
                 this.trackAdventurerStats(adventurer, "death", 1);
             };
