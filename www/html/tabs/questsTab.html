@@ -19,20 +19,21 @@
                         <h4>Timeline</h4>
                         <ul>
                             <li v-for="task in quest.tasks">
-                                <span v-if="task.status == 'complete'">{{TimeManager().getGameTime(task.startTime).toTimeString()}}: {{task.name}}
+                                <template v-if="task.status == 'complete'">{{TimeManager().getGameTime(task.startTime).toTimeString()}}: {{task.name}}
                                     <span v-if="task.skillTest === undefined" class='text-info'>Complete</span>
-                                <span v-else>
-                                            <span v-if="task.success" class="text-success">Success</span>
-                                <span v-if="!task.success" class="text-danger">Fail</span>
-                                </span>
-                                </span>
-                                <span v-if="task.status == 'in-progress'">{{TimeManager().getGameTime(task.startTime).toTimeString()}}: {{task.name}} <span class="text-info">{{TimeManager().readableTime(task.finishes - Date.now())}} remaining</span>
+                                    <template v-else>
+                                        <span v-if="task.success" class="text-success">Success</span>
+                                        <span v-if="!task.success" class="text-danger">Fail</span>
+                                    </template>
+                                <span v-if="task.injury" class='text-danger'>{{task.injury.adventurer.name.full}} suffered {{task.injury.injury.injuryType}} {{task.injury.injury.bodyPart}}</span>
+                                </template>
+                                <template v-if="task.status == 'in-progress'">{{TimeManager().getGameTime(task.startTime).toTimeString()}}: {{task.name}} <span class="text-info">{{TimeManager().readableTime(task.finishes - Date.now())}} remaining</span>
                                 <ul v-if="task.skillTest">
                                     <li>{{task.skillTest}} test</li>
                                     <li>Difficulty: {{task.difficulty}}</li>
                                     <li>Party Skill: {{task.partySkill}}</li>
                                 </ul>
-                                </span>
+                                </template>
                             </li>
                         </ul>
                     </div>
@@ -67,14 +68,14 @@
                         <h4>Timeline:</h4>
                         <ul>
                             <li v-for="task in quest.tasks">
-                                <span v-if="task.status == 'complete'">{{TimeManager().getGameTime(task.startTime).toTimeString()}}: {{task.name}}
-                                        <span v-if="task.skillTest === undefined" class='text-info'>Complete</span>
-                                <span v-else>
-                                                <span v-if="task.success" class="text-success">Success</span>
-                                <span v-if="!task.success" class="text-danger">Fail</span>
-                                </span>
-                                </span>
-                                </span>
+                                <template v-if="task.status == 'complete'">{{TimeManager().getGameTime(task.startTime).toTimeString()}}: {{task.name}} <template v-if="task.attempt > 1">({{task.attempt}})</template>
+                                <span v-if="task.skillTest === undefined" class='text-info'>Complete</span>
+                                <template v-else>
+                                        <span v-if="task.success" class="text-success">Success</span>
+                                        <span v-if="!task.success" class="text-danger">Fail</span>
+                                    </template>
+                                <span v-if="task.injury" class='text-danger'><br/>+{{task.injury.adventurer.name.full}} suffered {{task.injury.injury.injuryType}} {{task.injury.injury.bodyPart}}</span>
+                                </template>
                             </li>
                             <li>{{TimeManager().getGameTime(quest.finishTime).toTimeString()}}: <span class="text-info">{{quest.completionMessage}}</span></li>
                         </ul>

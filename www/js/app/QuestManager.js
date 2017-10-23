@@ -303,6 +303,7 @@ define([
                 var completedTasks = quest.tasks.filter(task => task.status == "in-progress" && task.finishes <= Date.now());
                 var partySkills = this.gameController.AdventurerManager().getPartyAttributes(quest.party);
                 completedTasks.forEach(function(task) {
+                    task.status = "complete";
                     if (task.skillTest) {
                         var difficulty = task.difficulty;
                         task.success = Math.random() * task.partySkill >= Math.random() * task.difficulty;
@@ -311,7 +312,6 @@ define([
                     }
 
                     if (task.success) {
-                        task.status = "complete";
                         if (task.taskAfterSuccess) {
                             this.startTask(quest, task.taskAfterSuccess, task.finishes);
                         } else {
@@ -321,11 +321,11 @@ define([
 
                         if (task.injuryOnFail) {
                             var adventurer = chance.pickone(quest.party);
-                            this.gameController.AdventurerManager().injureAdventurerOnQuest(adventurer, task.injuryOnFail, task.finishes);
+                            var injury = this.gameController.AdventurerManager().injureAdventurerOnQuest(adventurer, task.injuryOnFail, task.finishes);
+                            task.injury = { adventurer: adventurer, injury: injury };
                         }
 
-                        if (task.attempt > task.retry) {
-                            task.status = "complete";
+                        if (!task.retry || task.attempt > task.retry) {
                             if (task.taskAfterFail) {
                                 this.startTask(quest, task.taskAfterFail, task.finishes);
                             } else {
@@ -334,7 +334,7 @@ define([
                         } else {
                             this.startTask(quest, task.id, task.finishes, task.attempt + 1);
                         }
-                        this.finishQuest(quest, task.finishes);
+                        //this.finishQuest(quest, task.finishes);
                     }
                 }, this);
             };
