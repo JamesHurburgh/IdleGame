@@ -160,6 +160,11 @@ define([
                 return 100 * ((Date.now() - expedition.start) / (expedition.expires - expedition.start));
             };
 
+            this.isTaskNewDay = function(quest, task) {
+                var index = quest.tasks.indexOf(task);
+                return index === 0 || !this.gameController.TimeManager().isSameDay(quest.tasks[index].startTime, quest.tasks[index - 1].startTime);
+            };
+
             this.checkForCompletedQuests = function() {
 
                 var expired = this.getRunningQuests().filter(quest => quest.expires !== null && quest.expires <= Date.now());
@@ -256,7 +261,7 @@ define([
                                 xpGained++;
                             }
                             survivor.xpGained = xpGained;
-                            this.gameController.AdventurerManager().giveAdventurerXP(survivor.adventurer, xpGained);
+                            this.gameController.AdventurerManager().giveAdventurerXP(survivor, xpGained);
                         }
                     }
 
@@ -299,10 +304,10 @@ define([
 
                         for (var survivorIndexCoins = 0; survivorIndexCoins < quest.party.length; survivorIndexCoins++) {
                             var survivorCoin = quest.party[survivorIndexCoins];
-                            var coinsGained = Math.ceil((survivorCoin.adventurer.wage / 100) * coins);
+                            var coinsGained = Math.ceil((survivorCoin.wage / 100) * coins);
                             remainingCoins -= coinsGained;
                             survivorCoin.coinsGained = coinsGained;
-                            this.gameController.AdventurerManager().giveAdventurerCoins(survivorCoin.adventurer, coinsGained);
+                            this.gameController.AdventurerManager().giveAdventurerCoins(survivorCoin, coinsGained);
                         }
 
                     }
