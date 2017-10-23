@@ -325,7 +325,7 @@ define([
                 };
             };
 
-            this.injureAdventurerOnQuest = function (adventurer, injuryType, timeOfInjury) {
+            this.injureAdventurerOnQuest = function (adventurer, injuryType, injuryTime) {
                 adventurer = this.gameState.adventurerList.filter(a => a.id == adventurer.id)[0];
                 if (!adventurer.injuries) adventurer.injuries = [];
 
