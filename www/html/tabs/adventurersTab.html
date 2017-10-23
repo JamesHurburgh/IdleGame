@@ -32,14 +32,14 @@
 </ul>
 <div id="adventurerTabContent" class="tab-content">
     <div class="tab-pane fade active in" id="idleAdventurers">
-        <div class="col-xs-12 text-center text-muted">Idle Adventurers</div>
+        <div class="col-md-12 text-center text-muted">Idle Adventurers</div>
         <div class="col-md-6" v-for="adventurer in AdventurerManager().getAdventurersAtStatus('Idle')">
             <div class="panel panel-default ">
                 <div class="panel-heading ">
                     <h3 class="panel-title">
                         <span style="color:cornflowerblue;" v-if="adventurer.gender == 'male'">&#9794;</span>
                         <span style="color:pink;" v-if="adventurer.gender == 'female'">&#9792;</span>
-                        <span>{{adventurer.race.symbol}}</span>
+                        <span :style="'color:' + adventurer.race.symbolColour">{{adventurer.race.symbol}}</span>
                         <span>{{adventurer.name.full}}</span>
                     </h3>
                 </div>
@@ -73,14 +73,14 @@
         </div>
     </div>
     <div class="tab-pane fade" id="recoveringAdventurers">
-        <div class="col-xs-12 text-center text-muted">Recovering Adventurers</div>
+        <div class="col-md-12 text-center text-muted">Recovering Adventurers</div>
         <div class="col-md-6" v-for="adventurer in AdventurerManager().getAdventurersAtStatus('Recovering')">
             <div class="panel panel-default ">
                 <div class="panel-heading ">
                     <h3 class="panel-title">
                         <span style="color:cornflowerblue;" v-if="adventurer.gender == 'male'">&#9794;</span>
                         <span style="color:pink;" v-if="adventurer.gender == 'female'">&#9792;</span>
-                        <span>{{adventurer.race.symbol}}</span>
+                        <span :style="'color:' + adventurer.race.symbolColour">{{adventurer.race.symbol}}</span>
                         <span>{{adventurer.name.full}}</span>
                     </h3>
                 </div>
@@ -113,14 +113,14 @@
         </div>
     </div>
     <div class="tab-pane fade" id="questingAdventurers">
-        <div class="col-xs-12 text-center text-muted">Questing Adventurers</div>
+        <div class="col-md-12 text-center text-muted">Questing Adventurers</div>
         <div class="col-md-6" v-for="adventurer in AdventurerManager().getAdventurersAtStatus('Questing')">
             <div class="panel panel-default ">
                 <div class="panel-heading ">
                     <h3 class="panel-title">
                         <span style="color:cornflowerblue;" v-if="adventurer.gender == 'male'">&#9794;</span>
                         <span style="color:pink;" v-if="adventurer.gender == 'female'">&#9792;</span>
-                        <span>{{adventurer.race.symbol}}</span>
+                        <span :style="'color:' + adventurer.race.symbolColour">{{adventurer.race.symbol}}</span>
                         <span>{{adventurer.name.full}}</span>
                     </h3>
                 </div>
@@ -156,15 +156,14 @@
         </div>
     </div>
     <div class="tab-pane fade" id="injuredAdventurers">
-        <div class="col-xs-12 text-center text-muted">Injured Adventurers</div>
+        <div class="col-md-12 text-center text-muted">Injured Adventurers</div>
         <div class="col-md-6" v-for="adventurer in AdventurerManager().getAdventurersAtStatus('Injured')">
             <div class="panel panel-default ">
                 <div class="panel-heading ">
                     <h3 class="panel-title">
                         <span style="color:cornflowerblue;" v-if="adventurer.gender == 'male'">&#9794;</span>
                         <span style="color:pink;" v-if="adventurer.gender == 'female'">&#9792;</span>
-                        <span>{{adventurer.race.symbol}}</span>
-                        {{adventurer.name.full}}
+                        <span :style="'color:' + adventurer.race.symbolColour">{{adventurer.race.symbol}}</span> {{adventurer.name.full}}
                     </h3>
                 </div>
                 <div class="panel-body ">
@@ -202,14 +201,14 @@
         </div>
     </div>
     <div class="tab-pane fade" id="deadAdventurers">
-        <div class="col-sm-12 text-center text-muted">Deceased Adventurers</div>
+        <div class="col-md-12 text-center text-muted">Deceased Adventurers</div>
         <div class="col-md-6" v-for="adventurer in AdventurerManager().getAdventurersAtStatus('Dead')">
             <div class="panel panel-default ">
                 <div class="panel-heading ">
                     <h3 class="panel-title">
                         <span style="color:cornflowerblue;" v-if="adventurer.gender == 'male'">&#9794;</span>
                         <span style="color:pink;" v-if="adventurer.gender == 'female'">&#9792;</span>
-                        <span>{{adventurer.race.symbol}}</span>
+                        <span :style="'color:' + adventurer.race.symbolColour">{{adventurer.race.symbol}}</span>
                         <span>{{adventurer.name.full}}</span>
                     </h3>
                 </div>
