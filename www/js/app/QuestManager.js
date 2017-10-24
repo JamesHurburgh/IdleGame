@@ -184,50 +184,64 @@ define([
 
             this.completeTasks = function(quest) {
                 var completedTasks = quest.tasks.filter(task => task.status == "in-progress" && task.finishes <= Date.now());
-                var partySkills = this.gameController.AdventurerManager().getPartyAttributes(quest.party);
                 completedTasks.forEach(function(task) {
-                    task.status = "complete";
-                    if (task.skillTest) {
-                        var difficulty = task.difficulty;
-                        task.success = Math.random() * task.partySkill >= Math.random() * task.difficulty;
-                    } else {
-                        task.success = true;
-                    }
-
-                    if (task.success) {
-                        if (task.taskAfterSuccess) {
-                            this.startTask(quest, task.taskAfterSuccess, task.finishes);
-                        } else {
-                            this.finishQuest(quest, task.finishes);
-                        }
-                    } else {
-
-                        if (task.injuryOnFail) {
-                            var adventurer = chance.pickone(quest.party);
-                            var injury = this.gameController.AdventurerManager().injureAdventurerOnQuest(adventurer, task.injuryOnFail, task.finishes);
-                            task.injury = { adventurer: adventurer, injury: injury };
-                            if (adventurer.status == "Dead") {
-                                if (!quest.casualties) quest.casualties = [];
-                                quest.casualties.push(adventurer);
-                                quest.party.splice(quest.party.indexOf(adventurer), 1);
-                                if (quest.party.length === 0) {
-                                    this.finishQuest(quest, task.finishes);
-                                }
-                            }
-                        }
-
-                        if (!task.retry || task.attempt > task.retry) {
-                            if (task.taskAfterFail) {
-                                this.startTask(quest, task.taskAfterFail, task.finishes);
-                            } else {
-                                this.finishQuest(quest, task.finishes);
-                            }
-                        } else {
-                            this.startTask(quest, task.id, task.finishes, task.attempt + 1);
-                        }
-                        //this.finishQuest(quest, task.finishes);
-                    }
+                    this.completeTask(quest, task);
                 }, this);
+            };
+
+            this.completeTask = function(quest, task) {
+                task.status = "complete";
+                if (task.skillTest) {
+                    var difficulty = task.difficulty;
+                    task.success = Math.random() * task.partySkill >= Math.random() * task.difficulty;
+                } else {
+                    task.success = true;
+                }
+
+                // If success
+                if (task.success) {
+                    if (task.taskAfterSuccess) {
+                        this.startTask(quest, task.taskAfterSuccess, task.finishes);
+                        return;
+                    }
+                    this.finishQuest(quest, task.finishes);
+                    return;
+                }
+
+                // Check for injuries
+                if (task.injuryOnFail) {
+                    var adventurer = chance.pickone(quest.party);
+                    var injury = this.gameController.AdventurerManager().injureAdventurerOnQuest(adventurer, task.injuryOnFail, task.finishes);
+                    task.injury = { adventurer: adventurer, injury: injury };
+                    if (adventurer.status == "Dead") {
+                        if (!quest.casualties) quest.casualties = [];
+                        quest.casualties.push(adventurer);
+
+                        if (!task.casualties) task.casualties = [];
+                        task.casualties.push(adventurer);
+
+                        quest.party.splice(quest.party.indexOf(adventurer), 1);
+                        if (quest.party.length === 0) {
+                            this.finishQuest(quest, task.finishes);
+                            return;
+                        }
+                    }
+                }
+
+                // If there are no more retries
+                if (!task.retry || task.attempt > task.retry) {
+                    if (task.taskAfterFail) {
+                        this.startTask(quest, task.taskAfterFail, task.finishes);
+                        return;
+                    }
+                    this.finishQuest(quest, task.finishes);
+                    return;
+
+                }
+
+                // Retry
+                this.startTask(quest, task.id, task.finishes, task.attempt + 1);
+
             };
 
             this.finishQuest = function(quest, finishes) {
@@ -244,6 +258,7 @@ define([
                 this.gameController.StatisticsManager().trackStat("complete-quest", contract.name, 1);
 
                 quest.success = quest.party.length > 0 && quest.tasks.filter(task => !task.success).length === 0;
+                quest.survivors = [];
                 if (quest.success) {
                     quest.completionMessage = contract.successMessage;
                     this.gameController.StatisticsManager().trackStat("succeed", "quest", 1);
@@ -311,6 +326,10 @@ define([
                         }
 
                     }
+
+                    quest.remainingCoins = remainingCoins;
+                    quest.wagesPaid = coins - remainingCoins;
+                    this.gameController.PlayerManager().giveCoins(remainingCoins);
 
                 } else {
                     quest.completionMessage = contract.failureMessage;
