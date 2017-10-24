@@ -36,6 +36,8 @@ define([
                 }
                 if (!adventurer.race) {
                     adventurer.race = data.races[0];
+                } else {
+                    adventurer.race = data.races.filter(race => race.name == adventurer.race.name)[0];
                 }
                 if (adventurer.birthTime === undefined || adventurer.birthTime === null || isNaN(adventurer.birthTime)) {
                     adventurer.birthTime = Date.now() - (adventurer.age * 518400000) - (Math.random() * 518400000);
@@ -46,6 +48,7 @@ define([
                     adventurer.name.first = chance.first({ gender: adventurer.gender });
                     adventurer.name.full = adventurer.name.first + " " + adventurer.name.last;
                 }
+
 
             };
 
@@ -354,7 +357,7 @@ define([
                 adventurer.status = "Injured";
                 this.trackAdventurerStats(adventurer, "injure", 1);
                 if (adventurer.injuries.length > 2) {
-                    this.killAdventurer(adventurer, causeOfInjury, injuryTime);
+                    this.killAdventurer(adventurer, injury, injuryTime);
                 }
                 return injury;
             };
