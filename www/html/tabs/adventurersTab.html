@@ -37,9 +37,9 @@
             <div class="panel panel-default ">
                 <div class="panel-heading ">
                     <h3 class="panel-title">
-                        <span style="color:cornflowerblue;" v-if="adventurer.gender == 'male'">&#9794;</span>
-                        <span style="color:pink;" v-if="adventurer.gender == 'female'">&#9792;</span>
-                        <span :style="'color:' + adventurer.race.symbolColour">{{adventurer.race.symbol}}</span>
+                        <abbr title="male" style="color:cornflowerblue;" v-if="adventurer.gender == 'male'">&#9794;</abbr>
+                        <abbr title="female" style="color:pink;" v-if="adventurer.gender == 'female'">&#9792;</abbr>
+                        <abbr :title="adventurer.race.name" :style="'color:' + adventurer.race.symbolColour">{{adventurer.race.symbol}}</abbr>
                         <span>{{adventurer.name.full}}</span>
                     </h3>
                 </div>
