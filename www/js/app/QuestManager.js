@@ -69,9 +69,35 @@ define([
             this.canSendQuest = function(contract) {
                 if (!contract) return;
                 var adventurerManager = this.gameController.AdventurerManager();
+                if (adventurerManager.getCurrentParty().length < 1) {
+                    return false;
+                }
+
                 return contract.requirements.attributes.reduce(function(canSend, skillRequirement) {
                     return canSend && adventurerManager.getCurrentPartyAttribute(skillRequirement.type) >= skillRequirement.amount;
                 }, true);
+            };
+
+            this.getSuggestedSkills = function(contract) {
+                if (!contract) return;
+                var skills = [];
+                if (!contract.tasks || contract.tasks.length === 0) {
+                    return contract.requirements.attributes;
+                }
+                for (var i = 0; i < contract.tasks.length; i++) {
+                    var task = contract.tasks[i];
+                    if (task.skillTest) {
+                        if (skills.filter(skill => skill.type == task.skillTest).length === 0) {
+                            skills.push({
+                                "type": task.skillTest,
+                                "amount": Math.ceil(task.difficulty)
+                            });
+                        } else {
+                            skills.filter(skill => skill.type == task.skillTest)[0].amount += Math.ceil(task.difficulty);
+                        }
+                    }
+                }
+                return skills;
             };
 
             this.getCurrentQuestRequiredAndAssignedSkillCount = function(skillName) {
@@ -191,25 +217,11 @@ define([
 
             this.completeTask = function(quest, task) {
                 task.status = "complete";
-                if (task.skillTest) {
-                    var difficulty = task.difficulty;
-                    task.success = Math.random() * task.partySkill >= Math.random() * task.difficulty;
-                } else {
-                    task.success = true;
-                }
-
-                // If success
-                if (task.success) {
-                    if (task.taskAfterSuccess) {
-                        this.startTask(quest, task.taskAfterSuccess, task.finishes);
-                        return;
-                    }
-                    this.finishQuest(quest, task.finishes);
-                    return;
-                }
 
                 // Check for injuries
-                if (task.injuryOnFail) {
+                var isInjured = task.injuryOnFail && Math.random() * task.partySkill >= Math.random() * task.difficulty;
+
+                if (isInjured) {
                     var adventurer = chance.pickone(quest.party);
                     var injury = this.gameController.AdventurerManager().injureAdventurerOnQuest(adventurer, task.injuryOnFail, task.finishes);
                     task.injury = { adventurer: adventurer, injury: injury };
@@ -228,6 +240,19 @@ define([
                     }
                 }
 
+                // Check success status
+                task.success = !task.skillTest || Math.random() * task.partySkill >= Math.random() * task.difficulty;
+
+                // If success
+                if (task.success) {
+                    if (task.taskAfterSuccess) {
+                        this.startTask(quest, task.taskAfterSuccess, task.finishes);
+                        return;
+                    }
+                    this.finishQuest(quest, task.finishes);
+                    return;
+                }
+
                 // If there are no more retries
                 if (!task.retry || task.attempt > task.retry) {
                     if (task.taskAfterFail) {
@@ -236,7 +261,6 @@ define([
                     }
                     this.finishQuest(quest, task.finishes);
                     return;
-
                 }
 
                 // Retry
@@ -257,8 +281,14 @@ define([
                 this.gameController.StatisticsManager().trackStat("complete", "quest", 1);
                 this.gameController.StatisticsManager().trackStat("complete-quest", contract.name, 1);
 
-                quest.success = quest.party.length > 0 && quest.tasks.filter(task => !task.success).length === 0;
+                quest.success = quest.party.length > 0 && quest.tasks.filter(task => task.mustSucceedForReward && !task.success).length === 0;
                 quest.survivors = [];
+                quest.party.forEach(function(survivor) {
+                    quest.survivors.push({ adventurer: survivor });
+                    if (!survivor.questLog) survivor.questLog = [];
+                    survivor.questLog.push(quest.id);
+                    this.gameController.AdventurerManager().returnFromQuest(survivor.adventurer, finishes);
+                }, this);
                 if (quest.success) {
                     quest.completionMessage = contract.successMessage;
                     this.gameController.StatisticsManager().trackStat("succeed", "quest", 1);
@@ -266,17 +296,17 @@ define([
 
                     // Divy out xp to party
                     if (quest.contract.experience > 0) {
-                        var xpEach = Math.floor(quest.contract.experience / quest.party.length);
-                        var extraXp = quest.contract.experience % quest.party.length;
-                        for (var survivorIndex = 0; survivorIndex < quest.party.length; survivorIndex++) {
-                            var survivor = quest.party[survivorIndex];
+                        var xpEach = Math.floor(quest.contract.experience / quest.survivors.length);
+                        var extraXp = quest.contract.experience % quest.survivors.length;
+                        for (var survivorIndex = 0; survivorIndex < quest.survivors.length; survivorIndex++) {
+                            var survivor = quest.survivors[survivorIndex];
                             var xpGained = xpEach;
                             if (extraXp > 0) {
                                 extraXp--;
                                 xpGained++;
                             }
                             survivor.xpGained = xpGained;
-                            this.gameController.AdventurerManager().giveAdventurerXP(survivor, xpGained);
+                            this.gameController.AdventurerManager().giveAdventurerXP(survivor.adventurer, xpGained);
                         }
                     }
 
@@ -317,12 +347,12 @@ define([
                         //     return accumulator + survivor.adventurer.wage;
                         // });
 
-                        for (var survivorIndexCoins = 0; survivorIndexCoins < quest.party.length; survivorIndexCoins++) {
-                            var survivorCoin = quest.party[survivorIndexCoins];
-                            var coinsGained = Math.ceil((survivorCoin.wage / 100) * coins);
+                        for (var survivorIndexCoins = 0; survivorIndexCoins < quest.survivors.length; survivorIndexCoins++) {
+                            var survivorCoin = quest.survivors[survivorIndexCoins];
+                            var coinsGained = Math.ceil((survivorCoin.adventurer.wage / 100) * coins);
                             remainingCoins -= coinsGained;
                             survivorCoin.coinsGained = coinsGained;
-                            this.gameController.AdventurerManager().giveAdventurerCoins(survivorCoin, coinsGained);
+                            this.gameController.AdventurerManager().giveAdventurerCoins(survivorCoin.adventurer, coinsGained);
                         }
 
                     }

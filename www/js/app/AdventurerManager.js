@@ -312,6 +312,19 @@ define([
 
             };
 
+            this.returnFromQuest = function(adventurer, timeReturned) {
+                if (!adventurer) return;
+                if (!timeReturned) timeReturned = Date.now();
+                if (adventurer.injuries && adventurer.injuries.length !== 0) {
+                    adventurer.injuries.forEach(function(injury) {
+                        injury.healTime = timeReturned + injury.timeToHeal;
+                    }, this);
+                    adventurer.status = "Injured";
+                } else {
+                    this.setAdventurerRecovering(adventurer, timeReturned);
+                }
+            };
+
             this.setAdventurerRecovering = function(adventurer, healTime) {
                 if (!healTime) healTime = Date.now();
                 adventurer.status = "Recovering";
@@ -321,10 +334,12 @@ define([
 
             this.generateInjury = function(anatomy, injuryTime) {
                 if (!injuryTime) injuryTime = Date.now();
+                var timeToHeal = Math.floor(Math.random() * 7 * 1440000) + 1440000; // Recover for at least one day, up to a week.
                 return {
                     injuryType: "Injured",
                     bodyPart: chance.pickone(anatomy.bodyparts),
-                    healTime: injuryTime + Math.floor(Math.random() * 7 * 1440000) + 1440000 // Recover for at least one day, up to a week.
+                    timeToHeal: timeToHeal,
+                    healTime: injuryTime + timeToHeal
                 };
             };
 
@@ -341,7 +356,7 @@ define([
 
                 this.trackAdventurerStats(adventurer, "injure", 1);
                 if (adventurer.injuries.length > 2) {
-                    this.killAdventurer(adventurer, injuryType);
+                    this.killAdventurer(adventurer, injury, injuryTime);
                 }
                 return injury;
             };

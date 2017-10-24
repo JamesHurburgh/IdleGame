@@ -84,7 +84,8 @@
                 "difficulty": "0.2",
                 "taskAfterSuccess": "find",
                 "taskAfterFail": "find",
-                "injuryOnFail": true
+                "injuryOnFail": true,
+                "mustSucceedForReward": true
             },
             {
                 "id": "find",
@@ -94,7 +95,8 @@
                 "difficulty": "0.5",
                 "taskAfterSuccess": "dig",
                 "taskAfterFail": "come",
-                "retry": "3"
+                "retry": "3",
+                "mustSucceedForReward": true
             },
             {
                 "id": "dig",
@@ -434,7 +436,8 @@
                 "duration": 5,
                 "skillTest": "Perception",
                 "difficulty": 0.5,
-                "retry": 5
+                "retry": 5,
+                "mustSucceedForReward": true
             },
             {
                 "name": "Collect coins",
@@ -445,7 +448,8 @@
                 "injuryOnFail": true,
                 "skillTest": "Agility",
                 "difficulty": 0.5,
-                "retry": 5
+                "retry": 5,
+                "mustSucceedForReward": true
             },
             {
                 "name": "Travel home",
@@ -538,7 +542,8 @@
                 "duration": 10,
                 "skillTest": "Perception",
                 "difficulty": 0.5,
-                "retry": 0
+                "retry": 0,
+                "mustSucceedForReward": true
             },
             {
                 "id": "2",
@@ -548,7 +553,8 @@
                 "duration": 350,
                 "skillTest": "Agility",
                 "difficulty": 0.5,
-                "retry": 0
+                "retry": 0,
+                "mustSucceedForReward": true
             },
             {
                 "id": "end",
@@ -616,7 +622,8 @@
                 "skillTest": "Agility",
                 "difficulty": "1",
                 "taskAfterSuccess": "blend",
-                "taskAfterFail": "run"
+                "taskAfterFail": "run",
+                "mustSucceedForReward": true
             },
             {
                 "id": "blend",
@@ -625,7 +632,8 @@
                 "skillTest": "Intelligence",
                 "difficulty": "1",
                 "taskAfterSuccess": "home",
-                "taskAfterFail": "run"
+                "taskAfterFail": "run",
+                "mustSucceedForReward": true
             },
             {
                 "id": "run",
@@ -634,7 +642,8 @@
                 "skillTest": "Agility",
                 "difficulty": "0.7",
                 "taskAfterSuccess": "home",
-                "taskAfterFail": "jail"
+                "taskAfterFail": "jail",
+                "mustSucceedForReward": true
             },
             {
                 "id": "jail",
@@ -788,7 +797,8 @@
                 "taskAfterSuccess": "f2",
                 "taskAfterFail": "flee",
                 "retry": "5",
-                "injuryOnFail": "fighting"
+                "injuryOnFail": "fighting",
+                "mustSucceedForReward": true
             },
             {
                 "id": "f2",
@@ -799,7 +809,8 @@
                 "taskAfterSuccess": "f3",
                 "taskAfterFail": "flee",
                 "retry": "5",
-                "injuryOnFail": "fighting"
+                "injuryOnFail": "fighting",
+                "mustSucceedForReward": true
             },
             {
                 "id": "f3",
@@ -810,7 +821,8 @@
                 "taskAfterSuccess": "f4",
                 "taskAfterFail": "flee",
                 "retry": "5",
-                "injuryOnFail": "fighting"
+                "injuryOnFail": "fighting",
+                "mustSucceedForReward": true
             },
             {
                 "id": "f4",
@@ -821,7 +833,8 @@
                 "taskAfterSuccess": "f5",
                 "taskAfterFail": "flee",
                 "retry": "5",
-                "injuryOnFail": "fighting"
+                "injuryOnFail": "fighting",
+                "mustSucceedForReward": true
             },
             {
                 "id": "f5",
@@ -832,7 +845,8 @@
                 "taskAfterSuccess": "f6",
                 "taskAfterFail": "flee",
                 "retry": "5",
-                "injuryOnFail": "fighting"
+                "injuryOnFail": "fighting",
+                "mustSucceedForReward": true
             },
             {
                 "id": "f6",
@@ -843,7 +857,8 @@
                 "taskAfterSuccess": "loot",
                 "taskAfterFail": "flee",
                 "retry": "5",
-                "injuryOnFail": "fighting"
+                "injuryOnFail": "fighting",
+                "mustSucceedForReward": true
             },
             {
                 "id": "flee",
@@ -863,7 +878,8 @@
                 "skillTest": "Perception",
                 "difficulty": "0.5",
                 "taskAfterSuccess": "home",
-                "taskAfterFail": "home"
+                "taskAfterFail": "home",
+                "mustSucceedForReward": true
             },
             {
                 "id": "home",

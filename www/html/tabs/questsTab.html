@@ -118,11 +118,11 @@
                         <h4>Wages paid</h4>
                         <div v-if="quest.wagesPaid" class="text-danger"><img src="./img/icons/crown-coin.png" width="24px" /> -{{quest.wagesPaid}} coins</div>
                     </div>
-                    <div v-if="quest.party && quest.party.length !== 0">
+                    <div v-if="quest.survivors && quest.survivors.length !== 0">
                         <h4>Returned adventurers</h4>
                         <ul>
-                            <li v-for="survivor in quest.party">
-                                {{survivor.name.full}}
+                            <li v-for="survivor in quest.survivors">
+                                {{survivor.adventurer.name.full}}
                                 <span class="text-success" v-if="survivor.coinsGained">+{{survivor.coinsGained}} coins</span>
                                 <span class="text-success" v-if="survivor.xpGained">+{{survivor.xpGained}} XP</span>
                                 <span class="text-danger" v-if="survivor.injuriesGained">+{{survivor.injuriesGained.injuryType}} {{survivor.injuriesGained.bodyPart}}</span>
@@ -136,7 +136,6 @@
                                 <span class="text-danger">{{adventurer.name.full}}</span> ({{adventurer.type}})
                             </li>
                         </ul>
-                        <span v-if="quest.casualties && quest.casualties.length !== 0" class="text-warning">{{quest.contract.deathMessage}}</span>
                     </div>
                 </div>
             </div>
