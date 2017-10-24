@@ -3,8 +3,7 @@
     "description": "Adventuring is dangerous. Hire someone else to do it for you!",
     "author": "James Hurburgh",
     "author-uri": "",
-    "globals": [
-        {
+    "globals": [{
             "name": "chanceOfNewContract",
             "baseValue": 0.05
         },
@@ -37,7 +36,16 @@
             "baseValue": 1
         }
     ],
-    "versions": [
+    "versions": [{
+            "number": "0.12.0",
+            "description": "Interesting quests update",
+            "features": [
+                "Quests are now made up of multiple tasks that may or may not contribute to the success of the quest.",
+                "Adventures can be injured on each task.  If they take more than 2 injuries, they will die.",
+                "Each race now has a cool symbol."
+            ],
+            "bugfixes": []
+        },
         {
             "number": "0.11.4",
             "description": "",
