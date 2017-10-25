@@ -1,0 +1,31 @@
+{
+    "name": "An honest weeks labouring",
+    "successMessage": "An honest weeks work earns an honest weeks wage.",
+    "failureMessage": "How did you fail this?  This shouldn't even be possible.",
+    "deathMessage": "Sadly accidents do happen even when you're minding your own business.",
+    "risk": 0.001,
+    "upgradeChance": 0.01,
+    "experience": 10,
+    "duration": 3500,
+    "successChance": 1,
+    "contractAmount": 125,
+    "rewardFactor": 0.2,
+    "rewards": [{
+        "chance": 1,
+        "reward": {
+            "type": "renown",
+            "amount": 2
+        }
+    }],
+    "requirements": {
+        "renown": 0,
+        "adventurers": [{
+            "type": "Peasant",
+            "amount": 1
+        }],
+        "attributes": [{
+            "type": "Toughness",
+            "amount": 15
+        }]
+    }
+}

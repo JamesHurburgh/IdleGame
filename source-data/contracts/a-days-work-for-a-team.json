@@ -1,0 +1,36 @@
+{
+    "name": "A days work for a team",
+    "successMessage": "An honest days work earns an honest days wage.",
+    "failureMessage": "How did you fail this?  This shouldn't even be possible.",
+    "deathMessage": "Sadly accidents do happen even when you're minding your own business.",
+    "risk": 0.001,
+    "upgradeChance": 0.01,
+    "experience": 10,
+    "duration": 500,
+    "successChance": 1,
+    "contractAmount": 750,
+    "rewardFactor": 0.2,
+    "rewards": [{
+        "chance": 1,
+        "reward": {
+            "type": "renown",
+            "amount": 2
+        }
+    }],
+    "requirements": {
+        "renown": 0,
+        "adventurers": [{
+            "type": "Citizen",
+            "amount": 10
+        }],
+        "attributes": [{
+                "type": "Toughness",
+                "amount": 10
+            },
+            {
+                "type": "Intelligence",
+                "amount": 20
+            }
+        ]
+    }
+}

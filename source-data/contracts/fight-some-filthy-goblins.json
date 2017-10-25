@@ -1,0 +1,165 @@
+{
+    "name": "Fight some filthy goblins",
+    "successMessage": "Your men returned victorious bringing the filthy goblins loot with them.",
+    "failureMessage": "Your men returned beaten and bruised, nothing to show for their effort.",
+    "deathMessage": "The filthy goblins fought back visciously.",
+    "risk": 0.5,
+    "upgradeChance": 0.02,
+    "experience": 10,
+    "duration": 1000,
+    "successChance": 0.5,
+    "rewardFactor": 0.3,
+    "rewards": [{
+            "chance": 1,
+            "reward": {
+                "type": "coins",
+                "amount": 1000
+            }
+        },
+        {
+            "chance": 1,
+            "reward": {
+                "type": "renown",
+                "amount": 2
+            }
+        },
+        {
+            "chance": 0.1,
+            "reward": {
+                "type": "item",
+                "value": 150,
+                "itemType": "weapon"
+            }
+        }
+    ],
+    "requirements": {
+        "renown": 1,
+        "adventurers": [{
+                "type": "Brawler",
+                "amount": 1
+            },
+            {
+                "type": "Drunkard",
+                "amount": 5
+            },
+            {
+                "type": "Street rat",
+                "amount": 10
+            }
+        ],
+        "attributes": [{
+                "type": "Toughness",
+                "amount": 20
+            },
+            {
+                "type": "Fighting",
+                "amount": 20
+            }
+        ]
+    },
+    "tasks": [{
+            "id": "start",
+            "name": "Travel to the goblin's den",
+            "duration": "60",
+            "taskAfterSuccess": "f1"
+        },
+        {
+            "id": "f1",
+            "name": "Kill the first goblin",
+            "duration": "10",
+            "skillTest": "Fighting",
+            "difficulty": "0.1",
+            "taskAfterSuccess": "f2",
+            "taskAfterFail": "flee",
+            "retry": "5",
+            "injuryOnFail": "fighting",
+            "mustSucceedForReward": true
+        },
+        {
+            "id": "f2",
+            "name": "Kill the second goblin",
+            "duration": "10",
+            "skillTest": "Fighting",
+            "difficulty": "0.2",
+            "taskAfterSuccess": "f3",
+            "taskAfterFail": "flee",
+            "retry": "5",
+            "injuryOnFail": "fighting",
+            "mustSucceedForReward": true
+        },
+        {
+            "id": "f3",
+            "name": "Kill the third goblin",
+            "duration": "10",
+            "skillTest": "Fighting",
+            "difficulty": "0.5",
+            "taskAfterSuccess": "f4",
+            "taskAfterFail": "flee",
+            "retry": "5",
+            "injuryOnFail": "fighting",
+            "mustSucceedForReward": true
+        },
+        {
+            "id": "f4",
+            "name": "Kill the fourth goblin",
+            "duration": "10",
+            "skillTest": "Fighting",
+            "difficulty": "1",
+            "taskAfterSuccess": "f5",
+            "taskAfterFail": "flee",
+            "retry": "5",
+            "injuryOnFail": "fighting",
+            "mustSucceedForReward": true
+        },
+        {
+            "id": "f5",
+            "name": "Kill the fifth goblin",
+            "duration": "10",
+            "skillTest": "Fighting",
+            "difficulty": "2",
+            "taskAfterSuccess": "f6",
+            "taskAfterFail": "flee",
+            "retry": "5",
+            "injuryOnFail": "fighting",
+            "mustSucceedForReward": true
+        },
+        {
+            "id": "f6",
+            "name": "Kill the fifth goblin",
+            "duration": "10",
+            "skillTest": "Fighting",
+            "difficulty": "5",
+            "taskAfterSuccess": "loot",
+            "taskAfterFail": "flee",
+            "retry": "5",
+            "injuryOnFail": "fighting",
+            "mustSucceedForReward": true
+        },
+        {
+            "id": "flee",
+            "name": "Run from the goblins",
+            "duration": "20",
+            "skillTest": "Agility",
+            "difficulty": "1",
+            "taskAfterSuccess": "home",
+            "taskAfterFail": "home",
+            "retry": "2",
+            "injuryOnFail": "running"
+        },
+        {
+            "id": "loot",
+            "name": "Loot the goblin's den",
+            "duration": "60",
+            "skillTest": "Perception",
+            "difficulty": "0.5",
+            "taskAfterSuccess": "home",
+            "taskAfterFail": "home",
+            "mustSucceedForReward": true
+        },
+        {
+            "id": "home",
+            "name": "Travel home",
+            "duration": "60"
+        }
+    ]
+}

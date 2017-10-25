@@ -1,0 +1,49 @@
+{
+    "name": "Protect farms from wild animals",
+    "successMessage": "Your men returned with evidence the beasts have been destroyed.",
+    "failureMessage": "Your men returned beaten and bruised, sadly a farm was overrun.",
+    "deathMessage": "The wild animals fought back visciously.",
+    "risk": 0.3,
+    "upgradeChance": 0.02,
+    "experience": 10,
+    "duration": 700,
+    "successChance": 0.5,
+    "rewardFactor": 0.3,
+    "contractAmount": 750,
+    "rewards": [{
+            "chance": 1,
+            "reward": {
+                "type": "renown",
+                "amount": 2
+            }
+        },
+        {
+            "chance": 0.5,
+            "reward": {
+                "type": "item",
+                "value": 50,
+                "itemType": "hides"
+            }
+        }
+    ],
+    "requirements": {
+        "renown": 1,
+        "adventurers": [{
+            "type": "Fighter",
+            "amount": 2
+        }],
+        "attributes": [{
+                "type": "Intelligence",
+                "amount": 5
+            },
+            {
+                "type": "Toughness",
+                "amount": 15
+            },
+            {
+                "type": "Fighting",
+                "amount": 20
+            }
+        ]
+    }
+}

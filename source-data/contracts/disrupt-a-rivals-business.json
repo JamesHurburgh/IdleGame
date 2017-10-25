@@ -1,0 +1,32 @@
+{
+    "name": "Disrupt a rivals business",
+    "successMessage": "A rowdy brawl smashed the place up and drove customers away.",
+    "failureMessage": "Your drunks were turned away before they could cause any trouble.",
+    "deathMessage": "The problem with drunken brawls is that people get hurt.",
+    "risk": 0.1,
+    "upgradeChance": 0.02,
+    "experience": 10,
+    "duration": 350,
+    "successChance": 0.8,
+    "contractAmount": 750,
+    "rewardFactor": 0.2,
+    "rewards": [{
+        "chance": 1,
+        "reward": {
+            "type": "renown",
+            "amount": 1
+        }
+    }],
+    "requirements": {
+        "renown": 0,
+        "attributes": [{
+                "type": "Toughness",
+                "amount": 10
+            },
+            {
+                "type": "Fighting",
+                "amount": 10
+            }
+        ]
+    }
+}

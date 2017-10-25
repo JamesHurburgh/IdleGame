@@ -1,0 +1,67 @@
+{
+    "name": "Loot a crypt",
+    "successMessage": "People like being buried with their valueables.  Now you have some of them.",
+    "failureMessage": "Not everyone keeps their family jewels with their dead.",
+    "deathMessage": "Crypts can be dangerous at night.",
+    "risk": 0.2,
+    "upgradeChance": 0.1,
+    "experience": 10,
+    "duration": 200,
+    "successChance": 1,
+    "rewardFactor": 0.3,
+    "rewards": [{
+            "chance": 1,
+            "reward": {
+                "type": "coins",
+                "amount": 1000
+            }
+        },
+        {
+            "chance": 1,
+            "reward": {
+                "type": "renown",
+                "amount": 1
+            }
+        },
+        {
+            "chance": 0.1,
+            "reward": {
+                "type": "item",
+                "value": 100,
+                "itemType": "artwork"
+            }
+        },
+        {
+            "chance": 0.1,
+            "reward": {
+                "type": "item",
+                "itemType": "minor-mysterious-scroll"
+            }
+        }
+    ],
+    "requirements": {
+        "renown": 0,
+        "adventurers": [{
+                "type": "Thief",
+                "amount": 1
+            },
+            {
+                "type": "Street rat",
+                "amount": 5
+            }
+        ],
+        "attributes": [{
+                "type": "Toughness",
+                "amount": 7
+            },
+            {
+                "type": "Intelligence",
+                "amount": 7
+            },
+            {
+                "type": "Agility",
+                "amount": 7
+            }
+        ]
+    }
+}

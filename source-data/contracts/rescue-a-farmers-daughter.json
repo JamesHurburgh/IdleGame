@@ -1,0 +1,58 @@
+{
+    "name": "Rescue a farmer's daughter",
+    "successMessage": "The farmers daughter is returned and he gives you his life savings in return.",
+    "failureMessage": "Your men couldn't find the farmers daughter.",
+    "deathMessage": "Rescue missions can be dangerous.",
+    "risk": 0.6,
+    "upgradeChance": 0.3,
+    "experience": 10,
+    "duration": 1000,
+    "successChance": 1,
+    "contractAmount": 1000,
+    "rewardFactor": 0.3,
+    "rewards": [{
+            "chance": 1,
+            "reward": {
+                "type": "renown",
+                "amount": 3
+            }
+        },
+        {
+            "chance": 0.1,
+            "reward": {
+                "type": "item",
+                "value": 150,
+                "itemType": "weapon"
+            }
+        }
+    ],
+    "requirements": {
+        "renown": 0,
+        "adventurers": [{
+                "type": "Thief",
+                "amount": 2
+            },
+            {
+                "type": "Citizen",
+                "amount": 1
+            },
+            {
+                "type": "Brawler",
+                "amount": 2
+            }
+        ],
+        "attributes": [{
+                "type": "Toughness",
+                "amount": 7
+            },
+            {
+                "type": "Intelligence",
+                "amount": 7
+            },
+            {
+                "type": "Agility",
+                "amount": 7
+            }
+        ]
+    }
+}

@@ -1,0 +1,48 @@
+{
+    "name": "Break and Enter",
+    "successMessage": "Your men return after looting the house.",
+    "failureMessage": "Nothing of value was found in the house.",
+    "deathMessage": "The owners were home and took matters into their own hands.",
+    "risk": 0.5,
+    "upgradeChance": 0.02,
+    "experience": 10,
+    "duration": 350,
+    "successChance": 0.5,
+    "rewardFactor": 0.2,
+    "rewards": [{
+            "chance": 1,
+            "reward": {
+                "type": "coins",
+                "amount": 600
+            }
+        },
+        {
+            "chance": 0.1,
+            "reward": {
+                "type": "item",
+                "value": 100,
+                "itemType": "artwork"
+            }
+        },
+        {
+            "chance": 0.01,
+            "reward": {
+                "type": "item",
+                "value": 250,
+                "itemType": "weapon"
+            }
+        }
+    ],
+    "requirements": {
+        "renown": 1,
+        "attributes": [{
+                "type": "Intelligence",
+                "amount": 5
+            },
+            {
+                "type": "Agility",
+                "amount": 5
+            }
+        ]
+    }
+}

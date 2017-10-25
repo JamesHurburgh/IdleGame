@@ -1,0 +1,59 @@
+{
+    "name": "Follow a suspect treasure map",
+    "successMessage": "You are given a sack, presumably what's left of the treasure.",
+    "failureMessage": "Either the map was a fake, or someone else got there first.",
+    "deathMessage": "Unfortunately the long journey proved too much.",
+    "risk": 0.2,
+    "upgradeChance": 0.01,
+    "experience": 10,
+    "duration": 3500,
+    "successChance": 0.15,
+    "rewardFactor": 0.2,
+    "rewards": [{
+            "chance": 1,
+            "reward": {
+                "type": "coins",
+                "amount": 500
+            }
+        },
+        {
+            "chance": 1,
+            "reward": {
+                "type": "renown",
+                "amount": 2
+            }
+        },
+        {
+            "chance": 0.1,
+            "reward": {
+                "type": "item",
+                "value": 1500,
+                "itemType": "jewels"
+            }
+        },
+        {
+            "chance": 0.1,
+            "reward": {
+                "type": "item",
+                "value": 1500,
+                "itemType": "jewellery"
+            }
+        }
+    ],
+    "requirements": {
+        "renown": 0,
+        "attributes": [{
+                "type": "Toughness",
+                "amount": 5
+            },
+            {
+                "type": "Intelligence",
+                "amount": 5
+            },
+            {
+                "type": "Perception",
+                "amount": 5
+            }
+        ]
+    }
+}

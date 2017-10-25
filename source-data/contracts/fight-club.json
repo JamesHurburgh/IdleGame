@@ -1,0 +1,38 @@
+{
+    "name": "Fight club",
+    "successMessage": "Your man was victorious and brought home the proze money.",
+    "failureMessage": "Your man was knocked out and couldn't claim the prize.",
+    "deathMessage": "The obvious happened and your man was injured.",
+    "risk": 0.5,
+    "upgradeChance": 0.02,
+    "experience": 10,
+    "duration": 400,
+    "successChance": 0.7,
+    "rewardFactor": 0.2,
+    "rewards": [{
+            "chance": 1,
+            "reward": {
+                "type": "coins",
+                "amount": 500
+            }
+        },
+        {
+            "chance": 1,
+            "reward": {
+                "type": "renown",
+                "amount": 2
+            }
+        }
+    ],
+    "requirements": {
+        "renown": 1,
+        "adventurers": [{
+            "type": "Brawler",
+            "amount": 1
+        }],
+        "attributes": [{
+            "type": "Fighting",
+            "amount": 5
+        }]
+    }
+}

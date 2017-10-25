@@ -1,0 +1,44 @@
+{
+    "name": "Mug a traveller",
+    "successMessage": "A man is lying somewhere in a ditch, bereft of his belongings.",
+    "failureMessage": "You've discovered that people don't want you to take things off them.",
+    "deathMessage": "Some travellers know how to defend themselves.  Sometimes with lethal force.",
+    "risk": 0.25,
+    "upgradeChance": 0.03,
+    "experience": 10,
+    "duration": 75,
+    "successChance": 0.5,
+    "rewardFactor": 0.1,
+    "rewards": [{
+            "chance": 1,
+            "reward": {
+                "type": "coins",
+                "amount": 20
+            }
+        },
+        {
+            "chance": 0.01,
+            "reward": {
+                "type": "item",
+                "value": 15,
+                "itemType": "jewellery"
+            }
+        }
+    ],
+    "requirements": {
+        "renown": 0,
+        "adventurers": [{
+            "type": "Street rat",
+            "amount": 2
+        }],
+        "attributes": [{
+                "type": "Fighting",
+                "amount": 1
+            },
+            {
+                "type": "Toughness",
+                "amount": 2
+            }
+        ]
+    }
+}

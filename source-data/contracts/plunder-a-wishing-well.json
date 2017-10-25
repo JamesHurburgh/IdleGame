@@ -1,0 +1,67 @@
+{
+    "name": "Plunder a wishing well",
+    "successMessage": "You get a few wet coins.",
+    "failureMessage": "You've probably already plundered this well.",
+    "deathMessage": "You sent a drunk to a well.  What did you think was going to happen?",
+    "risk": 0.1,
+    "upgradeChance": 0.01,
+    "experience": 10,
+    "duration": 15,
+    "successChance": 0.9,
+    "rewardFactor": 0.1,
+    "startTaskId": "start",
+    "tasks": [{
+            "name": "Travel to wishing well",
+            "id": "start",
+            "taskAfterSuccess": "2",
+            "duration": 5
+        },
+        {
+            "name": "Search for coins",
+            "id": "2",
+            "taskAfterSuccess": "3",
+            "taskAfterFail": "end",
+            "duration": 5,
+            "skillTest": "Perception",
+            "difficulty": 0.5,
+            "retry": 5,
+            "mustSucceedForReward": true
+        },
+        {
+            "name": "Collect coins",
+            "id": "3",
+            "taskAfterSuccess": "end",
+            "taskAfterFail": "end",
+            "duration": 5,
+            "injuryOnFail": true,
+            "skillTest": "Agility",
+            "difficulty": 0.5,
+            "retry": 5,
+            "mustSucceedForReward": true
+        },
+        {
+            "name": "Travel home",
+            "id": "end",
+            "duration": 5,
+            "afterSuccessFinishQuest": "true"
+        }
+    ],
+    "rewards": [{
+        "chance": 1,
+        "reward": {
+            "type": "coins",
+            "amount": 5
+        }
+    }],
+    "requirements": {
+        "renown": 0,
+        "adventurers": [{
+            "type": "Drunkard",
+            "amount": 1
+        }],
+        "attributes": [{
+            "type": "Perception",
+            "amount": 1
+        }]
+    }
+}
