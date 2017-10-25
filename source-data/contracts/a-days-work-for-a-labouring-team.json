@@ -21,18 +21,6 @@
     ],
     "requirements": {
         "renown": 0,
-        "adventurers": [
-            {
-                "type": "Peasant",
-                "amount": 10
-            }
-        ],
-        "attributes": [
-            {
-                "type": "Toughness",
-                "amount": 20
-            }
-        ]
     },
     "startTaskId": "start",
     "tasks": [
@@ -51,7 +39,8 @@
             "taskAfterSuccess": "dig",
             "taskAfterFail": "home",
             "retry": "4",
-            "injuryType": "strain"
+            "injuryType": "strain",
+            "required": true
         },
         {
             "id": "dig",
@@ -61,8 +50,9 @@
             "difficulty": "4",
             "taskAfterSuccess": "build",
             "taskAfterFail": "home",
-            "retry": "4",
-            "injuryType": "strain"
+            "retry": "3",
+            "injuryType": "strain",
+            "required": true
         },
         {
             "id": "build",
@@ -73,7 +63,8 @@
             "taskAfterSuccess": "home",
             "taskAfterFail": "home",
             "retry": "2",
-            "injuryType": "strain"
+            "injuryType": "strain",
+            "required": true
         },
         {
             "id": "home",
