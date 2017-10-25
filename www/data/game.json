@@ -41,7 +41,9 @@
         {
             "number": "0.12.1",
             "description": "Bug fixes",
-            "features": [],
+            "features": [
+                "Added emphasis to require tasks."
+            ],
             "bugfixes": [
                 "Fixed anomaly where succeeding a required task on a retry wouldn't be sufficient to pass the quest."
             ]
