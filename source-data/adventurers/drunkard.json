@@ -1,0 +1,24 @@
+{
+    "name": "Drunkard",
+    "plural": "Drunkards",
+    "becomes": [
+        "Street rat",
+        "Peasant",
+        "Brawler"
+    ],
+    "cpt": 0,
+    "baseCost": 4,
+    "baseCut": 1.0,
+    "baseExperience": 3,
+    "costMultiplier": 1,
+    "costExponent": 1.05,
+    "skills": [{
+            "name": "Toughness",
+            "amount": 1
+        },
+        {
+            "name": "Fighting",
+            "amount": 1
+        }
+    ]
+}

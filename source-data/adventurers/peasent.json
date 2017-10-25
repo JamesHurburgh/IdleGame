@@ -1,0 +1,26 @@
+{
+    "name": "Peasant",
+    "plural": "Peasants",
+    "becomes": [
+        "Citizen"
+    ],
+    "cpt": 0,
+    "baseCost": 10,
+    "baseCut": 2.0,
+    "baseExperience": 3,
+    "costMultiplier": 1,
+    "costExponent": 1.05,
+    "skills": [{
+            "name": "Toughness",
+            "amount": 1
+        },
+        {
+            "name": "Perception",
+            "amount": 1
+        },
+        {
+            "name": "Intelligence",
+            "amount": 1
+        }
+    ]
+}

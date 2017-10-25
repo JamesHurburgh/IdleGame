@@ -1,0 +1,28 @@
+{
+    "name": "Cleric",
+    "plural": "Clerics",
+    "becomes": [],
+    "cpt": 0,
+    "baseCost": 2100,
+    "baseCut": 4.0,
+    "baseExperience": 65,
+    "costMultiplier": 5,
+    "costExponent": 1.05,
+    "skills": [{
+            "name": "Toughness",
+            "amount": 2
+        },
+        {
+            "name": "Perception",
+            "amount": 3
+        },
+        {
+            "name": "Agility",
+            "amount": 2
+        },
+        {
+            "name": "Healing",
+            "amount": 1
+        }
+    ]
+}

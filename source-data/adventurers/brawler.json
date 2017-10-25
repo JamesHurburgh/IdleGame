@@ -1,0 +1,30 @@
+{
+    "name": "Brawler",
+    "plural": "Brawlers",
+    "becomes": [
+        "Fighter"
+    ],
+    "cpt": 0,
+    "baseCost": 400,
+    "baseCut": 2.5,
+    "baseExperience": 6,
+    "costMultiplier": 5,
+    "costExponent": 1.05,
+    "skills": [{
+            "name": "Toughness",
+            "amount": 2
+        },
+        {
+            "name": "Perception",
+            "amount": 1
+        },
+        {
+            "name": "Agility",
+            "amount": 1
+        },
+        {
+            "name": "Fighting",
+            "amount": 2
+        }
+    ]
+}

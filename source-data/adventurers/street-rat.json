@@ -1,0 +1,27 @@
+{
+    "name": "Street rat",
+    "plural": "Street rats",
+    "becomes": [
+        "Brawler",
+        "Thief"
+    ],
+    "cpt": 0,
+    "baseCost": 6,
+    "baseCut": 1.5,
+    "baseExperience": 3,
+    "costMultiplier": 1,
+    "costExponent": 1.05,
+    "skills": [{
+            "name": "Toughness",
+            "amount": 1
+        },
+        {
+            "name": "Perception",
+            "amount": 1
+        },
+        {
+            "name": "Agility",
+            "amount": 1
+        }
+    ]
+}

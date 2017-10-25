@@ -1,0 +1,28 @@
+{
+    "name": "Fighter",
+    "plural": "Fighters",
+    "becomes": [],
+    "cpt": 0,
+    "baseCost": 1400,
+    "baseCut": 4.5,
+    "baseExperience": 50,
+    "costMultiplier": 5,
+    "costExponent": 1.05,
+    "skills": [{
+            "name": "Toughness",
+            "amount": 4
+        },
+        {
+            "name": "Perception",
+            "amount": 1
+        },
+        {
+            "name": "Agility",
+            "amount": 1
+        },
+        {
+            "name": "Fighting",
+            "amount": 2
+        }
+    ]
+}

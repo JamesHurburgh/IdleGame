@@ -1,0 +1,24 @@
+{
+    "name": "Thief",
+    "plural": "Thieves",
+    "becomes": [],
+    "cpt": 0,
+    "baseCost": 150,
+    "baseCut": 3.5,
+    "baseExperience": 6,
+    "costMultiplier": 5,
+    "costExponent": 1.05,
+    "skills": [{
+            "name": "Toughness",
+            "amount": 2
+        },
+        {
+            "name": "Perception",
+            "amount": 2
+        },
+        {
+            "name": "Agility",
+            "amount": 2
+        }
+    ]
+}
