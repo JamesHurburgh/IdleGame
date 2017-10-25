@@ -10,7 +10,8 @@
     "successChance": 0.6,
     "rewardFactor": 0.2,
     "startTaskId": "start",
-    "tasks": [{
+    "tasks": [
+        {
             "id": "start",
             "name": "Find a crowd",
             "duration": "15",
@@ -34,7 +35,7 @@
             "difficulty": "1",
             "taskAfterSuccess": "blend",
             "taskAfterFail": "run",
-            "mustSucceedForReward": true
+            "required": true
         },
         {
             "id": "blend",
@@ -53,7 +54,7 @@
             "difficulty": "0.7",
             "taskAfterSuccess": "home",
             "taskAfterFail": "jail",
-            "mustSucceedForReward": true
+            "required": true
         },
         {
             "id": "jail",
@@ -69,7 +70,8 @@
             "afterSuccessFinishQuest": "true"
         }
     ],
-    "rewards": [{
+    "rewards": [
+        {
             "chance": 1,
             "reward": {
                 "type": "coins",
@@ -87,13 +89,17 @@
     ],
     "requirements": {
         "renown": 0,
-        "adventurers": [{
-            "type": "Street rat",
-            "amount": 1
-        }],
-        "attributes": [{
-            "type": "Agility",
-            "amount": 1
-        }]
+        "adventurers": [
+            {
+                "type": "Street rat",
+                "amount": 1
+            }
+        ],
+        "attributes": [
+            {
+                "type": "Agility",
+                "amount": 1
+            }
+        ]
     }
 }

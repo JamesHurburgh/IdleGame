@@ -9,7 +9,8 @@
     "duration": 1000,
     "successChance": 0.5,
     "rewardFactor": 0.3,
-    "rewards": [{
+    "rewards": [
+        {
             "chance": 1,
             "reward": {
                 "type": "coins",
@@ -34,7 +35,8 @@
     ],
     "requirements": {
         "renown": 1,
-        "adventurers": [{
+        "adventurers": [
+            {
                 "type": "Brawler",
                 "amount": 1
             },
@@ -47,7 +49,8 @@
                 "amount": 10
             }
         ],
-        "attributes": [{
+        "attributes": [
+            {
                 "type": "Toughness",
                 "amount": 20
             },
@@ -57,7 +60,8 @@
             }
         ]
     },
-    "tasks": [{
+    "tasks": [
+        {
             "id": "start",
             "name": "Travel to the goblin's den",
             "duration": "60",
@@ -72,8 +76,8 @@
             "taskAfterSuccess": "f2",
             "taskAfterFail": "flee",
             "retry": "5",
-            "injuryOnFail": "fighting",
-            "mustSucceedForReward": true
+            "injuryType": "fighting",
+            "required": true
         },
         {
             "id": "f2",
@@ -84,8 +88,8 @@
             "taskAfterSuccess": "f3",
             "taskAfterFail": "flee",
             "retry": "5",
-            "injuryOnFail": "fighting",
-            "mustSucceedForReward": true
+            "injuryType": "fighting",
+            "required": true
         },
         {
             "id": "f3",
@@ -96,8 +100,8 @@
             "taskAfterSuccess": "f4",
             "taskAfterFail": "flee",
             "retry": "5",
-            "injuryOnFail": "fighting",
-            "mustSucceedForReward": true
+            "injuryType": "fighting",
+            "required": true
         },
         {
             "id": "f4",
@@ -108,8 +112,8 @@
             "taskAfterSuccess": "f5",
             "taskAfterFail": "flee",
             "retry": "5",
-            "injuryOnFail": "fighting",
-            "mustSucceedForReward": true
+            "injuryType": "fighting",
+            "required": true
         },
         {
             "id": "f5",
@@ -120,8 +124,8 @@
             "taskAfterSuccess": "f6",
             "taskAfterFail": "flee",
             "retry": "5",
-            "injuryOnFail": "fighting",
-            "mustSucceedForReward": true
+            "injuryType": "fighting",
+            "required": true
         },
         {
             "id": "f6",
@@ -132,8 +136,8 @@
             "taskAfterSuccess": "loot",
             "taskAfterFail": "flee",
             "retry": "5",
-            "injuryOnFail": "fighting",
-            "mustSucceedForReward": true
+            "injuryType": "fighting",
+            "required": true
         },
         {
             "id": "flee",
@@ -144,7 +148,7 @@
             "taskAfterSuccess": "home",
             "taskAfterFail": "home",
             "retry": "2",
-            "injuryOnFail": "running"
+            "injuryType": "running"
         },
         {
             "id": "loot",
@@ -154,7 +158,7 @@
             "difficulty": "0.5",
             "taskAfterSuccess": "home",
             "taskAfterFail": "home",
-            "mustSucceedForReward": true
+            "required": true
         },
         {
             "id": "home",

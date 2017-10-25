@@ -10,7 +10,8 @@
     "successChance": 0.9,
     "rewardFactor": 0.1,
     "startTaskId": "start",
-    "tasks": [{
+    "tasks": [
+        {
             "name": "Travel to wishing well",
             "id": "start",
             "taskAfterSuccess": "2",
@@ -25,7 +26,7 @@
             "skillTest": "Perception",
             "difficulty": 0.5,
             "retry": 5,
-            "mustSucceedForReward": true
+            "required": true
         },
         {
             "name": "Collect coins",
@@ -33,11 +34,11 @@
             "taskAfterSuccess": "end",
             "taskAfterFail": "end",
             "duration": 5,
-            "injuryOnFail": true,
+            "injuryType": true,
             "skillTest": "Agility",
             "difficulty": 0.5,
             "retry": 5,
-            "mustSucceedForReward": true
+            "required": true
         },
         {
             "name": "Travel home",
@@ -46,22 +47,28 @@
             "afterSuccessFinishQuest": "true"
         }
     ],
-    "rewards": [{
-        "chance": 1,
-        "reward": {
-            "type": "coins",
-            "amount": 5
+    "rewards": [
+        {
+            "chance": 1,
+            "reward": {
+                "type": "coins",
+                "amount": 5
+            }
         }
-    }],
+    ],
     "requirements": {
         "renown": 0,
-        "adventurers": [{
-            "type": "Drunkard",
-            "amount": 1
-        }],
-        "attributes": [{
-            "type": "Perception",
-            "amount": 1
-        }]
+        "adventurers": [
+            {
+                "type": "Drunkard",
+                "amount": 1
+            }
+        ],
+        "attributes": [
+            {
+                "type": "Perception",
+                "amount": 1
+            }
+        ]
     }
 }
