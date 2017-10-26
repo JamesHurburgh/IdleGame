@@ -9,7 +9,8 @@
     "duration": 350,
     "successChance": 0.5,
     "rewardFactor": 0.2,
-    "rewards": [{
+    "rewards": [
+        {
             "chance": 1,
             "reward": {
                 "type": "coins",
@@ -35,7 +36,8 @@
     ],
     "requirements": {
         "renown": 1,
-        "attributes": [{
+        "attributes": [
+            {
                 "type": "Intelligence",
                 "amount": 5
             },
@@ -44,5 +46,73 @@
                 "amount": 5
             }
         ]
-    }
+    },
+    "startTaskId": "start",
+    "tasks": [
+        {
+            "id": "start",
+            "name": "Scout for a target",
+            "duration": "60",
+            "skillTest": "Intelligence",
+            "difficulty": "1",
+            "taskAfterSuccess": "scout",
+            "taskAfterFail": "home",
+            "retry": "5",
+            "required": true
+        },
+        {
+            "id": "scout",
+            "name": "Wait for an opportunity",
+            "skillTest": "Perception",
+            "duration": "60",
+            "difficulty": "1",
+            "taskAfterSuccess": "enter",
+            "taskAfterFail": "found",
+            "retry": "2",
+            "required": true
+        },
+        {
+            "id": "enter",
+            "name": "Break in",
+            "duration": "5",
+            "skillTest": "Agility",
+            "difficulty": "1.5",
+            "taskAfterSuccess": "steal",
+            "taskAfterFail": "found",
+            "retry": "2",
+            "required": true
+        },
+        {
+            "id": "steal",
+            "name": "Loot the house",
+            "duration": "30",
+            "skillTest": "Perception",
+            "difficulty": ".75",
+            "taskAfterSuccess": "home",
+            "taskAfterFail": "home",
+            "retry": "2",
+            "required": true
+        },
+        {
+            "id": "found",
+            "name": "Run from the residents!",
+            "duration": "10",
+            "skillTest": "Agility",
+            "difficulty": "1",
+            "taskAfterSuccess": "home",
+            "taskAfterFail": "jail",
+            "injuryType": "slip"
+        },
+        {
+            "id": "jail",
+            "name": "Sit in jail",
+            "duration": "2880",
+            "taskAfterSuccess": "home"
+        },
+        {
+            "id": "home",
+            "name": "Travel home",
+            "duration": "10"
+        }
+    ]
 }

@@ -10,23 +10,62 @@
     "successChance": 0.8,
     "contractAmount": 750,
     "rewardFactor": 0.2,
-    "rewards": [{
-        "chance": 1,
-        "reward": {
-            "type": "renown",
-            "amount": 1
-        }
-    }],
-    "requirements": {
-        "renown": 0,
-        "attributes": [{
-                "type": "Toughness",
-                "amount": 10
-            },
-            {
-                "type": "Fighting",
-                "amount": 10
+    "rewards": [
+        {
+            "chance": 1,
+            "reward": {
+                "type": "renown",
+                "amount": 1
             }
-        ]
-    }
+        }
+    ],
+    "requirements": {
+        "renown": 0
+    },
+    "startTaskId": "start",
+    "tasks": [
+        {
+            "id": "start",
+            "name": "Travel to the place of business",
+            "duration": "10",
+            "taskAfterSuccess": "evade"
+        },
+        {
+            "id": "evade",
+            "name": "Evade the security",
+            "duration": "15",
+            "skillTest": "Agility",
+            "difficulty": "0.1",
+            "taskAfterSuccess": "smash",
+            "taskAfterFail": "fight"
+        },
+        {
+            "id": "smash",
+            "name": "Smash the place up",
+            "duration": "60",
+            "skillTest": "Fighting",
+            "difficulty": "10",
+            "taskAfterSuccess": "run",
+            "taskAfterFail": "fight",
+            "injuryType": "bashing",
+            "required": true
+        },
+        {
+            "id": "fight",
+            "name": "Fight the security gaurds",
+            "duration": "10",
+            "skillTest": "Fighting",
+            "difficulty": "10",
+            "taskAfterSuccess": "run",
+            "taskAfterFail": "run",
+            "retry": "6",
+            "injuryType": "fighting",
+            "required": true
+        },
+        {
+            "id": "run",
+            "name": "Run away from the trouble",
+            "duration": "5"
+        }
+    ]
 }
