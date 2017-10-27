@@ -133,6 +133,8 @@
                                 <div class="panel-heading">
                                     <h4 class="panel-title">
                                         <a data-toggle="collapse" data-parent="#contracts-accordion" :href="'#' + toId(contract.name)">{{contract.name}}</a>
+                                        <span v-if="!contract.tasks || contract.tasks.length === 0" class="text-muted">No tasks</span>
+                                        <span v-if="!contract.startTaskId" class="text-muted">No start task</span>
                                         <button type="button" class="btn btn-info btn-xs pull-right" @click="exportData(contract, toId(contract.name));">Export</button>
                                     </h4>
                                 </div>
@@ -252,7 +254,7 @@
                                                             <input type="text" maxlength="50" size="20" v-model="input.newTask.name">
                                                         </td>
                                                         <td>
-                                                            <input type="number" min="0" size="5" v-model="input.newTask.duration">
+                                                            <input type="number" min="0" width="3" v-model="input.newTask.duration">
                                                         </td>
                                                         <td>
                                                             <select class="form-control" v-model="input.newTask.skillTest">
@@ -264,13 +266,13 @@
                                                             <input type="number" min="0" max="10" v-model="input.newTask.difficulty">
                                                         </td>
                                                         <td>
-                                                            <input type="text" maxlength="5" size="5" v-model="input.newTask.taskAfterSuccess">
+                                                            <input type="text" maxlength="10" size="10" v-model="input.newTask.taskAfterSuccess">
                                                         </td>
                                                         <td>
-                                                            <input type="text" maxlength="5" size="5" v-model="input.newTask.taskAfterFail">
+                                                            <input type="text" maxlength="10" size="10" v-model="input.newTask.taskAfterFail">
                                                         </td>
                                                         <td>
-                                                            <input type="number" min="0" max="5" v-model="input.newTask.retry">
+                                                            <input type="number" min="0" max="5" size="2" v-model="input.newTask.retry">
                                                         </td>
                                                         <td>
                                                             <input type="text" v-model="input.newTask.injuryType">
