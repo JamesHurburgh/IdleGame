@@ -35,17 +35,7 @@
         }
     ],
     "requirements": {
-        "renown": 1,
-        "attributes": [
-            {
-                "type": "Intelligence",
-                "amount": 5
-            },
-            {
-                "type": "Agility",
-                "amount": 5
-            }
-        ]
+        "renown": 1
     },
     "startTaskId": "start",
     "tasks": [

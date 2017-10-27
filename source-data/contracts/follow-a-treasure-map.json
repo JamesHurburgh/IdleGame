@@ -9,7 +9,8 @@
     "duration": 3500,
     "successChance": 0.25,
     "rewardFactor": 0.2,
-    "rewards": [{
+    "rewards": [
+        {
             "chance": 1,
             "reward": {
                 "type": "coins",
@@ -41,19 +42,56 @@
         }
     ],
     "requirements": {
-        "renown": 0,
-        "attributes": [{
-                "type": "Toughness",
-                "amount": 10
-            },
-            {
-                "type": "Intelligence",
-                "amount": 10
-            },
-            {
-                "type": "Perception",
-                "amount": 10
-            }
-        ]
-    }
+        "renown": 0
+    },
+    "startTaskId": "start",
+    "tasks": [
+        {
+            "id": "start",
+            "name": "Gather supplies",
+            "duration": "40",
+            "taskAfterSuccess": "go"
+        },
+        {
+            "id": "go",
+            "name": "Follow treasure map",
+            "duration": "1000",
+            "skillTest": "Toughness",
+            "difficulty": "0.5",
+            "taskAfterSuccess": "find",
+            "taskAfterFail": "home",
+            "injuryType": true,
+            "required": true
+        },
+        {
+            "id": "find",
+            "name": "Search for the treasure",
+            "duration": "1000",
+            "skillTest": "Perception",
+            "difficulty": "0.5",
+            "taskAfterSuccess": "dig",
+            "taskAfterFail": "home",
+            "retry": "3",
+            "required": true
+        },
+        {
+            "id": "dig",
+            "name": "Dig for treasure",
+            "duration": "250",
+            "skillTest": "Toughness",
+            "difficulty": "0.5",
+            "taskAfterSuccess": "home",
+            "taskAfterFail": "home",
+            "injuryType": true,
+            "required": true
+        },
+        {
+            "id": "home",
+            "name": "Return home",
+            "duration": "1000",
+            "skillTest": "Toughness",
+            "difficulty": "2",
+            "injuryType": true
+        }
+    ]
 }

@@ -1,6 +1,6 @@
 {
     "name": "Fight some filthy goblins",
-    "successMessage": "Your men returned victorious bringing the filthy goblins loot with them.",
+    "successMessage": "Your men returned victorious bringing the filthy goblin's loot with them.",
     "failureMessage": "Your men returned beaten and bruised, nothing to show for their effort.",
     "deathMessage": "The filthy goblins fought back visciously.",
     "risk": 0.5,
@@ -34,31 +34,7 @@
         }
     ],
     "requirements": {
-        "renown": 1,
-        "adventurers": [
-            {
-                "type": "Brawler",
-                "amount": 1
-            },
-            {
-                "type": "Drunkard",
-                "amount": 5
-            },
-            {
-                "type": "Street rat",
-                "amount": 10
-            }
-        ],
-        "attributes": [
-            {
-                "type": "Toughness",
-                "amount": 20
-            },
-            {
-                "type": "Fighting",
-                "amount": 20
-            }
-        ]
+        "renown": 1
     },
     "tasks": [
         {
@@ -165,5 +141,6 @@
             "name": "Travel home",
             "duration": "60"
         }
-    ]
+    ],
+    "startTaskId": "start"
 }

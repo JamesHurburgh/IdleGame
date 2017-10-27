@@ -10,7 +10,8 @@
     "successChance": 0.5,
     "rewardFactor": 0.3,
     "contractAmount": 750,
-    "rewards": [{
+    "rewards": [
+        {
             "chance": 1,
             "reward": {
                 "type": "renown",
@@ -27,23 +28,94 @@
         }
     ],
     "requirements": {
-        "renown": 1,
-        "adventurers": [{
-            "type": "Fighter",
-            "amount": 2
-        }],
-        "attributes": [{
-                "type": "Intelligence",
-                "amount": 5
-            },
-            {
-                "type": "Toughness",
-                "amount": 15
-            },
-            {
-                "type": "Fighting",
-                "amount": 20
-            }
-        ]
-    }
+        "renown": 1
+    },
+    "startTaskId": "start",
+    "tasks": [
+        {
+            "id": "start",
+            "name": "Travel to the farms",
+            "duration": "120",
+            "taskAfterSuccess": "look"
+        },
+        {
+            "id": "look",
+            "name": "Look around for animal tracks",
+            "duration": "120",
+            "skillTest": "Perception",
+            "difficulty": "2",
+            "taskAfterSuccess": "prep",
+            "taskAfterFail": "def2",
+            "retry": "2"
+        },
+        {
+            "id": "prep",
+            "name": "Prepare for another attack",
+            "duration": "180",
+            "skillTest": "Intelligence",
+            "difficulty": "1",
+            "retry": "2",
+            "taskAfterSuccess": "def1",
+            "taskAfterFail": "def2"
+        },
+        {
+            "id": "def1",
+            "name": "Defend against an animal attack",
+            "duration": "10",
+            "skillTest": "Fighting",
+            "difficulty": "2",
+            "taskAfterSuccess": "track",
+            "taskAfterFail": "def2",
+            "injuryType": "wild-animal",
+            "required": true
+        },
+        {
+            "id": "def2",
+            "name": "Desperately defend against an animal attack",
+            "duration": "10",
+            "skillTest": "Fighting",
+            "difficulty": "4",
+            "taskAfterSuccess": "track",
+            "taskAfterFail": "flee",
+            "injuryType": "wild-animal",
+            "required": true
+        },
+        {
+            "id": "track",
+            "name": "Track the animals back to their den",
+            "duration": "120",
+            "skillTest": "Perception",
+            "difficulty": "1",
+            "taskAfterSuccess": "den",
+            "taskAfterFail": "home",
+            "retry": "5",
+            "required": true
+        },
+        {
+            "id": "den",
+            "name": "Attack the animals in their den",
+            "duration": "30",
+            "skillTest": "Fighting",
+            "difficulty": "2",
+            "taskAfterSuccess": "home",
+            "taskAfterFail": "flee",
+            "injuryType": "wild-animal",
+            "required": true
+        },
+        {
+            "id": "flee",
+            "name": "Run away from the wild animals",
+            "duration": "20",
+            "skillTest": "Agility",
+            "difficulty": "2",
+            "taskAfterSuccess": "home",
+            "taskAfterFail": "def2",
+            "injuryType": "wild-animal"
+        },
+        {
+            "id": "home",
+            "name": "Travel home",
+            "duration": "120"
+        }
+    ]
 }
