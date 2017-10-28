@@ -159,8 +159,8 @@
                                 <div class="panel-heading">
                                     <h4 class="panel-title">
                                         <a data-toggle="collapse" data-parent="#contracts-accordion" :href="'#' + toId(contract.name)">{{contract.name}}</a>
-                                        <button type="button" class="btn btn-info btn-xs pull-right" :disabled="contractIssues(contract).length !== 0" @click="exportData(contract, toId(contract.name));">Export</button>
-                                        <button type="button" class="btn btn-info btn-xs pull-right" :disabled="contractIssues(contract).length !== 0" @click="post(contract, toId(contract.name));">Submit</button>
+                                        <button type="button" class="btn btn-info btn-xs pull-right" @click="exportData(contract, toId(contract.name));">Export</button>
+                                        <button type="button" class="btn btn-info btn-xs pull-right" :disabled="contractIssues(contract).length !== 0" @click="postContract(contract, toId(contract.name));">Submit</button>
                                         <span v-if="contractIssues(contract).length !== 0" class="label label-warning pull-right">{{contractIssues(contract).length}} issues</span>
                                     </h4>
                                 </div>
@@ -168,77 +168,77 @@
                                     <div class="panel-body">
                                         <div class="col-sm-12" v-if="contractIssues(contract).length > 0">{{contractIssues(contract)}}
                                         </div>
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-12">
                                             <form class="form-horizontal">
                                                 <fieldset>
-                                                    <legend>Basics</legend>
-                                                    <div class="form-group">
-                                                        <label for="name" class="col-lg-2 control-label">Name</label>
-                                                        <div class="col-lg-10">
-                                                            <input type="text" class="form-control" id="name" placeholder="Contract Name" v-model="contract.name">
+                                                    <div class="col-sm-6">
+                                                        <legend>Basics</legend>
+                                                        <div class="form-group">
+                                                            <label for="name" class="col-lg-2 control-label">Name</label>
+                                                            <div class="col-lg-10">
+                                                                <input type="text" class="form-control" id="name" placeholder="Contract Name" v-model="contract.name">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="risk" class="col-lg-2 control-label">Risk</label>
+                                                            <div class="col-lg-4">
+                                                                <input type="text" class="form-control" id="risk" placeholder="0.5" v-model="contract.risk">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="duration" class="col-lg-2 control-label">Duration</label>
+                                                            <div class="col-lg-4">
+                                                                <input type="text" class="form-control" id="duration" placeholder="100" v-model="contract.duration">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="rewardFactor" class="col-lg-2 control-label">Reward</label>
+                                                            <div class="col-lg-4">
+                                                                <input type="text" class="form-control" id="rewardFactor" placeholder="0.5" v-model="contract.rewardFactor">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="experience" class="col-lg-2 control-label">Experience</label>
+                                                            <div class="col-lg-4">
+                                                                <input type="text" class="form-control" id="experience" placeholder="10" v-model="contract.experience">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="contractAmount" class="col-lg-2 control-label">Contract amount</label>
+                                                            <div class="col-lg-4">
+                                                                <input type="text" class="form-control" id="contractAmount" placeholder="10" v-model="contract.contractAmount">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="startTaskId" class="col-lg-2 control-label">Start Task Id</label>
+                                                            <div class="col-lg-4">
+                                                                <input type="text" class="form-control" id="startTaskId" placeholder="start" v-model="contract.startTaskId">
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group">
-                                                        <label for="risk" class="col-lg-2 control-label">Risk</label>
-                                                        <div class="col-lg-4">
-                                                            <input type="text" class="form-control" id="risk" placeholder="0.5" v-model="contract.risk">
+                                                    <div class="col-sm-6">
+                                                        <legend>Messages</legend>
+                                                        <div class="form-group">
+                                                            <label for="successMessage" class="col-lg-2 control-label">Success</label>
+                                                            <div class="col-lg-10">
+                                                                <input type="text" class="form-control" id="successMessage" placeholder="Success!" v-model="contract.successMessage">
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="duration" class="col-lg-2 control-label">Duration</label>
-                                                        <div class="col-lg-4">
-                                                            <input type="text" class="form-control" id="duration" placeholder="100" v-model="contract.duration">
+                                                        <div class="form-group">
+                                                            <label for="failureMessage" class="col-lg-2 control-label">Failure</label>
+                                                            <div class="col-lg-10">
+                                                                <input type="text" class="form-control" id="failureMessage" placeholder="Failure!" v-model="contract.failureMessage">
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="rewardFactor" class="col-lg-2 control-label">Reward</label>
-                                                        <div class="col-lg-4">
-                                                            <input type="text" class="form-control" id="rewardFactor" placeholder="0.5" v-model="contract.rewardFactor">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="experience" class="col-lg-2 control-label">Experience</label>
-                                                        <div class="col-lg-4">
-                                                            <input type="text" class="form-control" id="experience" placeholder="10" v-model="contract.experience">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="contractAmount" class="col-lg-2 control-label">Contract amount</label>
-                                                        <div class="col-lg-4">
-                                                            <input type="text" class="form-control" id="contractAmount" placeholder="10" v-model="contract.contractAmount">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="startTaskId" class="col-lg-2 control-label">Start Task Id</label>
-                                                        <div class="col-lg-4">
-                                                            <input type="text" class="form-control" id="startTaskId" placeholder="start" v-model="contract.startTaskId">
-                                                        </div>
-                                                    </div>
-                                                    <legend>Messages</legend>
-                                                    <div class="form-group">
-                                                        <label for="successMessage" class="col-lg-2 control-label">Success</label>
-                                                        <div class="col-lg-10">
-                                                            <input type="text" class="form-control" id="successMessage" placeholder="Success!" v-model="contract.successMessage">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="failureMessage" class="col-lg-2 control-label">Failure</label>
-                                                        <div class="col-lg-10">
-                                                            <input type="text" class="form-control" id="failureMessage" placeholder="Failure!" v-model="contract.failureMessage">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="deathMessage" class="col-lg-2 control-label">Death</label>
-                                                        <div class="col-lg-10">
-                                                            <input type="text" class="form-control" id="deathMessage" placeholder="Death!" v-model="contract.deathMessage">
+                                                        <div class="form-group">
+                                                            <label for="deathMessage" class="col-lg-2 control-label">Death</label>
+                                                            <div class="col-lg-10">
+                                                                <input type="text" class="form-control" id="deathMessage" placeholder="Death!" v-model="contract.deathMessage">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </fieldset>
                                             </form>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <legend>Json</legend>
-                                            <textarea class="form-control" style="height: 70vh;" id="json">{{contract}}</textarea>
                                         </div>
                                         <div class="col-sm-12">
                                             <legend>Tasks</legend>

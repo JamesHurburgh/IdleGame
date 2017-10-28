@@ -89,6 +89,7 @@ requirejs([
                         name = 'export.json';
                     }
 
+                    fixContractIssues(content);
                     var text = encodeURIComponent(JSON.stringify(content));
                     var data = "data:text/json;charset=utf-8," + text;
 
@@ -113,7 +114,7 @@ requirejs([
                 contractIssues: function(contract) {
                     return validateContract(contract);
                 },
-                post: function(data, title) {
+                postContract: function(data, title) {
 
                     alertify
                         .defaultValue("Please provide a short description.")
@@ -122,6 +123,7 @@ requirejs([
 
                                 // The click event is in the event variable, so you can use it here.
                                 ev.preventDefault();
+                                fixContractIssues(data);
                                 postSubmission(data, title, val);
                                 // The value entered is availble in the val variable.
                                 alertify.success("Thanks for submitting your ideas!");
@@ -170,19 +172,33 @@ requirejs([
                     }
                 }, this);
             }
+
             if (!contract.requirements) {
-                issues.push("No requirements object.");
+                issues.push("No requirements object. (Will be fixed on export or submit)");
             } else {
                 if (contract.requirements.attributes) {
-                    issues.push("Requirements Attributes is deprecated.");
+                    issues.push("Requirements Attributes is deprecated. (Will be fixed on export or submit)");
                 }
                 if (contract.requirements.adventurers) {
-                    issues.push("Requirements Adventurers is deprecated.");
+                    issues.push("Requirements Adventurers is deprecated. (Will be fixed on export or submit)");
                 }
             }
 
             return issues;
 
+        }
+
+        function fixContractIssues(contract) {
+            if (contract.requirements === undefined || contract.requirements === null) {
+                contract.requirements = [];
+            } else {
+                if (contract.requirements.attributes) {
+                    contract.requirements.attributes = undefined;
+                }
+                if (contract.requirements.adventurers) {
+                    contract.requirements.adventurers = undefined;
+                }
+            }
         }
 
         function postSubmission(data, title, description) {
