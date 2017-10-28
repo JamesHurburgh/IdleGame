@@ -73,9 +73,10 @@ define([
                     return false;
                 }
 
-                return contract.requirements.attributes.reduce(function(canSend, skillRequirement) {
-                    return canSend && adventurerManager.getCurrentPartyAttribute(skillRequirement.type) >= skillRequirement.amount;
-                }, true);
+                return true;
+                // return contract.requirements.attributes.reduce(function(canSend, skillRequirement) {
+                //     return canSend && adventurerManager.getCurrentPartyAttribute(skillRequirement.type) >= skillRequirement.amount;
+                // }, true);
             };
 
             this.getSuggestedSkills = function(contract) {
