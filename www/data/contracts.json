@@ -1,5 +1,4 @@
-[
-    {
+[{
         "name": "A days work for a labouring team",
         "successMessage": "An honest days work earns an honest days wage.",
         "failureMessage": "How did you fail this?  This shouldn't even be possible.",
@@ -11,25 +10,22 @@
         "successChance": 1,
         "contractAmount": 150,
         "rewardFactor": 0.2,
-        "rewards": [
-            {
-                "chance": 1,
-                "reward": {
-                    "type": "renown",
-                    "amount": 2
-                }
+        "rewards": [{
+            "chance": 1,
+            "reward": {
+                "type": "renown",
+                "amount": 2
             }
-        ],
+        }],
         "requirements": {
             "renown": 0
         },
         "startTaskId": "start",
-        "tasks": [
-            {
+        "tasks": [{
                 "id": "start",
                 "name": "Travel to the work site",
                 "duration": "15",
-                "taskAfterSuccess": "work"
+                "taskAfterSuccess": "carry"
             },
             {
                 "id": "carry",
@@ -86,69 +82,10 @@
         "successChance": 1,
         "contractAmount": 750,
         "rewardFactor": 0.2,
-        "rewards": [
-            {
-                "chance": 1,
-                "reward": {
-                    "type": "renown",
-                    "amount": 2
-                }
-            }
-        ],
-        "requirements": {
-            "renown": 0,
-            "adventurers": [
-                {
-                    "type": "Citizen",
-                    "amount": 10
-                }
-            ],
-            "attributes": [
-                {
-                    "type": "Toughness",
-                    "amount": 10
-                },
-                {
-                    "type": "Intelligence",
-                    "amount": 20
-                }
-            ]
-        },
+        "rewards": [{ "chance": 1, "reward": { "type": "renown", "amount": 2 } }],
+        "requirements": { "renown": 0, "adventurers": [{ "type": "Citizen", "amount": 10 }], "attributes": [{ "type": "Toughness", "amount": 10 }, { "type": "Intelligence", "amount": 20 }] },
         "startTaskId": "start",
-        "tasks": [
-            {
-                "id": "start",
-                "name": "Travel to the worksite",
-                "duration": "15"
-            },
-            {
-                "id": "work",
-                "name": "Perform some tasks",
-                "duration": "120",
-                "skillTest": "Intelligence",
-                "difficulty": "0.5",
-                "taskAfterSuccess": "more",
-                "taskAfterFail": "more",
-                "retry": "2",
-                "required": true
-            },
-            {
-                "id": "more",
-                "name": "Perform more work",
-                "duration": "120",
-                "skillTest": "Intelligence",
-                "difficulty": "5",
-                "taskAfterSuccess": "home",
-                "taskAfterFail": "home",
-                "retry": "2",
-                "required": true
-            },
-            {
-                "id": "home",
-                "name": "Travel home",
-                "duration": "15"
-            }
-        ]
+        "tasks": [{ "id": "start", "name": "Travel to the worksite", "duration": "15", "taskAfterSuccess": "work" }, { "id": "work", "name": "Perform some tasks", "duration": "120", "skillTest": "Intelligence", "difficulty": "0.5", "taskAfterSuccess": "more", "taskAfterFail": "more", "retry": "2", "required": true }, { "id": "more", "name": "Perform more work", "duration": "120", "skillTest": "Intelligence", "difficulty": "5", "taskAfterSuccess": "home", "taskAfterFail": "home", "retry": "2", "required": true }, { "id": "home", "name": "Travel home", "duration": "15" }]
     },
     {
         "name": "An honest days labouring",
@@ -163,8 +100,7 @@
         "contractAmount": 15,
         "rewardFactor": 0.1,
         "startTaskId": "1",
-        "tasks": [
-            {
+        "tasks": [{
                 "id": "1",
                 "name": "Travel to the work site",
                 "duration": 15,
@@ -183,29 +119,23 @@
                 "afterSuccessFinishQuest": "true"
             }
         ],
-        "rewards": [
-            {
-                "chance": 1,
-                "reward": {
-                    "type": "renown",
-                    "amount": 1
-                }
+        "rewards": [{
+            "chance": 1,
+            "reward": {
+                "type": "renown",
+                "amount": 1
             }
-        ],
+        }],
         "requirements": {
             "renown": 0,
-            "adventurers": [
-                {
-                    "type": "Peasant",
-                    "amount": 1
-                }
-            ],
-            "attributes": [
-                {
-                    "type": "Toughness",
-                    "amount": 1
-                }
-            ]
+            "adventurers": [{
+                "type": "Peasant",
+                "amount": 1
+            }],
+            "attributes": [{
+                "type": "Toughness",
+                "amount": 1
+            }]
         }
     },
     {
@@ -220,29 +150,23 @@
         "successChance": 1,
         "contractAmount": 125,
         "rewardFactor": 0.2,
-        "rewards": [
-            {
-                "chance": 1,
-                "reward": {
-                    "type": "renown",
-                    "amount": 2
-                }
+        "rewards": [{
+            "chance": 1,
+            "reward": {
+                "type": "renown",
+                "amount": 2
             }
-        ],
+        }],
         "requirements": {
             "renown": 0,
-            "adventurers": [
-                {
-                    "type": "Peasant",
-                    "amount": 1
-                }
-            ],
-            "attributes": [
-                {
-                    "type": "Toughness",
-                    "amount": 15
-                }
-            ]
+            "adventurers": [{
+                "type": "Peasant",
+                "amount": 1
+            }],
+            "attributes": [{
+                "type": "Toughness",
+                "amount": 15
+            }]
         }
     },
     {
@@ -257,25 +181,20 @@
         "successChance": 1,
         "contractAmount": 750,
         "rewardFactor": 0.2,
-        "rewards": [
-            {
-                "chance": 1,
-                "reward": {
-                    "type": "renown",
-                    "amount": 2
-                }
+        "rewards": [{
+            "chance": 1,
+            "reward": {
+                "type": "renown",
+                "amount": 2
             }
-        ],
+        }],
         "requirements": {
             "renown": 0,
-            "adventurers": [
-                {
-                    "type": "Citizen",
-                    "amount": 1
-                }
-            ],
-            "attributes": [
-                {
+            "adventurers": [{
+                "type": "Citizen",
+                "amount": 1
+            }],
+            "attributes": [{
                     "type": "Toughness",
                     "amount": 5
                 },
@@ -297,8 +216,7 @@
         "duration": 350,
         "successChance": 0.5,
         "rewardFactor": 0.2,
-        "rewards": [
-            {
+        "rewards": [{
                 "chance": 1,
                 "reward": {
                     "type": "coins",
@@ -326,8 +244,7 @@
             "renown": 1
         },
         "startTaskId": "start",
-        "tasks": [
-            {
+        "tasks": [{
                 "id": "start",
                 "name": "Scout for a target",
                 "duration": "60",
@@ -406,21 +323,18 @@
         "successChance": 0.8,
         "contractAmount": 750,
         "rewardFactor": 0.2,
-        "rewards": [
-            {
-                "chance": 1,
-                "reward": {
-                    "type": "renown",
-                    "amount": 1
-                }
+        "rewards": [{
+            "chance": 1,
+            "reward": {
+                "type": "renown",
+                "amount": 1
             }
-        ],
+        }],
         "requirements": {
             "renown": 0
         },
         "startTaskId": "start",
-        "tasks": [
-            {
+        "tasks": [{
                 "id": "start",
                 "name": "Travel to the place of business",
                 "duration": "10",
@@ -465,113 +379,7 @@
             }
         ]
     },
-    {
-        "name": "Fight club",
-        "successMessage": "Your man was victorious and brought home the proze money.",
-        "failureMessage": "Your man was knocked out and couldn't claim the prize.",
-        "deathMessage": "The obvious happened and your man was injured.",
-        "risk": 0.5,
-        "upgradeChance": 0.02,
-        "experience": 10,
-        "duration": 400,
-        "successChance": 0.7,
-        "rewardFactor": 0.2,
-        "rewards": [
-            {
-                "chance": 1,
-                "reward": {
-                    "type": "coins",
-                    "amount": 500
-                }
-            },
-            {
-                "chance": 1,
-                "reward": {
-                    "type": "renown",
-                    "amount": 2
-                }
-            }
-        ],
-        "requirements": {
-            "renown": 1,
-            "adventurers": [
-                {
-                    "type": "Brawler",
-                    "amount": 1
-                }
-            ],
-            "attributes": [
-                {
-                    "type": "Fighting",
-                    "amount": 5
-                }
-            ]
-        },
-        "startTaskId": "start",
-        "tasks": [
-            {
-                "id": "start",
-                "name": "Travel to the fight club",
-                "duration": "10",
-                "taskAfterSuccess": "tier1"
-            },
-            {
-                "id": "tier1",
-                "name": "Fight at tier 1",
-                "duration": "30",
-                "skillTest": "Fighting",
-                "difficulty": "1",
-                "taskAfterSuccess": "tier2",
-                "taskAfterFail": "home",
-                "injuryType": "fighting",
-                "required": true
-            },
-            {
-                "id": "tier2",
-                "name": "Fight at tier 2",
-                "duration": "35",
-                "skillTest": "Fighting",
-                "difficulty": "2.5",
-                "taskAfterSuccess": "tier3",
-                "taskAfterFail": "home",
-                "injuryType": "fighting",
-                "required": true
-            },
-            {
-                "id": "tier3",
-                "name": "Fight at tier 3",
-                "duration": "40",
-                "skillTest": "Fighting",
-                "difficulty": "4",
-                "taskAfterSuccess": "tier4",
-                "taskAfterFail": "home",
-                "injuryType": "fighting",
-                "required": true
-            },
-            {
-                "id": "tier4",
-                "name": "Fight at tier 4",
-                "duration": "55",
-                "skillTest": "Fighting",
-                "difficulty": "8",
-                "taskAfterSuccess": "win",
-                "taskAfterFail": "home",
-                "injuryType": "fighting",
-                "required": true
-            },
-            {
-                "id": "win",
-                "name": "Celebrate winning the fights",
-                "duration": "120",
-                "taskAfterSuccess": "home"
-            },
-            {
-                "id": "home",
-                "name": "Travel home",
-                "duration": "50"
-            }
-        ]
-    },
+    { "name": "Fight club", "successMessage": "Your man was victorious and brought home the proze money.", "failureMessage": "Your man was knocked out and couldn't claim the prize.", "deathMessage": "The obvious happened and your man was injured.", "risk": 0.5, "upgradeChance": 0.02, "experience": 10, "duration": 400, "successChance": 0.7, "rewardFactor": 0.2, "rewards": [{ "chance": 1, "reward": { "type": "coins", "amount": 500 } }, { "chance": 1, "reward": { "type": "renown", "amount": 2 } }], "requirements": { "renown": 1, "adventurers": [{ "type": "Brawler", "amount": 1 }], "attributes": [{ "type": "Fighting", "amount": 5 }] }, "startTaskId": "start", "tasks": [{ "id": "start", "name": "Travel to the fight club", "duration": "10", "taskAfterSuccess": "tier1" }, { "id": "tier1", "name": "Fight at tier 1", "duration": "30", "skillTest": "Fighting", "difficulty": "1", "taskAfterSuccess": "tier2", "taskAfterFail": "home", "injuryType": "fighting", "required": true }, { "id": "tier2", "name": "Fight at tier 2", "duration": "35", "skillTest": "Fighting", "difficulty": "2.5", "taskAfterSuccess": "tier3", "taskAfterFail": "home", "injuryType": "fighting", "required": true }, { "id": "tier3", "name": "Fight at tier 3", "duration": "40", "skillTest": "Fighting", "difficulty": "4", "taskAfterSuccess": "tier4", "taskAfterFail": "home", "injuryType": "fighting", "required": true }, { "id": "tier4", "name": "Fight at tier 4", "duration": "55", "skillTest": "Fighting", "difficulty": "8", "taskAfterSuccess": "win", "taskAfterFail": "home", "injuryType": "fighting", "required": true }, { "id": "win", "name": "Celebrate winning the fights", "duration": "120", "taskAfterSuccess": "home" }, { "id": "home", "name": "Travel home", "duration": "50" }] },
     {
         "name": "Fight some bandits",
         "successMessage": "Your men returned victorious bringing the bandits loot with them.",
@@ -583,8 +391,7 @@
         "duration": 1200,
         "successChance": 0.5,
         "rewardFactor": 0.4,
-        "rewards": [
-            {
+        "rewards": [{
                 "chance": 1,
                 "reward": {
                     "type": "coins",
@@ -611,8 +418,7 @@
             "renown": 1
         },
         "startTaskId": "start",
-        "tasks": [
-            {
+        "tasks": [{
                 "id": "start",
                 "name": "Travel to the bandit's camp",
                 "duration": "60",
@@ -730,8 +536,7 @@
         "duration": 1000,
         "successChance": 0.5,
         "rewardFactor": 0.3,
-        "rewards": [
-            {
+        "rewards": [{
                 "chance": 1,
                 "reward": {
                     "type": "coins",
@@ -757,8 +562,7 @@
         "requirements": {
             "renown": 1
         },
-        "tasks": [
-            {
+        "tasks": [{
                 "id": "start",
                 "name": "Travel to the goblin's den",
                 "duration": "60",
@@ -876,8 +680,7 @@
         "duration": 3500,
         "successChance": 0.05,
         "rewardFactor": 0.2,
-        "rewards": [
-            {
+        "rewards": [{
                 "chance": 1,
                 "reward": {
                     "type": "coins",
@@ -909,8 +712,7 @@
             }
         ],
         "startTaskId": "start",
-        "tasks": [
-            {
+        "tasks": [{
                 "id": "start",
                 "name": "Gather supplies",
                 "duration": "40",
@@ -970,8 +772,7 @@
         "duration": 3500,
         "successChance": 0.15,
         "rewardFactor": 0.2,
-        "rewards": [
-            {
+        "rewards": [{
                 "chance": 1,
                 "reward": {
                     "type": "coins",
@@ -1006,8 +807,7 @@
             "renown": 0
         },
         "startTaskId": "start",
-        "tasks": [
-            {
+        "tasks": [{
                 "id": "start",
                 "name": "Gather supplies",
                 "duration": "40",
@@ -1067,8 +867,7 @@
         "duration": 3500,
         "successChance": 0.25,
         "rewardFactor": 0.2,
-        "rewards": [
-            {
+        "rewards": [{
                 "chance": 1,
                 "reward": {
                     "type": "coins",
@@ -1103,8 +902,7 @@
             "renown": 0
         },
         "startTaskId": "start",
-        "tasks": [
-            {
+        "tasks": [{
                 "id": "start",
                 "name": "Gather supplies",
                 "duration": "40",
@@ -1153,230 +951,8 @@
             }
         ]
     },
-    {
-        "name": "Loot a crypt",
-        "successMessage": "People like being buried with their valueables.  Now you have some of them.",
-        "failureMessage": "Not everyone keeps their family jewels with their dead.",
-        "deathMessage": "Crypts can be dangerous at night.",
-        "risk": 0.2,
-        "upgradeChance": 0.1,
-        "experience": 10,
-        "duration": 200,
-        "successChance": 1,
-        "rewardFactor": 0.3,
-        "rewards": [
-            {
-                "chance": 1,
-                "reward": {
-                    "type": "coins",
-                    "amount": 1000
-                }
-            },
-            {
-                "chance": 1,
-                "reward": {
-                    "type": "renown",
-                    "amount": 1
-                }
-            },
-            {
-                "chance": 0.1,
-                "reward": {
-                    "type": "item",
-                    "value": 100,
-                    "itemType": "artwork"
-                }
-            },
-            {
-                "chance": 0.1,
-                "reward": {
-                    "type": "item",
-                    "itemType": "minor-mysterious-scroll"
-                }
-            }
-        ],
-        "requirements": {
-            "renown": 0,
-            "adventurers": [
-                {
-                    "type": "Thief",
-                    "amount": 1
-                },
-                {
-                    "type": "Street rat",
-                    "amount": 5
-                }
-            ],
-            "attributes": [
-                {
-                    "type": "Toughness",
-                    "amount": 7
-                },
-                {
-                    "type": "Intelligence",
-                    "amount": 7
-                },
-                {
-                    "type": "Agility",
-                    "amount": 7
-                }
-            ]
-        },
-        "startTaskId": "start",
-        "tasks": [
-            {
-                "id": "start",
-                "name": "Travel to the graveyard",
-                "duration": "20",
-                "taskAfterSuccess": "enter"
-            },
-            {
-                "id": "enter",
-                "name": "Creep around looking for a valuable crypt",
-                "duration": "60",
-                "skillTest": "Perception",
-                "difficulty": "1",
-                "taskAfterSuccess": "break",
-                "taskAfterFail": "ghost",
-                "retry": "2"
-            },
-            {
-                "id": "break",
-                "name": "Break into the crypt",
-                "duration": "15",
-                "skillTest": "Fighting",
-                "difficulty": "1",
-                "taskAfterSuccess": "loot",
-                "taskAfterFail": "ghost",
-                "required": true
-            },
-            {
-                "id": "loot",
-                "name": "Loot the crypt",
-                "duration": "60",
-                "taskAfterSuccess": "home",
-                "required": true
-            },
-            {
-                "id": "ghost",
-                "name": "Fight a ghost",
-                "duration": "5",
-                "skillTest": "Fighting",
-                "difficulty": "4",
-                "taskAfterSuccess": "break",
-                "taskAfterFail": "home",
-                "retry": "2",
-                "injuryType": "ghostly",
-                "required": true
-            },
-            {
-                "id": "home",
-                "name": "Travel home"
-            },
-            {
-                "id": "flee",
-                "name": "Run away",
-                "duration": "10",
-                "taskAfterSuccess": "home"
-            }
-        ]
-    },
-    {
-        "name": "Mug a traveller",
-        "successMessage": "A man is lying somewhere in a ditch, bereft of his belongings.",
-        "failureMessage": "You've discovered that people don't want you to take things off them.",
-        "deathMessage": "Some travellers know how to defend themselves.  Sometimes with lethal force.",
-        "risk": 0.25,
-        "upgradeChance": 0.03,
-        "experience": 10,
-        "duration": 75,
-        "successChance": 0.5,
-        "rewardFactor": 0.1,
-        "rewards": [
-            {
-                "chance": 1,
-                "reward": {
-                    "type": "coins",
-                    "amount": 20
-                }
-            },
-            {
-                "chance": 0.01,
-                "reward": {
-                    "type": "item",
-                    "value": 15,
-                    "itemType": "jewellery"
-                }
-            }
-        ],
-        "requirements": {
-            "renown": 0,
-            "adventurers": [
-                {
-                    "type": "Street rat",
-                    "amount": 2
-                }
-            ],
-            "attributes": [
-                {
-                    "type": "Fighting",
-                    "amount": 1
-                },
-                {
-                    "type": "Toughness",
-                    "amount": 2
-                }
-            ]
-        },
-        "startTaskId": "start",
-        "tasks": [
-            {
-                "id": "start",
-                "name": "Find an ambush site",
-                "duration": "30",
-                "skillTest": "Intelligence",
-                "difficulty": "0.5",
-                "taskAfterSuccess": "wait",
-                "taskAfterFail": "home",
-                "retry": "5",
-                "required": true
-            },
-            {
-                "id": "wait",
-                "name": "Lie in wait for a traveller",
-                "duration": "180",
-                "taskAfterSuccess": "mug"
-            },
-            {
-                "id": "mug",
-                "name": "Mug the traveller",
-                "duration": "10",
-                "skillTest": "Fighting",
-                "difficulty": "1",
-                "taskAfterSuccess": "loot",
-                "taskAfterFail": "flee",
-                "injuryType": "fighting",
-                "required": true
-            },
-            {
-                "id": "loot",
-                "name": "Loot the traveller's belongings",
-                "duration": "10",
-                "taskAfterSuccess": "home"
-            },
-            {
-                "id": "home",
-                "name": "Travel home",
-                "duration": "10"
-            },
-            {
-                "id": "flee",
-                "name": "Run away empty handed",
-                "duration": "20",
-                "taskAfterSuccess": "home"
-            }
-        ]
-    },
+    { "name": "Loot a crypt", "successMessage": "People like being buried with their valueables.  Now you have some of them.", "failureMessage": "Not everyone keeps their family jewels with their dead.", "deathMessage": "Crypts can be dangerous at night.", "risk": 0.2, "upgradeChance": 0.1, "experience": 10, "duration": 200, "successChance": 1, "rewardFactor": 0.3, "rewards": [{ "chance": 1, "reward": { "type": "coins", "amount": 1000 } }, { "chance": 1, "reward": { "type": "renown", "amount": 1 } }, { "chance": 0.1, "reward": { "type": "item", "value": 100, "itemType": "artwork" } }, { "chance": 0.1, "reward": { "type": "item", "itemType": "minor-mysterious-scroll" } }], "requirements": { "renown": 0, "adventurers": [{ "type": "Thief", "amount": 1 }, { "type": "Street rat", "amount": 5 }], "attributes": [{ "type": "Toughness", "amount": 7 }, { "type": "Intelligence", "amount": 7 }, { "type": "Agility", "amount": 7 }] }, "startTaskId": "start", "tasks": [{ "id": "start", "name": "Travel to the graveyard", "duration": "20", "taskAfterSuccess": "enter" }, { "id": "enter", "name": "Creep around looking for a valuable crypt", "duration": "60", "skillTest": "Perception", "difficulty": "1", "taskAfterSuccess": "break", "taskAfterFail": "ghost", "retry": "2" }, { "id": "break", "name": "Break into the crypt", "duration": "15", "skillTest": "Fighting", "difficulty": "1", "taskAfterSuccess": "loot", "taskAfterFail": "ghost", "required": true }, { "id": "loot", "name": "Loot the crypt", "duration": "60", "taskAfterSuccess": "home", "required": true }, { "id": "ghost", "name": "Fight a ghost", "duration": "5", "skillTest": "Fighting", "difficulty": "4", "taskAfterSuccess": "break", "taskAfterFail": "home", "retry": "2", "injuryType": "ghostly", "required": true }, { "id": "home", "name": "Travel home" }, { "id": "flee", "name": "Run away", "duration": "10", "taskAfterSuccess": "home" }] },
+    { "name": "Mug a traveller", "successMessage": "A man is lying somewhere in a ditch, bereft of his belongings.", "failureMessage": "You've discovered that people don't want you to take things off them.", "deathMessage": "Some travellers know how to defend themselves.  Sometimes with lethal force.", "risk": 0.25, "upgradeChance": 0.03, "experience": 10, "duration": 75, "successChance": 0.5, "rewardFactor": 0.1, "rewards": [{ "chance": 1, "reward": { "type": "coins", "amount": 20 } }, { "chance": 0.01, "reward": { "type": "item", "value": 15, "itemType": "jewellery" } }], "requirements": { "renown": 0, "adventurers": [{ "type": "Street rat", "amount": 2 }], "attributes": [{ "type": "Fighting", "amount": 1 }, { "type": "Toughness", "amount": 2 }] }, "startTaskId": "start", "tasks": [{ "id": "start", "name": "Find an ambush site", "duration": "30", "skillTest": "Intelligence", "difficulty": "0.5", "taskAfterSuccess": "wait", "taskAfterFail": "home", "retry": "5", "required": true }, { "id": "wait", "name": "Lie in wait for a traveller", "duration": "180", "taskAfterSuccess": "mug" }, { "id": "mug", "name": "Mug the traveller", "duration": "10", "skillTest": "Fighting", "difficulty": "1", "taskAfterSuccess": "loot", "taskAfterFail": "flee", "injuryType": "fighting", "required": true }, { "id": "loot", "name": "Loot the traveller's belongings", "duration": "10", "taskAfterSuccess": "home" }, { "id": "home", "name": "Travel home", "duration": "10" }, { "id": "flee", "name": "Run away empty handed", "duration": "20", "taskAfterSuccess": "home" }] },
     {
         "name": "Pickpocketing",
         "successMessage": "Quick fingers are the neccessary tools and your man has them.",
@@ -1389,8 +965,7 @@
         "successChance": 0.6,
         "rewardFactor": 0.2,
         "startTaskId": "start",
-        "tasks": [
-            {
+        "tasks": [{
                 "id": "start",
                 "name": "Find a crowd",
                 "duration": "15",
@@ -1449,8 +1024,7 @@
                 "afterSuccessFinishQuest": "true"
             }
         ],
-        "rewards": [
-            {
+        "rewards": [{
                 "chance": 1,
                 "reward": {
                     "type": "coins",
@@ -1468,18 +1042,14 @@
         ],
         "requirements": {
             "renown": 0,
-            "adventurers": [
-                {
-                    "type": "Street rat",
-                    "amount": 1
-                }
-            ],
-            "attributes": [
-                {
-                    "type": "Agility",
-                    "amount": 1
-                }
-            ]
+            "adventurers": [{
+                "type": "Street rat",
+                "amount": 1
+            }],
+            "attributes": [{
+                "type": "Agility",
+                "amount": 1
+            }]
         }
     },
     {
@@ -1494,8 +1064,7 @@
         "successChance": 0.9,
         "rewardFactor": 0.1,
         "startTaskId": "start",
-        "tasks": [
-            {
+        "tasks": [{
                 "name": "Travel to wishing well",
                 "id": "start",
                 "taskAfterSuccess": "2",
@@ -1531,29 +1100,23 @@
                 "afterSuccessFinishQuest": "true"
             }
         ],
-        "rewards": [
-            {
-                "chance": 1,
-                "reward": {
-                    "type": "coins",
-                    "amount": 5
-                }
+        "rewards": [{
+            "chance": 1,
+            "reward": {
+                "type": "coins",
+                "amount": 5
             }
-        ],
+        }],
         "requirements": {
             "renown": 0,
-            "adventurers": [
-                {
-                    "type": "Drunkard",
-                    "amount": 1
-                }
-            ],
-            "attributes": [
-                {
-                    "type": "Perception",
-                    "amount": 1
-                }
-            ]
+            "adventurers": [{
+                "type": "Drunkard",
+                "amount": 1
+            }],
+            "attributes": [{
+                "type": "Perception",
+                "amount": 1
+            }]
         }
     },
     {
@@ -1568,8 +1131,7 @@
         "successChance": 0.5,
         "rewardFactor": 0.3,
         "contractAmount": 750,
-        "rewards": [
-            {
+        "rewards": [{
                 "chance": 1,
                 "reward": {
                     "type": "renown",
@@ -1589,8 +1151,7 @@
             "renown": 1
         },
         "startTaskId": "start",
-        "tasks": [
-            {
+        "tasks": [{
                 "id": "start",
                 "name": "Travel to the farms",
                 "duration": "120",
@@ -1689,19 +1250,16 @@
         "successChance": 0.7,
         "rewardFactor": 0.2,
         "contractAmount": 600,
-        "rewards": [
-            {
-                "chance": 1,
-                "reward": {
-                    "type": "renown",
-                    "amount": 2
-                }
+        "rewards": [{
+            "chance": 1,
+            "reward": {
+                "type": "renown",
+                "amount": 2
             }
-        ],
+        }],
         "requirements": {
             "renown": 1,
-            "attributes": [
-                {
+            "attributes": [{
                     "type": "Fighting",
                     "amount": 5
                 },
@@ -1716,151 +1274,7 @@
             ]
         }
     },
-    {
-        "name": "Rescue a farmer's daughter",
-        "successMessage": "The farmers daughter is returned and he gives you his life savings in return.",
-        "failureMessage": "Your men couldn't find the farmers daughter.",
-        "deathMessage": "Rescue missions can be dangerous.",
-        "risk": 0.6,
-        "upgradeChance": 0.3,
-        "experience": 10,
-        "duration": 1000,
-        "successChance": 1,
-        "contractAmount": 1000,
-        "rewardFactor": 0.3,
-        "rewards": [
-            {
-                "chance": 1,
-                "reward": {
-                    "type": "renown",
-                    "amount": 3
-                }
-            },
-            {
-                "chance": 0.1,
-                "reward": {
-                    "type": "item",
-                    "value": 150,
-                    "itemType": "weapon"
-                }
-            }
-        ],
-        "requirements": {
-            "renown": 0,
-            "adventurers": [
-                {
-                    "type": "Thief",
-                    "amount": 2
-                },
-                {
-                    "type": "Citizen",
-                    "amount": 1
-                },
-                {
-                    "type": "Brawler",
-                    "amount": 2
-                }
-            ],
-            "attributes": [
-                {
-                    "type": "Toughness",
-                    "amount": 7
-                },
-                {
-                    "type": "Intelligence",
-                    "amount": 7
-                },
-                {
-                    "type": "Agility",
-                    "amount": 7
-                }
-            ]
-        },
-        "startTaskId": "start",
-        "tasks": [
-            {
-                "id": "start",
-                "name": "Look for clues",
-                "duration": "120",
-                "skillTest": "Intelligence",
-                "difficulty": "5",
-                "retry": "4",
-                "taskAfterFail": "fail",
-                "required": true,
-                "taskAfterSuccess": "go"
-            },
-            {
-                "id": "go",
-                "name": "Follow the clues",
-                "duration": "1200",
-                "skillTest": "Toughness",
-                "difficulty": "2",
-                "taskAfterSuccess": "scout",
-                "taskAfterFail": "scout",
-                "injuryType": "travelling"
-            },
-            {
-                "id": "scout",
-                "name": "Scout out the goblin's camp",
-                "duration": "60",
-                "skillTest": "Perception",
-                "difficulty": "2",
-                "taskAfterSuccess": "sneak",
-                "taskAfterFail": "front"
-            },
-            {
-                "id": "sneak",
-                "name": "Sneak in around the back",
-                "duration": "15",
-                "skillTest": "Agility",
-                "difficulty": "1",
-                "taskAfterSuccess": "resc",
-                "taskAfterFail": "fight"
-            },
-            {
-                "id": "front",
-                "name": "Charge the goblin camp",
-                "duration": "1",
-                "taskAfterSuccess": "fight"
-            },
-            {
-                "id": "fight",
-                "name": "Fight the goblins!",
-                "duration": "5",
-                "skillTest": "Fighting",
-                "difficulty": "4",
-                "taskAfterSuccess": "resc",
-                "taskAfterFail": "flee",
-                "retry": "3",
-                "injuryType": "fighting",
-                "required": true
-            },
-            {
-                "id": "resc",
-                "name": "Rescue the girl",
-                "duration": "15",
-                "taskAfterSuccess": "home"
-            },
-            {
-                "id": "flee",
-                "name": "Run away",
-                "duration": "10",
-                "skillTest": "Agility",
-                "difficulty": "2",
-                "taskAfterSuccess": "home",
-                "taskAfterFail": "fight",
-                "retry": "2"
-            },
-            {
-                "id": "home",
-                "name": "Travel home",
-                "duration": "1200",
-                "skillTest": "Toughness",
-                "difficulty": "2",
-                "injuryType": "travelling"
-            }
-        ]
-    },
+    { "name": "Rescue a farmer's daughter", "successMessage": "The farmers daughter is returned and he gives you his life savings in return.", "failureMessage": "Your men couldn't find the farmers daughter.", "deathMessage": "Rescue missions can be dangerous.", "risk": 0.6, "upgradeChance": 0.3, "experience": 10, "duration": 1000, "successChance": 1, "contractAmount": 1000, "rewardFactor": 0.3, "rewards": [{ "chance": 1, "reward": { "type": "renown", "amount": 3 } }, { "chance": 0.1, "reward": { "type": "item", "value": 150, "itemType": "weapon" } }], "requirements": { "renown": 0, "adventurers": [{ "type": "Thief", "amount": 2 }, { "type": "Citizen", "amount": 1 }, { "type": "Brawler", "amount": 2 }], "attributes": [{ "type": "Toughness", "amount": 7 }, { "type": "Intelligence", "amount": 7 }, { "type": "Agility", "amount": 7 }] }, "startTaskId": "start", "tasks": [{ "id": "start", "name": "Look for clues", "duration": "120", "skillTest": "Intelligence", "difficulty": "5", "retry": "4", "taskAfterFail": "fail", "required": true, "taskAfterSuccess": "go" }, { "id": "go", "name": "Follow the clues", "duration": "1200", "skillTest": "Toughness", "difficulty": "2", "taskAfterSuccess": "scout", "taskAfterFail": "scout", "injuryType": "travelling" }, { "id": "scout", "name": "Scout out the goblin's camp", "duration": "60", "skillTest": "Perception", "difficulty": "2", "taskAfterSuccess": "sneak", "taskAfterFail": "front" }, { "id": "sneak", "name": "Sneak in around the back", "duration": "15", "skillTest": "Agility", "difficulty": "1", "taskAfterSuccess": "resc", "taskAfterFail": "fight" }, { "id": "front", "name": "Charge the goblin camp", "duration": "1", "taskAfterSuccess": "fight" }, { "id": "fight", "name": "Fight the goblins!", "duration": "5", "skillTest": "Fighting", "difficulty": "4", "taskAfterSuccess": "resc", "taskAfterFail": "flee", "retry": "3", "injuryType": "fighting", "required": true }, { "id": "resc", "name": "Rescue the girl", "duration": "15", "taskAfterSuccess": "home" }, { "id": "flee", "name": "Run away", "duration": "10", "skillTest": "Agility", "difficulty": "2", "taskAfterSuccess": "home", "taskAfterFail": "fight", "retry": "2" }, { "id": "home", "name": "Travel home", "duration": "1200", "skillTest": "Toughness", "difficulty": "2", "injuryType": "travelling" }, { "id": "fail", "name": "Give up" }] },
     {
         "name": "Rob a graveyard",
         "successMessage": "The reward you get is dirty and smells faintly of death.",
@@ -1873,8 +1287,7 @@
         "successChance": 0.9,
         "rewardFactor": 0.1,
         "startTaskId": "1",
-        "tasks": [
-            {
+        "tasks": [{
                 "id": "1",
                 "taskAfterSuccess": "2",
                 "name": "Travel to the graveyard",
@@ -1899,8 +1312,7 @@
                 "duration": 10
             }
         ],
-        "rewards": [
-            {
+        "rewards": [{
                 "chance": 1,
                 "reward": {
                     "type": "coins",
@@ -1918,18 +1330,14 @@
         ],
         "requirements": {
             "renown": 0,
-            "adventurers": [
-                {
-                    "type": "Drunkard",
-                    "amount": 1
-                }
-            ],
-            "attributes": [
-                {
-                    "type": "Perception",
-                    "amount": 1
-                }
-            ]
+            "adventurers": [{
+                "type": "Drunkard",
+                "amount": 1
+            }],
+            "attributes": [{
+                "type": "Perception",
+                "amount": 1
+            }]
         }
     },
     {
@@ -1945,8 +1353,7 @@
         "contractAmount": 75,
         "rewardFactor": 0.1,
         "startTaskId": "start",
-        "tasks": [
-            {
+        "tasks": [{
                 "id": "start",
                 "taskAfterSuccess": "2",
                 "taskAfterFail": "end",
@@ -1975,25 +1382,20 @@
                 "afterSuccessFinishQuest": "true"
             }
         ],
-        "rewards": [
-            {
-                "chance": 1,
-                "reward": {
-                    "type": "renown",
-                    "amount": 1
-                }
+        "rewards": [{
+            "chance": 1,
+            "reward": {
+                "type": "renown",
+                "amount": 1
             }
-        ],
+        }],
         "requirements": {
             "renown": 0,
-            "adventurers": [
-                {
-                    "type": "Street rat",
-                    "amount": 1
-                }
-            ],
-            "attributes": [
-                {
+            "adventurers": [{
+                "type": "Street rat",
+                "amount": 1
+            }],
+            "attributes": [{
                     "type": "Intelligence",
                     "amount": 2
                 },

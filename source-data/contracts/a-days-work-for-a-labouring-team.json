@@ -10,25 +10,22 @@
     "successChance": 1,
     "contractAmount": 150,
     "rewardFactor": 0.2,
-    "rewards": [
-        {
-            "chance": 1,
-            "reward": {
-                "type": "renown",
-                "amount": 2
-            }
+    "rewards": [{
+        "chance": 1,
+        "reward": {
+            "type": "renown",
+            "amount": 2
         }
-    ],
+    }],
     "requirements": {
         "renown": 0
     },
     "startTaskId": "start",
-    "tasks": [
-        {
+    "tasks": [{
             "id": "start",
             "name": "Travel to the work site",
             "duration": "15",
-            "taskAfterSuccess": "work"
+            "taskAfterSuccess": "carry"
         },
         {
             "id": "carry",
