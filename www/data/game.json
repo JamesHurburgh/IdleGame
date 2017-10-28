@@ -37,6 +37,13 @@
         }
     ],
     "versions": [{
+            "number": "0.12.3",
+            "description": "Looks like a real thing now.",
+            "features": [
+                "I have a splash screen!"
+            ],
+            "bugfixes": []
+        }, {
             "number": "0.12.2",
             "description": "Contracts defined.",
             "features": [
