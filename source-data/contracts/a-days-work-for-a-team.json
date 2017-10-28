@@ -11,7 +11,12 @@
     "contractAmount": 750,
     "rewardFactor": 0.2,
     "rewards": [{ "chance": 1, "reward": { "type": "renown", "amount": 2 } }],
-    "requirements": { "renown": 0, "adventurers": [{ "type": "Citizen", "amount": 10 }], "attributes": [{ "type": "Toughness", "amount": 10 }, { "type": "Intelligence", "amount": 20 }] },
+    "requirements": { "renown": 0 },
     "startTaskId": "start",
-    "tasks": [{ "id": "start", "name": "Travel to the worksite", "duration": "15", "taskAfterSuccess": "work" }, { "id": "work", "name": "Perform some tasks", "duration": "120", "skillTest": "Intelligence", "difficulty": "0.5", "taskAfterSuccess": "more", "taskAfterFail": "more", "retry": "2", "required": true }, { "id": "more", "name": "Perform more work", "duration": "120", "skillTest": "Intelligence", "difficulty": "5", "taskAfterSuccess": "home", "taskAfterFail": "home", "retry": "2", "required": true }, { "id": "home", "name": "Travel home", "duration": "15" }]
+    "tasks": [
+        { "id": "start", "name": "Travel to the worksite", "duration": "15", "taskAfterSuccess": "work" },
+        { "id": "work", "name": "Perform some tasks", "duration": "120", "skillTest": "Intelligence", "difficulty": "0.5", "taskAfterSuccess": "more", "taskAfterFail": "more", "retry": "2", "required": true },
+        { "id": "more", "name": "Perform more work", "duration": "120", "skillTest": "Intelligence", "difficulty": "5", "taskAfterSuccess": "home", "taskAfterFail": "home", "retry": "2", "required": true },
+        { "id": "home", "name": "Travel home", "duration": "15" }
+    ]
 }

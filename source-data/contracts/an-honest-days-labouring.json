@@ -2,6 +2,7 @@
     "name": "An honest days labouring",
     "successMessage": "An honest days work earns an honest days wage.",
     "failureMessage": "How did you fail this?  This shouldn't even be possible.",
+
     "deathMessage": "Sadly accidents do happen even when you're minding your own business.",
     "risk": 0.001,
     "upgradeChance": 0.01,
@@ -10,42 +11,12 @@
     "successChance": 1,
     "contractAmount": 15,
     "rewardFactor": 0.1,
-    "startTaskId": "1",
-    "tasks": [{
-            "id": "1",
-            "name": "Travel to the work site",
-            "duration": 15,
-            "taskAfterSuccess": "2"
-        },
-        {
-            "id": "2",
-            "name": "Honest labor",
-            "duration": 560,
-            "taskAfterSuccess": "3"
-        },
-        {
-            "id": "3",
-            "name": "Travel home",
-            "duration": 15,
-            "afterSuccessFinishQuest": "true"
-        }
+    "startTaskId": "start",
+    "tasks": [
+        { "id": "start", "name": "Travel to the work site", "duration": 15, "taskAfterSuccess": "work" },
+        { "id": "work", "name": "Honest labor", "duration": 560, "taskAfterSuccess": "home" },
+        { "id": "home", "name": "Travel home", "duration": 15 }
     ],
-    "rewards": [{
-        "chance": 1,
-        "reward": {
-            "type": "renown",
-            "amount": 1
-        }
-    }],
-    "requirements": {
-        "renown": 0,
-        "adventurers": [{
-            "type": "Peasant",
-            "amount": 1
-        }],
-        "attributes": [{
-            "type": "Toughness",
-            "amount": 1
-        }]
-    }
+    "rewards": [{ "chance": 1, "reward": { "type": "renown", "amount": 1 } }],
+    "requirements": { "renown": 0 }
 }

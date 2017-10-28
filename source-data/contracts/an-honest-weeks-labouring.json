@@ -10,22 +10,12 @@
     "successChance": 1,
     "contractAmount": 125,
     "rewardFactor": 0.2,
-    "rewards": [{
-        "chance": 1,
-        "reward": {
-            "type": "renown",
-            "amount": 2
-        }
-    }],
-    "requirements": {
-        "renown": 0,
-        "adventurers": [{
-            "type": "Peasant",
-            "amount": 1
-        }],
-        "attributes": [{
-            "type": "Toughness",
-            "amount": 15
-        }]
-    }
+    "rewards": [{ "chance": 1, "reward": { "type": "renown", "amount": 2 } }],
+    "startTaskId": "start",
+    "tasks": [
+        { "id": "start", "name": "Travel to the work site", "duration": 15, "taskAfterSuccess": "work" },
+        { "id": "work", "name": "Honest labor", "duration": 2800, "taskAfterSuccess": "home" },
+        { "id": "home", "name": "Travel home", "duration": 15 }
+    ],
+    "requirements": { "renown": 0 }
 }
