@@ -38,7 +38,7 @@
     ],
     "versions": [{
             "number": "0.12.2",
-            "description": "Contracts",
+            "description": "Contracts defined.",
             "features": [
                 "All contracts updated with tasks.",
                 "Skills on quests are now only suggestions (the max skill test in that quest).",
