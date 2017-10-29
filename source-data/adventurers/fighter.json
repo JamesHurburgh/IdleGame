@@ -1,6 +1,7 @@
 {
     "name": "Fighter",
     "plural": "Fighters",
+    "symbol": "⚔",
     "becomes": [],
     "cpt": 0,
     "baseCost": 1400,
