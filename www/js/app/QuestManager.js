@@ -10,9 +10,9 @@ define([
 
         commonFunctions = new CommonFunctions();
         chance = new Chance();
-        return function QuestManager(gameController, gameState) {
+        return function QuestManager(gameController, gameStateP) {
 
-            this.gameState = gameState;
+            this.gameState = gameStateP;
             this.gameController = gameController;
 
             this.getCompletedQuests = function() {
@@ -21,8 +21,8 @@ define([
             };
 
             this.getRunningQuests = function() {
-                if (!this.gameState.runningQuests) this.gameState.runningQuests = [];
-                return this.gameState.runningQuests;
+                if (!gameState.runningQuests) gameState.runningQuests = [];
+                return gameState.runningQuests;
             };
 
             this.showQuestsTab = function() {

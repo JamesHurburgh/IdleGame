@@ -3,18 +3,22 @@
 define([
         "app/CommonFunctions",
         "app/DataManager",
+        "app/QuestManager",
         "chance",
         "json!data/conversations.json"
     ],
     function AdventurerManager(
         CommonFunctions,
         DataManager,
+        QuestManager,
         Chance,
         conversations) {
 
         common = new CommonFunctions();
         data = new DataManager();
         this.chance = new Chance();
+        Quests = new QuestManager();
+
         return function AdventurerManager(gameController, gameState) {
 
             this.gameState = gameState;
@@ -188,7 +192,7 @@ define([
             this.getAdventurersQuest = function(adventurer) {
                 if (adventurer.status != "Questing") return;
                 var questResult;
-                this.gameController.QuestManager().getRunningQuests().forEach(function(quest) {
+                Quests.getRunningQuests().forEach(function(quest) {
                     if (quest.party.filter(a => a.id == adventurer.id).length > 0) {
                         questResult = quest;
                     }

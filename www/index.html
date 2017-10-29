@@ -35,20 +35,15 @@
     </div>
 
     <script id="app">
-        var componentList = [];
-
         function loadWebComponent(name, path) {
-
-            // $('#loadingbox').modal('show');
-            componentList.push(name);
-
             $.get("./" + path + name + ".html", function(content) {
                 $("#" + name).replaceWith(content);
-                componentList.splice(componentList.indexOf(name), 1);
             });
         }
-
         loadWebComponent("app", "html/");
+    </script>
+    <script id="templates">
+        loadWebComponent("templates", "html/");
     </script>
 </body>
 
