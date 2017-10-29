@@ -1,1 +1,94 @@
-{"name":"Pickpocketing","successMessage":"Quick fingers are the neccessary tools and your man has them.","failureMessage":"Sometimes everyone is just holding onto their own things too tightly.","deathMessage":"The local guards were seen hauling someone off.","risk":0.05,"upgradeChance":0.02,"experience":10,"duration":250,"successChance":0.6,"rewardFactor":0.2,"startTaskId":"start","tasks":[{"id":"start","name":"Find a crowd","duration":"15","taskAfterSuccess":"choose"},{"skillTest":"Perception","id":"choose","name":"Choose a target","duration":"30","difficulty":"0.2","taskAfterSuccess":"pick","taskAfterFail":"home","retry":"5"},{"id":"pick","name":"Pick target's pocket","duration":"5","skillTest":"Agility","difficulty":"1","taskAfterSuccess":"blend","taskAfterFail":"run","required":true},{"id":"blend","name":"Blend into the crowd","duration":"1","skillTest":"Intelligence","difficulty":"1","taskAfterSuccess":"home","taskAfterFail":"run"},{"id":"run","name":"Run away from the target","duration":"15","skillTest":"Agility","difficulty":"0.7","taskAfterSuccess":"home","taskAfterFail":"jail","required":true},{"id":"jail","name":"Sit in jail","duration":"1440","taskAfterSuccess":"home","taskAfterFail":"home"},{"id":"home","name":"Travel home","duration":10,"afterSuccessFinishQuest":"true"}],"rewards":[{"chance":1,"reward":{"type":"coins","amount":35}},{"chance":0.1,"reward":{"type":"item","value":15,"itemType":"jewellery"}}],"requirements":{"renown":0}}
+{
+    "name": "Pickpocketing",
+    "successMessage": "Quick fingers are the neccessary tools and your man has them.",
+    "failureMessage": "Sometimes everyone is just holding onto their own things too tightly.",
+    "deathMessage": "The local guards were seen hauling someone off.",
+    "risk": 0.05,
+    "upgradeChance": 0.02,
+    "experience": 10,
+    "duration": 250,
+    "successChance": 0.6,
+    "rewardFactor": 0.2,
+    "startTaskId": "start",
+    "tasks": [
+        {
+            "id": "start",
+            "name": "Find a crowd",
+            "duration": "15",
+            "taskAfterSuccess": "choose"
+        },
+        {
+            "skillTest": "Perception",
+            "id": "choose",
+            "name": "Choose a target",
+            "duration": "30",
+            "difficulty": "0.2",
+            "taskAfterSuccess": "pick",
+            "taskAfterFail": "home",
+            "retry": "5",
+            "required": true
+        },
+        {
+            "id": "pick",
+            "name": "Pick target's pocket",
+            "duration": "5",
+            "skillTest": "Agility",
+            "difficulty": "1",
+            "taskAfterSuccess": "blend",
+            "taskAfterFail": "run",
+            "required": true
+        },
+        {
+            "id": "blend",
+            "name": "Blend into the crowd",
+            "duration": "1",
+            "skillTest": "Intelligence",
+            "difficulty": "1",
+            "taskAfterSuccess": "home",
+            "taskAfterFail": "run"
+        },
+        {
+            "id": "run",
+            "name": "Run away from the target",
+            "duration": "15",
+            "skillTest": "Agility",
+            "difficulty": "0.7",
+            "taskAfterSuccess": "home",
+            "taskAfterFail": "jail",
+            "required": true
+        },
+        {
+            "id": "jail",
+            "name": "Sit in jail",
+            "duration": "1440",
+            "taskAfterSuccess": "home",
+            "taskAfterFail": "home"
+        },
+        {
+            "id": "home",
+            "name": "Travel home",
+            "duration": 10,
+            "afterSuccessFinishQuest": "true"
+        }
+    ],
+    "rewards": [
+        {
+            "chance": 1,
+            "reward": {
+                "type": "coins",
+                "amount": 35
+            }
+        },
+        {
+            "chance": 0.1,
+            "reward": {
+                "type": "item",
+                "value": 15,
+                "itemType": "jewellery"
+            }
+        }
+    ],
+    "requirements": {
+        "renown": 0
+    }
+}
