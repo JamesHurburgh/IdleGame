@@ -1,6 +1,7 @@
 {
     "name": "Drunkard",
     "plural": "Drunkards",
+    "symbol": "🍺",
     "becomes": [
         "Street rat",
         "Peasant",

@@ -1,6 +1,7 @@
 {
     "name": "Thief",
     "plural": "Thieves",
+    "symbol": "💰",
     "becomes": [],
     "cpt": 0,
     "baseCost": 150,

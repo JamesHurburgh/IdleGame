@@ -1,6 +1,7 @@
 {
     "name": "Cleric",
     "plural": "Clerics",
+    "symbol": "✟",
     "becomes": [],
     "cpt": 0,
     "baseCost": 2100,

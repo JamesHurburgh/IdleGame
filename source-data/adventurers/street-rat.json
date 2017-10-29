@@ -1,6 +1,7 @@
 {
     "name": "Street rat",
     "plural": "Street rats",
+    "symbol": "🐁",
     "becomes": [
         "Brawler",
         "Thief"

@@ -1,6 +1,7 @@
 {
     "name": "Brawler",
     "plural": "Brawlers",
+    "symbol": "💪",
     "becomes": [
         "Fighter"
     ],

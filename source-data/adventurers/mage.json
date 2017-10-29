@@ -1,6 +1,7 @@
 {
     "name": "Mage",
     "plural": "Mages",
+    "symbol": "✨",
     "becomes": [],
     "cpt": 0,
     "baseCost": 3150,

@@ -1,6 +1,7 @@
 {
     "name": "Citizen",
     "plural": "Citizens",
+    "symbol": "🎩",
     "becomes": [
         "Cleric",
         "Mage"
