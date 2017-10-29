@@ -1,6 +1,8 @@
-[{
+[
+    {
         "name": "Brawler",
         "plural": "Brawlers",
+        "symbol": "💪",
         "becomes": [
             "Fighter"
         ],
@@ -10,7 +12,8 @@
         "baseExperience": 6,
         "costMultiplier": 5,
         "costExponent": 1.05,
-        "skills": [{
+        "skills": [
+            {
                 "name": "Toughness",
                 "amount": 2
             },
@@ -31,6 +34,7 @@
     {
         "name": "Citizen",
         "plural": "Citizens",
+        "symbol": "🎩",
         "becomes": [
             "Cleric",
             "Mage"
@@ -41,7 +45,8 @@
         "baseExperience": 5,
         "costMultiplier": 5,
         "costExponent": 1.05,
-        "skills": [{
+        "skills": [
+            {
                 "name": "Toughness",
                 "amount": 2
             },
@@ -58,6 +63,7 @@
     {
         "name": "Cleric",
         "plural": "Clerics",
+        "symbol": "✟",
         "becomes": [],
         "cpt": 0,
         "baseCost": 2100,
@@ -65,7 +71,8 @@
         "baseExperience": 65,
         "costMultiplier": 5,
         "costExponent": 1.05,
-        "skills": [{
+        "skills": [
+            {
                 "name": "Toughness",
                 "amount": 2
             },
@@ -86,6 +93,7 @@
     {
         "name": "Drunkard",
         "plural": "Drunkards",
+        "symbol": "🍺",
         "becomes": [
             "Street rat",
             "Peasant",
@@ -97,7 +105,8 @@
         "baseExperience": 3,
         "costMultiplier": 1,
         "costExponent": 1.05,
-        "skills": [{
+        "skills": [
+            {
                 "name": "Toughness",
                 "amount": 1
             },
@@ -110,6 +119,7 @@
     {
         "name": "Fighter",
         "plural": "Fighters",
+        "symbol": "⚔",
         "becomes": [],
         "cpt": 0,
         "baseCost": 1400,
@@ -117,7 +127,8 @@
         "baseExperience": 50,
         "costMultiplier": 5,
         "costExponent": 1.05,
-        "skills": [{
+        "skills": [
+            {
                 "name": "Toughness",
                 "amount": 4
             },
@@ -138,6 +149,7 @@
     {
         "name": "Mage",
         "plural": "Mages",
+        "symbol": "✨",
         "becomes": [],
         "cpt": 0,
         "baseCost": 3150,
@@ -145,7 +157,8 @@
         "baseExperience": 70,
         "costMultiplier": 5,
         "costExponent": 1.05,
-        "skills": [{
+        "skills": [
+            {
                 "name": "Toughness",
                 "amount": 2
             },
@@ -166,6 +179,7 @@
     {
         "name": "Peasant",
         "plural": "Peasants",
+        "symbol": "⚒",
         "becomes": [
             "Citizen"
         ],
@@ -175,7 +189,8 @@
         "baseExperience": 3,
         "costMultiplier": 1,
         "costExponent": 1.05,
-        "skills": [{
+        "skills": [
+            {
                 "name": "Toughness",
                 "amount": 1
             },
@@ -192,6 +207,7 @@
     {
         "name": "Street rat",
         "plural": "Street rats",
+        "symbol": "🐁",
         "becomes": [
             "Brawler",
             "Thief"
@@ -202,7 +218,8 @@
         "baseExperience": 3,
         "costMultiplier": 1,
         "costExponent": 1.05,
-        "skills": [{
+        "skills": [
+            {
                 "name": "Toughness",
                 "amount": 1
             },
@@ -219,6 +236,7 @@
     {
         "name": "Thief",
         "plural": "Thieves",
+        "symbol": "💰",
         "becomes": [],
         "cpt": 0,
         "baseCost": 150,
@@ -226,7 +244,8 @@
         "baseExperience": 6,
         "costMultiplier": 5,
         "costExponent": 1.05,
-        "skills": [{
+        "skills": [
+            {
                 "name": "Toughness",
                 "amount": 2
             },
