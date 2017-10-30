@@ -53,10 +53,11 @@
             <div v-if="isInjured" class="col-xs-12 well well-sm">
                 <ul>
                     <li v-for="injury in adventurer.injuries">
-                        {{injury.injuryType}} {{injury.bodyPart}}
+                        {{injury.injuryType}} {{injury.bodyPart}}  (Will be healed {{dateTime(injury.healTime)}})
                     </li>
                 </ul>
             </div>
+            <div v-if="isRecovering" class="col-xs-12 well well-sm">Will be recovered at: {{dateTime(adventurer.recoverTime)}} </div>
             <div v-if="isQuesting" class="col-xs-12 well well-sm">
                 Quest: {{questName}}
             </div>
@@ -120,6 +121,9 @@
                     isQuesting: function() {
                         return this.adventurer.status == "Questing" && Adventurer.getAdventurersQuest(this.adventurer) !== undefined;
                     },
+                    isRecovering: function() {
+                        return this.adventurer.status == "Recovering";
+                    },
                     questName: function() {
                         return Adventurer.getAdventurersQuest(this.adventurer).contract.name;
                     }
@@ -128,6 +132,9 @@
                 methods: {
                     getIcon: function(skillName) {
                         return 'img/icons/' + Data.getData('skills', skillName).icon + '.png';
+                    },
+                    dateTime: function(dateTime) {
+                        return Time.getGameTime(dateTime).toString();
                     }
                 }
             });
