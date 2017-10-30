@@ -1,7 +1,7 @@
 {
     "name": "Peasant",
     "plural": "Peasants",
-    "symbol": "⚒",
+    "symbol": "👤",
     "becomes": [
         "Citizen"
     ],
