@@ -221,8 +221,18 @@ define(["chance",
             this.completeTask = function (quest, task) {
                 task.status = "complete";
 
+                if (!task.partySkill) {
+                    var partySkills = this.gameController.AdventurerManager().getPartyAttributes(quest.party);
+
+                    var partySkill = partySkills.filter(s => s.name == task.skillTest)[0];
+                    var partySkillAmount = 0;
+                    if (partySkill) partySkillAmount = partySkill.amount;
+                    task.partySkill = partySkillAmount;
+                }
+                var partyRoll = (Math.random() * task.partySkill);
+                var taskRoll = (Math.random() * task.difficulty);
                 // Check for injuries
-                var isInjured = task.injuryType && ((Math.random() * task.partySkill) >= (Math.random() * task.difficulty));
+                var isInjured = task.injuryType !== undefined && (partyRoll >= taskRoll);
 
                 if (isInjured) {
                     var adventurer = chance.pickone(quest.party);
