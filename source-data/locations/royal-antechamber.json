@@ -1,0 +1,11 @@
+{
+    "disable": true,
+    "name": "Royal Antechamber",
+    "description": "",
+    "renownRequired": 100000000,
+    "freeCoinsDescription": "Petition for a grant.",
+    "freeCoins": 5,
+    "freeCoinsTimeout": 10,
+    "contracts": [],
+    "adventurers": []
+}

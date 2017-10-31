@@ -1,0 +1,11 @@
+{
+    "disable": true,
+    "name": "Throne Room",
+    "description": "",
+    "renownRequired": 10000000000,
+    "freeCoinsDescription": "Beg for a hand out.",
+    "freeCoins": 5,
+    "freeCoinsTimeout": 10,
+    "contracts": [],
+    "adventurers": []
+}

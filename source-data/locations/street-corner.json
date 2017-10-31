@@ -1,0 +1,30 @@
+{
+    "name": "Street Corner",
+    "description": "Officially, conducting business on the street corner is illegal.  But if you grease the palms of a guard or two and don't cause trouble, you can hire the locals and passerbys looking for work.  The townsfolk may also come to you to get things done.  Most of it legitimate, some of it, not so much.",
+    "renownRequired": 10,
+    "freeCoinsDescription": "Beg for a hand out.",
+    "freeCoins": 5,
+    "freeCoinsTimeout": 10,
+    "contracts": [
+        "Follow a suspect treasure map",
+        "Rescue a farmer's daughter",
+        "Fight some filthy goblins",
+        "Break and Enter",
+        "Fight club",
+        "Disrupt a rivals business",
+        "An honest weeks labouring",
+        "An honest weeks work",
+        "A days work for a team",
+        "A days work for a labouring team",
+        "Loot a crypt",
+        "Protection duty"
+    ],
+    "adventurers": [
+        { "chance": 0.05, "type": "Drunkard" },
+        { "chance": 0.05, "type": "Street rat" },
+        { "chance": 0.5, "type": "Peasant" },
+        { "chance": 1, "type": "Brawler" },
+        { "chance": 1, "type": "Thief" },
+        { "chance": 2, "type": "Citizen" }
+    ]
+}

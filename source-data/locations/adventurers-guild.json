@@ -1,0 +1,11 @@
+{
+    "disable": true,
+    "name": "Adventurer's Guild",
+    "description": "",
+    "renownRequired": 100000,
+    "freeCoinsDescription": "Beg for a hand out.",
+    "freeCoins": 50,
+    "freeCoinsTimeout": 10,
+    "contracts": [],
+    "adventurers": []
+}

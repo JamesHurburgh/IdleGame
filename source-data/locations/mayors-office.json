@@ -1,0 +1,11 @@
+{
+    "disable": true,
+    "name": "Mayor's Office",
+    "description": "",
+    "renownRequired": 1000000,
+    "freeCoinsDescription": "Beg for a hand out.",
+    "freeCoins": 5,
+    "freeCoinsTimeout": 10,
+    "contracts": [],
+    "adventurers": []
+}

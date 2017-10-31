@@ -1,0 +1,32 @@
+{
+    "name": "Tavern",
+    "description": "You've reached the pinnacle of the underworld.  Sitting at a table in the local tavern the oppressed and needy now know to come to you with their problems or 'business ventures'.",
+    "renownRequired": 1000,
+    "freeCoinsDescription": "Work the bar for tips.",
+    "freeCoins": 10,
+    "freeCoinsTimeout": 10,
+    "contracts": [
+        "Follow a treasure map",
+        "Loot a crypt",
+        "Fight some filthy goblins",
+        "Fight some bandits",
+        "Protect farms from wild animals",
+        "An honest weeks labouring",
+        "An honest weeks work",
+        "A days work for a team",
+        "A days work for a labouring team",
+        "Rescue a farmer's daughter",
+        "Protection duty"
+    ],
+    "adventurers": [
+        { "chance": 1, "type": "Drunkard" },
+        { "chance": 0.01, "type": "Street rat" },
+        { "chance": 0.5, "type": "Peasant" },
+        { "chance": 0.5, "type": "Brawler" },
+        { "chance": 0.01, "type": "Thief" },
+        { "chance": 2, "type": "Citizen" },
+        { "chance": 4, "type": "Fighter" },
+        { "chance": 1, "type": "Cleric" },
+        { "chance": 2, "type": "Mage" }
+    ]
+}

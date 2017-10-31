@@ -1,0 +1,26 @@
+{
+    "name": "Dirty Alley",
+    "description": "The only thing here filthier than the alley are the people that inhabit it.  Drunks, theives and those down on their luck can be found here as well as work for those who don't mind getting their hands... even dirtier.",
+    "renownRequired": 0,
+    "freeCoinsDescription": "Scrounge in the dirt for a coin",
+    "freeCoins": 1,
+    "freeCoinsTimeout": 10,
+    "contracts": [
+        "Plunder a wishing well",
+        "Pickpocketing",
+        "Rob a graveyard",
+        "Mug a traveller",
+        "Follow a dubious treasure map",
+        "An honest days labouring",
+        "Tail a mark",
+        "Disrupt a rivals business"
+    ],
+    "adventurers": [
+        { "chance": 2, "type": "Drunkard" },
+        { "chance": 1, "type": "Street rat" },
+        { "chance": 1, "type": "Peasant" },
+        { "chance": 0.01, "type": "Brawler" },
+        { "chance": 0.01, "type": "Thief" },
+        { "chance": 0.01, "type": "Citizen" }
+    ]
+}
