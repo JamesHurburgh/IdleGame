@@ -53,7 +53,7 @@
             <div v-if="isInjured" class="col-xs-12 well well-sm">
                 <ul>
                     <li v-for="injury in adventurer.injuries">
-                        {{injury.injuryType}} {{injury.bodyPart}}  (Will be healed {{dateTime(injury.healTime)}})
+                        {{injury.injuryType}} {{injury.bodyPart}}<span v-if="!isDead"> (Will be healed {{dateTime(injury.healTime)}})</span>
                     </li>
                 </ul>
             </div>
