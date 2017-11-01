@@ -10,21 +10,20 @@
     "successChance": 0.8,
     "contractAmount": 750,
     "rewardFactor": 0.2,
-    "rewards": [
-        {
-            "chance": 1,
-            "reward": {
-                "type": "renown",
-                "amount": 1
-            }
+    "rewards": [{
+        "chance": 1,
+        "reward": {
+            "type": "renown",
+            "amount": 1
         }
-    ],
+    }],
     "requirements": {
-        "renown": 0
+        "renown": 0,
+        "minAssigned": 4,
+        "maxAssigned": 15
     },
     "startTaskId": "start",
-    "tasks": [
-        {
+    "tasks": [{
             "id": "start",
             "name": "Travel to the place of business",
             "duration": "10",

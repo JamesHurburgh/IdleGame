@@ -1,1 +1,29 @@
-{"name":"Follow a dubious treasure map","successMessage":"You are given a sack, presumably what's left of the treasure.","failureMessage":"Either the map was a fake, or someone else got there first.","deathMessage":"Unfortunately the long journey proved too much.","risk":0.1,"upgradeChance":0.01,"experience":10,"duration":3500,"successChance":0.05,"rewardFactor":0.2,"rewards":[{"chance":1,"reward":{"type":"coins","amount":500}},{"chance":1,"reward":{"type":"renown","amount":2}},{"chance":0.1,"reward":{"type":"item","value":1500,"itemType":"jewels"}},{"chance":0.1,"reward":{"type":"item","value":1500,"itemType":"jewellery"}}],"startTaskId":"start","tasks":[{"id":"start","name":"Gather supplies","duration":"40","taskAfterSuccess":"go"},{"id":"go","name":"Follow treasure map","duration":"1000","skillTest":"Toughness","difficulty":"0.5","taskAfterSuccess":"find","taskAfterFail":"home","injuryType":true,"required":true},{"id":"find","name":"Search for the treasure","duration":"1000","skillTest":"Perception","difficulty":"0.5","taskAfterSuccess":"dig","taskAfterFail":"home","retry":"3","required":true},{"id":"dig","name":"Dig for treasure","duration":"250","skillTest":"Toughness","difficulty":"0.5","taskAfterSuccess":"home","taskAfterFail":"home","injuryType":true,"required":true},{"id":"home","name":"Return home","duration":"1000","skillTest":"Toughness","difficulty":"0.2","injuryType":true}],"requirements":[]}
+{
+    "name": "Follow a dubious treasure map",
+    "successMessage": "You are given a sack, presumably what's left of the treasure.",
+    "failureMessage": "Either the map was a fake, or someone else got there first.",
+    "deathMessage": "Unfortunately the long journey proved too much.",
+    "risk": 0.1,
+    "upgradeChance": 0.01,
+    "experience": 10,
+    "duration": 3500,
+    "successChance": 0.05,
+    "rewardFactor": 0.2,
+    "rewards": [{ "chance": 1, "reward": { "type": "coins", "amount": 500 } }, { "chance": 1, "reward": { "type": "renown", "amount": 2 } }, { "chance": 0.1, "reward": { "type": "item", "value": 1500, "itemType": "jewels" } }, { "chance": 0.1, "reward": { "type": "item", "value": 1500, "itemType": "jewellery" } }],
+    "startTaskId": "start",
+    "tasks": [{ "id": "start", "name": "Gather supplies", "duration": "40", "taskAfterSuccess": "go" }, { "id": "go", "name": "Follow treasure map", "duration": "1000", "skillTest": "Toughness", "difficulty": "0.5", "taskAfterSuccess": "find", "taskAfterFail": "home", "injuryType": true, "required": true }, { "id": "find", "name": "Search for the treasure", "duration": "1000", "skillTest": "Perception", "difficulty": "0.5", "taskAfterSuccess": "dig", "taskAfterFail": "home", "retry": "3", "required": true }, {
+        "id": "dig",
+        "name": "Dig for treasure",
+        "duration": "250",
+        "skillTest": "Toughness",
+        "difficulty": "0.5",
+        "taskAfterSuccess": "home",
+        "taskAfterFail": "home",
+        "injuryType": true,
+        "required": true
+    }, { "id": "home", "name": "Return home", "duration": "1000", "skillTest": "Toughness", "difficulty": "0.2", "injuryType": true }],
+    "requirements": {
+        "minAssigned": 1,
+        "maxAssigned": 15
+    }
+}

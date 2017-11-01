@@ -18,7 +18,9 @@
         }
     }],
     "requirements": {
-        "renown": 0
+        "renown": 0,
+        "minAssigned": 10,
+        "maxAssigned": 20
     },
     "startTaskId": "start",
     "tasks": [{

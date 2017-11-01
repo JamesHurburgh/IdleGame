@@ -9,8 +9,7 @@
     "duration": 1200,
     "successChance": 0.5,
     "rewardFactor": 0.4,
-    "rewards": [
-        {
+    "rewards": [{
             "chance": 1,
             "reward": {
                 "type": "coins",
@@ -34,11 +33,12 @@
         }
     ],
     "requirements": {
-        "renown": 1
+        "renown": 1,
+        "minAssigned": 1,
+        "maxAssigned": 15
     },
     "startTaskId": "start",
-    "tasks": [
-        {
+    "tasks": [{
             "id": "start",
             "name": "Travel to the bandit's camp",
             "duration": "60",

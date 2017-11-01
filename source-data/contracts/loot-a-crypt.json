@@ -1,1 +1,19 @@
-{"name":"Loot a crypt","successMessage":"People like being buried with their valueables.  Now you have some of them.","failureMessage":"Not everyone keeps their family jewels with their dead.","deathMessage":"Crypts can be dangerous at night.","risk":0.2,"upgradeChance":0.1,"experience":10,"duration":200,"successChance":1,"rewardFactor":0.3,"rewards":[{"chance":1,"reward":{"type":"coins","amount":1000}},{"chance":1,"reward":{"type":"renown","amount":1}},{"chance":0.1,"reward":{"type":"item","value":100,"itemType":"artwork"}},{"chance":0.1,"reward":{"type":"item","itemType":"minor-mysterious-scroll"}}],"requirements":{"renown":0},"startTaskId":"start","tasks":[{"id":"start","name":"Travel to the graveyard","duration":"20","taskAfterSuccess":"enter"},{"id":"enter","name":"Creep around looking for a valuable crypt","duration":"60","skillTest":"Perception","difficulty":"1","taskAfterSuccess":"break","taskAfterFail":"ghost","retry":"2"},{"id":"break","name":"Break into the crypt","duration":"15","skillTest":"Fighting","difficulty":"1","taskAfterSuccess":"loot","taskAfterFail":"ghost","required":true},{"id":"loot","name":"Loot the crypt","duration":"60","taskAfterSuccess":"home","required":true},{"id":"ghost","name":"Fight a ghost","duration":"5","skillTest":"Fighting","difficulty":"4","taskAfterSuccess":"break","taskAfterFail":"flee","retry":"2","injuryType":"ghostly","required":true},{"id":"home","name":"Travel home"},{"id":"flee","name":"Run away","duration":"10","taskAfterSuccess":"home"}]}
+{
+    "name": "Loot a crypt",
+    "successMessage": "People like being buried with their valueables.  Now you have some of them.",
+    "failureMessage": "Not everyone keeps their family jewels with their dead.",
+    "deathMessage": "Crypts can be dangerous at night.",
+    "risk": 0.2,
+    "upgradeChance": 0.1,
+    "experience": 10,
+    "duration": 200,
+    "successChance": 1,
+    "rewardFactor": 0.3,
+    "rewards": [{ "chance": 1, "reward": { "type": "coins", "amount": 1000 } }, { "chance": 1, "reward": { "type": "renown", "amount": 1 } }, { "chance": 0.1, "reward": { "type": "item", "value": 100, "itemType": "artwork" } }, { "chance": 0.1, "reward": { "type": "item", "itemType": "minor-mysterious-scroll" } }],
+    "requirements": {
+        "minAssigned": 1,
+        "maxAssigned": 5
+    },
+    "startTaskId": "start",
+    "tasks": [{ "id": "start", "name": "Travel to the graveyard", "duration": "20", "taskAfterSuccess": "enter" }, { "id": "enter", "name": "Creep around looking for a valuable crypt", "duration": "60", "skillTest": "Perception", "difficulty": "1", "taskAfterSuccess": "break", "taskAfterFail": "ghost", "retry": "2" }, { "id": "break", "name": "Break into the crypt", "duration": "15", "skillTest": "Fighting", "difficulty": "1", "taskAfterSuccess": "loot", "taskAfterFail": "ghost", "required": true }, { "id": "loot", "name": "Loot the crypt", "duration": "60", "taskAfterSuccess": "home", "required": true }, { "id": "ghost", "name": "Fight a ghost", "duration": "5", "skillTest": "Fighting", "difficulty": "4", "taskAfterSuccess": "break", "taskAfterFail": "flee", "retry": "2", "injuryType": "ghostly", "required": true }, { "id": "home", "name": "Travel home" }, { "id": "flee", "name": "Run away", "duration": "10", "taskAfterSuccess": "home" }]
+}

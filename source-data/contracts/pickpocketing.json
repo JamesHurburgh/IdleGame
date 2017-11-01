@@ -10,8 +10,7 @@
     "successChance": 0.6,
     "rewardFactor": 0.2,
     "startTaskId": "start",
-    "tasks": [
-        {
+    "tasks": [{
             "id": "start",
             "name": "Find a crowd",
             "duration": "15",
@@ -71,8 +70,7 @@
             "afterSuccessFinishQuest": "true"
         }
     ],
-    "rewards": [
-        {
+    "rewards": [{
             "chance": 1,
             "reward": {
                 "type": "coins",
@@ -89,6 +87,7 @@
         }
     ],
     "requirements": {
-        "renown": 0
+        "minAssigned": 1,
+        "maxAssigned": 2
     }
 }

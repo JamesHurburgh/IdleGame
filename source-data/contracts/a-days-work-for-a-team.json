@@ -11,7 +11,11 @@
     "contractAmount": 750,
     "rewardFactor": 0.2,
     "rewards": [{ "chance": 1, "reward": { "type": "renown", "amount": 2 } }],
-    "requirements": { "renown": 0 },
+    "requirements": {
+        "renown": 0,
+        "minAssigned": 10,
+        "maxAssigned": 20
+    },
     "startTaskId": "start",
     "tasks": [
         { "id": "start", "name": "Travel to the worksite", "duration": "15", "taskAfterSuccess": "work" },

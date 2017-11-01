@@ -12,7 +12,9 @@
     "rewardFactor": 0.2,
     "rewards": [{ "chance": 1, "reward": { "type": "renown", "amount": 2 } }],
     "requirements": {
-        "renown": 0
+        "renown": 0,
+        "minAssigned": 1,
+        "maxAssigned": 1
     },
     "startTaskId": "start",
     "tasks": [

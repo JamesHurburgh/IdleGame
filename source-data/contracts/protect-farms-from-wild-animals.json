@@ -10,8 +10,7 @@
     "successChance": 0.5,
     "rewardFactor": 0.3,
     "contractAmount": 750,
-    "rewards": [
-        {
+    "rewards": [{
             "chance": 1,
             "reward": {
                 "type": "renown",
@@ -28,11 +27,11 @@
         }
     ],
     "requirements": {
-        "renown": 1
+        "minAssigned": 4,
+        "maxAssigned": 12
     },
     "startTaskId": "start",
-    "tasks": [
-        {
+    "tasks": [{
             "id": "start",
             "name": "Travel to the farms",
             "duration": "120",

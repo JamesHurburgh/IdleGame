@@ -9,8 +9,7 @@
     "duration": 350,
     "successChance": 0.5,
     "rewardFactor": 0.2,
-    "rewards": [
-        {
+    "rewards": [{
             "chance": 1,
             "reward": {
                 "type": "coins",
@@ -35,11 +34,12 @@
         }
     ],
     "requirements": {
-        "renown": 1
+        "renown": 1,
+        "minAssigned": 1,
+        "maxAssigned": 4
     },
     "startTaskId": "start",
-    "tasks": [
-        {
+    "tasks": [{
             "id": "start",
             "name": "Scout for a target",
             "duration": "60",

@@ -18,5 +18,9 @@
         { "id": "home", "name": "Travel home", "duration": 15 }
     ],
     "rewards": [{ "chance": 1, "reward": { "type": "renown", "amount": 1 } }],
-    "requirements": { "renown": 0 }
+    "requirements": {
+        "renown": 0,
+        "minAssigned": 1,
+        "maxAssigned": 1
+    }
 }
