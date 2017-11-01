@@ -70,14 +70,8 @@ define(["chance",
             this.canSendQuest = function(contract) {
                 if (!contract) return;
                 var adventurerManager = this.gameController.AdventurerManager();
-                if (adventurerManager.getCurrentParty().length < 1) {
-                    return false;
-                }
-
-                return true;
-                // return contract.requirements.attributes.reduce(function(canSend, skillRequirement) {
-                //     return canSend && adventurerManager.getCurrentPartyAttribute(skillRequirement.type) >= skillRequirement.amount;
-                // }, true);
+                var partySize = adventurerManager.getCurrentParty().length;
+                return contract.requirements.minAssigned <= partySize && partySize <= contract.requirements.maxAssigned;
             };
 
             this.getSuggestedSkills = function(contract) {

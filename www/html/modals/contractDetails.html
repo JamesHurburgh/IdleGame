@@ -27,8 +27,9 @@
 
                     <div v-bind:class="{ 'text-danger': NoticeManager().expiringDanger(NoticeManager().getSelectedJobNotice().expires), 'text-warning': NoticeManager().expiringWarning(NoticeManager().getSelectedJobNotice().expires), 'text-success': NoticeManager().expiringSuccess(NoticeManager().getSelectedJobNotice().expires) }">{{TimeManager().readableTime(NoticeManager().getSelectedJobNotice().expires - Date.now())}} remaining</div>
                     <div v-if="NoticeManager().getSelectedJobNotice().contractAmount != undefined">Contract amount: <strong>{{NoticeManager().getSelectedJobNotice().contractAmount}} coins</strong></div>
-                    <span>Recommended party skills:</span>
                     <div v-if="NoticeManager().getSelectedJobNotice().requirements != undefined">
+                        <div>Party size: {{NoticeManager().getSelectedJobNotice().requirements.minAssigned}}-{{NoticeManager().getSelectedJobNotice().requirements.maxAssigned}} ({{AdventurerManager().getCurrentParty().length}})</div>
+                        <span>Recommended skills:</span>
                         <div v-for="skill in DataManager().skills">
                             <div v-if="QuestManager().isSkillRelevantToContract(skill, NoticeManager().getSelectedJobNotice())">
                                 <img :alt="skill.name" v-for="n in QuestManager().getCurrentQuestRequiredAndAssignedSkillCount(skill.name)" width="24px" :src="'img/icons/' + DataManager().getData('skills', skill.name).icon + '-green.png'" /><img :alt="skill.name"
