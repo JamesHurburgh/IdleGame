@@ -49,7 +49,7 @@ define(["chance",
             };
 
             this.isSkillRelevantToContract = function(skill, contract) {
-                if (!skill || !contract) return false;
+                if (!skill || !contract || !contract.requirements || !contract.requirements.attributes) return false;
                 var skillRequiredForContract = contract.requirements.attributes.filter(sk => sk.type == skill.name)[0];
                 return skillRequiredForContract !== undefined && skillRequiredForContract.amount > 0;
             };
