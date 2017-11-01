@@ -37,6 +37,13 @@
         }
     ],
     "versions": [{
+            "number": "0.12.5",
+            "description": "__FILL_ME_IN__",
+            "features": [
+                "Simple stats shown for adventurer."
+            ],
+            "bugfixes": []
+        }, {
             "number": "0.12.4",
             "description": "Adventurer look and feel",
             "features": [
