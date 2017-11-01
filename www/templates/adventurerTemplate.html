@@ -6,11 +6,12 @@
     <div class="panel panel-default ">
         <div class="panel-heading ">
             <h3 class="panel-title">
-                <span :title="adventurer.type">{{adventurer.symbol}}</span>
+                <!-- <span :title="adventurer.type">{{adventurer.symbol}}</span>
                 <span :title="adventurer.race.name" :style="'color:' + adventurer.race.symbolColour">{{adventurer.race.symbol}}</span>
                 <span title="male" style="color:cornflowerblue;" v-if="adventurer.gender == 'male'">&#9794;</span>
                 <span title="female" style="color:pink;" v-if="adventurer.gender == 'female'">&#9792;</span>
-                <span>{{adventurer.name.full}}</span>
+                <span>{{adventurer.name.full}}</span> -->
+                <adventurername :adventurer="adventurer"></adventurername>
                 <span class="label label-info pull-right" data-toggle="collapse" :data-target="'#'+adventurer.id" aria-expanded="false" aria-controls="collapseExample">show/hide</span>
             </h3>
         </div>
