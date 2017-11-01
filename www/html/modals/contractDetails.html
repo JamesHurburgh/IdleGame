@@ -51,10 +51,10 @@
                         <tbody style="overflow: auto;">
                             <tr v-for="adventurer in AdventurerManager().getAdventurersAtStatus('Idle')" @click="adventurer.includeInParty = !adventurer.includeInParty" v-bind:class="{ 'default': !adventurer.includeInParty, 'success': adventurer.includeInParty }">
                                 <td>
-                                    <small><adventurername :adventurer="adventurer"></adventurername></small>
+                                    <adventurername :adventurer="adventurer"></adventurername>
                                 </td>
                                 <td>
-                                    <small><span v-for="skill in adventurer.skills" :title="skill.name + ' ' + skill.amount"><img :alt="skill.name" v-for="n in skill.amount" width="16px" :src="'img/icons/' + DataManager().getData('skills', skill.name).icon + '.png'" /></span>
+                                    <span v-for="skill in adventurer.skills" :title="skill.name + ' ' + skill.amount"><img :alt="skill.name" v-for="n in skill.amount" width="20px" :src="'img/icons/' + DataManager().getData('skills', skill.name).icon + '.png'" />
                                 </td>
                             </tr>
                         </tbody>
