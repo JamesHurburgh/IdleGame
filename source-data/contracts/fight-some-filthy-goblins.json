@@ -9,7 +9,8 @@
     "duration": 1000,
     "successChance": 0.5,
     "rewardFactor": 0.3,
-    "rewards": [{
+    "rewards": [
+        {
             "chance": 1,
             "reward": {
                 "type": "coins",
@@ -37,7 +38,8 @@
         "minAssigned": 1,
         "maxAssigned": 15
     },
-    "tasks": [{
+    "tasks": [
+        {
             "id": "start",
             "name": "Travel to the goblin's den",
             "duration": "60",
@@ -105,7 +107,7 @@
         },
         {
             "id": "f6",
-            "name": "Kill the fifth goblin",
+            "name": "Kill the sixth goblin",
             "duration": "10",
             "skillTest": "Fighting",
             "difficulty": "5",
