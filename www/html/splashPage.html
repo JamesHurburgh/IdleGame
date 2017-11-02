@@ -2,6 +2,11 @@
     <div class="container">
         <h1 class="text-center">Adventurers of Otium</h1>
         <p class="text-center">Adventuring is dangerous. Hire someone else to do it for you!</p>
-        <h4 class="text-center">Loading...</h4>
+        <h4 class="text-center" id="loading">Loading</h4>
+        <script>
+            setInterval(() => {
+                $("#loading").append(".")
+            }, 1000);
+        </script>
     </div>
 </div>
