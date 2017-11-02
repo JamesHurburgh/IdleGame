@@ -6,12 +6,10 @@
         "Cleric",
         "Mage"
     ],
-    "cpt": 0,
     "baseCost": 100,
     "baseCut": 3.0,
     "baseExperience": 5,
-    "costMultiplier": 5,
-    "costExponent": 1.05,
+    "baseEfficiency": 1,
     "skills": [{
             "name": "Toughness",
             "amount": 2

@@ -3,12 +3,10 @@
     "plural": "Thieves",
     "symbol": "💰",
     "becomes": [],
-    "cpt": 0,
     "baseCost": 150,
     "baseCut": 3.5,
     "baseExperience": 6,
-    "costMultiplier": 5,
-    "costExponent": 1.05,
+    "baseEfficiency": 0.9,
     "skills": [{
             "name": "Toughness",
             "amount": 2

@@ -6,12 +6,10 @@
         "Brawler",
         "Thief"
     ],
-    "cpt": 0,
     "baseCost": 6,
     "baseCut": 1.5,
     "baseExperience": 3,
-    "costMultiplier": 1,
-    "costExponent": 1.05,
+    "baseEfficiency": 0.6,
     "skills": [{
             "name": "Toughness",
             "amount": 1

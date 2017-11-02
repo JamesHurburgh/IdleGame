@@ -3,12 +3,10 @@
     "plural": "Clerics",
     "symbol": "✟",
     "becomes": [],
-    "cpt": 0,
     "baseCost": 2100,
     "baseCut": 4.0,
     "baseExperience": 65,
-    "costMultiplier": 5,
-    "costExponent": 1.05,
+    "baseEfficiency": 1.2,
     "skills": [{
             "name": "Toughness",
             "amount": 2

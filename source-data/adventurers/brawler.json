@@ -5,12 +5,10 @@
     "becomes": [
         "Fighter"
     ],
-    "cpt": 0,
     "baseCost": 400,
     "baseCut": 2.5,
     "baseExperience": 6,
-    "costMultiplier": 5,
-    "costExponent": 1.05,
+    "baseEfficiency": 1.1,
     "skills": [{
             "name": "Toughness",
             "amount": 2

@@ -3,12 +3,10 @@
     "plural": "Fighters",
     "symbol": "⚔",
     "becomes": [],
-    "cpt": 0,
     "baseCost": 1400,
     "baseCut": 4.5,
     "baseExperience": 50,
-    "costMultiplier": 5,
-    "costExponent": 1.05,
+    "baseEfficiency": 1.05,
     "skills": [{
             "name": "Toughness",
             "amount": 4

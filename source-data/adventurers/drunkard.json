@@ -7,12 +7,10 @@
         "Peasant",
         "Brawler"
     ],
-    "cpt": 0,
     "baseCost": 4,
     "baseCut": 1.0,
     "baseExperience": 3,
-    "costMultiplier": 1,
-    "costExponent": 1.05,
+    "baseEfficiency": 0.5,
     "skills": [{
             "name": "Toughness",
             "amount": 1
