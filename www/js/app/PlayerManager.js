@@ -2,19 +2,27 @@
 
 define([
         "app/CommonFunctions",
+        "app/GameState",
         "app/DataManager"
     ],
     function PlayerManager(
         CommonFunctions,
+        GameState,
         DataManager) {
 
         common = new CommonFunctions();
         data = new DataManager();
+        var gameState = require("app/GameState");
 
-        return function PlayerManager(gameController, gameState) {
+        var StatisticsManager = require("app/StatisticsManager");
+        var statisticsManager = new StatisticsManager();
 
-            this.gameState = gameState;
-            this.gameController = gameController;
+        var ItemManager = require("app/ItemManager");
+        var itemManager = new ItemManager();
+
+        return function PlayerManager() {
+
+            this.gameState = gameState.getGameState();
 
             // Renown
             this.getRenownValue = function() {
@@ -33,20 +41,20 @@ define([
 
             this.giveRenown = function(amount) {
                 $('#footerRenown').animateCss('bounce');
-                this.gameController.StatisticsManager().trackStat("get", "renown", amount);
+                statisticsManager.trackStat("get", "renown", amount);
                 this.gameState.renown = this.getRenownValue() + amount;
             };
 
             // Coins
             this.giveCoins = function(amount) {
                 $('#footerCoin').animateCss('bounce');
-                this.gameController.StatisticsManager().trackStat("get", "coins", amount);
+                statisticsManager.trackStat("get", "coins", amount);
                 this.gameState.coins += amount;
             };
 
             this.spendCoins = function(coins) {
                 this.gameState.coins -= coins;
-                this.gameController.StatisticsManager().trackStat("spend", "coins", coins);
+                statisticsManager.trackStat("spend", "coins", coins);
             };
 
             // Rewards
@@ -60,7 +68,7 @@ define([
                         this.giveRenown(reward.amount);
                         break;
                     case "item":
-                        this.gameController.ItemManager().giveItem(reward.item);
+                        itemManager.giveItem(reward.item);
                         break;
                     default:
                 }

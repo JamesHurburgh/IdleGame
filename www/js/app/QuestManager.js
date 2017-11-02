@@ -2,19 +2,37 @@
 
 define(["chance",
         "app/CommonFunctions",
+        "app/GameState",
         "json!data/contracts.json"
     ],
     function QuestManager(
         chance,
         CommonFunctions,
+        GameState,
         contracts) {
 
         commonFunctions = new CommonFunctions();
         chance = new Chance();
-        return function QuestManager(gameController, gameStateP) {
+        var gameState = require("app/GameState");
 
-            this.gameState = gameStateP;
-            this.gameController = gameController;
+        var LocationManager = require("app/LocationManager");
+        var locationManager = new LocationManager();
+
+        var AdventurerManager = require("app/AdventurerManager");
+        var adventurerManager = new AdventurerManager();
+
+        var StatisticsManager = require("app/StatisticsManager");
+        var statisticsManager = new StatisticsManager();
+
+        var TimeManager = require("app/TimeManager");
+        var timeManager = new TimeManager();
+
+        var ItemManager = require("app/ItemManager");
+        var itemManager = new ItemManager();
+
+        return function QuestManager() {
+
+            this.gameState = gameState.getGameState();
 
             this.getCompletedQuests = function() {
                 if (!this.gameState.completedQuests) this.gameState.completedQuests = [];
@@ -22,8 +40,8 @@ define(["chance",
             };
 
             this.getRunningQuests = function() {
-                if (!gameState.runningQuests) gameState.runningQuests = [];
-                return gameState.runningQuests;
+                if (!this.gameState.runningQuests) this.gameState.runningQuests = [];
+                return this.gameState.runningQuests;
             };
 
             this.showQuestsTab = function() {
@@ -35,7 +53,7 @@ define(["chance",
             };
 
             this.selectNextContract = function() {
-                var availableContracts = this.gameController.LocationManager().getCurrentLocation().availableContracts;
+                var availableContracts = locationManager.getCurrentLocation().availableContracts;
                 var selectedContract = this.getSelectedContract();
                 var index = 0;
                 if (selectedContract) {
@@ -61,15 +79,14 @@ define(["chance",
             };
 
             this.rejectContract = function(contract) {
-                var availableContracts = this.gameController.LocationManager().getCurrentLocation().availableContracts;
+                var availableContracts = locationManager.getCurrentLocation().availableContracts;
                 availableContracts.splice(availableContracts.indexOf(contract), 1);
-                this.gameController.StatisticsManager().trackStat("reject", "contract", 1);
-                this.gameController.StatisticsManager().trackStat("reject", contract.name, 1);
+                statisticsManager.trackStat("reject", "contract", 1);
+                statisticsManager.trackStat("reject", contract.name, 1);
             };
 
             this.canSendQuest = function(contract) {
                 if (!contract) return;
-                var adventurerManager = this.gameController.AdventurerManager();
                 var partySize = adventurerManager.getCurrentParty().length;
                 return contract.requirements.minAssigned <= partySize && partySize <= contract.requirements.maxAssigned;
             };
@@ -103,7 +120,7 @@ define(["chance",
 
             this.getRequiredAndAssignedSkillCount = function(contract, skillName) {
                 if (!contract || !skillName) return;
-                var currentlyAssigned = this.gameController.AdventurerManager().getCurrentPartyAttribute(skillName);
+                var currentlyAssigned = adventurerManager.getCurrentPartyAttribute(skillName);
                 if (currentlyAssigned === 0) return 0;
                 var requiredSkill = contract.requirements.attributes.filter(skill => skill.type == skillName)[0];
                 if (!requiredSkill) {
@@ -117,7 +134,7 @@ define(["chance",
             };
 
             this.getRequiredAndUnassignedSkillCount = function(contract, skillName) {
-                var currentlyAssigned = this.gameController.AdventurerManager().getCurrentPartyAttribute(skillName);
+                var currentlyAssigned = adventurerManager.getCurrentPartyAttribute(skillName);
                 var requiredSkill = contract.requirements.attributes.filter(skill => skill.type == skillName)[0];
                 if (!requiredSkill) return 0;
                 return Math.max(requiredSkill.amount - currentlyAssigned, 0);
@@ -133,15 +150,15 @@ define(["chance",
                     return;
                 }
 
-                this.gameController.StatisticsManager().trackStat("send", "quest", 1);
-                this.gameController.StatisticsManager().trackStat("send-quest", contract.name, 1);
+                statisticsManager.trackStat("send", "quest", 1);
+                statisticsManager.trackStat("send-quest", contract.name, 1);
 
                 var quest = {
                     id: commonFunctions.uuidv4(),
                     contract: contract,
                     start: Date.now(),
                     expires: Date.now() + (contract.duration * 1000),
-                    party: this.gameController.AdventurerManager().getCurrentParty(),
+                    party: adventurerManager.getCurrentParty(),
                     tasks: []
                 };
 
@@ -150,7 +167,7 @@ define(["chance",
                     quest.expires = null; // This will eventually be removed.
                 }
 
-                this.gameController.AdventurerManager().sendCurrentParty();
+                adventurerManager.sendCurrentParty();
 
                 this.getRunningQuests().push(quest);
 
@@ -158,7 +175,7 @@ define(["chance",
                     return a.expires - b.expires;
                 });
 
-                var availableContracts = this.gameController.LocationManager().getCurrentLocation().availableContracts;
+                var availableContracts = locationManager.getCurrentLocation().availableContracts;
                 availableContracts.splice(availableContracts.indexOf(contract), 1);
                 this.gameState.selectedContract = null;
             };
@@ -185,7 +202,7 @@ define(["chance",
 
             this.isTaskNewDay = function(quest, task) {
                 var index = quest.tasks.indexOf(task);
-                return index === 0 || !this.gameController.TimeManager().isSameDay(quest.tasks[index].startTime, quest.tasks[index - 1].startTime);
+                return index === 0 || !timeManager.isSameDay(quest.tasks[index].startTime, quest.tasks[index - 1].startTime);
             };
 
             this.checkForCompletedQuests = function() {
@@ -216,7 +233,7 @@ define(["chance",
                 task.status = "complete";
 
                 if (!task.partySkill) {
-                    var partySkills = this.gameController.AdventurerManager().getPartyAttributes(quest.party);
+                    var partySkills = adventurerManager.getPartyAttributes(quest.party);
 
                     var partySkill = partySkills.filter(s => s.name == task.skillTest)[0];
                     var partySkillAmount = 0;
@@ -230,7 +247,7 @@ define(["chance",
 
                 if (isInjured) {
                     var adventurer = chance.pickone(quest.party);
-                    var injury = this.gameController.AdventurerManager().injureAdventurerOnQuest(adventurer, task.injuryType, task.finishes);
+                    var injury = adventurerManager.injureAdventurerOnQuest(adventurer, task.injuryType, task.finishes);
                     task.injury = { adventurer: adventurer, injury: injury };
                     if (adventurer.status == "Dead") {
                         if (!quest.casualties) quest.casualties = [];
@@ -288,8 +305,8 @@ define(["chance",
                 this.getRunningQuests().splice(this.getRunningQuests().indexOf(quest), 1);
 
                 // Track the stats
-                this.gameController.StatisticsManager().trackStat("finish", "quest", 1);
-                this.gameController.StatisticsManager().trackStat("finish-quest", contract.name, 1);
+                statisticsManager.trackStat("finish", "quest", 1);
+                statisticsManager.trackStat("finish-quest", contract.name, 1);
 
                 quest.success = quest.party.length > 0 && quest.tasks.filter(task => task.required && !task.success).length === 0;
                 quest.survivors = [];
@@ -297,12 +314,12 @@ define(["chance",
                     quest.survivors.push({ adventurer: survivor });
                     if (!survivor.questLog) survivor.questLog = [];
                     survivor.questLog.push(quest.id);
-                    this.gameController.AdventurerManager().returnFromQuest(survivor.adventurer, finishes);
+                    adventurerManager.returnFromQuest(survivor.adventurer, finishes);
                 }, this);
                 if (quest.success) {
                     quest.completionMessage = contract.successMessage;
-                    this.gameController.StatisticsManager().trackStat("succeed", "quest", 1);
-                    this.gameController.StatisticsManager().trackStat("succeed-quest", contract.name, 1);
+                    statisticsManager.trackStat("succeed", "quest", 1);
+                    statisticsManager.trackStat("succeed-quest", contract.name, 1);
 
                     // Divy out xp to party
                     if (quest.contract.experience > 0) {
@@ -316,7 +333,7 @@ define(["chance",
                                 xpGained++;
                             }
                             survivor.xpGained = xpGained;
-                            this.gameController.AdventurerManager().giveAdventurerXP(survivor.adventurer, xpGained);
+                            adventurerManager.giveAdventurerXP(survivor.adventurer, xpGained);
                         }
                     }
 
@@ -327,7 +344,7 @@ define(["chance",
                         if (Math.random() < chance) {
                             var reward = contract.rewards[j].reward;
                             if (reward.type == "item") {
-                                quest.rewards.push({ "type": reward.type, "item": this.gameController.ItemManager().generateRewardItem(reward) });
+                                quest.rewards.push({ "type": reward.type, "item": itemManager.generateRewardItem(reward) });
                             } else {
                                 var rewardAmount = commonFunctions.varyAmount(reward.amount);
                                 if (rewardAmount > 0) {
@@ -361,7 +378,7 @@ define(["chance",
                         quest.cutsTaken += cut;
                         quest.wagesPaid += wage;
                         survivorCoin.coinsGained = cut + wage;
-                        this.gameController.AdventurerManager().giveAdventurerCoins(survivorCoin.adventurer, survivorCoin.coinsGained);
+                        adventurerManager.giveAdventurerCoins(survivorCoin.adventurer, survivorCoin.coinsGained);
                     }
 
                     quest.remainingCoins = coins - quest.wagesPaid - quest.cutsTaken;
@@ -369,8 +386,8 @@ define(["chance",
 
                 } else {
                     quest.completionMessage = contract.failureMessage;
-                    this.gameController.StatisticsManager().trackStat("fail", "quest", 1);
-                    this.gameController.StatisticsManager().trackStat("fail-quest", contract.name, 1);
+                    statisticsManager.trackStat("fail", "quest", 1);
+                    statisticsManager.trackStat("fail-quest", contract.name, 1);
                 }
 
                 this.getCompletedQuests().push(quest);
@@ -386,8 +403,8 @@ define(["chance",
                 this.getRunningQuests().splice(this.getRunningQuests().indexOf(quest), 1);
 
                 // Track the stats
-                this.gameController.StatisticsManager().trackStat("complete", "quest", 1);
-                this.gameController.StatisticsManager().trackStat("complete-quest", contract.name, 1);
+                statisticsManager.trackStat("complete", "quest", 1);
+                statisticsManager.trackStat("complete-quest", contract.name, 1);
 
                 // Determine if any of the party died
                 quest.survivors = [];
@@ -398,14 +415,14 @@ define(["chance",
                         if (Math.random() * this.gameController.EffectsManager().getGlobalValue("questRisk") < contract.risk) {
                             var causeOfInjury = "Injured while on contract: " + contract.name;
                             var injuryTime = quest.expires;
-                            var injury = this.gameController.AdventurerManager().injureAdventurer(adventurer, causeOfInjury, injuryTime);
+                            var injury = adventurerManager.injureAdventurer(adventurer, causeOfInjury, injuryTime);
                             if (adventurer.status == "Dead") {
                                 quest.casualaties.push(adventurer);
                             } else {
                                 quest.survivors.push({ adventurer: adventurer, injuriesGained: injury });
                             }
                         } else {
-                            this.gameController.AdventurerManager().setAdventurerRecovering(adventurer);
+                            adventurerManager.setAdventurerRecovering(adventurer);
                             quest.survivors.push({ adventurer: adventurer });
                         }
                     }, this);
@@ -419,8 +436,8 @@ define(["chance",
 
                 if (quest.success) {
                     quest.completionMessage = contract.successMessage;
-                    this.gameController.StatisticsManager().trackStat("succeed", "quest", 1);
-                    this.gameController.StatisticsManager().trackStat("succeed-quest", contract.name, 1);
+                    statisticsManager.trackStat("succeed", "quest", 1);
+                    statisticsManager.trackStat("succeed-quest", contract.name, 1);
 
                     // Divy out xp to survivors
                     if (quest.contract.experience > 0) {
@@ -434,7 +451,7 @@ define(["chance",
                                 xpGained++;
                             }
                             survivor.xpGained = xpGained;
-                            this.gameController.AdventurerManager().giveAdventurerXP(survivor.adventurer, xpGained);
+                            adventurerManager.giveAdventurerXP(survivor.adventurer, xpGained);
                         }
                     }
 
@@ -445,7 +462,7 @@ define(["chance",
                         if (Math.random() < chance) {
                             var reward = contract.rewards[j].reward;
                             if (reward.type == "item") {
-                                quest.rewards.push({ "type": reward.type, "item": this.gameController.ItemManager().generateRewardItem(reward) });
+                                quest.rewards.push({ "type": reward.type, "item": itemManager.generateRewardItem(reward) });
                             } else {
                                 var rewardAmount = commonFunctions.varyAmount(reward.amount);
                                 if (rewardAmount > 0) {
@@ -480,7 +497,7 @@ define(["chance",
                             var coinsGained = Math.ceil((survivorCoin.adventurer.wage / 100) * coins);
                             remainingCoins -= coinsGained;
                             survivorCoin.coinsGained = coinsGained;
-                            this.gameController.AdventurerManager().giveAdventurerCoins(survivorCoin.adventurer, coinsGained);
+                            adventurerManager.giveAdventurerCoins(survivorCoin.adventurer, coinsGained);
                         }
 
                     }
@@ -491,8 +508,8 @@ define(["chance",
 
                 } else {
                     quest.completionMessage = contract.failureMessage;
-                    this.gameController.StatisticsManager().trackStat("fail", "quest", 1);
-                    this.gameController.StatisticsManager().trackStat("fail-quest", contract.name, 1);
+                    statisticsManager.trackStat("fail", "quest", 1);
+                    statisticsManager.trackStat("fail-quest", contract.name, 1);
                 }
 
                 this.getCompletedQuests().push(quest);
@@ -509,7 +526,7 @@ define(["chance",
                     return;
                 }
 
-                task.partyEfficiency = this.gameController.AdventurerManager().getPartyEfficiency(quest.party);
+                task.partyEfficiency = adventurerManager.getPartyEfficiency(quest.party);
                 task.startTime = startTime;
 
                 task.finishes = startTime + (task.duration / task.partyEfficiency) * 1000;
@@ -517,7 +534,7 @@ define(["chance",
                 task.attempt = attempt;
                 task.difficulty = common.varyFloat(task.difficulty, 0.3);
                 if (task.skillTest) {
-                    var partySkills = this.gameController.AdventurerManager().getPartyAttributes(quest.party);
+                    var partySkills = adventurerManager.getPartyAttributes(quest.party);
 
                     var partySkill = partySkills.filter(s => s.name == task.skillTest)[0];
                     var partySkillAmount = 0;

@@ -2,16 +2,22 @@
 
 define([
         "app/CommonFunctions",
-        "app/DataManager"
+        "app/DataManager",
+        "app/GameState"
     ],
     function LocationManager(
         CommonFunctions,
-        DataManager) {
+        DataManager,
+        GameState) {
 
-        return function LocationManager(gameController, gameState) {
+        var gameState = require("app/GameState");
 
-            this.gameState = gameState;
-            this.gameController = gameController;
+        var StatisticsManager = require("app/StatisticsManager");
+        var statisticsManager = new StatisticsManager();
+
+        return function LocationManager() {
+
+            this.gameState = gameState.getGameState();
 
             this.resetLocations = function() {
                 this.gameState.locationList = common.clone(data.locations);
@@ -67,7 +73,7 @@ define([
                 var locations = this.getLocationList();
                 if (this.canRelocateDown()) {
                     this.gameState.location = locations[this.currentLocationIndex() - 1];
-                    this.gameController.StatisticsManager().trackStat("relocate-to", this.gameState.location.name, 1);
+                    statisticsManager.trackStat("relocate-to", this.gameState.location.name, 1);
                 }
             };
 
@@ -87,7 +93,7 @@ define([
                 var locations = this.getLocationList();
                 if (this.canRelocateUp()) {
                     this.gameState.location = locations[this.currentLocationIndex() + 1];
-                    this.gameController.StatisticsManager().trackStat("relocate-to", this.gameState.location.name, 1);
+                    statisticsManager.trackStat("relocate-to", this.gameState.location.name, 1);
                 }
             };
 

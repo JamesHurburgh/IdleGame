@@ -60,14 +60,14 @@ define(["jquery",
         commonFunctions = new CommonFunctions();
         data = new DataManager();
 
-        return function AdventurersGame(saveData, saveFunction, logFunction) {
+        return function AdventurersGame(saveData, logFunction) {
 
             log = logFunction;
             if (saveData === undefined || saveData === null) saveData = {};
             this.gameState = saveData;
             gameState = saveData;
 
-            this._GameStateManager = new GameStateManager(this, this.gameState, saveFunction);
+            this._GameStateManager = new GameStateManager(this, this.gameState);
             this.GameStateManager = function() {
                 if (this._GameStateManager) return this._GameStateManager;
                 return this.$data._GameStateManager;

@@ -1,17 +1,21 @@
 /*jshint esversion: 6 */
 define([
         "app/CommonFunctions",
+        "app/GameState",
         "app/DataManager"
     ],
     function NoticeManager(
         CommonFunctions,
+        GameState,
         DataManager) {
 
         common = new CommonFunctions();
         data = new DataManager();
-        return function NoticeManager(gameController, gameState) {
+        var gameState = require("app/GameState");
 
-            this.gameState = gameState;
+        return function NoticeManager(gameController) {
+
+            this.gameState = gameState.getGameState();
             this.gameController = gameController;
 
             this.viewContract = function(contract) {

@@ -2,21 +2,33 @@
 
 define([
         "app/CommonFunctions",
+        "app/GameState",
         "json!data/items.json"
     ],
     function ItemManager(
         CommonFunctions,
+        GameState,
         items) {
 
-        return function ItemManager(gameController, gameState) {
+        var gameState = require("app/GameState");
 
-            this.gameState = gameState;
-            this.gameController = gameController;
+        var StatisticsManager = require("app/StatisticsManager");
+        var statisticsManager = new StatisticsManager();
+
+        var PlayerManager = require("app/PlayerManager");
+        var playerManager = new PlayerManager();
+
+        var EffectsManager = require("app/EffectsManager");
+        var effectsManager = new EffectsManager();
+
+        return function ItemManager() {
+
+            this.gameState = gameState.getGameState();
 
             this.getOwnedItems = function() {
                 if (!this.gameState.ownedItems) this.gameState.ownedItems = [];
                 return this.gameState.ownedItems;
-            }
+            };
 
             this.showItemTab = function() {
                 return this.getOwnedItems().length !== 0;
@@ -27,43 +39,43 @@ define([
                 var effects = [{
                         "description": "Suddenly your purse seems heavier.",
                         "effect": function(game) {
-                            game.PlayerManager().giveCoins(1000);
+                            playerManager.giveCoins(1000);
                         }
                     },
                     {
                         "description": "Suddenly every seems to have a job for you.",
                         "effect": function(game) {
-                            game.EffectsManager().addEffect("chanceOfNewContract", 2, Date.now() + 60000);
+                            effectsManager.addEffect("chanceOfNewContract", 2, Date.now() + 60000);
                         }
                     },
                     {
                         "description": "Suddenly every seems to want to work for you.",
                         "effect": function(game) {
-                            game.EffectsManager().addEffect("chanceOfNewHire", 2, Date.now() + 60000);
+                            effectsManager.addEffect("chanceOfNewHire", 2, Date.now() + 60000);
                         }
                     },
                     {
                         "description": "Suddenly every seems to be willing to work for much less.",
                         "effect": function(game) {
-                            game.EffectsManager().addEffect("hireCostModifier", 2, Date.now() + 60000);
+                            effectsManager.addEffect("hireCostModifier", 2, Date.now() + 60000);
                         }
                     },
                     {
                         "description": "Suddenly it seems like there are lots more coins around for the taking.",
                         "effect": function(game) {
-                            game.EffectsManager().addEffect("freeCoinsModifier", 10, Date.now() + 60000);
+                            effectsManager.addEffect("freeCoinsModifier", 10, Date.now() + 60000);
                         }
                     },
                     {
                         "description": "Suddenly it seems like everyone on quests are a lot safer.",
                         "effect": function(game) {
-                            game.EffectsManager().addEffect("questRisk", 0.1, Date.now() + 60000);
+                            effectsManager.addEffect("questRisk", 0.1, Date.now() + 60000);
                         }
                     },
                     {
                         "description": "Suddenly it seems like everyone on quests are learning new things.",
                         "effect": function(game) {
-                            game.EffectsManager().addEffect("upgradeChance", 5, Date.now() + 60000);
+                            effectsManager.addEffect("upgradeChance", 5, Date.now() + 60000);
                         }
                     }
                 ];
@@ -82,9 +94,9 @@ define([
                 if (!this.canSell(item)) {
                     return;
                 }
-                this.gameController.StatisticsManager().trackStat("sell", "item", 1);
-                this.gameController.StatisticsManager().trackStat("sell-item", item.name, 1);
-                this.gameController.PlayerManager().giveCoins(item.value);
+                statisticsManager.trackStat("sell", "item", 1);
+                statisticsManager.trackStat("sell-item", item.name, 1);
+                playerManager.giveCoins(item.value);
                 this.removeItem(item);
 
             };
@@ -109,15 +121,15 @@ define([
                     return;
                 }
 
-                usageFunction(this.gameController);
-                this.gameController.StatisticsManager().trackStat("use-item", item.name, 1);
+                usageFunction();
+                statisticsManager.trackStat("use-item", item.name, 1);
                 this.removeItem(item);
             };
 
             this.giveItem = function(item) {
                 this.gameState.ownedItems.push(item);
-                this.gameController.StatisticsManager().trackStat("collect", "item", 1);
-                this.gameController.StatisticsManager().trackStat("collect-item", item.name, 1);
+                statisticsManager.trackStat("collect", "item", 1);
+                statisticsManager.trackStat("collect-item", item.name, 1);
             };
 
             this.generateRewardItem = function(reward) {

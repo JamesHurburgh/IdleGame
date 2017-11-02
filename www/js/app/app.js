@@ -35,12 +35,6 @@ requirejs(['jquery', 'vue', 'alertify', 'store', 'chance', 'app/AdventurersGame'
             );
         }
 
-        function save(gameState) {
-            if (gameState) {
-                store.set("AdventurersGame", gameState);
-            }
-        }
-
         function handleException(ex) {
             $("#AdventurersGame").hide();
             log(ex);
@@ -62,7 +56,7 @@ requirejs(['jquery', 'vue', 'alertify', 'store', 'chance', 'app/AdventurersGame'
         var adventurersGame;
 
         try {
-            adventurersGame = new AdventurersGame(store.get("AdventurersGame"), save, log);
+            adventurersGame = new AdventurersGame(store.get("AdventurersGame"), log);
 
             var controller = new Vue({
                 el: '#AdventurersGame',

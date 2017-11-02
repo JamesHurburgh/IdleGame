@@ -1,32 +1,21 @@
 /*jshint esversion: 6 */
 
-/*
-
-1. Rename file and SessionManager to Manager name.
-2. Update the DATA_FILE variable.
-3. Paste the following into AdventureGame:
-
-            _SessionManager = new SessionManager(this);
-            this.SessionManager = function() {
-                return _SessionManager;
-            };
-4. Delete this comment block.
-
-*/
-
 define([
-    "app/CommonFunctions"
-],
-    function SessionManager(CommonFunctions) {
+        "app/CommonFunctions",
+        "app/GameState"
+    ],
+    function SessionManager(CommonFunctions,
+        GameState) {
 
         commonFunctions = new CommonFunctions();
+        var gameState = require("app/GameState");
 
-        return function SessionManager(gameController) {
+        return function SessionManager() {
 
-            this.gameController = gameController;
-            this.gameState = gameController.gameState;
+            this.gameState = gameState.getGameState();
+
             // Login
-            this.login = function () {
+            this.login = function() {
                 log("login");
 
                 this.gameState.timeSinceLastLogin = -1;
@@ -39,7 +28,7 @@ define([
                 this.gameState.loginTracker.push({ "login": loginTime });
             };
 
-            this.stillLoggedIn = function () {
+            this.stillLoggedIn = function() {
                 if (this.gameState.loginTracker === undefined || this.gameState.loginTracker === null || this.gameState.loginTracker.length === 0) {
                     this.gameState.loginTracker = [];
                     this.gameState.loginTracker.push({ "login": Date.now() });

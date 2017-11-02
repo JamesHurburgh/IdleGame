@@ -1,34 +1,24 @@
 /*jshint esversion: 6 */
 
-/*
-
-1. Rename file and EffectsManager to Manager name.
-2. Paste the following into AdventureGame:
-
-            _EffectsManager = new EffectsManager(this);
-            this.EffectsManager = function() {
-                return _EffectsManager;
-            };
-3. Delete this comment block.
-
-*/
-
 define([
-    "app/CommonFunctions",
-    "app/DataManager"
-],
+        "app/CommonFunctions",
+        "app/DataManager",
+        "app/GameState"
+    ],
     function EffectsManager(
         CommonFunctions,
-        DataManager) {
+        DataManager,
+        GameState) {
 
         common = new CommonFunctions();
         data = new DataManager();
-        return function EffectsManager(gameController, gameState) {
+        var gameState = require("app/GameState");
 
-            this.gameState = gameState;
-            this.gameController = gameController;
+        return function EffectsManager() {
 
-            this.getCurrentEffects = function () {
+            this.gameState = gameState.getGameState();
+
+            this.getCurrentEffects = function() {
                 if (!this.gameState.currentEffects) {
                     this.gameState.currentEffects = [];
                 }
@@ -36,12 +26,12 @@ define([
             };
 
             // Effect
-            this.addEffect = function (name, valueModifier, expires) {
+            this.addEffect = function(name, valueModifier, expires) {
                 this.getCurrentEffects().push({ "name": name, "valueModifier": valueModifier, "expires": expires });
             };
 
 
-            this.removeExpired = function () {
+            this.removeExpired = function() {
                 var currentEffects = this.getCurrentEffects();
                 for (var h = 0; h < currentEffects.length; h++) {
                     var effect = currentEffects[h];
@@ -52,7 +42,7 @@ define([
             };
 
             // Globals
-            this.getGlobalValue = function (name) {
+            this.getGlobalValue = function(name) {
                 var global = data.game.globals.filter(global => global.name == name)[0];
                 if (global === undefined) { return null; }
                 var effects = this.getCurrentEffects().filter(effect => effect.affects === name);

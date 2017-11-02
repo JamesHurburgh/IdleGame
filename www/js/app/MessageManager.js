@@ -1,29 +1,21 @@
 /*jshint esversion: 6 */
 
-/*
-
-1. Rename file and MessageManager to Manager name.
-2. Update the DATA_FILE variable.
-3. Paste the following into AdventureGame:
-
-4. Delete this comment block.
-
-*/
-
 define([
         "alertify",
-        "app/CommonFunctions"
+        "app/CommonFunctions",
+        "app/GameState"
     ],
     function MessageManager(
         alertify,
-        CommonFunctions) {
+        CommonFunctions,
+        GameState) {
 
         commonFunctions = new CommonFunctions();
+        var gameState = require("app/GameState");
 
-        return function MessageManager(gameController, gameState) {
+        return function MessageManager() {
 
-            this.gameState = gameState;
-            this.gameController = gameController;
+            this.gameState = gameState.getGameState();
 
             this.getMessages = function() {
                 if (!this.gameState.messages) this.gameState.messages = [];

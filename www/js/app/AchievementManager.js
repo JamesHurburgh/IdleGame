@@ -1,28 +1,32 @@
 /*jshint esversion: 6 */
 
 define([
-    "app/CommonFunctions",
-    "json!data/achievements.json"],
-    function AchievementManager(CommonFunctions, achievements) {
+        "app/CommonFunctions",
+        "app/GameState",
+        "json!data/achievements.json"
+    ],
+    function AchievementManager(CommonFunctions,
+        GameState, achievements) {
 
         commonFunctions = new CommonFunctions();
+        var gameState = require("app/GameState");
 
-        return function AchievementManager(gameController, gameState) {
+        return function AchievementManager(gameController) {
 
-            this.gameState = gameState;
+            this.gameState = gameState.getGameState();
             this.gameController = gameController;
 
-            this.getClaimedAchievements = function () {
+            this.getClaimedAchievements = function() {
                 if (!this.gameState.claimedAchievements) this.gameState.claimedAchievements = [];
                 return this.gameState.claimedAchievements;
             };
 
             // Achievements
-            this.hasAchievement = function (achievement) {
+            this.hasAchievement = function(achievement) {
                 return this.getClaimedAchievements().filter(claimedAchievement => claimedAchievement.name == achievement.name).length > 0;
             };
 
-            this.claimAchievement = function (achievement) {
+            this.claimAchievement = function(achievement) {
                 if (!this.hasAchievement(achievement.name)) {
                     this.getClaimedAchievements().push({ "name": achievement.name, "timeClaimed": Date.now() });
                     this.gameController.MessageManager().message("Got achievement:" + achievement.name + " (" + achievement.description + ")");
@@ -30,7 +34,7 @@ define([
                 }
             };
 
-            this.canClaimAchievement = function (achievement) {
+            this.canClaimAchievement = function(achievement) {
                 if (this.hasAchievement(achievement)) {
                     return false;
                 }
@@ -41,19 +45,19 @@ define([
                 }
             };
 
-            this.checkAndClaimAchievement = function (achievement) {
+            this.checkAndClaimAchievement = function(achievement) {
                 if (this.canClaimAchievement(achievement)) {
                     this.claimAchievement(achievement);
                 }
             };
 
-            this.checkAndClaimAllAchievements = function () {
+            this.checkAndClaimAllAchievements = function() {
                 for (var i = 0; i < achievements.length; i++) {
                     this.checkAndClaimAchievement(achievements[i]);
                 }
             };
 
-            this.achievementProgress = function (achievement) {
+            this.achievementProgress = function(achievement) {
                 if (this.hasAchievement(achievement)) {
                     return 100;
                 }

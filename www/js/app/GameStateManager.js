@@ -3,23 +3,28 @@
 define([
         "app/CommonFunctions",
         "app/DataManager",
-        "alertify"
+        "app/GameState",
+        "alertify",
+        "store"
     ],
     function GameStateManager(
         CommonFunctions,
         DataManager,
-        alertify) {
+        GameState,
+        alertify,
+        store) {
 
         common = new CommonFunctions();
         data = new DataManager();
-        return function GameStateManager(gameController, gameState, saveFunction) {
+        var gameState = require("app/GameState");
 
-            this.externalSaveFunction = saveFunction;
-            this.gameState = gameState;
+        return function GameStateManager(gameController) {
+
+            this.gameState = gameState.getGameState();
             this.gameController = gameController;
 
             this.save = function() {
-                this.externalSaveFunction(gameState);
+                gameState.save();
             };
 
             this.reset = function() {

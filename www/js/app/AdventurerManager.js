@@ -4,6 +4,7 @@ define([
         "app/CommonFunctions",
         "app/DataManager",
         "app/QuestManager",
+        "app/GameState",
         "chance",
         "json!data/conversations.json"
     ],
@@ -11,6 +12,7 @@ define([
         CommonFunctions,
         DataManager,
         QuestManager,
+        GameState,
         Chance,
         conversations) {
 
@@ -18,11 +20,23 @@ define([
         data = new DataManager();
         this.chance = new Chance();
         Quests = new QuestManager();
+        var gameState = require("app/GameState");
 
-        return function AdventurerManager(gameController, gameState) {
+        var EffectsManager = require("app/EffectsManager");
+        var effectsManager = new EffectsManager();
 
-            this.gameState = gameState;
-            this.gameController = gameController;
+        var StatisticsManager = require("app/StatisticsManager");
+        var statisticsManager = new StatisticsManager();
+
+        var PlayerManager = require("app/PlayerManager");
+        var playerManager = new PlayerManager();
+
+        var LocationManager = require("app/LocationManager");
+        var locationManager = new LocationManager();
+
+        return function AdventurerManager() {
+
+            this.gameState = gameState.getGameState();
 
             this.getAdventurerList = function() {
                 if (!this.gameState.adventurerList) this.gameState.adventurerList = [];
@@ -74,8 +88,8 @@ define([
                 for (var i = 0; i < adventurerList.length; i++) {
                     this.addMissingFieldsToAdventurer(adventurerList[i]);
                 }
+                adventurerList = locationManager.getCurrentLocation().availableAdventurers;
 
-                adventurerList = this.gameController.LocationManager().getCurrentLocation().availableAdventurers;
                 if (!adventurerList) return;
                 adventurerList.forEach(function(notice) {
                     this.addMissingFieldsToAdventurer(notice.adventurer);
@@ -93,7 +107,7 @@ define([
             this.hire = function(notice) {
                 var adventurer = notice.adventurer;
                 if (this.canHire(adventurer)) {
-                    this.gameController.PlayerManager().spendCoins(this.getCost(adventurer));
+                    playerManager.spendCoins(this.getCost(adventurer));
                     this.addAdventurer(adventurer);
                     this.removeFromAvialableHires(notice);
                     this.trackAdventurerStats(adventurer, "hire", 1);
@@ -101,7 +115,7 @@ define([
             };
 
             this.removeFromAvialableHires = function(notice) {
-                this.gameController.LocationManager().getCurrentLocation().availableAdventurers.splice(this.gameController.LocationManager().getCurrentLocation().availableAdventurers.indexOf(notice), 1);
+                locationManager.getCurrentLocation().availableAdventurers.splice(locationManager.getCurrentLocation().availableAdventurers.indexOf(notice), 1);
             };
 
             this.addAdventurer = function(adventurer) {
@@ -180,7 +194,7 @@ define([
                     adventurer.includeInParty = false;
                     this.trackAdventurerStats(adventurer, "send", 1);
                 }, this);
-                this.gameController.StatisticsManager().trackStat("send", "party");
+                statisticsManager.trackStat("send", "party");
             };
 
             this.getCurrentPartyAttribute = function(attributeName) {
@@ -229,17 +243,17 @@ define([
             this.addNewAdverturersForHire = function() {
                 // New hires
                 var maxAvailableHires = 5;
-                if (!this.gameController.LocationManager().getCurrentLocation().availableAdventurers) {
-                    this.gameController.LocationManager().getCurrentLocation().availableAdventurers = [];
+                if (!locationManager.getCurrentLocation().availableAdventurers) {
+                    locationManager.getCurrentLocation().availableAdventurers = [];
                 }
-                if (this.gameController.LocationManager().getCurrentLocation().availableAdventurers.length < maxAvailableHires && Math.random() < this.gameController.EffectsManager().getGlobalValue("chanceOfNewHire")) {
+                if (locationManager.getCurrentLocation().availableAdventurers.length < maxAvailableHires && Math.random() < effectsManager.getGlobalValue("chanceOfNewHire")) {
                     this.addAvailableHire();
                 }
             };
 
             this.addAvailableHire = function() {
                 // Choose type from location list first, then look it up.
-                var location = this.gameController.LocationManager().getCurrentLocation();
+                var location = locationManager.getCurrentLocation();
                 var locationHireableTypes = location.adventurers;
 
                 if (locationHireableTypes === undefined || locationHireableTypes.length === 0) { return; }
@@ -252,11 +266,11 @@ define([
                     var adventurer = this.generateAdventurer(adventurerTemplate, raceTemplate);
                     var adventurerNotice = {
                         "adventurer": adventurer,
-                        "expires": Date.now() + Math.floor(1000 * this.gameController.EffectsManager().getGlobalValue("averageHireContractExpiry") * (Math.random() + 0.5))
+                        "expires": Date.now() + Math.floor(1000 * effectsManager.getGlobalValue("averageHireContractExpiry") * (Math.random() + 0.5))
                     };
 
-                    this.gameController.LocationManager().getCurrentLocation().availableAdventurers.push(adventurerNotice);
-                    this.gameController.LocationManager().getCurrentLocation().availableAdventurers.sort(function(a, b) {
+                    locationManager.getCurrentLocation().availableAdventurers.push(adventurerNotice);
+                    locationManager.getCurrentLocation().availableAdventurers.sort(function(a, b) {
                         return a.expires - b.expires;
                     });
                     this.trackAdventurerStats(adventurer, "available", 1);
@@ -308,7 +322,7 @@ define([
             };
 
             this.trackAdventurerStats = function(adventurer, action, amount) {
-                this.gameController.StatisticsManager().trackStats(action, ["adventurer", adventurer.type, adventurer.race.name, adventurer.gender], amount);
+                statisticsManager.trackStats(action, ["adventurer", adventurer.type, adventurer.race.name, adventurer.gender], amount);
             };
 
             this.recoverAdventurers = function() {

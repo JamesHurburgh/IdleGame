@@ -1,18 +1,20 @@
 define([
         "app/CommonFunctions",
         "app/DataManager",
-        "app/GameStateManager"
+        "app/GameState"
     ],
     function PartyManager(
         CommonFunctions,
-        DataManager) {
+        DataManager,
+        GameState) {
 
         common = new CommonFunctions();
         data = new DataManager();
-        return function PartyManager(gameController) {
+        var gameState = require("app/GameState");
 
-            this.gameController = gameController;
-            this.gameState = gameController.gameState;
+        return function PartyManager() {
+
+            this.gameState = gameState.getGameState();
 
         };
     }

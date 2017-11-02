@@ -9,10 +9,7 @@ define([
         commonFunctions = new CommonFunctions();
         data = new DataManager();
 
-        return function TimeManager(gameState) {
-
-            this.gameState = gameState;
-
+        return function TimeManager() {
 
             this.getGameTime = function(dateInMilliSeconds) {
 
