@@ -3,8 +3,7 @@
     "description": "Adventuring is dangerous. Hire someone else to do it for you!",
     "author": "James Hurburgh",
     "author-uri": "",
-    "globals": [
-        {
+    "globals": [{
             "name": "chanceOfNewContract",
             "baseValue": 0.05
         },
@@ -37,13 +36,13 @@
             "baseValue": 1
         }
     ],
-    "versions": [
-        {
+    "versions": [{
             "number": "0.12.5",
-            "description": "__FILL_ME_IN__",
+            "description": "Adventurer details.",
             "features": [
                 "Simple stats shown for adventurer.",
-                "Adventurer's are now paid wages per hour they have been on a job."
+                "Adventurer's are now paid wages per hour they have been on a job.",
+                "Adventurers now have an efficiency rating which will let them get stuff done faster, or slower, depending."
             ],
             "bugfixes": []
         },

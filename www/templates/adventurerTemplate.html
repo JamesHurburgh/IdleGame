@@ -41,6 +41,7 @@
                 </div>
             </div>
             <div v-if="!isDead" class="col-xs-12 well well-sm">
+                <div>Efficiency: {{adventurer.efficiency}}</div>
                 <span v-for="skill in adventurer.skills " :title="skill.name + ' ' + skill.amount ">
                     <img :alt="skill.name " v-for="n in skill.amount " width="24px " :src="getIcon(skill.name)" />
                 </span>
@@ -81,13 +82,13 @@
         baseUrl: 'js/lib'
     });
     requirejs([
-        'vue',
-        'app/TimeManager',
-        'app/AdventurerManager',
-        'app/DataManager'
-    ],
+            'vue',
+            'app/TimeManager',
+            'app/AdventurerManager',
+            'app/DataManager'
+        ],
 
-        function (Vue, TimeManager, AdventurerManager, DataManager) {
+        function(Vue, TimeManager, AdventurerManager, DataManager) {
             console.log("Registering adventurer template.")
 
             Adventurer = new AdventurerManager();
@@ -98,46 +99,46 @@
                 props: ['adventurer'],
                 template: '#adventurer',
                 computed: {
-                    birthDate: function () {
+                    birthDate: function() {
                         return Time.getGameTime(this.adventurer.birthTime).toDateString();
                     },
-                    deathDate: function () {
+                    deathDate: function() {
                         return Time.getGameTime(this.adventurer.timeOfDeath).toDateString();
                     },
-                    causeOfDeath: function () {
+                    causeOfDeath: function() {
                         if (!this.adventurer.causeOfDeath) return "Unknown";
                         return this.adventurer.causeOfDeath.injuryType + ' ' + this.adventurer.causeOfDeath.bodyPart;
                     },
-                    age: function () {
+                    age: function() {
                         if (adventurer.status == "Dead") {
                             return Adventurer.getAgeAtDeath(this.adventurer);
                         } else {
                             return Adventurer.getAge(this.adventurer);
                         }
                     },
-                    showQuote: function () {
+                    showQuote: function() {
                         return this.adventurer.quote && this.adventurer.status == "Idle";
                     },
-                    isInjured: function () {
+                    isInjured: function() {
                         if (!this.adventurer.injuries) this.adventurer.injuries = [];
                         return this.adventurer.injuries.length !== 0;
                     },
-                    isDead: function () {
+                    isDead: function() {
                         return this.adventurer.status == "Dead";
                     },
-                    isQuesting: function () {
+                    isQuesting: function() {
                         return this.adventurer.status == "Questing" && Adventurer.getAdventurersQuest(this.adventurer) !== undefined;
                     },
-                    isRecovering: function () {
+                    isRecovering: function() {
                         return this.adventurer.status == "Recovering";
                     },
-                    questName: function () {
+                    questName: function() {
                         return Adventurer.getAdventurersQuest(this.adventurer).contract.name;
                     },
-                    showStats: function () {
+                    showStats: function() {
                         return this.adventurer.questLog !== undefined && this.adventurer.questLog.length > 0;
                     },
-                    questsCompletedCount: function () {
+                    questsCompletedCount: function() {
                         if (this.adventurer.questLog !== undefined) {
                             return this.adventurer.questLog.length;
                         }
@@ -146,10 +147,10 @@
                 },
                 components: {},
                 methods: {
-                    getIcon: function (skillName) {
+                    getIcon: function(skillName) {
                         return 'img/icons/' + Data.getData('skills', skillName).icon + '.png';
                     },
-                    dateTime: function (dateTime) {
+                    dateTime: function(dateTime) {
                         return Time.getGameTime(dateTime).toString();
                     }
                 }
