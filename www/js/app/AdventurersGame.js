@@ -60,113 +60,79 @@ define(["jquery",
         commonFunctions = new CommonFunctions();
         data = new DataManager();
 
-        return function AdventurersGame(saveData, logFunction) {
+        return function AdventurersGame(logFunction) {
 
             log = logFunction;
-            if (saveData === undefined || saveData === null) saveData = {};
-            this.gameState = saveData;
-            gameState = saveData;
 
-            this._GameStateManager = new GameStateManager(this, this.gameState);
+            this.gameStateManager = new GameStateManager();
             this.GameStateManager = function() {
-                if (this._GameStateManager) return this._GameStateManager;
-                return this.$data._GameStateManager;
+                return this.gameStateManager;
             };
 
-            this._itemManager = new ItemManager(this, this.gameState);
+            this.itemManager = new itemManager();
             this.ItemManager = function() {
-                if (this._itemManager) return this._itemManager;
-                return this.$data._itemManager;
+                return this.itemManager;
             };
 
-            this._locationManager = new LocationManager(this, this.gameState);
             this.LocationManager = function() {
-                if (this._locationManager) return this._locationManager;
-                return this.$data._locationManager;
+                return new locationManager();
             };
 
-            this._AdventurerManager = new AdventurerManager(this, this.gameState);
             this.AdventurerManager = function() {
-                if (this._AdventurerManager) return this._AdventurerManager;
-                return this.$data._AdventurerManager;
+                return new AdventurerManager();
             };
 
-            this._QuestManager = new QuestManager(this, this.gameState);
             this.QuestManager = function() {
-                if (this._QuestManager) return this._QuestManager;
-                return this.$data._QuestManager;
+                return new QuestManager();
             };
 
-            this._MessageManager = new MessageManager(this, this.gameState);
             this.MessageManager = function() {
-                if (this._MessageManager) return this._MessageManager;
-                return this.$data._MessageManager;
+                return new MessageManager();
             };
 
-            this._AchievementManager = new AchievementManager(this, this.gameState);
             this.AchievementManager = function() {
-                if (this._AchievementManager) return this._AchievementManager;
-                return this.$data._AchievementManager;
+                return new AchievementManager();
             };
 
-            this._DataManager = new DataManager(this);
             this.DataManager = function() {
-                if (this._DataManager) return this._DataManager;
-                return this.$data._DataManager;
+                return new DataManager();
             };
 
-            Time = new TimeManager(this);
             this._TimeManager = Time;
             this.TimeManager = function() {
-                if (this._TimeManager) return this._TimeManager;
-                return this.$data._TimeManager;
+                return new TimeManager();
             };
 
-            this._SessionManager = new SessionManager(this);
             this.SessionManager = function() {
-                if (this._SessionManager) return this._SessionManager;
-                return this.$data._SessionManager;
+                return new SessionManager();
             };
 
-            this._StatisticsManager = new StatisticsManager(this, this.gameState);
             this.StatisticsManager = function() {
-                if (this._StatisticsManager) return this._StatisticsManager;
-                return this.$data._StatisticsManager;
+                return new StatisticsManager();
             };
 
-            this._OptionsManager = new OptionsManager(this);
             this.OptionsManager = function() {
-                if (this._OptionsManager) return this._OptionsManager;
-                return this.$data._OptionsManager;
+                return new OptionsManager();
             };
 
-            this._PlayerManager = new PlayerManager(this, this.gameState);
             this.PlayerManager = function() {
-                if (this._PlayerManager) return this._PlayerManager;
-                return this.$data._PlayerManager;
+                return new PlayerManager();
             };
 
-            this._NoticeManager = new NoticeManager(this, this.gameState);
             this.NoticeManager = function() {
-                if (this._NoticeManager) return this._NoticeManager;
-                return this.$data._NoticeManager;
+                return new NoticeManager();
             };
 
-            this._EffectsManager = new EffectsManager(this, this.gameState);
             this.EffectsManager = function() {
-                if (this._EffectsManager) return this._EffectsManager;
-                return this.$data._EffectsManager;
+                return new EffectsManager();
             };
 
-            this._SpriteManager = new SpriteManager(this);
             this.SpriteManager = function() {
-                if (this._SpriteManager) return this._SpriteManager;
-                return this.$data._SpriteManager;
+                return new SpriteManager();
             };
 
-            _PartyManager = new PartyManager(this);
             this.PartyManager = function() {
-                return _PartyManager;
+                return new PartyManager();
             };
 
             this.minorTick = function() {
@@ -214,7 +180,7 @@ define(["jquery",
             };
 
             this.initialise = function() {
-                log("initialising");
+                log("Initialising - Adventurers of Otium");
 
                 if (this.gameState === undefined || this.gameState === null) {
                     this.gameState = {};

@@ -11,10 +11,15 @@ define([
         commonFunctions = new CommonFunctions();
         var gameState = require("app/GameState");
 
-        return function AchievementManager(gameController) {
+        var StatisticsManager = require("app/StatisticsManager");
+        var statisticsManager = new StatisticsManager();
+
+        var MessageManager = require("app/MessageManager");
+        var messageManager = new MessageManager();
+
+        return function AchievementManager() {
 
             this.gameState = gameState.getGameState();
-            this.gameController = gameController;
 
             this.getClaimedAchievements = function() {
                 if (!this.gameState.claimedAchievements) this.gameState.claimedAchievements = [];
@@ -29,8 +34,8 @@ define([
             this.claimAchievement = function(achievement) {
                 if (!this.hasAchievement(achievement.name)) {
                     this.getClaimedAchievements().push({ "name": achievement.name, "timeClaimed": Date.now() });
-                    this.gameController.MessageManager().message("Got achievement:" + achievement.name + " (" + achievement.description + ")");
-                    this.gameController.StatisticsManager().trackStat("claim", "achievement");
+                    messageManager.message("Got achievement:" + achievement.name + " (" + achievement.description + ")");
+                    statisticsManager.trackStat("claim", "achievement");
                 }
             };
 
@@ -40,7 +45,7 @@ define([
                 }
                 switch (achievement.trigger.type) {
                     case "statistic":
-                        var stat = this.gameController.StatisticsManager().getStat(achievement.trigger.statistic);
+                        var stat = statisticsManager.getStat(achievement.trigger.statistic);
                         return stat && stat.current > achievement.trigger.statisticamount;
                 }
             };
@@ -63,7 +68,7 @@ define([
                 }
                 switch (achievement.trigger.type) {
                     case "statistic":
-                        var stat = this.gameController.StatisticsManager().getStat(achievement.trigger.statistic);
+                        var stat = statisticsManager.getStat(achievement.trigger.statistic);
                         if (stat) {
                             return (stat.current / achievement.trigger.statisticamount) * 100;
                         }

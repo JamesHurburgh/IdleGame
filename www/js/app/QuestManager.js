@@ -15,20 +15,20 @@ define(["chance",
         chance = new Chance();
         var gameState = require("app/GameState");
 
-        var LocationManager = require("app/LocationManager");
-        var locationManager = new LocationManager();
-
         var AdventurerManager = require("app/AdventurerManager");
         var adventurerManager = new AdventurerManager();
-
-        var StatisticsManager = require("app/StatisticsManager");
-        var statisticsManager = new StatisticsManager();
-
-        var TimeManager = require("app/TimeManager");
-        var timeManager = new TimeManager();
-
+        var EffectsManager = require("app/EffectsManager");
+        var effectsManager = new EffectsManager();
         var ItemManager = require("app/ItemManager");
         var itemManager = new ItemManager();
+        var LocationManager = require("app/LocationManager");
+        var locationManager = new LocationManager();
+        var PlayerManager = require("app/PlayerManager");
+        var playerManager = new PlayerManager();
+        var StatisticsManager = require("app/StatisticsManager");
+        var statisticsManager = new StatisticsManager();
+        var TimeManager = require("app/TimeManager");
+        var timeManager = new TimeManager();
 
         return function QuestManager() {
 
@@ -363,7 +363,7 @@ define(["chance",
                         if (quest.rewards[i].type == "coins") {
                             coins += quest.rewards[i].amount;
                         } else {
-                            this.gameController.PlayerManager().giveReward(quest.rewards[i]);
+                            playerManager.giveReward(quest.rewards[i]);
                         }
                     }
 
@@ -382,7 +382,7 @@ define(["chance",
                     }
 
                     quest.remainingCoins = coins - quest.wagesPaid - quest.cutsTaken;
-                    this.gameController.PlayerManager().giveCoins(quest.remainingCoins);
+                    playerManager.giveCoins(quest.remainingCoins);
 
                 } else {
                     quest.completionMessage = contract.failureMessage;
@@ -412,7 +412,7 @@ define(["chance",
                 if (quest.party) {
                     quest.party.forEach(function(adventurer) {
                         // Did they die?
-                        if (Math.random() * this.gameController.EffectsManager().getGlobalValue("questRisk") < contract.risk) {
+                        if (Math.random() * effectsManager.getGlobalValue("questRisk") < contract.risk) {
                             var causeOfInjury = "Injured while on contract: " + contract.name;
                             var injuryTime = quest.expires;
                             var injury = adventurerManager.injureAdventurer(adventurer, causeOfInjury, injuryTime);
@@ -481,7 +481,7 @@ define(["chance",
                         if (quest.rewards[i].type == "coins") {
                             coins += quest.rewards[i].amount;
                         } else {
-                            this.gameController.PlayerManager().giveReward(quest.rewards[i]);
+                            playerManager.giveReward(quest.rewards[i]);
                         }
                     }
 
@@ -504,7 +504,7 @@ define(["chance",
 
                     quest.remainingCoins = remainingCoins;
                     quest.wagesPaid = coins - remainingCoins;
-                    this.gameController.PlayerManager().giveCoins(remainingCoins);
+                    playerManager.giveCoins(remainingCoins);
 
                 } else {
                     quest.completionMessage = contract.failureMessage;

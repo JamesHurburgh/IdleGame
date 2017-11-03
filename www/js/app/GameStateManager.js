@@ -18,10 +18,15 @@ define([
         data = new DataManager();
         var gameState = require("app/GameState");
 
-        return function GameStateManager(gameController) {
+        var LocationManager = require("app/LocationManager");
+        var locationManager = new LocationManager();
+
+        var AdventurerManager = require("app/AdventurerManager");
+        var adventurerManager = new AdventurerManager();
+
+        return function GameStateManager() {
 
             this.gameState = gameState.getGameState();
-            this.gameController = gameController;
 
             this.save = function() {
                 gameState.save();
@@ -39,9 +44,8 @@ define([
                 this.gameState.completedQuests = [];
 
                 // Take a local copy of the locations
-                this.gameController.LocationManager().resetLocations();
+                locationManager.resetLocations();
 
-                // var locationManager = this.gameController.LocationManager();
                 // locationManager.setCurrentLocation(this.gameState.locationList[0].name);
                 // var location = locationManager.getCurrentLocation();
                 // location.availableContracts = [];
@@ -89,7 +93,7 @@ define([
 
                 // Fix for version 0.10.7
 
-                this.gameController.AdventurerManager().addMissingFields();
+                adventurerManager.addMissingFields();
 
                 var currentVersion = data.game.versions[0].number;
                 if (this.gameState.version != currentVersion) {

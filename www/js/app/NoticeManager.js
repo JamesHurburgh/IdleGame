@@ -13,10 +13,20 @@ define([
         data = new DataManager();
         var gameState = require("app/GameState");
 
-        return function NoticeManager(gameController) {
+        var AdventurerManager = require("app/AdventurerManager");
+        var adventurerManager = new AdventurerManager();
+        var LocationManager = require("app/LocationManager");
+        var locationManager = new LocationManager();
+        var EffectsManager = require("app/EffectsManager");
+        var effectsManager = new EffectsManager();
+        var QuestManager = require("app/QuestManager");
+        var questManager = new QuestManager();
+        var StatisticsManager = require("app/StatisticsManager");
+        var statisticsManager = new StatisticsManager();
+
+        return function NoticeManager() {
 
             this.gameState = gameState.getGameState();
-            this.gameController = gameController;
 
             this.viewContract = function(contract) {
                 this.gameState.selectedContract = contract;
@@ -32,7 +42,7 @@ define([
                 for (var i = 0; i < numberToPrep; i++) {
                     this.addContract();
                 }
-                this.gameController.AdventurerManager().prepAdventurersQueue(numberToPrep);
+                adventurerManager.prepAdventurersQueue(numberToPrep);
 
             };
 
@@ -45,15 +55,15 @@ define([
             this.addNewContracts = function() {
                 // New contracts
                 var maxContracts = 5;
-                var noticesAtCurrentLocation = this.getJobNoticesAtLocation(this.gameController.LocationManager().getCurrentLocation());
-                if (noticesAtCurrentLocation.length < maxContracts && Math.random() < this.gameController.EffectsManager().getGlobalValue("chanceOfNewContract")) {
+                var noticesAtCurrentLocation = this.getJobNoticesAtLocation(locationManager.getCurrentLocation());
+                if (noticesAtCurrentLocation.length < maxContracts && Math.random() < effectsManager.getGlobalValue("chanceOfNewContract")) {
                     this.addContract();
                 }
             };
 
             this.addContract = function() {
 
-                var location = this.gameController.LocationManager().getCurrentLocation();
+                var location = locationManager.getCurrentLocation();
                 var locationContractsTypes = location.contracts;
 
                 if (locationContractsTypes === undefined || locationContractsTypes.length === 0) { return; }
@@ -66,25 +76,25 @@ define([
                     return;
                 }
 
-                contract.expires = Date.now() + Math.floor(1000 * this.gameController.EffectsManager().getGlobalValue("averageJobContractExpiry") * (Math.random() + 0.5));
+                contract.expires = Date.now() + Math.floor(1000 * effectsManager.getGlobalValue("averageJobContractExpiry") * (Math.random() + 0.5));
                 if (!contract.requirements) contract.requirements = {};
-                contract.requirements.attributes = this.gameController.QuestManager().getSuggestedSkills(contract);
+                contract.requirements.attributes = questManager.getSuggestedSkills(contract);
 
-                this.gameController.LocationManager().getCurrentLocation().availableContracts.push(contract);
+                locationManager.getCurrentLocation().availableContracts.push(contract);
 
-                this.gameController.LocationManager().getCurrentLocation().availableContracts.sort(function(a, b) {
+                locationManager.getCurrentLocation().availableContracts.sort(function(a, b) {
                     return a.expires - b.expires;
                 });
-                this.gameController.StatisticsManager().trackStat("available-contract", contract.name, 1);
-                this.gameController.StatisticsManager().trackStat("available", "contract", 1);
+                statisticsManager.trackStat("available-contract", contract.name, 1);
+                statisticsManager.trackStat("available", "contract", 1);
             };
 
             this.removeExpired = function() {
 
-                var currentLocation = this.gameController.LocationManager().getCurrentLocation();
+                var currentLocation = locationManager.getCurrentLocation();
                 this.removeExpiredNoticesAtLocation(currentLocation);
 
-                var allLocations = this.gameController.LocationManager().getLocationList;
+                var allLocations = locationManager.getLocationList;
 
                 for (var locationIndex = 0; locationIndex < allLocations; locationIndex++) {
                     var location = allLocations[locationIndex];
@@ -99,8 +109,8 @@ define([
                     for (var m = 0; m < location.availableContracts.length; m++) {
                         var contract = location.availableContracts[m];
                         if (!contract.expires || contract.expires <= Date.now()) {
-                            this.gameController.StatisticsManager().trackStat("miss", "contract", 1);
-                            this.gameController.StatisticsManager().trackStat("miss-contract", location.availableContracts[m].name, 1);
+                            statisticsManager.trackStat("miss", "contract", 1);
+                            statisticsManager.trackStat("miss-contract", location.availableContracts[m].name, 1);
                             if (this.gameState.selectedContract == location.availableContracts[m]) this.gameState.selectedContract = null;
                             location.availableContracts.splice(m, 1);
 
@@ -112,8 +122,8 @@ define([
                     for (var k = 0; k < location.availableAdventurers.length; k++) {
                         var adventurerNotice = location.availableAdventurers[k];
                         if (!adventurerNotice.expires || adventurerNotice.expires <= Date.now()) {
-                            this.gameController.StatisticsManager().trackStat("miss", "adventurer", 1);
-                            this.gameController.StatisticsManager().trackStat("miss-adventurer", location.availableAdventurers[k].name, 1);
+                            statisticsManager.trackStat("miss", "adventurer", 1);
+                            statisticsManager.trackStat("miss-adventurer", location.availableAdventurers[k].name, 1);
                             location.availableAdventurers.splice(k, 1);
                         }
                     }

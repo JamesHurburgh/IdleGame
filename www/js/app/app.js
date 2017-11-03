@@ -56,7 +56,7 @@ requirejs(['jquery', 'vue', 'alertify', 'store', 'chance', 'app/AdventurersGame'
         var adventurersGame;
 
         try {
-            adventurersGame = new AdventurersGame(store.get("AdventurersGame"), log);
+            adventurersGame = new AdventurersGame(log);
 
             var controller = new Vue({
                 el: '#AdventurersGame',

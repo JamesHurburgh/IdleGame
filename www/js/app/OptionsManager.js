@@ -14,16 +14,18 @@ define([
         data = new DataManager();
         var gameState = require("app/GameState");
 
-        return function OptionsManager(gameController) {
+        var PlayerManager = require("app/PlayerManager");
+        var playerManager = new PlayerManager();
 
-            this.gameController = gameController;
+        return function OptionsManager() {
+
             this.gameState = gameState.getGameState();
 
             // Options
             this.cheat = function() {
                 log("cheat");
-                this.gameController.PlayerManager().giveCoins(100000000000);
-                this.gameController.PlayerManager().giveRenown(100000000000);
+                playerManager.giveCoins(100000000000);
+                playerManager.giveRenown(100000000000);
             };
 
             this.getOptions = function() {
